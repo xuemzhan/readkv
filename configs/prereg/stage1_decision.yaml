@@ -1,0 +1,21 @@
+# 冻结于阶段 1 运行之前；判据见 docs/protocol.md 第 4 节
+frozen: true
+frozen_at: "protocol-v1.0"
+hypothesis: "key 侧能否按接收方读取的量拟合而离开地板"
+arms: [A, B, C, D]
+primary_metric: corrected_em_k_only
+supporting: [routing_tv, top1_agreement, CSG, doc_clustered_ci]
+rules:
+  - when: "C.mean >= 0.15 and C.doc_cluster_ci excludes A/B and D <= C"
+    verdict: positive
+    conditions: {C_k_only_em_high: true, C_beats_baselines: true, D_not_better: true}
+    interpretation: "K/V 两侧对称闭合"
+  - when: "C ~ A/B/D and routing improves while EM does not"
+    verdict: negative
+    conditions: {C_k_only_em_high: false, routing_improved: true}
+    interpretation: "score 匹配不是 key 侧所需；指向 query-key 交互或重算"
+  - when: otherwise
+    verdict: inconclusive
+    conditions: {}
+    interpretation: "如实报告，不调整判据"
+report_both: true

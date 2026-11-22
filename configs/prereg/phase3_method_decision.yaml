@@ -1,0 +1,27 @@
+# 冻结于 P3（方法）运行之前；决定方法贡献能否成立
+frozen: true
+frozen_at: "protocol-v2.0"
+hypothesis: "H3：机制约束 Mapper 是否在配平预算下改善 E_CF"
+rules:
+  - when: "mechanism_and_method_both_win"
+    verdict: method_contribution
+    conditions:
+      ecf_improved: true
+      ci_upper: { "$lt": 0 }
+      flip_consistency: { "$gte": 0.7 }
+    action: "补齐跨模型/成本/统计/公开代码与论文叙事；保留贡献(2)(3)"
+  - when: "ecf_improves_but_task_degrades"
+    verdict: tradeoff
+    conditions:
+      ecf_improved: true
+      dual_correct: { "$lt": 0.7 }
+    action: "重新调整多目标约束；如不能兼顾，如实报告权衡，不省略常规任务退化"
+  - when: "no_method_gain"
+    verdict: method_downgraded
+    conditions:
+      ecf_improved: false
+    action: "把机制/评测证据独立整理，方法贡献降级；不挑选种子掩盖无效"
+forbidden_after_run:
+  - changing_loss_weights_on_test
+  - changing_tau_on_test
+  - dropping_seeds

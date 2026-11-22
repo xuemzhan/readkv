@@ -1,0 +1,35 @@
+# 模型对与硬件预算（单卡 4090 / 24GB）
+defaults:
+  device: cuda
+  dtype: bfloat16
+  kernel: sdpa
+  seeds: [0, 1, 2]
+  cache_dtype: float16
+
+pairs:
+  17b_to_06b:
+    teacher: 1.7B
+    student: 0.6B
+    depth: equal             # 28 -> 28
+    role: stage1_primary
+    max_runs: null
+  4b_to_17b:
+    teacher: 4B
+    student: 1.7B
+    depth: unequal           # 36 -> 28
+    role: stage2_primary
+    max_runs: null
+  8b_to_06b:
+    teacher: 8B
+    student: 0.6B
+    depth: unequal
+    role: one_off_check      # 只做一次缓存生成 + 一次检验
+    max_runs: 1
+    teacher_offline_only: true
+
+budget:
+  gpu_memory_gb: 24
+  long_context: false       # 不做 4K/8K
+  teacher_online: false     # teacher 缓存离线落盘，之后卸载
+  calibration_docs_max: 85  # 85 篇混合仍失败（论文 1）
+  test_docs_target: 30      # 从 8 篇扩到几十篇

@@ -1,0 +1,25 @@
+# 阶段 2：consumer-space mapper 过三道门
+pair: 4b_to_17b
+tasks: [hellaswag, arc]
+task_format: four_choice
+n_eval: 100
+n_eval_target: 300
+calibration_budgets: [30, 200]
+seeds: [0, 1, 2]
+n_resamples: 10000
+
+mapper_arms:
+  - affine_per_head            # 论文 2 最强线性基线
+  - attention_output_aware_v   # 论文 1
+  - wo_aware_v                 # 论文 1
+  - shuffled_target_control
+  - stage1_best_key_mapper     # 阶段 1 失败则 affine K，并显式标注
+
+channel_ablation: [k_only, v_only, joint]
+measure_csg: true
+gates: gates.yaml
+
+decision_tree:
+  pass_h2: "mainline = consumer-space is general; go to stage3, focus on content specificity"
+  partial_gain: "mainline = narrow the gap; stage3 behavioral mapper more necessary"
+  no_gain: "mainline = task conditioning & boundary; shrink stage3, explain non-extrapolation"

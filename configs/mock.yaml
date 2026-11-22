@@ -1,0 +1,19 @@
+# CPU mock 后端参数：仅用于接线/回归测试，产生的数字不是科学证据
+backend: mock
+spec:
+  n_layers: 6          # 真实模型 28/36；mock 缩小以保证 CPU 可跑
+  n_kv_heads: 2
+  head_dim: 8
+  content_rank: 4
+  tokens_per_doc: 6
+  n_choices: 4
+  identity_noise: 0.000000000001   # 模拟 bf16 kernel path 残差；读出伪逆会放大噪声
+  ll_injection_bonus: 2.5    # 模拟“likelihood 增益与内容无关”的现象
+  readout_noise: 0.1
+  key_noise: 0.15
+  value_noise: 0.02
+pipeline:
+  n_calibration: 8
+  n_eval: 16
+  n_docs: 16
+  seed: 0

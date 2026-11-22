@@ -1,0 +1,23 @@
+# 阶段 3：带对比负样本的行为目标 mapper
+pair: 4b_to_17b
+freeze_student: true
+mapper:
+  type: per_head_affine       # 约 7M 参数量级
+  init: closed_form_consumer_space
+loss:
+  answer_ce: true
+  contrastive_negative: in_batch_wrong_document
+  margin: 0.1
+training:
+  optimizer: adam
+  lr: 0.001
+  epochs: 20
+  batch_size: 2
+  gradient_checkpointing: true
+  dtype: bfloat16
+controls:
+  - rank8_o_proj_adapter       # 论文 1 的 adapter 路线
+  - closed_form_consumer_mapper
+  - shuffled_document_training
+answer: "只改 mapper 能否达到 adapter 效果；对比负样本能否压低分布适应那一半"
+novelty_note: "与 KV-Lingo / CacheLink 的差异必须落在对比负样本与三道门审计，而非用蒸馏训练 mapper 本身"

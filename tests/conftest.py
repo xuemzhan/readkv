@@ -1,0 +1,8 @@
+"""让 pytest 在 src layout 下直接找到 readkv。"""
+
+import sys
+from pathlib import Path
+
+SRC = Path(__file__).resolve().parents[1] / "src"
+if str(SRC) not in sys.path:
+    sys.path.insert(0, str(SRC))

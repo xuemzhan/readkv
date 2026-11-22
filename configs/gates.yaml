@@ -1,0 +1,32 @@
+# 三道门固定规则（见 docs/protocol.md）
+version: "1.0"
+
+H1_identity:
+  metric: logit_cosine
+  min_per_sample: 0.9998
+  report_min: true
+
+H2_replacement:
+  metric: gold_letter_probability_change
+  epsilon: 0.02
+  ci: paired_percentile_bootstrap
+  n_resamples: 10000
+  confidence: 0.95
+  strict_gain_gate: lower_bound_above_zero
+  report_direction: true
+  epsilon_sensitivity: [0.01, 0.02, 0.05]
+
+H3_exploitability:
+  probes:
+    fraction: [0.25, 0.5, 0.75]
+    window: [bottom_third, middle_third, top_third]
+    octant: [0, 1, 2, 3, 4, 5, 6, 7]
+  gate: any_config_ci_lower_bound_above_zero
+  family_wise_max_bootstrap: true
+  confirmatory_configs: 6
+
+metrics:
+  primary: [corrected_em, gold_letter_prob]
+  secondary: [teacher_forced_delta_ll, CSG, suffix_ppl]
+  diagnostics: [routing_tv, top1_agreement, attention_cosine, e_raw, e_attn, e_WO, heldout_r2]
+  csg: true_doc_minus_wrong_doc

@@ -1,0 +1,17 @@
+# 冻结于 P1（基准）运行之前；是否继续主线取决于强基线是否已消除反事实失真
+frozen: true
+frozen_at: "protocol-v2.0"
+hypothesis: "H1：强基线是否已无反事实失真"
+rules:
+  - when: "distortion_present"
+    verdict: distortion_exists
+    conditions: {distortion_present: true, quality_pass: true}
+    action: "继续 P2 机制诊断与 P3 方法；报告 E_CF 与基线差距"
+  - when: "no_distortion"
+    verdict: boundary_study
+    conditions: {distortion_present: false, quality_pass: true}
+    action: "转向泛化边界/失败条件研究，不坚持所有方法都失真"
+forbidden_after_run:
+  - changing_tau_on_test
+  - dropping_controls
+  - selecting_seeds_by_result
