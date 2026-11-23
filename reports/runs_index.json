@@ -769,7 +769,7 @@
     "n_scores": 480,
     "complete": true,
     "L_self_minus_joint": 0.4,
-    "diagonal_check": "0/60 E_CF vs p1_clean_mvp_seed0, maxdiff=n/a",
+    "diagonal_check": "60/60 E_CF vs p1_clean_mvp_seed0 (sample_hash==cache_hash), maxdiff=0.0",
     "superseded": false,
     "data_sha256": {
       "train-old": "81da04a041a4e7757caa02e502c10ca9a9236d7f98da5419fb226ca95a02b00a",
