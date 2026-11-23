@@ -1,0 +1,717 @@
+\documentclass[11pt,a4paper]{article}
+
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{amsmath,amssymb}
+\usepackage{booktabs}
+\usepackage{graphicx}
+\usepackage{geometry}
+\geometry{margin=2.2cm}
+\usepackage{hyperref}
+\hypersetup{colorlinks=true,linkcolor=blue,citecolor=blue,urlcolor=blue}
+
+% ---------------------------------------------------------------------------
+% IMPORTANT (author-internal note, remove before submission):
+% This is an honest first draft built ONLY from frozen GPU results in
+% reports/runs/. No statistic has been recomputed; every number below is
+% transcribed from config.json / metrics.json / runs_index.json /
+% engineer_status.md. Stages P2--P5 have NOT run. Per docs/protocol.md S10,
+% only contribution (1) is claimed; contributions (2) and (3) are explicitly
+% WITHHELD. Per the decision tree (protocol S8) this manuscript must be
+% reframed as a boundary / empirical study, NOT a high-level method paper.
+% Figure placeholders are textual descriptions (no figure files exist yet).
+% All citations marked [PLACEHOLDER] must be verified per protocol S9.
+% ---------------------------------------------------------------------------
+
+\title{Counterfactual Functional Fidelity in Cross-Model KV Handoff:\\
+An Empirical Boundary Study}
+
+\author{readkv project (author list to be finalized)}
+\date{Draft --- generated from frozen results; not for distribution}
+
+\begin{document}
+\maketitle
+
+% ===========================================================================
+\begin{abstract}
+Transferring a teacher model's key--value (KV) cache into a frozen student
+promises generation with ``zero re-prefill'' of the source document. Standard
+evaluation of such transfer asks whether the student still answers correctly.
+We argue this is insufficient: a transferred cache can preserve ordinary
+utility while distorting the model's \emph{counterfactual response}---the
+change in its answer when a single fact in the document is edited. We define
+an evaluation layer for this property, centered on the counterfactual error
+$E_{\mathrm{CF}}$, and report a preregistered benchmark on Qwen3 model pairs
+using real GPU runs (bf16, sdpa, strict zero re-prefill); we report the
+implementation and configuration used, and note that source provenance is
+under remediation (Section~\ref{sec:models}). A measurement gate
+(E0) shows implementation residuals at machine precision (logit cosine
+$1.0$, KL $0$, measurement-error ceiling $2.2\times10^{-16}$), far below the
+effect under study. On the equal-depth MVP pair (1.7B$\to$0.6B, three seeds),
+the transferable Joint arm shows a counterfactual gap across the three seeds
+reported here ($E_{\mathrm{CF}}\approx1.93$--$2.12$) whose bootstrap CI
+excludes zero, with dual-side correctness near the native anchor and direction
+consistency $0.90$--$0.96$. On the non-equal-depth main pair (4B$\to$1.7B,
+three seeds), the gap is much larger ($E_{\mathrm{CF}}\approx5.37$--$6.08$)
+but is accompanied by a severe collapse of transferred dual-side correctness
+(from $0.65$--$0.78$ natively to $0.28$--$0.30$), and information controls are
+mostly non-positive; we treat this pair as a broken-transfer failure boundary
+and \emph{not} as positive evidence of counterfactual distortion. With only
+evaluation-layer evidence in hand, and no mechanism or method evidence, we
+present a \emph{boundary/empirical study} (a real-GPU benchmark on an as-run
+working tree, provenance under remediation): we identify a gap for the
+affine/ridge mapper tested here, and we document the conditions under which
+the current transfer fails. Whether stronger behavioral baselines
+(\texttt{kd_only}, \texttt{consumer}, \texttt{score}, ridge) retain this gap is
+left to future work. We make \emph{no} claim of having pinpointed a mechanism
+or of having developed a method that closes the gap.
+\end{abstract}
+
+% ===========================================================================
+\section{Introduction}
+\label{sec:intro}
+
+Cross-model KV handoff maps a teacher's document cache into a receiver
+student's cache format so that the student can answer queries about a
+document without ever re-processing that document (\emph{strict zero
+re-prefill}). The natural question in prior work is whether the student still
+produces the correct answer. We ask a sharper question: does the student
+preserve the \emph{functional dependence of its answer on the document}? If a
+target fact in the document is counterfactually edited, does the transferred
+student's response change in the same direction and by a comparable magnitude
+as the native student's response? We call this property \emph{counterfactual
+functional fidelity} and measure it with the counterfactual error
+$E_{\mathrm{CF}}$ (Section~\ref{sec:metrics}).
+
+This question sits at the intersection of two lines of work (Figure~\ref{fig:f1}):
+(i)~cross-model KV transfer, which optimizes standard utility and distribution
+matching but does not score counterfactual response change; and (ii)~within-model
+content/counterfactual auditing, which studies whether a model's output is
+causally driven by document content but does not address transfer into a
+frozen receiver. Existing transfer work therefore leaves open exactly the
+property we evaluate, while existing auditing work does not cover the
+zero-re-prefill setting. Our evaluation layer connects the two by measuring
+\emph{counterfactual response fidelity after transfer} under a preregistered
+protocol.
+
+\paragraph{Contributions (strictly scoped).}
+Following the contribution gate in the project protocol (protocol~\S10), we
+claim exactly \emph{one} evidence-backed contribution:
+
+\begin{enumerate}
+\item \textbf{Evaluation layer (claimed, scope-limited).} For the
+      affine/ridge mapper tested here, we identify a gap between standard
+      transfer utility and counterfactual response fidelity in cross-model KV
+      handoff, together with a preregistered paired counterfactual benchmark,
+      a machine-precision measurement gate, and a joint reporting discipline
+      ($E_{\mathrm{CF}}$ reported with dual-side correctness, direction
+      consistency, coverage, and information-control gaps). This claim is
+      explicitly limited to the mapper studied: whether stronger behavioral
+      baselines (\texttt{kd_only}, \texttt{consumer}, \texttt{score}, ridge)
+      retain the gap is not evaluated here and is left to future work.
+\end{enumerate}
+
+We explicitly do \emph{not} claim the following two contributions at this
+stage, because the required evidence has not been produced:
+\begin{itemize}
+\item \emph{(withheld) mechanism layer:} the receiver-side routing /
+      consumption claim (contribution template~(2) in protocol~\S10), which
+      would require controlled cache interventions with held-out predictive
+      validation; and
+\item \emph{(withheld) method layer:} the mechanism-constrained-mapper claim
+      (contribution template~(3) in protocol~\S10), which would require a
+      trained method evaluated against matched behavioral baselines.
+\end{itemize}
+A directional clue toward a mechanism (V-only $\approx$ Joint) is reported in
+Section~\ref{sec:results} but, absent intervention and held-out prediction
+tests, is \emph{not} promoted to a mechanism claim. The proposed CF-RCT method
+(Section~\ref{sec:method}) is described as a \emph{design pending validation};
+it has not been trained or evaluated. Accordingly, this manuscript follows the
+decision tree (protocol~\S8) and is positioned as a boundary/empirical study,
+not a high-level method paper. All data used here are synthetic templates; we
+therefore make no claim about cross-family or real-world transfer, and mark
+this as an applicability boundary.
+
+\begin{figure}[t]
+\centering
+\fbox{\parbox{0.88\linewidth}{\centering
+\textbf{Figure~1 (placeholder; to be generated from frozen results).}\\
+Two prior-work lines $\to$ the third scientific question.\\
+Left: \emph{cross-model KV transfer} (standard utility / distribution matching).\\
+Right: \emph{within-model content \& counterfactual auditing}.\\
+Center/foreground: \emph{this work}---counterfactual response fidelity of a
+frozen receiver under strict zero re-prefill, evaluated with paired
+counterfactual documents and a preregistered control suite.\\
+Annotate that prior transfer work does not score counterfactual response change,
+and prior auditing does not cover zero-re-prefill transfer.}}
+\caption{Relation of the two established research lines to the scientific
+question of this work. \emph{Textual placeholder; figure file not yet generated.}}
+\label{fig:f1}
+\end{figure}
+
+% ===========================================================================
+\section{Related Work}
+\label{sec:related}
+
+\paragraph{Cross-model KV transfer.} Methods that distill or map a teacher's
+caches into a receiver's cache format (e.g., KV-Lingo-style behavioral
+distillation and CacheLink-style cache translation)~\cite{kvlingo,cachelink}
+evaluate whether the receiver retains ordinary task accuracy or matches the
+teacher's token distributions. They do not score whether the receiver's
+\emph{response difference} under a counterfactual document edit is preserved.
+We treat these as strong baselines to be matched on data, forward budget,
+parameters, and tuning budget (Section~\ref{sec:setup}); we do not assume their
+reported numbers transfer to our task, and where no runnable implementation is
+available we report the deviation explicitly, and we do not assume the
+reported numbers carry over to our task.
+
+\paragraph{Within-model auditing and counterfactual evaluation.} Content-
+and counterfactual-dependence audits test whether a model's output is causally
+attributable to document content. We reuse the principle of comparing against
+no-information and mismatched-content controls, but we do not claim a novel
+causal-audit metric; the counterfactual error and its paired construction are
+an evaluation design for the transfer setting.
+
+\paragraph{Scope boundaries.} Four categories are kept distinct throughout:
+(1)~cross-model transfer (our main line); (2)~within-model incremental cache
+editing/repair (not studied); (3)~no-information message adaptation (used only
+as a control); and (4)~content-dependence auditing (adopted principle, not a
+claimed contribution). We further do not claim that representation error or
+$R^2$ equals task quality, that single-document attention error explains a
+counterfactual effect, that offline Oracle diagnostics are deployable, or that
+identity/cache round-trip auditing is itself a contribution.
+ All citations in
+this draft are placeholders pending version/date/protocol verification under
+protocol~\S9.
+
+% ===========================================================================
+\section{Method}
+\label{sec:method}
+
+This section is organized in two parts. Sections~\ref{sec:proposed}--%
+\ref{sec:huber} describe the CF-RCT design as a \emph{proposed method not yet
+validated}. Section~\ref{sec:zerore} defines the evaluation pathway that
+\emph{was} realized in the reported runs.
+
+\subsection{Setup and notation}
+\label{sec:proposed}
+
+A teacher $T$ prefill-computes a cache $C_T(d)$ of document $d$; a trainable
+mapper $g_\theta$ maps it into the receiver $S$'s cache format
+$\hat{C}_S(d)=g_\theta(C_T(d))$. The receiver decodes query $q$ starting from
+$\hat{C}_S(d)$ and never re-processes $d$. The receiver's own cache
+$C_S(d)$ is an \emph{offline Oracle}: it may be used for training targets,
+evaluation anchors, and mechanism intervention, but never inside the
+deployable inference path. $S$'s main weights are frozen; $g_\theta$ is the
+only trainable object. The two documents of a counterfactual pair, $d_A$ and
+$d_B$, are prefilled \emph{independently}; cache bytes must never be tampered
+with to synthesize the other document.
+
+\subsection{Strict zero re-prefill and the arm boundary}
+\label{sec:zerore}
+
+We distinguish four arms by the provenance of Key and Value (Figure~\ref{fig:f2},
+Table~\ref{tab:arms}). Only \emph{Joint} is deployable under strict zero
+re-prefill: the student processes no document token and does not read
+$C_S(d)$ at inference. A forward hook asserts that the number of student
+forward passes equals one plus the decode steps and that no document token
+enters the student; a per-run \texttt{zero\_re\_prefill} flag records this.
+
+\begin{figure}[t]
+\centering
+\fbox{\parbox{0.88\linewidth}{\centering
+\textbf{Figure~2 (placeholder).}\\
+Strict zero re-prefill flow and diagnostic boundary.\\
+Teacher independently prefills $d_A$, $d_B$ $\to$ $C_T$; mapper
+$\hat{C}=g_\theta(C_T)$; student decodes $q$ from $\hat{C}$ only
+(\emph{Joint}, deployable).\\
+Dashed/offline box (NOT in the deployable graph): student native $C_S(d)$
+(\emph{Self}), identity injection (\emph{Identity}), and layer/head/token
+\emph{Oracle} state grafting.\\
+K-only / V-only mix one mapped and one native half and are marked
+\texttt{deployable=false}.\\
+Label the only honest comparison: Joint vs.\ matched baselines; all others are
+offline diagnostics or anchors.}}
+\caption{Strict zero re-prefill inference and the Self / Identity / Joint /
+Oracle boundary. \emph{Textual placeholder; figure file not yet generated.}}
+\label{fig:f2}
+\end{figure}
+
+\begin{table}[t]
+\centering
+\caption{Arm definitions and deployability. Only Joint satisfies strict zero
+re-prefill; other arms are offline diagnostics/anchors.}
+\label{tab:arms}
+\begin{tabular}{llll}
+\toprule
+Arm & Key & Value & Deployable \\
+\midrule
+Self    & student $K_S$   & student $V_S$    & no (anchor) \\
+Identity& student $K_S$   & student $V_S$    & no (anchor) \\
+K-only  & mapped $\hat{K}_S$ & student $V_S$  & no \\
+V-only  & student $K_S$   & mapped $\hat{V}_S$ & no \\
+Joint   & mapped $\hat{K}_S$ & mapped $\hat{V}_S$ & \textbf{yes} \\
+Oracle  & student-native state grafted into mapped cache & --- & no \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\subsection{Proposed CF-RCT algorithm (design, not validated)}
+\label{sec:cf-rct}
+
+We outline a family \texttt{CF-RCT} (`counterfactual response-constrained
+translation') with two instances, \texttt{CF-RCT-lite} and
+\texttt{CF-RCT-mech}, sharing a training skeleton. The mapper is a
+per-(layer, channel$\in$\{K,V\}, head) affine map with an optional low-rank
+residual $W=W_0+AB^\top$ (rank $0$ is the pure-affine special case). For non-equal-depth
+pairs (4B$\to$1.7B, $36\to28$ layers) a proportional layer map is used rather
+than forcing same-layer alignment. Initialization is a closed-form ridge
+regression from teacher to student caches on a calibration set; computation is
+done in de-RoPE'd content space and re-RoPE'd before injection, with bf16 +
+sdpa in every arm.
+
+For each calibration pair, two student forward passes under the mapped caches
+produce $D_{\mathrm{trans}}$, while a \texttt{no\_grad} pass under the native
+caches produces the offline anchor $D_{\mathrm{self}}$. The training objective is
+\begin{equation}
+L \;=\; \lambda_{\mathrm{KD}} L_{\mathrm{KD}}
+      + \lambda_{\mathrm{CF}} L_{\mathrm{CF}}
+      + \lambda_{\mathrm{local}} L_{\mathrm{local}}
+      + \lambda_{\mathrm{reg}} L_{\mathrm{reg}},
+\end{equation}
+where $L_{\mathrm{KD}}$ is the per-document forward KL between mapped and
+native candidate distributions (the strong behavioral baseline
+\texttt{kd\_only} corresponds to $\lambda_{\mathrm{CF}}=0$);
+$L_{\mathrm{CF}}=\mathrm{mean}_{i}[m_i\,\mathrm{Huber}_{\delta}
+(D_{\mathrm{trans}}^{i}-D_{\mathrm{self}}^{i})]$ is a paired counterfactual
+residual constrained only on the ``Self-valid'' subset
+$m_i=\mathbf{1}[\,|D_{\mathrm{self}}|\ge 0.1\,]$; $L_{\mathrm{local}}$ is a
+routing/consumption term used only by \texttt{mech} and only in training; and
+$L_{\mathrm{reg}}$ penalizes the low-rank residual. `lite' sets
+$\lambda_{\mathrm{local}}=0,\lambda_{\mathrm{CF}}>0$; `mech' additionally sets
+$\lambda_{\mathrm{local}}>0$. A key design guard is that $L_{\mathrm{CF}}$
+is computed only where the native signal is identifiable: forcing sensitivity
+where $D_{\mathrm{self}}\approx 0$ can induce a degenerate ``constant output''
+solution (Section~\ref{sec:metrics}).
+
+\paragraph{Proposed mechanism diagnostics (not run).} A routing/consumption
+decomposition at fixed receiver query $Q_S$ is the algebraic identity
+$\hat O-O_S=(\hat A-A_S)V_S W_O+\hat A(\hat V-V_S)W_O$, whose two terms are
+\emph{routing} and \emph{consumption}; its residual should be $\approx0$ by
+numerical self-check. This is a \emph{local, fixed-query identity} and must not
+be read as a global causal decomposition of task loss. Layer/head/token Oracle
+grafting would rank units by repair gain on training/validation documents and
+test them on \emph{independent} documents; only such held-out predictive value
+would license a mechanism claim. None of these diagnostics have been executed;
+the P1 K/V four-arm numbers in Section~\ref{sec:results} are \emph{directional
+clues only}.
+
+\subsection{Hyperparameter freezing status}
+\label{sec:huber}
+
+The Huber threshold $\delta$ (nominal $1.0$, logit units), label balance
+(A/B $1{:}1$, candidate order 50/50, F5 negative control fixed, $L_{\mathrm{CF}}$
+mask on Self-valid subset) and loss-weight selection rules are frozen by a
+dedicated preregistration file (protocol-v2.1). Crucially, only the \emph{rule}
+is frozen; the \emph{final} $\delta$ must still be selected on the validation
+grid $\{0.5,1.0,2.0\}$ and locked before the sealed test. This has \emph{not}
+been done: no \texttt{CF-RCT} model was trained and the sealed test was never
+run. We therefore report no method result and no final $\delta$.
+
+% ===========================================================================
+\section{Experimental Setup}
+\label{sec:setup}
+
+\subsection{Counterfactual data construction: slices F1--F6}
+\label{sec:data}
+
+Each evaluation unit is $u=(q,d_A,d_B,a,b,m)$: a query and a pair of documents
+differing in one targeted fact, with candidates A/B held fixed within the pair
+and their order randomly swapped. Six slices are designed to exclude distinct
+confounds (Figure~\ref{fig:f3}; protocol~\S3.2):
+\begin{itemize}
+\item \textbf{F1} direct fact substitution (who/when/how-many/where): holds
+      position and overall context nearly fixed;
+\item \textbf{F2} reasoning-chain change (alias/membership/comparison) with
+      the answer in a different span: excludes answer-string shortcuts;
+\item \textbf{F3} relation direction / negation reversal: excludes lexical
+      overlap with unchanged logical relation;
+\item \textbf{F4} distractors and coreference: excludes selection by entity
+      frequency or position;
+\item \textbf{F5} surface equivalence (paraphrase/word order/format): a
+      \emph{negative control} that should \emph{not} flip the answer; excluded
+      from the ``must-flip'' denominator;
+\item \textbf{F6} length/position control (matched token lengths; separate
+      mismatched and position-shifted subsets): excludes attributing RoPE /
+      position effects to fact infidelity.
+\end{itemize}
+Splits are isolated by entity, source, and template cluster; train/val/test
+counts are 120/60/300 with 40 probe pairs, and the train--eval template overlap
+is empty in the runs (data-quality gate `pass'). The reported P1 runs evaluate
+on the validation split (60 pairs); the sealed test is reserved for the
+(unrun) method stage.
+
+\begin{figure}[t]
+\centering
+\fbox{\parbox{0.88\linewidth}{\centering
+\textbf{Figure~3 (placeholder).}\\
+Paired counterfactual document construction and positive/negative controls.\\
+Show $d_A$ vs.\ $d_B$ differing in one edited span; candidates A/B order
+randomly swapped; F1--F6 examples with F5 flagged as non-flip negative control
+and F6 as length/position control.}}
+\caption{Construction of counterfactual document pairs and controls.
+\emph{Textual placeholder; figure file not yet generated.}}
+\label{fig:f3}
+\end{figure}
+
+\subsection{Model pairs}
+\label{sec:models}
+
+Two real-GPU pairs were run: (a) \emph{MVP}, equal-depth Qwen3-1.7B (teacher)
+$\to$ Qwen3-0.6B (student), $28\to28$ identity layer map; and (b) \emph{main
+validation}, non-equal-depth Qwen3-4B $\to$ Qwen3-1.7B, $36\to28$ proportional
+layer map. All runs use device CUDA, dtype \texttt{bfloat16}, attention kernel
+\texttt{sdpa}, protocol version 2.0, and \texttt{zero\_re\_prefill=true}.
+Three seeds ($0,1,2$) were run for each P1 pair. The 8B offline stress pair was
+not run.%
+\footnote{Data-integrity note (model pair): the \texttt{model\_pair} string in
+the main runs' \texttt{config.json}/\texttt{runs\_index.json} reads
+\texttt{qwen3-1.7b-to-0.6b}, but the actual \texttt{teacher}/\texttt{student}
+paths (\texttt{Qwen3-4B}/\texttt{Qwen3-1.7B}) and the $36\to28$ proportional
+layer map confirm these are Qwen3-4B$\to$1.7B runs. We therefore report the
+corrected label \texttt{qwen3-4b-to-1.7b}. The metadata erratum is recorded in
+\texttt{reports/runs\_index\_errata.json} (\texttt{model\_pair\_corrected});
+the frozen \texttt{scores.jsonl} were not modified, and no computed metric is
+affected.}}
+\paragraph{Provenance note.} The results reported in this draft were produced
+on an as-run working tree whose recorded \texttt{git\_hash=53e9bc5} does not
+contain the scoring code; those runs are marked \texttt{superseded /
+provenance-unverified} in \texttt{reports/runs\_index\_errata.json}. We report
+the implementation and configuration used; we make \emph{no} claim that the
+numbers can be independently regenerated from the recorded commit. A new
+commit (\texttt{458de18}) containing the
+scoring code was created and the P0/E0 and P1 runs re-executed under new
+run ids; the corresponding numbers are still being aggregated.
+\textbf{TO BE FILLED from \texttt{p1\_gpu\_mvp\_repro\_seed\{0,1,2\}} and
+\texttt{e0\_gpu\_mvp\_repro\_seed0} once the engineer's aggregation is
+available.} Until that aggregation and the closed-loop audit are complete,
+all numeric results below are provisional and the provenance of their source
+runs is under remediation.
+
+\subsection{Metrics: $E_{\mathrm{CF}}$ and mandatory joint reporting}
+\label{sec:metrics}
+
+For a candidate pair, define $g(C,q)=\log P(A\mid C,q)-\log P(B\mid C,q)$ at a
+single shared generation position. Then
+\begin{align}
+D_{\mathrm{self}} &= g(C_S(d_A),q)-g(C_S(d_B),q),\\
+D_{\mathrm{trans}} &= g(\hat C_S(d_A),q)-g(\hat C_S(d_B),q),\\
+E_{\mathrm{CF}} &= |D_{\mathrm{trans}}-D_{\mathrm{self}}|,\qquad
+\mathrm{normalized}\ E_{\mathrm{CF}}=\frac{|D_{\mathrm{trans}}-D_{\mathrm{self}}|}
+{|D_{\mathrm{self}}|+\tau},\quad \tau=1.0 .
+\end{align}
+The key interpretation guard: $E_{\mathrm{CF}}$ alone is not a quality measure.
+When $D_{\mathrm{self}}\approx0$, a constant output can achieve small
+$E_{\mathrm{CF}}$. Therefore $E_{\mathrm{CF}}$ is \emph{always} jointly reported
+with (i)~dual-side per-document success \texttt{dual\_correct}, (ii)~direction
+consistency \texttt{flip\_consistency} on the Self-valid subset
+$|D_{\mathrm{self}}|\ge0.1$, (iii)~coverage \texttt{coverage} of the native
+evaluable subset, and (iv)~the gap to no-information controls
+\texttt{info\_gap}/\texttt{info\_attribution}. A decrease in $E_{\mathrm{CF}}$
+without these joint signals is not counted as an improvement.
+
+\paragraph{Information-attribution reporting note.} In the current pipeline the
+control groups are emitted as separate arms, so the per-pair
+\texttt{info\_gap} field is unset; the aggregate equivalent
+\texttt{info\_attribution} (control-group $E_{\mathrm{CF}}$ minus Joint
+$E_{\mathrm{CF}}$) is reported instead. This deviation is recorded, not used
+to alter any frozen criterion. Positive values mean the correct cache carries
+identifiable information beyond the controls.
+
+\subsection{Primary endpoint and statistical discipline}
+\label{sec:stats}
+
+The primary endpoint is defined for the \emph{method} stage: the paired
+$E_{\mathrm{CF}}$ difference on the sealed test between a new method and the
+strongest behavioral baseline (\texttt{primary\_baseline=kd\_only}), with a
+template/source-cluster paired bootstrap (10{,}000 resamples, 95\% CI). An
+improvement is declared only if the CI \emph{upper bound} is $<0$; $\ge3$
+training seeds are required and multiple comparisons use Holm. A result with
+$P>0.05$ is not treated as evidence of equivalence. The P1 runs reported here
+are the \emph{benchmark} stage: they use no new method, so the paired endpoint
+is degenerate (point $0$) and \emph{no improvement claim is made}; their CIs
+quantify the gap of Joint above the Self anchor (which has $E_{\mathrm{CF}}=0$).
+
+\subsection{Baselines and fair alignment}
+\label{sec:baselines}
+
+Design requirement: \texttt{affine}, \texttt{consumer}, \texttt{kd\_only},
+\texttt{score}, plus ridge, CE-only, contrastive, mismatched-document and
+receiver-only-adapted controls, all on the same calibration pairs, dtype/kernel,
+forward budget, trainable parameter count, training steps, and tuning budget,
+with ordinary QA and counterfactual QA reported together. In the P1 runs the
+mapped arm is an affine mapper with \emph{zero} trainable parameters (closed-form
+ridge initialization), so the headline comparison here is Joint vs.\ Self /
+Identity and against mismatched / random / zero information controls; the
+full matched-baseline comparison belongs to the unrun method stage.
+
+% ===========================================================================
+\section{Results}
+\label{sec:results}
+
+We report only real GPU results from \texttt{reports/runs/}. No mock number is
+used. All values are transcribed from frozen \texttt{config.json}/\texttt{metrics.json}
+and the engineering status report; no statistic was recomputed for this draft.
+The values below come from the runs currently marked
+\texttt{superseded / provenance-unverified}; they are provisional pending the
+provenance-remediation reruns noted in Section~\ref{sec:models}.%
+\footnote{Bootstrap CI endpoints depend on the bootstrap seed; point estimates
+are exact. The bootstrap seed used by the scoring pipeline and by the audit
+script is to be harmonized and recorded in each run config (reviewer item R5).}
+
+\subsection{E0: implementation gate (P0)}
+\label{sec:e0}
+
+E0 isolates pure implementation residual by using one model as both capture and
+inject (identity mapper) on 40 probe pairs. Both model pairs pass:
+\begin{table}[t]
+\centering
+\caption{E0 implementation gate (frozen results, real GPU). All thresholds met;
+the measurement-error ceiling is orders of magnitude below the effect under
+study. ``cosine'' refers to first-token logit cosine on the candidate pair.}
+\label{tab:e0}
+\begin{tabular}{lccc}
+\toprule
+Check (threshold) & MVP 1.7B$\to$0.6B & Main 1.7B self-inject & Pass \\
+\midrule
+Self/Identity cosine ($\ge0.9998$) & $1.000000$ & $\approx1.0$ & yes \\
+First-token KL ($\le0.001$) & $0.000000$ & $0$ & yes \\
+Argmax/EM agreement ($\ge0.929$) & $1.000$ (80/80) & $1.0$ & yes \\
+Round-trip bit-identical & True (80/80) & True & yes \\
+zero\_re\_prefill assert & 80/80 True & 80/80 True & yes \\
+Measurement-error ceiling & $2.2\times10^{-16}$ & $2.2\times10^{-16}$ & yes \\
+Effect estimate / tolerance (ceiling $<$ effect/3) & $20.86$ / $6.95$ & $20.86$ / $6.66$ & yes \\
+\bottomrule
+\end{tabular}
+\end{table}
+A supplementary diagnostic measures the full-vocabulary residual of a one-shot
+whole-document prefill against the cached-plus-query two-step path
+(min cosine $0.9993$, 47/80 below $0.9998$); this comes from the sdpa kernel
+taking different paths for whole-prefill vs.\ cached+query, not an
+implementation error, and is excluded from the E0 anchors (the injection path
+is bit-identical to the native two-step path, cosine $1.0$).
+
+\subsection{P1 benchmark, MVP pair (equal depth, 1.7B$\to$0.6B)}
+\label{sec:mvp}
+
+\begin{table}[t]
+\centering
+\caption{P1 MVP pair, three seeds, validation split (60 pairs). Joint
+$E_{\mathrm{CF}}$ with 95\% cluster-paired bootstrap CI; joint dual correctness,
+flip consistency, coverage, and normalized $E_{\mathrm{CF}}$ reported jointly.
+Self/Identity have $E_{\mathrm{CF}}=0$ by construction.}
+\label{tab:mvp}
+\begin{tabular}{cccccc}
+\toprule
+seed & Joint $E_{\mathrm{CF}}$ [95\% CI] & dual\_correct & flip\_consistency & coverage & norm.\ $E_{\mathrm{CF}}$ \\
+\midrule
+0 & $1.968\;[1.614,2.324]$ & $0.667$ & $0.938$ & $0.800$ & $0.334$ \\
+1 & $1.934\;[1.569,2.311]$ & $0.650$ & $0.898$ & $0.817$ & $0.290$ \\
+2 & $2.123\;[1.695,2.571]$ & $0.617$ & $0.958$ & $0.800$ & $0.322$ \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+Across the three seeds reported here, the Joint counterfactual gap has a CI
+whose lower bound lies above zero:
+transfer is \emph{not} counterfactually faithful. The Self anchor's own dual
+correctness is $0.683/0.600/0.650$ (the synthetic task is not trivially solved
+by the native model), and Joint stays close to it. Direction consistency is
+high ($0.90$--$0.96$), and coverage $\approx0.80$. Information controls on seed 0
+(control $E_{\mathrm{CF}}-$ Joint $E_{\mathrm{CF}}$: mismatch $+4.134$,
+random $+2.249$, zero $+4.191$) are positive: the correct cache carries
+identifiable information, so the observed gap is not a ``no-information''
+artifact. The K/V four arms (seed 0: K-only $0.630$, V-only $1.851$,
+Joint $1.968$; similar across seeds) show V-only close to Joint---a
+\emph{directional clue} that the residual concentrates on the Value-consumption
+side, \emph{not} a mechanism finding (P2 was not run).
+
+\subsection{P1 benchmark, main pair (non-equal depth, 4B$\to$1.7B)}
+\label{sec:main}
+
+\begin{table}[t]
+\centering
+\caption{P1 main pair, three seeds, validation split (60 pairs). Joint
+$E_{\mathrm{CF}}$ [95\% CI] reported jointly with Self and Joint dual
+correctness, flip consistency, coverage, normalized $E_{\mathrm{CF}}$.
+See also the adverse-results discussion in Section~\ref{sec:adverse}.}
+\label{tab:main}
+\begin{tabular}{ccccccc}
+\toprule
+seed & Joint $E_{\mathrm{CF}}$ [95\% CI] & Self dual & Joint dual & flip & coverage & norm.\ $E_{\mathrm{CF}}$ \\
+\midrule
+0 & $6.044\;[4.741,7.365]$ & $0.733$ & $0.300$ & $0.490$ & $0.817$ & $0.812$ \\
+1 & $5.365\;[4.156,6.663]$ & $0.650$ & $0.283$ & $0.562$ & $0.800$ & $0.827$ \\
+2 & $6.080\;[4.847,7.395]$ & $0.783$ & $0.283$ & $0.542$ & $0.800$ & $0.995$ \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+The preregistered phase-1 decision rule returns \texttt{distortion\_exists}
+for all three seeds (a large gap is present and the data-quality gate passes).
+However, this large gap is \emph{not} a clean utility-preserving distortion: it
+coincides with a collapse of transferred dual correctness and weak direction
+consistency (Section~\ref{sec:adverse}). Information attributions are mostly
+negative or near zero (seed 0: mismatch $-0.488$, random $+0.229$, zero
+$-0.447$; seed 1: $+1.414$, $+0.441$, $-0.040$; seed 2: $-0.248$, $-0.262$,
+$-0.617$): unlike the MVP pair, the correct cache is not clearly separated
+from mismatched/zero controls on this pair.
+
+\subsection{Adverse results and boundaries}
+\label{sec:adverse}
+
+We report the following unfavorable observations explicitly, as required by the
+protocol:
+\begin{enumerate}
+\item \textbf{Quality degradation on the main pair.} Joint dual correctness
+      falls from the native $0.65$--$0.78$ to $0.28$--$0.30$ in all three seeds,
+      and flip consistency is only $0.49$--$0.56$. Joint $E_{\mathrm{CF}}$
+      (approx.\ $5.4$--$6.1$) is close to or above the mismatched-document and
+      zero-cache controls. This is a real GPU result; we neither hide it nor
+      tune around it. It means the non-equal-depth affine transfer largely
+      \emph{fails}, and a high $E_{\mathrm{CF}}$ here reflects broken transfer
+      rather than a well-behaved counterfactual distortion. Following the PI
+      ruling (P1 Go/No-Go, \S4), this pair is recorded as a
+      \textbf{transfer-failure boundary} and is \emph{not} counted as positive
+      evidence for H1 (``counterfactual distortion exists''); the only current
+      distortion candidate is the MVP pair, and even that candidate remains
+      conditional on the not-yet-completed \texttt{kd\_only} baseline
+      (Section~\ref{sec:pending}).
+\item \textbf{Meaning of \texttt{quality\_pass} vs.\ the machine-readable
+      verdict.} In this pipeline \texttt{quality\_pass=true} denotes only the
+      \emph{data-quality gate} (split isolation, empty train/eval template
+      overlap, annotation consistency); it contains no criterion of model
+      transfer utility. Because the frozen
+      \texttt{phase1\_benchmark\_decision} rule consumes
+      \{distortion\_present, quality\_pass\} as inputs, the machine-readable
+      verdict for the main pair is \texttt{distortion\_exists} even though the
+      narrative above classifies it as broken transfer: the two differ because
+      the flag and the verdict answer different questions. We therefore do not
+      read the verdict alone as evidence of a clean, utility-preserving
+      distortion; the metadata erratum
+      (\texttt{reports/runs\_index\_errata.json}) adds an orthogonal
+      \texttt{transfer\_broken} annotation without altering the frozen verdict.
+\item \textbf{V-only $\approx$ Joint on MVP.} The V-only arm nearly matches
+      Joint while K-only is small. This is a clue, but without Oracle unit
+      ranking and held-out-document prediction tests (E2) it cannot be promoted
+      to a mechanism claim.
+\item \textbf{Dual correctness below $0.7$ on MVP too ($0.62$--$0.67$).} The
+      native Self anchor itself is imperfect on these synthetic templates; this
+      is genuine model behavior not masked by any mock bias, and it would
+      trigger a \texttt{tradeoff} review if carried into a method comparison.
+\item \textbf{P2--P5 not run.} No mechanism diagnostics, no \texttt{CF-RCT}
+      training, no final $\delta$ locked, no sealed test, no generalization or
+      cost measurement. These stages produced no artifacts and support no
+      scientific conclusion.
+\item \textbf{Huber $\delta$ only rule-frozen.} Only the grid and selection
+      rule are frozen (protocol-v2.1); the final value was never selected on
+      validation data, so no method-stage number is reported.
+\item \textbf{Confound caveats.} The E0 effect estimate uses multi-token
+      sequence log-probabilities (scale $\sim20$) while the main endpoint uses
+      2-dimensional candidate logits; because the measurement-error ceiling is
+      $2.2\times10^{-16}$ this does not affect the E0 decision. The one-shot
+      full-vocabulary kernel-path residual is disclosed above. The
+      \texttt{model\_pair} string of the main runs is mislabeled (footnote in
+      Section~\ref{sec:models}).
+\end{enumerate}
+Because the primary endpoint (paired $E_{\mathrm{CF}}$ vs.\ \texttt{kd\_only},
+CI upper $<0$) has not been evaluated, we make \emph{no} claim of an endpoint
+gain anywhere in this paper, and $P>0.05$ is nowhere interpreted as
+equivalence.
+
+\subsection{Pending baseline and provenance results (to be filled)}
+\label{sec:pending}
+
+The following items are \emph{not yet available} and are deliberately left as
+placeholders; no number has been fabricated for them.
+
+\begin{itemize}
+\item \textbf{Strong behavioral baseline (\texttt{kd\_only}).} The mapping arm
+      in the P1 runs is an affine mapper with zero trainable parameters, so it
+      does not establish that a strong behavioral mapper retains the gap. A
+      \texttt{kd\_only} baseline run on train/val is required before H1 can be
+      treated as tested. \textbf{TO BE FILLED (paired gap of \texttt{kd\_only}
+      vs.\ Self, verdict under the frozen \texttt{phase1\_benchmark\_decision})
+      from \texttt{p1\_gpu\_kdonly\_mvp\_seed\{0,1,2\}}.}
+\item \textbf{Provenance-remediation reruns.} Numeric tables in this draft are
+      drawn from runs marked superseded / provenance-unverified. Updated values
+      are pending. \textbf{TO BE FILLED (E0 gate and P1 MVP joint arm)
+      from \texttt{e0\_gpu\_mvp\_repro\_seed0} and
+      \texttt{p1\_gpu\_mvp\_repro\_seed\{0,1,2\}}.}
+\item \textbf{Primary endpoint.} \textbf{TO BE FILLED: paired $E_{\mathrm{CF}}$
+      difference against \texttt{kd\_only} with cluster-paired 95\% CI; an
+      improvement may be declared only if the CI upper bound is $<0$ and the
+      joint metrics do not degrade.} Until these results are aggregated and
+      audited, no conclusion about the primary endpoint is drawn. Depending on
+      the \texttt{kd\_only} result, the decision tree either cancels the
+      mechanism/method main line (baseline near Self) or permits P2 to be
+      considered, subject to all other closed-loop conditions.
+\end{itemize}
+
+% ===========================================================================
+\section{Conclusion and Limitations}
+\label{sec:conclusion}
+
+We introduced an evaluation layer for counterfactual functional fidelity in
+cross-model KV handoff and reported a preregistered, real-GPU benchmark.
+A machine-precision measurement gate establishes that the observed effects are
+not implementation artifacts. On an equal-depth pair, transfer exhibits a
+counterfactual gap whose CI excludes zero while ordinary direction
+consistency is largely preserved. On a non-equal-depth pair, the same gap is
+large but accompanied by a severe loss of answer correctness, delimiting a
+failure boundary for the current affine transfer.
+
+The evidence supports only the first of the three contribution levels in the
+project protocol, and only for the affine/ridge mapper tested here; whether
+stronger behavioral baselines retain the gap is not evaluated. There is
+\emph{no} held-out-validated mechanism finding and \emph{no} trained method
+evaluated on the paired endpoint; the CF-RCT design is presented strictly as
+pending validation. The non-equal-depth results are a transfer-failure
+boundary and are not counted as positive evidence for H1. All experiments use
+synthetic templates, so the applicability of these observations to other
+domains or model families is not established. Source provenance for the
+reported runs is under remediation and the numeric tables are provisional
+pending the reruns described in Section~\ref{sec:pending}; we therefore report
+the implementation and configuration used, and we make no claim about
+independent regeneration of the numbers. Following the decision tree
+(protocol~\S8), this work should
+be written and positioned as a \emph{boundary / empirical study}, not as a
+high-level method paper. Future work would need to (i)~execute E2 with
+independent-document Oracle prediction tests before any mechanism claim;
+(ii)~train CF-RCT-lite/mech, lock $\delta$ on validation, and evaluate the
+paired endpoint against \texttt{kd\_only} with $\ge3$ seeds and Holm; and
+(iii)~run generalization and cost stages before any claim of deployability or
+speedup. Until then, contributions (2) and (3) are withheld.
+
+% ===========================================================================
+\section*{Appendix A: Figures, tables, and submission materials}
+
+Figure~\ref{fig:f1}--\ref{fig:f3} are textual placeholders; the complete figure
+plan (Figures~1--7) and Tables~1--3, a cover-letter outline, and reviewer
+response templates are maintained in \texttt{papers/readkv\_v2\_draft/notes.md}.
+All figures and tables must be generated directly from the frozen result files
+without recomputing statistics. Figures~4--7 (native vs.\ transferred response
+scatter, layer/head error heatmap with Oracle repair, method ablation,
+generalization and cost--Pareto) are deferred until their underlying stages
+(E2--E6) are actually run; they must not be fabricated.
+
+\bibliographystyle{plain}
+\begin{thebibliography}{9}
+\bibitem{kvlingo} KV-Lingo. \emph{Citation placeholder---verify formal version,
+date, and experimental protocol before submission (protocol \S9).}
+\bibitem{cachelink} CacheLink. \emph{Citation placeholder---verify formal
+version, date, and experimental protocol; report deviations if no runnable
+implementation exists.}
+\end{thebibliography}
+
+\end{document}
