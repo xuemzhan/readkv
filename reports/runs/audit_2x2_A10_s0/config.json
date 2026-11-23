@@ -1,0 +1,65 @@
+{
+  "run_id": "audit_2x2_A10_s0",
+  "protocol_version": "2.0",
+  "git_hash": "290e959",
+  "created_at": "2026-11-23T16:27:27+00:00",
+  "seed": 0,
+  "device": "cuda",
+  "dtype": "bfloat16",
+  "kernel": "sdpa",
+  "zero_re_prefill": true,
+  "experiment_config": {
+    "stage": "audit_2x2",
+    "gate": "GPU_followup_v2.7",
+    "backend": "gpu",
+    "cell": "A10",
+    "calibration_version": "fixed",
+    "validation_version": "legacy",
+    "seed": 0,
+    "bootstrap_seed": 0,
+    "train_old": "data/audit_2x2/legacy/train_seed0.jsonl",
+    "val_old": "data/audit_2x2/legacy/val_seed0.jsonl",
+    "train_fixed": "data/audit_2x2/fixed/train_seed0.jsonl",
+    "val_fixed": "data/audit_2x2/fixed/val_seed0.jsonl",
+    "input_sha256": {
+      "train-old": "81da04a041a4e7757caa02e502c10ca9a9236d7f98da5419fb226ca95a02b00a",
+      "val-old": "24a5077bec11657c70d8eeddeed6fbe4871253d6d141daf16989903d1ebccaaa",
+      "train-fixed": "9b03522746825f3fe0794c7f62ec7b1fb430f46734bb175b90a55a788d91e953",
+      "val-fixed": "19e9839e4e27b584c53d30242411ab14a659ac5cc487849b205928f5caa3c595"
+    },
+    "train_source": "data/audit_2x2/fixed/train_seed0.jsonl",
+    "val_source": "data/audit_2x2/legacy/val_seed0.jsonl",
+    "dtype": "bfloat16",
+    "kernel": "sdpa",
+    "layer_map": {
+      "kind": "identity",
+      "n_student_layers": 28,
+      "n_teacher_layers": 28,
+      "offset": 0,
+      "permutation": null
+    },
+    "mapper": "affine_per_layer_head",
+    "ridge_lambda": 0.001,
+    "scoring": "first_token",
+    "n_train": 120,
+    "n_val": 60,
+    "identity_check": true,
+    "joint_zero_re_prefill": true,
+    "defect_warnings": [
+      "legacy_defects: degenerate_must_flip=4, dup_context_A=0"
+    ],
+    "n_resamples": 10000,
+    "tau": 1.0,
+    "self_threshold": 0.1,
+    "smoke": false,
+    "zero_re_prefill": true,
+    "criteria_source": "configs/prereg/gpu_followup_v2.7.yaml (frozen)"
+  },
+  "metadata": {
+    "stage": "audit_2x2",
+    "backend": "gpu",
+    "cell": "A10",
+    "non_authoritative": false,
+    "protocol_version": "2.7"
+  }
+}
