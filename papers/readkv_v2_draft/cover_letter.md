@@ -24,8 +24,8 @@ which we report only as an exploratory observation.
 
 Although the case study is set in KV-cache transfer, the transferable message
 is methodological and, we believe, of broad relevance: a statistically
-convincing finding in a synthetic benchmark can be manufactured by a small set
-of auditable data-construction defects, and a before/after, preregistered
+convincing finding in a synthetic benchmark may be sensitive to auditable
+data-construction choices, and a before/after, preregistered
 controlled comparison can expose it. The paper's reusable contribution is the
 **concrete audit trail and paired counterfactual `E_CF` measurement discipline**
 (candidate-level paired documents, no-information / mismatched / zero-cache
