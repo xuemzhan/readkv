@@ -281,7 +281,7 @@ def run_cf_pipeline(
 
     metrics = {
         "run_id": ctx.run_id,
-        "backend": "mock",
+        "backend": dict(ctx.config.get("experiment_config", {})).get("backend", "mock"),
         "protocol_version": ctx.protocol_version,
         "method": cfg.method,
         "n_calibration": len(cal),
@@ -292,9 +292,17 @@ def run_cf_pipeline(
         "primary_endpoint": endpoint,
         "info_attribution": info_attribution,
     }
+    # R4：正交诊断注释（不改写冻结 verdict，不新增 verdict 类别）
+    metrics["transfer_health"] = annotate_transfer_health(metrics)
+    metrics["transfer_broken"] = metrics["transfer_health"]["transfer_broken"]
+    metrics["verdict_note"] = metrics["transfer_health"]["verdict_note"]
+    metrics["quality_pass_scope"] = "data_quality_gate_only"
+    metrics["bootstrap_seed"] = int(cfg.seed)  # R5：pipeline 侧 seed 口径
+
     ctx.write_metrics("metrics.json", metrics)
 
     facts = decision_facts(metrics)
+    facts["transfer_broken"] = metrics["transfer_broken"]
     decision = match_decision(cfg.decision_rules, facts) if cfg.decision_rules else None
     metrics["decision"] = decision
     metrics["decision_facts"] = facts
@@ -302,6 +310,51 @@ def run_cf_pipeline(
     ctx.write_ledger("ecf_ledger.jsonl", rows)
     ctx.finalize()
     return metrics
+
+
+def annotate_transfer_health(metrics: Mapping[str, Any]) -> dict[str, Any]:
+    """R4 正交诊断注释：标注迁移失败边界，不改写冻结 verdict、不新增 verdict 类别。
+
+    客观信号（PI p1_go_no_go.md §4）：
+      - joint dual_correct 较 self 下降 ≥ 0.2
+      - joint E_CF ≥ 错配/零缓存控制组 E_CF
+      - info_attribution（控制组 − joint）多数为负
+    """
+    arms = metrics.get("arms", {})
+    joint = arms.get("joint", {})
+    self_arm = arms.get("self", {})
+    dual_drop = float(self_arm.get("dual_correct", 0.0)) - float(joint.get("dual_correct", 0.0))
+    joint_ecf = float(joint.get("E_CF", {}).get("mean", 0.0))
+    ctrl_names = ("control:mismatch", "control:zero")
+    ctrl_ecfs = {n: float(arms[n]["E_CF"]["mean"]) for n in ctrl_names if n in arms}
+    ctrl_at_least = {n: joint_ecf >= v for n, v in ctrl_ecfs.items()}
+    info = {k: float(v) for k, v in metrics.get("info_attribution", {}).items()}
+    n_neg = sum(v < 0 for v in info.values())
+    info_mostly_negative = bool(info) and n_neg > len(info) / 2
+    signals = {
+        "joint_dual_drop_vs_self": round(dual_drop, 4),
+        "dual_drop_ge_0_2": bool(dual_drop >= 0.2),
+        "joint_ecf_vs_controls": {n: round(v, 4) for n, v in ctrl_ecfs.items()},
+        "joint_ecf_ge_control": ctrl_at_least,
+        "info_attribution": info,
+        "info_mostly_negative": info_mostly_negative,
+    }
+    broken = bool(signals["dual_drop_ge_0_2"] or any(ctrl_at_least.values()) or info_mostly_negative)
+    verdict = (metrics.get("decision") or {}).get("verdict")
+    note = (
+        "quality_pass = data-quality gate only (split isolation / template non-overlap / "
+        "annotation consistency); it does NOT assert transfer utility. "
+        + ("transfer_broken=true: joint quality collapsed / controls not dominated — "
+           "P1 result is a failure boundary, NOT positive evidence of utility-preserving distortion. "
+           if broken else "transfer_broken=false: no objective sign of transfer failure. ")
+        + f"frozen verdict={verdict!r} is unchanged; this field is an orthogonal annotation."
+    )
+    return {
+        "transfer_broken": broken,
+        "verdict_note": note,
+        "quality_pass_scope": "data_quality_gate_only",
+        "signals": signals,
+    }
 
 
 def decision_facts(metrics: Mapping[str, Any]) -> dict[str, Any]:

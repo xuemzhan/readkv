@@ -17,7 +17,7 @@ from readkv.stats.bootstrap import cluster_bootstrap, paired_bootstrap
 from readkv.stats.reporting import direction_from_ci, format_ci, replacement_from_ci
 
 
-def summarize_run(path: Path, *, n_resamples: int, epsilon: float) -> dict:
+def summarize_run(path: Path, *, n_resamples: int, epsilon: float, seed: int = 0) -> dict:
     rows = [json.loads(line) for line in path.read_text(encoding="utf-8").splitlines() if line.strip()]
     if not rows:
         return {"run_id": path.parent.name, "arms": {}}
@@ -33,7 +33,7 @@ def summarize_run(path: Path, *, n_resamples: int, epsilon: float) -> dict:
             arms[arm][1].append(str(row.get("cluster", row.get("pair_id", "default"))))
         out: dict[str, dict] = {}
         for arm, (ecfs, clusters) in arms.items():
-            point, low, high = cluster_bootstrap(ecfs, clusters, n_resamples=n_resamples, seed=0)
+            point, low, high = cluster_bootstrap(ecfs, clusters, n_resamples=n_resamples, seed=seed)
             out[arm] = {
                 "n": len(ecfs),
                 "E_CF": format_ci(point, low, high),
@@ -49,7 +49,7 @@ def summarize_run(path: Path, *, n_resamples: int, epsilon: float) -> dict:
                 deltas = [new_map[p] - base_map[p] for p in common]
                 clusters = [str(next(r.get("cluster", p) for r in rows if r.get("pair_id") == p and r.get("arm") == "new_joint"))
                             for p in common]
-                point, low, high = cluster_bootstrap(deltas, clusters, n_resamples=n_resamples, seed=0)
+                point, low, high = cluster_bootstrap(deltas, clusters, n_resamples=n_resamples, seed=seed)
                 endpoint = {"point": point, "ci": [low, high], "improved": high < 0,
                             "note": "paired E_CF difference (new - baseline)"}
         return {"run_id": path.parent.name, "arms": out, "primary_endpoint": endpoint,
@@ -66,8 +66,8 @@ def summarize_run(path: Path, *, n_resamples: int, epsilon: float) -> dict:
         arms[arm][1].append(str(row.get("doc_id", row.get("item_id", "default"))))
     out: dict[str, dict] = {}
     for arm, (deltas, clusters) in arms.items():
-        point, low, high = paired_bootstrap(deltas, n_resamples=n_resamples, seed=0)
-        cpoint, clow, chigh = cluster_bootstrap(deltas, clusters, n_resamples=n_resamples, seed=0)
+        point, low, high = paired_bootstrap(deltas, n_resamples=n_resamples, seed=seed)
+        cpoint, clow, chigh = cluster_bootstrap(deltas, clusters, n_resamples=n_resamples, seed=seed)
         out[arm] = {
             "n": len(deltas),
             "paired": format_ci(point, low, high),
@@ -88,10 +88,21 @@ def main() -> None:
 
     root = Path(args.reports_root)
     score_files = sorted(root.glob("*/scores.jsonl")) + sorted(root.glob("runs/*/scores.jsonl"))
-    summary = {
-        str(p.parent.relative_to(root)): summarize_run(p, n_resamples=args.n_resamples, epsilon=args.epsilon)
-        for p in score_files
-    }
+
+    def _seed_for(score_path: Path) -> int:
+        cfg_path = score_path.parent / "config.json"
+        if cfg_path.exists():
+            cfg = json.loads(cfg_path.read_text(encoding="utf-8"))
+            return int(cfg.get("experiment_config", {}).get("bootstrap_seed", cfg.get("seed", 0)))
+        return 0
+
+    summary = {}
+    for p in score_files:
+        seed = _seed_for(p)
+        r = summarize_run(p, n_resamples=args.n_resamples, epsilon=args.epsilon, seed=seed)
+        r["bootstrap_seed"] = seed
+        r["bootstrap_seed_source"] = "run config (experiment_config.bootstrap_seed / seed)"
+        summary[str(p.parent.relative_to(root))] = r
     out = Path(args.output) if args.output else root / "bootstrap_summary.json"
     out.parent.mkdir(parents=True, exist_ok=True)
     out.write_text(json.dumps(summary, ensure_ascii=False, indent=2), encoding="utf-8")

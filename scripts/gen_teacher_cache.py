@@ -22,6 +22,9 @@ def main() -> None:
     parser.add_argument("--backend", choices=["mock", "gpu"], default="mock")
     parser.add_argument("--n-pairs", type=int, default=None, help="反事实文档对数量")
     parser.add_argument("--tokens-per-doc", type=int, default=512)
+    parser.add_argument("--teacher-model", default=None, help="GPU 后端教师 checkpoint 本地路径")
+    parser.add_argument("--dtype", default="bfloat16")
+    parser.add_argument("--kernel", default="sdpa")
     parser.add_argument("--seed", type=int, default=0)
     parser.add_argument("--out-dir", default="data/cache")
     parser.add_argument("--dry-run", action="store_true", help="只估算体积与层映射")
@@ -73,10 +76,36 @@ def main() -> None:
         print(f"saved {len(pairs)} pairs to {args.out_dir}")
         return
 
-    raise NotImplementedError(
-        "GPU backend requires models/hooks.capture_teacher_cache; "
-        "pass --backend mock for wiring validation"
-    )
+    if not args.teacher_model:
+        raise ValueError("--backend gpu requires --teacher-model <local checkpoint>")
+    import torch
+    from transformers import AutoModelForCausalLM, AutoTokenizer
+
+    from readkv.models.hooks import capture_teacher_cache
+
+    tok = AutoTokenizer.from_pretrained(args.teacher_model)
+    model = AutoModelForCausalLM.from_pretrained(
+        args.teacher_model, dtype=getattr(torch, args.dtype), attn_implementation=args.kernel
+    ).to("cuda").eval()
+    model.config.use_cache = True
+    store = PairCacheStore(args.out_dir, protocol_version="2.0")
+
+    def prefill(doc):
+        ids = tok(str(doc.get("text", "")), add_special_tokens=False).input_ids
+        return capture_teacher_cache(model, torch.tensor(ids, device="cuda", dtype=torch.long),
+                                     attn_implementation=args.kernel)
+
+    from readkv.cache.offline_prefill import prefill_pair
+    for p in pairs:
+        rec = p.as_record()
+        ca, cb = prefill_pair(prefill, rec)
+        store.save_pair(rec, ca, cb, model_pair=args.pair,
+                        model_revision=args.teacher_model,
+                        dtype=args.dtype, kernel=args.kernel)
+    # 教师随即卸载
+    del model
+    torch.cuda.empty_cache()
+    print(f"saved {len(pairs)} pairs (GPU backend) to {args.out_dir}; teacher unloaded")
 
 
 if __name__ == "__main__":
