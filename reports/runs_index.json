@@ -777,5 +777,31 @@
       "train-fixed": "9b03522746825f3fe0794c7f62ec7b1fb430f46734bb175b90a55a788d91e953",
       "val-fixed": "19e9839e4e27b584c53d30242411ab14a659ac5cc487849b205928f5caa3c595"
     }
+  },
+  {
+    "run_id": "audit_2x2_A01_s0",
+    "stage": "audit_2x2",
+    "gate": "GPU_followup_v2.7",
+    "backend": "gpu",
+    "cell": "A01",
+    "calibration_version": "legacy",
+    "validation_version": "fixed",
+    "seed": 0,
+    "model_pair": "qwen3-1.7b-to-0.6b",
+    "dtype": "bfloat16",
+    "kernel": "sdpa",
+    "zero_re_prefill": true,
+    "protocol_version": "2.7",
+    "git_hash": "2ef23ab",
+    "n_scores": 480,
+    "complete": true,
+    "L_self_minus_joint": 0.2667,
+    "superseded": false,
+    "data_sha256": {
+      "train-old": "81da04a041a4e7757caa02e502c10ca9a9236d7f98da5419fb226ca95a02b00a",
+      "val-old": "24a5077bec11657c70d8eeddeed6fbe4871253d6d141daf16989903d1ebccaaa",
+      "train-fixed": "9b03522746825f3fe0794c7f62ec7b1fb430f46734bb175b90a55a788d91e953",
+      "val-fixed": "19e9839e4e27b584c53d30242411ab14a659ac5cc487849b205928f5caa3c595"
+    }
   }
 ]
