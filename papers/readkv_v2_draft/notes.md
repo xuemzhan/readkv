@@ -15,6 +15,15 @@
 
 ---
 
+## 0.0 2×2 合规审计 C2 + 结果补入（本轮完成）
+
+- **C2 因果措辞已降级（v2.7 §3 归因边界）**：删除 main.tex 全部 "data defects manufactured / directly produced / caused by / sufficient to manufacture / overturned / artifacts of the flawed data" 单项/整体因果强措辞，改为描述性/版本整体表述——"the reported finding did not survive reconstruction of the benchmark corpus (degenerate-pair removal, split de-duplication and structural template changes applied together)"、"a controlled version-contrast ... identifies only the whole version switch, not any single defect"；"数据泄漏教训"改写为"审计实践警示（audit practice warning）"而非因果断言。全文无 "manufactur/directly produc/caused by/sufficient to" 肯定用法（仅剩一处否定 "we do not claim that any single defect caused the finding"）。
+- **2×2 受控版本敏感性段已补入**（main.tex §「Controlled 2×2 corpus-version contrast」，`sec:audit2x2`，表 `tab:audit2x2`，简要，详细进补充材料）：判读 **mixed_interaction**（未升级 calibration_version_effect）；`whole_version_only` 为叠加归因边界。数值全部转抄冻结 `reports/audit_2x2_l_ci.json` / `audit_2x2_formal_summary.json`，未重算。
+  - L=Self−Joint（pp，template_family 主 CI、8 簇<24、全部 exploratory=true）：A11 +40.0/+61.7/+40.0、A01 +26.7/+28.3/+33.3、A10 +38.3/+23.3/+25.0（九格 CI 下界>0，区间见正文/报告）；A00 +1.7/−5.0/+3.3（CI 围绕 0）。
+  - 预固定对比①固定 val 换校准：legacy val A10−A00 三 seed CI 下界均≥0（s2=0.0 压线）；fixed val A11−A01 仅 s1 下界>0、s0/s2 跨 0。②跨版本换 val（非配对独立簇重采样）多数 seed CI 跨 0。
+  - 对角格 A00≡历史 repro、A11≡p1_clean 各 60/60 joint E_CF 逐对一致；12 格全 attempt1、单卡串行，失败留痕在冒烟阶段（2 次，已修复）。
+  - 措辞边界：只写"点估计跨 seed 同号"，**不**写"CI 确认方向稳健/全部显著"；逐项标 exploratory；禁单项缺陷因果、禁只报 pair 窄 CI、禁恢复贡献(1)(2) 或声称(3)/主终点。贡献(1)(2) 撤回、(3) withheld、情形 C 探索性、real=0、锚点 exploratory_disclosure、P3 永久放弃、投稿暂缓全部维持不变。
+
 ## 0.1 紧急纠正：v2.6 AI 数据全部撤回（已修正）
 
 - `docs/decisions/ai_dataset_final_ruling.md`（最终裁定）：撤回原「有条件 GO」；v2.6 冻结但 **not activated**；**不创建 `data/generated/`**；不写任何 human-seeded / model-generated 数据集及其结果。
@@ -139,6 +148,7 @@
 | Table `tab:reversal` | 修复前后方向翻转 | 旧 repro run + 干净 clean run | 正文已呈现 |
 | Table `tab:cleankd` | 干净 kd 三 seed | `p1_kd_clean_mvp_seed{0,1,2}/metrics.json`（`6413ba0`） | 正文已填（exploratory） |
 | Table `tab:anchor` | SQuAD v2.0 dev 锚点 | `reports/anchor_eval_summary.json`（seed0） | 正文已填（exploratory_disclosure） |
+| Table `tab:audit2x2` | 2×2 受控版本敏感性（L 主 CI） | `reports/audit_2x2_l_ci.json` / `audit_2x2_formal_summary.json` | 正文已填（mixed_interaction，全 exploratory，详见补充材料） |
 | — | v2.6 AI 数据结果 | 无（not activated） | **删除，不设结果位** |
 
 注：所有正文数值表从冻结产物转抄；旧 P1/P2 数值仅出现在翻转对照历史侧；不得用 mock 或旧 run 作最终结论。

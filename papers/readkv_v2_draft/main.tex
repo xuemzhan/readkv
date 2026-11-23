@@ -51,9 +51,11 @@ Cross-model key--value (KV) cache transfer promises zero re-prefill of the
 source document. We tested whether it preserves a receiver's counterfactual
 response on a paired synthetic benchmark. An earlier release appeared to show
 a counterfactual gap and a receiver-side mechanism, reported as contributions.
-A data-quality audit overturned both: the corpus contained 18 degenerate pairs,
+A data-quality audit of the corpus identified 18 degenerate pairs,
 $\geq15$ groups of verbatim cross-split leakage, complete train/test template
-overlap, and a pair-level i.i.d.\ bootstrap. After repair, the result reverses.
+overlap, and a pair-level i.i.d.\ bootstrap. In a controlled contrast between
+the original and reconstructed corpus versions, the reported finding did not
+survive.
 On a single synthetic equal-depth MVP pair (1.7B$\to$0.6B), the affine mapper's
 Joint arm collapses dual-side correctness from $\approx0.82$ to $0.28$--$0.42$
 across three seeds; $E_{\mathrm{CF}}$ rises to $6.90$--$8.54$, approaching but
@@ -64,8 +66,9 @@ matched \texttt{kd\_only} baseline preserves utility (dual $0.70$--$0.77$) yet
 retains nonzero $E_{\mathrm{CF}}$ $6.39$--$7.21$, reported only as exploratory.
 All clean CIs are exploratory (8 \texttt{template\_family} clusters, $<24$),
 from a single synthetic pair; the sealed test was never evaluated. We withdraw
-contributions~(1) and~(2) and withhold~(3): data defects manufactured a false
-finding. No method was trained, the primary endpoint is unevaluated, and no
+contributions~(1) and~(2) and withhold~(3): the reported finding did not
+survive reconstruction of the benchmark corpus. No method was trained, the
+primary endpoint is unevaluated, and no
 improvement is claimed.
 \end{abstract}
 
@@ -85,15 +88,17 @@ fidelity, and a receiver-side Value-consumption mechanism. \textbf{Both are
 withdrawn here.}
 
 The paper is therefore not a method or mechanism paper. Its subject is the
-\emph{audit trail} that overturned those findings and the boundary condition
+\emph{audit trail} around those findings and the boundary condition
 that emerged once the data were repaired. An independent data-quality audit
 found that the original corpus contained degenerate pairs (identical candidates
 marked must-flip), cross-split verbatim document leakage, and train/test
 template-skeleton overlap, and that its cluster bootstrap had degenerated to
-pair-level i.i.d. Rebuilding the corpus with these defects removed reversed the
-central observation: the previously ``utility-preserving gap'' became a
-\emph{transfer failure} (Section~\ref{sec:reversal}). The positive signals were
-artifacts of the flawed data, not properties of KV transfer. This is the
+pair-level i.i.d. In a controlled contrast between corpus versions (degenerate-
+pair removal, split de-duplication, and structural template changes applied
+together), the reported gap did not survive: on the reconstructed corpus the
+previously ``utility-preserving gap'' became a \emph{transfer failure}
+(Section~\ref{sec:reversal}). This version contrast identifies only the whole
+corpus-version switch, not any single defect (Section~\ref{sec:audit2x2}). This is the
 methodological lesson of the study; it is consistent with the general
 reproducibility warning of Kapoor \& Narayanan~\cite{kapoor2023}, but our
 contribution is the concrete, preregistered before/after case and the paired
@@ -110,7 +115,7 @@ functional supervision).\\
 Right: \emph{within-model content \& counterfactual auditing} (contrast sets,
 counterfactual augmentation, answer--evidence faithfulness).\\
 Center: a data-audit case study in which an apparent positive finding under
-zero re-prefill is traced to data defects and reverses into a failure boundary.}}
+zero re-prefill is traced across corpus versions and reverses into a failure boundary.}}
 \caption{Relation of two established research lines to the audit case studied
 here. \emph{Textual placeholder; figure file not yet generated.}}
 \label{fig:f1}
@@ -132,11 +137,11 @@ protocol~\S10 positive contributions).}
       a stable, nonzero $E_{\mathrm{CF}}$ of $6.39$--$7.21$. We report this
       \emph{only as an exploratory observation} on one synthetic pair, not as a
       restored contribution (Section~\ref{sec:kdbase}).
-\item \textbf{Methodological negative result.} A controlled before/after
-      comparison shows how three concrete data defects plus a degenerate
-      bootstrap produced a statistically convincing but spurious positive
-      finding; repairing the data erased and reversed it
-      (Section~\ref{sec:reversal}).
+\item \textbf{Methodological negative result.} A controlled contrast between
+      two corpus versions (version changes applied together) shows that the
+      reported finding did not survive reconstruction of the benchmark corpus;
+      the contrast identifies only the whole version switch, not any single
+      defect (Sections~\ref{sec:reversal},~\ref{sec:audit2x2}).
 \item \textbf{Limited external anchor.} On SQuAD~v2.0 dev the affine failure
       direction replicates (Joint F1 falls to $2.6\%$ of Self) but the kd
       utility-preserving contrast does not, and all arms hit an EM floor; under
@@ -357,8 +362,10 @@ Bootstrap clusters & 300 pair-level (degenerate) & template-family \\
 Degenerate pairs, cross-split verbatim leakage (including
 train$\leftrightarrow$test whole-pair overlap), and pair-level bootstrap
 clusters (300 unique pairs but only 8 independent template structures) inflated
-flip/dual/$E_{\mathrm{CF}}$ statistics and narrowed confidence intervals. These
-defects directly produced the spurious positive findings withdrawn here. The
+flip/dual/$E_{\mathrm{CF}}$ statistics and narrowed confidence intervals. The
+reported gap did not survive reconstruction of the corpus under the version
+contrast (Section~\ref{sec:audit2x2}); we do not attribute this to any single
+defect. The
 corpus was rebuilt with forced candidate distinctness, split-disjoint entity
 pools, deterministic deduplication, and 16 structurally distinct unseen
 templates. Acceptance checks pass 11/11 and a 53-test unit suite passes with no
@@ -561,7 +568,8 @@ withdrawn positive hypothesis.
 
 \begin{table}[t]
 \centering
-\caption{Directional reversal caused by repairing the data. Old (v2.0) values
+\caption{Before/after corpus-version contrast (descriptive; not single-defect
+causal attribution). Old (v2.0) values
 are superseded; new (v2.1-corrected) values are from
 \texttt{p1\_clean\_mvp\_seed\{0,1,2\}}. Ranges across three seeds.}
 \label{tab:reversal}
@@ -579,15 +587,19 @@ flip consistency & $0.898$--$0.958$ & $0.736$--$0.755$ \\
 \end{table}
 
 The positive findings previously reported---an apparent utility-preserving gap
-and a localized Value-consumption mechanism---came from the v2.0 data. Repairing
-the degenerate pairs, cross-split leakage, and template overlap made those
-findings disappear and reverse into a transfer failure. We therefore
+and a localized Value-consumption mechanism---came from the v2.0 data. In a
+controlled contrast between the original and reconstructed corpus versions
+(changes applied together), the reported gap did not survive and the judgement
+reversed into a transfer failure; this contrast does not identify which single
+change was responsible (Section~\ref{sec:audit2x2}). We therefore
 \textbf{withdraw contribution~(1)} and \textbf{withdraw contribution~(2)}. The
 old P1 gap values and the old P2 mechanism numbers were computed on defective
 data and are excluded from all positive conclusions; they survive only as the
-historical side of Table~\ref{tab:reversal}. This reversal is the central
-methodological lesson: concrete data defects were sufficient to manufacture a
-statistically convincing but false scientific finding.
+historical side of Table~\ref{tab:reversal}. The practical lesson is an audit
+practice warning: a benchmark finding can be sensitive to corpus-construction
+choices that a version contrast exposes, so preregistered version controls and
+data audits are valuable. We do not claim that any single defect caused the
+finding.
 
 \subsection{KD baseline, verdict boundary, and cancelled stages}
 \label{sec:kdbase}
@@ -687,6 +699,73 @@ withdrawn contribution. It is not pooled with the synthetic test. This is an
 \emph{exploratory anchor observation only}; we make no cross-source
 generalization claim.
 
+\subsection{Controlled 2$\times$2 corpus-version contrast (exploratory)}
+\label{sec:audit2x2}
+
+To probe the version contrast without attributing it to any single defect, we
+ran a preregistered 2$\times$2 design crossing the calibration-corpus version
+(legacy / reconstructed) with the validation-corpus version (legacy /
+reconstructed), three seeds, 12 cells; the mapper is the same affine map. The
+primary endpoint is $L=\mathrm{mean}(\text{Self dual})-\mathrm{mean}(\text{Joint
+dual})$ in percentage points. All intervals below use the frozen
+\texttt{template\_family} cluster bootstrap (8 clusters, so every cell and
+contrast is \texttt{exploratory}), transcribed from
+\texttt{reports/audit\_2x2\_l\_ci.json} and
+\texttt{reports/audit\_2x2\_formal\_summary.json}; pair-level intervals are
+reported only as a sensitivity in the supplement. No statistic was recomputed
+here.
+
+\begin{table}[t]
+\centering
+\caption{2$\times$2 controlled corpus-version contrast: $L$ (pp), primary
+\texttt{template\_family} bootstrap CI, seed 0/1/2. All cells
+\texttt{exploratory} (8 clusters $<24$). A00/A01 use the legacy validation
+set, A10/A11 the reconstructed one; diagonal cells A00/A11 reproduce the
+historical P1 runs cell-for-cell (60/60 joint $E_{\mathrm{CF}}$ agreement).}
+\label{tab:audit2x2}
+\begin{tabular}{lccc}
+\toprule
+cell (cal / val) & seed 0 & seed 1 & seed 2 \\
+\midrule
+A00 (legacy / legacy) & $+1.7\;[-3.3,7.0]$ & $-5.0\;[-15.3,6.7]$ & $+3.3\;[0.0,10.3]$ \\
+A01 (legacy / fixed)  & $+26.7\;[1.7,48.4]$ & $+28.3\;[9.8,48.3]$ & $+33.3\;[11.7,54.8]$ \\
+A10 (fixed / legacy)  & $+38.3\;[15.8,57.4]$ & $+23.3\;[6.9,38.3]$ & $+25.0\;[3.4,43.6]$ \\
+A11 (fixed / fixed)   & $+40.0\;[16.7,62.7]$ & $+61.7\;[38.3,83.1]$ & $+40.0\;[20.3,58.7]$ \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\paragraph{What the contrast supports (and what it does not).} The three cells
+containing reconstructed data (A11/A01/A10) have positive $L$ point estimates
+in all seeds with primary-CI lower bounds $>0$ ($23.3$--$61.7$ pp), while the
+legacy diagonal A00 has CIs around zero. The nine (calibration/validation)
+contrast point estimates are all positive across seeds---the only defensible
+sense in which the direction is ``stable'' is that \emph{point estimates share
+a sign across seeds}; we do \emph{not} claim that CIs confirm a stable
+positive direction. The direction is not uniform across contrasts: for the fixed-validation calibration
+contrast (A10$-$A00) all three seed CIs have lower bound $\geq0$ (seed 2 is
+exactly $0.0$, on the boundary), but for A11$-$A01 (fixed validation) only seed
+1 has a lower bound $>0$ (seeds 0 and 2 cross zero); the two cross-version
+validation contrasts have CIs crossing zero in most seeds. All of this is
+exploratory (8 clusters $<24$), so none of these intervals is a strong-
+significance claim. Under the preregistered v2.7 rule this is
+\texttt{mixed_interaction} (not an upgrade to
+\texttt{calibration\_version\_effect}).
+
+\paragraph{Attribution boundary.} The 2$\times$2 design identifies only the
+effect of switching the \emph{whole} corpus version (calibration and/or
+validation); it cannot attribute the change to de-duplication, degenerate-pair
+removal, or template overlap individually, each of which would need its own
+intervention (not performed). The structurally unseen templates added in the
+rebuild reside mainly in probe/test and cannot be inferred from this
+validation contrast. This boundary governs every causal statement in the
+paper: we report a controlled version-sensitivity observation, not a
+single-defect cause. Full cell-by-cell CIs, the predeclared contrasts, the
+three prespecified sensitivity slices, and the non-paired resampling note for
+cross-version validation comparisons are deferred to supplementary material;
+no additional numbers are introduced here. Contribution~(1) and (2) remain
+withdrawn, contribution~(3) withheld, and the primary endpoint unevaluated.
+
 \subsection{Adverse results and boundaries}
 \label{sec:adverse}
 
@@ -721,10 +800,12 @@ generalization claim.
 \label{sec:conclusion}
 
 We set out to measure counterfactual functional fidelity in cross-model KV
-handoff. The earlier positive findings are withdrawn: they were produced by a
-synthetic corpus with degenerate pairs, cross-split document leakage,
-template-skeleton overlap, and a degenerate bootstrap. After rebuilding the
-corpus with those defects removed (acceptance 11/11; v2.3 statistics), the
+handoff. The earlier positive findings are withdrawn: they were reported on a
+synthetic corpus that an audit later found to contain degenerate pairs,
+cross-split document leakage, template-skeleton overlap, and a degenerate
+bootstrap. In a controlled contrast between the original and reconstructed
+corpus versions (changes applied together; acceptance 11/11; v2.3 statistics),
+the reported gap did not survive and the judgement reversed: the
 apparent utility-preserving gap reverses into a \emph{transfer failure}: on the
 single equal-depth MVP pair the tested affine mapper collapses
 \texttt{dual\_correct} to $0.28$--$0.42$ (from Self $\approx0.82$) while Joint
@@ -735,8 +816,8 @@ The paper is a \textbf{negative / empirical boundary and data-audit study} with
 no positive contribution in the sense of protocol~\S10. It reports (i)~an
 affine KV transfer failure boundary under the present data construction on one
 equal-depth pair, (ii)~a methodological negative result---concrete data-quality
-defects manufactured a statistically convincing but false positive, and
-repairing them erased and reversed it---and (iii)~an exploratory observation
+the reported finding did not survive a controlled corpus-version contrast
+(whole-version switch, not single-defect attribution; Section~\ref{sec:audit2x2})---and (iii)~an exploratory observation
 that the strong \texttt{kd\_only} baseline preserves transfer utility while
 retaining a stable nonzero $E_{\mathrm{CF}}$ ($6.39$--$7.21$), reported as
 exploratory only. The SQuAD anchor yields \texttt{exploratory\_disclosure}, not
