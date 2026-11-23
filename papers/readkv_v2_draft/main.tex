@@ -11,29 +11,28 @@
 \hypersetup{colorlinks=true,linkcolor=blue,citecolor=blue,urlcolor=blue}
 
 % ---------------------------------------------------------------------------
-% IMPORTANT (author-internal note, remove before submission):
-% This is an honest first draft built ONLY from frozen GPU results in
-% reports/runs/. No statistic has been recomputed; every number below is
-% transcribed from config.json / metrics.json / runs_index.json /
-% engineer_status.md. R1 closed: main tables use *_repro_* runs at commit
-% 458de18 (review round 2). kd_only has all 3 seeds; delta=0.5 locked and
-% formally registered in configs/prereg/phase3_loss_config_v2.2.yaml.
-% P2 fully closed: three seeds (seed0 delta_rand_audit / seed1 / seed2),
-% commit 6784780, all mechanism_predictive, F1 pairwise-CI recomputation closed.
-% P3/P4 not run. Per docs/protocol.md S10, contribution (1) plus the strong
-% form of contribution (2) are claimed (scoped to the MVP equal-depth pair);
-% contribution (3) is WITHHELD. Per decision tree (protocol S8) this manuscript
-% remains a boundary / empirical study,
-% NOT a high-level method paper.
-% Figure placeholders are textual descriptions (no figure files exist yet).
-% All citations marked [PLACEHOLDER] must be verified per protocol S9.
+% Author-internal note (remove before submission).
+% This manuscript reports a NEGATIVE / empirical-results finding. Per the PI
+% emergency ruling docs/decisions/clean_data_reversal_ruling.md (2026-11-23):
+%   - contributions (1) and (2) are WITHDRAWN; the earlier "utility-preserving
+%     gap" and "V-consumption mechanism" signals were artifacts of data defects;
+%   - clean-data P1 (p1_clean_mvp_seed{0,1,2}, git efc3ba3) shows broken transfer;
+%   - all old P1/P2 runs are superseded and NOT positive evidence;
+%   - kd_only clean 3 seeds (p1_kd_clean_mvp_seed{0,1,2}, git 6413ba0):
+%     E_CF 6.388/6.479/7.211, joint dual 0.700/0.733/0.767, broken=false,
+%     scenario C: utility preserved yet stable exploratory gap (NOT a claim);
+%   - P2/P3/P4 formally CANCELLED (not suspended); all clean results exploratory
+%     (8 template_family clusters < 24), single MVP equal-depth pair;
+%   - contribution (3) withheld; primary endpoint unevaluated; submission held.
+% All numbers are transcribed from frozen artifacts. No statistic recomputed.
+% Figure placeholders are textual. Citations [PLACEHOLDER] need verification.
 % ---------------------------------------------------------------------------
 
-\title{Counterfactual Functional Fidelity in Cross-Model KV Handoff:\\
-An Empirical Boundary Study}
+\title{Broken Transfer and a Leakage-Induced False Positive in Cross-Model KV
+Handoff: An Empirical Boundary Study}
 
 \author{readkv project (author list to be finalized)}
-\date{Draft --- generated from frozen results; not for distribution}
+\date{Draft --- generated from frozen results; submission deferred}
 
 \begin{document}
 \maketitle
@@ -41,56 +40,39 @@ An Empirical Boundary Study}
 % ===========================================================================
 \begin{abstract}
 Transferring a teacher model's key--value (KV) cache into a frozen student
-promises generation with ``zero re-prefill'' of the source document. Standard
-evaluation of such transfer asks whether the student still answers correctly.
-We argue this is insufficient: a transferred cache can preserve ordinary
-utility while distorting the model's \emph{counterfactual response}---the
-change in its answer when a single fact in the document is edited. We define
-an evaluation layer for this property, centered on the counterfactual error
-$E_{\mathrm{CF}}$, and report a preregistered benchmark on Qwen3 model pairs
-using real GPU runs (bf16, sdpa, strict zero re-prefill); the scoring code is
-frozen at commit \texttt{458de18}, so this benchmark is reproducible from that
-commit (Section~\ref{sec:models}). A measurement gate
-(E0) shows implementation residuals at machine precision (logit cosine
-$1.0$, KL $0$, measurement-error ceiling $2.2\times10^{-16}$), far below the
-effect under study. On the equal-depth MVP pair (1.7B$\to$0.6B, three seeds),
-the transferable Joint arm shows a counterfactual gap across the three seeds
-reported here ($E_{\mathrm{CF}}\approx1.93$--$2.12$) whose bootstrap CI
-excludes zero, with dual-side correctness near the native anchor and direction
-consistency $0.90$--$0.96$. On the non-equal-depth main pair (4B$\to$1.7B,
-three seeds), the gap is much larger ($E_{\mathrm{CF}}\approx5.37$--$6.08$)
-but is accompanied by a severe collapse of transferred dual-side correctness
-(from $0.65$--$0.78$ natively to $0.28$--$0.30$), and information controls are
-mostly non-positive; we treat this pair as a broken-transfer failure boundary
-and \emph{not} as positive evidence of counterfactual distortion. A matched
-\texttt{kd\_only} baseline on the MVP pair (three seeds) narrows but does not
-eliminate the affine gap: $E_{\mathrm{CF}}$ $0.735\;[0.552,0.934]$,
-$1.034\;[0.766,1.328]$, and $1.539\;[1.148,1.959]$ versus affine
-$1.968$/$1.934$/$2.123$, with all CI lower bounds above zero. Matched-budget
-confirmation remains a caveat. On the MVP equal-depth pair (1.7B$\to$0.6B),
-three seeds of held-out mechanism analysis (runs
-\texttt{p2\_gpu\_mvp\_seed0\_delta\_rand\_audit}, \texttt{p2\_gpu\_mvp\_seed1},
-\texttt{p2\_gpu\_mvp\_seed2}; commit \texttt{6784780}) yield
-\texttt{mechanism\_predictive} in every seed. K/V four-arm errors are Self 0,
-K-only 0.582, V-only 1.626, Joint 1.777 (only Joint deployable); a local
-routing/consumption decomposition over 17,920 units has residual
-$2.96\times10^{-13}$; and units chosen on 8 training pairs repair held-out
-(40 pairs) cases more often than random units, with paired differences
-$0.275\;[0.150,0.425]$, $0.275\;[0.125,0.425]$, and $0.350\;[0.200,0.500]$
-(all lower bounds $>0$) and direction consistency $0.725$--$0.750$. We
-\emph{localize the gap to receiver-side Value-consumption pathways under
-controlled cache interventions}, with Key routing as an accompanying
-attention-redistribution effect; this is a local, fixed-query decomposition,
-not a global causal account, and the claim is confined to the MVP equal-depth
-pair. Core units reproduce across seeds with one marginal unit drifting. With
-evaluation-layer and mechanism evidence, but no method evidence, we present a
-\emph{boundary/empirical study}: we identify a gap for the affine/ridge mapper
-tested here, document the conditions under which the current transfer fails,
-and report the held-out mechanism evidence. Whether other strong behavioral
-baselines (\texttt{consumer}, \texttt{score}, ridge) retain the gap is left to
-future work. We make \emph{no} claim of a causal or exclusive mechanism, of
-behavior across model pairs, or of having developed a method that closes the
-gap.
+promises generation with ``zero re-prefill'' of the source document. We set out
+to evaluate whether such transfer preserves the \emph{counterfactual response}
+of the student---whether its answer changes, in direction and magnitude, when a
+single fact in the document is edited. An initial synthetic benchmark appeared
+to show a stable counterfactual gap and a localized mechanism, and these
+findings were previously reported as contributions. A subsequent data-quality
+audit overturned them. The original 520-pair corpus contained 18 degenerate
+pairs (identical candidates marked must-flip), at least 15 groups of verbatim
+cross-split document leakage, 100\% train/test template-skeleton overlap, and a
+bootstrap that degenerated to pair-level i.i.d.; after rebuilding the corpus
+with these defects removed (SHA-256 \texttt{f910f1f1}$\ldots$\texttt{a894a},
+acceptance 11/11), the direction of the result reverses. On the cleaned data,
+the transferable Joint arm of the tested affine/ridge mapper on the equal-depth
+MVP pair (1.7B$\to$0.6B, three seeds) shows dual-side correctness collapsing
+from a native $\approx0.82$ to $0.28$--$0.42$ and $E_{\mathrm{CF}}$ rising to
+$6.90$--$8.54$; this $E_{\mathrm{CF}}$ approaches but does not exceed the
+mismatched ($8.38$) and zero-cache ($8.58$) controls, while correctness
+collapses---so the large error reflects a \emph{broken transfer}, not a clean
+utility-preserving distortion; every seed is flagged
+\texttt{transfer\_broken=true}. A matched \texttt{kd\_only} baseline on the same
+clean data preserves transfer utility (dual $0.70$--$0.77$, not broken) yet
+retains a stable, nonzero $E_{\mathrm{CF}}$ of $6.39$--$7.21$, which we report
+only as an \emph{exploratory} observation. All clean results are exploratory
+under the v2.3 convention (8 \texttt{template\_family} clusters $<24$) and come
+from a single synthetic equal-depth pair. We withdraw the earlier gap and
+mechanism claims: their positive evidence did not survive data repair. We
+report instead (i)~a failure boundary of affine KV transfer under this data
+construction, (ii)~the kd-only utility-preserving exploratory gap, and
+(iii)~a methodological negative result---that data leakage and template overlap
+can manufacture an apparent, statistically ``significant'' finding that
+vanishes under audit. No method is trained, the primary endpoint (paired
+$E_{\mathrm{CF}}$ vs.\ \texttt{kd\_only}, CI upper $<0$) is unevaluated, and no
+method improvement is claimed.
 \end{abstract}
 
 % ===========================================================================
@@ -98,103 +80,70 @@ gap.
 \label{sec:intro}
 
 Cross-model KV handoff maps a teacher's document cache into a receiver
-student's cache format so that the student can answer queries about a
-document without ever re-processing that document (\emph{strict zero
-re-prefill}). The natural question in prior work is whether the student still
-produces the correct answer. We ask a sharper question: does the student
-preserve the \emph{functional dependence of its answer on the document}? If a
-target fact in the document is counterfactually edited, does the transferred
-student's response change in the same direction and by a comparable magnitude
-as the native student's response? We call this property \emph{counterfactual
-functional fidelity} and measure it with the counterfactual error
-$E_{\mathrm{CF}}$ (Section~\ref{sec:metrics}).
+student's cache format so that the student can answer queries about a document
+without re-processing it (\emph{strict zero re-prefill}). A natural question is
+whether the student's \emph{functional dependence on the document} survives
+transfer: if a target fact is counterfactually edited, does the transferred
+student's response change in the same direction and magnitude as the native
+student's? We formalized this as counterfactual functional fidelity, measured
+by the counterfactual error $E_{\mathrm{CF}}$ (Section~\ref{sec:metrics}), and
+built a paired benchmark with preregistered controls.
 
-This question sits at the intersection of two lines of work (Figure~\ref{fig:f1}):
-(i)~cross-model KV transfer, which optimizes standard utility and distribution
-matching but does not score counterfactual response change; and (ii)~within-model
-content/counterfactual auditing, which studies whether a model's output is
-causally driven by document content but does not address transfer into a
-frozen receiver. Existing transfer work therefore leaves open exactly the
-property we evaluate, while existing auditing work does not cover the
-zero-re-prefill setting. Our evaluation layer connects the two by measuring
-\emph{counterfactual response fidelity after transfer} under a preregistered
-protocol.
-
-\paragraph{Contributions (strictly scoped).}
-Following the contribution gate in the project protocol (protocol~\S10), we
-claim exactly \emph{one} evidence-backed contribution:
-
-\begin{enumerate}
-\item \textbf{Evaluation layer (claimed, scope-limited).} For the
-      affine/ridge mapper tested here, we identify a gap between standard
-      transfer utility and counterfactual response fidelity in cross-model KV
-      handoff, together with a preregistered \emph{reproducible} paired
-      counterfactual benchmark (scoring code frozen at commit \texttt{458de18}),
-      a machine-precision measurement gate, and a joint reporting discipline
-      ($E_{\mathrm{CF}}$ reported with dual-side correctness, direction
-      consistency, coverage, and information-control gaps). A matched
-      \texttt{kd\_only} baseline (three seeds) narrows this gap without
-      eliminating it ($E_{\mathrm{CF}}=0.735\;[0.552,0.934]$,
-      $1.034\;[0.766,1.328]$, and $1.539\;[1.148,1.959]$ versus affine
-      $1.968$/$1.934$/$2.123$; all CI lower bounds above zero). This claim is
-      explicitly limited to
-      the mapper studied: the other strong behavioral baselines
-      (\texttt{consumer}, \texttt{score}, ridge) are not evaluated here and are
-      left to future work. The three-seed \texttt{kd\_only} evidence shows a
-      persistent gap, but its unequal training budget
-      (Section~\ref{sec:pending}) and the absence of a trained CF-RCT method
-      preclude any claim of a method-level gain at this stage.
-\item \textbf{Mechanism layer.} On the MVP equal-depth pair (1.7B$\to$0.6B),
-      three seeds (seed 0/1/2), 40 held-out pairs each, we
-      \emph{localize the gap to receiver-side Value-consumption pathways under
-      controlled cache interventions}, with Key routing as an accompanying
-      attention-redistribution effect. Units selected on 8 training pairs
-      repair held-out cases more often than random units, with paired
-      differences $0.275\;[0.150,0.425]$, $0.275\;[0.125,0.425]$, and
-      $0.350\;[0.200,0.500]$ (all lower bounds $>0$) and direction consistency
-      $0.725$--$0.750$. Four core units reproduce across all three seeds and
-      the fifth drifts marginally. This is a local, fixed-query decomposition,
-      \emph{not} a global causal account; the three E2 criteria are two
-      statistical signals plus a majority-threshold restatement, not three
-      independent lines of evidence. The claim is confined to the MVP
-      equal-depth pair; it makes no causal, exclusive, or cross-model-pair
-      assertion.
-\end{enumerate}
-
-We do \emph{not} claim the following contribution at this stage, because the
-required evidence has not been produced:
-\begin{itemize}
-\item \emph{(withheld) method layer:} the mechanism-constrained-mapper claim
-      (contribution template~(3) in protocol~\S10), which would require a
-      trained method evaluated against matched behavioral baselines on the
-      sealed test.
-\end{itemize}
-The P1 directional clue (V-only $\approx$ Joint) was subsequently confirmed
-and extended by the P2 intervention and held-out analysis reported in
-Section~\ref{sec:results}. The proposed CF-RCT method
-(Section~\ref{sec:method}) is described as a \emph{design pending validation};
-it has not been trained or evaluated. Accordingly, this manuscript follows the
-decision tree (protocol~\S8) and is positioned as a boundary/empirical study,
-not a high-level method paper. All data used here are synthetic templates; we
-therefore make no claim about cross-family or real-world transfer, and mark
-this as an applicability boundary.
+An earlier version of this study reported two positive findings on a synthetic
+corpus: a reproducible gap between standard transfer utility and counterfactual
+fidelity (contribution~1), and a receiver-side Value-consumption mechanism
+(contribution~2). \textbf{Both are withdrawn here.} An independent data-quality
+audit found that the corpus contained degenerate pairs, cross-split document
+leakage, and train/test template overlap, and that its cluster bootstrap had
+degenerated to pair-level i.i.d. Rebuilding the corpus with these defects
+removed reversed the central observation: the previously ``utility-preserving
+gap'' became a \emph{transfer failure} (Section~\ref{sec:results}). The positive
+signals were artifacts of the flawed data, not properties of KV transfer.
 
 \begin{figure}[t]
 \centering
 \fbox{\parbox{0.88\linewidth}{\centering
-\textbf{Figure~1 (placeholder; to be generated from frozen results).}\\
-Two prior-work lines $\to$ the third scientific question.\\
+\textbf{Figure~1 (placeholder).}\\
+Two prior-work lines $\to$ the question studied here.\\
 Left: \emph{cross-model KV transfer} (standard utility / distribution matching).\\
 Right: \emph{within-model content \& counterfactual auditing}.\\
-Center/foreground: \emph{this work}---counterfactual response fidelity of a
-frozen receiver under strict zero re-prefill, evaluated with paired
-counterfactual documents and a preregistered control suite.\\
-Annotate that prior transfer work does not score counterfactual response change,
-and prior auditing does not cover zero-re-prefill transfer.}}
-\caption{Relation of the two established research lines to the scientific
-question of this work. \emph{Textual placeholder; figure file not yet generated.}}
+Center: counterfactual response fidelity of a frozen receiver under zero
+re-prefill---here studied as a case where an apparent positive finding was a
+data artifact, motivating a data-quality lesson for the benchmark literature.}}
+\caption{Relation of two established research lines to the question studied
+here. \emph{Textual placeholder; figure file not yet generated.}}
 \label{fig:f1}
 \end{figure}
+
+\paragraph{Findings reported here (negative / empirical results, not \S10
+positive contributions).}
+\begin{enumerate}
+\item \textbf{Failure boundary.} On clean data, the tested affine/ridge mapper
+      fails to transfer usefully on the equal-depth MVP pair: dual-side
+      correctness collapses to $0.28$--$0.42$, and $E_{\mathrm{CF}}$ rises
+      towards but does not exceed the mismatched / zero-cache controls
+      (Section~\ref{sec:mvp}). This is a boundary condition of the method under
+      the present data construction, not a general property of KV transfer.
+\item \textbf{Utility-preserving exploratory gap.} The strong \texttt{kd\_only}
+      baseline on the same clean pair preserves transfer utility (dual
+      $0.70$--$0.77$, \texttt{transfer\_broken=false}) yet retains a stable,
+      nonzero $E_{\mathrm{CF}}$ of $6.39$--$7.21$. We report this only as an
+      \emph{exploratory} observation on a single synthetic equal-depth pair, not
+      as a restored contribution (Section~\ref{sec:pending}).
+\item \textbf{Methodological negative result.} We document, with a
+      before/after controlled comparison, how three concrete data defects
+      (degenerate pairs, verbatim cross-split leakage, template-skeleton
+      overlap) together with a degenerate bootstrap produced a statistically
+      convincing but spurious positive finding. Repairing the data eliminated
+      the finding (Section~\ref{sec:datafix}). This is a cautionary result for
+      synthetic benchmark design.
+\end{enumerate}
+Neither finding is a positive contribution in the sense of protocol~\S10. In
+particular we no longer claim to identify a general counterfactual gap, to
+localize a mechanism, or to improve transfer. Contribution~(3) (a
+method that reduces the gap) remains \emph{withheld}: no method was trained,
+and the primary endpoint is unevaluated. Submission is deferred pending the
+outstanding control rerun and adversarial review (Section~\ref{sec:conclusion}).
 
 % ===========================================================================
 \section{Related Work}
@@ -203,66 +152,47 @@ question of this work. \emph{Textual placeholder; figure file not yet generated.
 \paragraph{Cross-model KV transfer.} Methods that distill or map a teacher's
 caches into a receiver's cache format (e.g., KV-Lingo-style behavioral
 distillation and CacheLink-style cache translation)~\cite{kvlingo,cachelink}
-evaluate whether the receiver retains ordinary task accuracy or matches the
-teacher's token distributions. They do not score whether the receiver's
-\emph{response difference} under a counterfactual document edit is preserved.
-We treat these as strong baselines to be matched on data, forward budget,
-parameters, and tuning budget (Section~\ref{sec:setup}); we do not assume their
-reported numbers transfer to our task, and where no runnable implementation is
-available we report the deviation explicitly, and we do not assume the
-reported numbers carry over to our task.
-
-\paragraph{Within-model auditing and counterfactual evaluation.} Content-
-and counterfactual-dependence audits test whether a model's output is causally
-attributable to document content. We reuse the principle of comparing against
-no-information and mismatched-content controls, but we do not claim a novel
-causal-audit metric; the counterfactual error and its paired construction are
-an evaluation design for the transfer setting.
-
-\paragraph{Scope boundaries.} Four categories are kept distinct throughout:
-(1)~cross-model transfer (our main line); (2)~within-model incremental cache
-editing/repair (not studied); (3)~no-information message adaptation (used only
-as a control); and (4)~content-dependence auditing (adopted principle, not a
-claimed contribution). We further do not claim that representation error or
-$R^2$ equals task quality, that single-document attention error explains a
-counterfactual effect, that offline Oracle diagnostics are deployable, or that
-identity/cache round-trip auditing is itself a contribution.
- All citations in
-this draft are placeholders pending version/date/protocol verification under
+evaluate whether the receiver retains ordinary task accuracy or matches token
+distributions. They do not score counterfactual response change. We treat them
+as baselines to be matched on data, forward budget, parameters, and tuning
+budget; we do not assume their reported numbers transfer to our task. All
+citations in this draft are placeholders pending verification under
 protocol~\S9.
+
+\paragraph{Data quality and benchmark validity.} Our negative result connects
+to the broader concern that leakage and weak controls can inflate reported
+performance in NLP benchmarks. We do not claim a novel audit metric; our
+contribution is the concrete before/after demonstration that repair reversed a
+reported finding in this specific KV-transfer benchmark.
+
+\paragraph{Scope boundaries.} We distinguish cross-model transfer (our
+setting), within-model cache editing (not studied), no-information message
+adaptation (a control), and content-dependence auditing (an adopted principle,
+not a claimed contribution). We do not claim that representation error or
+$R^2$ equals task quality, that single-document attention error explains a
+counterfactual effect, or that identity/cache round-trip auditing is a
+contribution.
 
 % ===========================================================================
 \section{Method}
 \label{sec:method}
 
-This section is organized in two parts. Sections~\ref{sec:proposed}--%
-\ref{sec:huber} describe the CF-RCT design as a \emph{proposed method not yet
-validated}. Section~\ref{sec:zerore} defines the evaluation pathway that
-\emph{was} realized in the reported runs.
-
 \subsection{Setup and notation}
 \label{sec:proposed}
 
 A teacher $T$ prefill-computes a cache $C_T(d)$ of document $d$; a trainable
-mapper $g_\theta$ maps it into the receiver $S$'s cache format
-$\hat{C}_S(d)=g_\theta(C_T(d))$. The receiver decodes query $q$ starting from
+mapper $g_\theta$ maps it into receiver $S$'s cache format
+$\hat{C}_S(d)=g_\theta(C_T(d))$. The receiver decodes query $q$ from
 $\hat{C}_S(d)$ and never re-processes $d$. The receiver's own cache
 $C_S(d)$ is an \emph{offline Oracle}: it may be used for training targets,
-evaluation anchors, and mechanism intervention, but never inside the
-deployable inference path. $S$'s main weights are frozen; $g_\theta$ is the
-only trainable object. The two documents of a counterfactual pair, $d_A$ and
-$d_B$, are prefilled \emph{independently}; cache bytes must never be tampered
-with to synthesize the other document.
+evaluation anchors, and intervention, but never inside the deployable inference
+path. $S$'s main weights are frozen; $g_\theta$ is the only trainable object.
+The two documents of a counterfactual pair, $d_A$ and $d_B$, are prefilled
+\emph{independently}; cache bytes must never be tampered with to synthesize the
+other document.
 
 \subsection{Strict zero re-prefill and the arm boundary}
 \label{sec:zerore}
-
-We distinguish four arms by the provenance of Key and Value (Figure~\ref{fig:f2},
-Table~\ref{tab:arms}). Only \emph{Joint} is deployable under strict zero
-re-prefill: the student processes no document token and does not read
-$C_S(d)$ at inference. A forward hook asserts that the number of student
-forward passes equals one plus the decode steps and that no document token
-enters the student; a per-run \texttt{zero\_re\_prefill} flag records this.
 
 \begin{figure}[t]
 \centering
@@ -276,105 +206,66 @@ Dashed/offline box (NOT in the deployable graph): student native $C_S(d)$
 (\emph{Self}), identity injection (\emph{Identity}), and layer/head/token
 \emph{Oracle} state grafting.\\
 K-only / V-only mix one mapped and one native half and are marked
-\texttt{deployable=false}.\\
-Label the only honest comparison: Joint vs.\ matched baselines; all others are
-offline diagnostics or anchors.}}
+\texttt{deployable=false}.}}
 \caption{Strict zero re-prefill inference and the Self / Identity / Joint /
-Oracle boundary. \emph{Textual placeholder; figure file not yet generated.}}
+Oracle boundary. \emph{Textual placeholder.}}
 \label{fig:f2}
 \end{figure}
+
+We distinguish four arms by the provenance of Key and Value (Table~\ref{tab:arms}).
+Only \emph{Joint} is deployable under strict zero re-prefill: the student
+processes no document token and does not read $C_S(d)$ at inference. A forward
+hook asserts that no document token enters the student and writes a per-run
+\texttt{zero\_re\_prefill} flag. K-only, V-only, Self, Identity, and Oracle are
+offline diagnostics or anchors and are not deployable methods.
 
 \begin{table}[t]
 \centering
 \caption{Arm definitions and deployability. Only Joint satisfies strict zero
-re-prefill; other arms are offline diagnostics/anchors.}
+re-prefill.}
 \label{tab:arms}
-\begin{tabular}{llll}
+\begin{tabular}{lll}
 \toprule
-Arm & Key & Value & Deployable \\
+Arm & Key / Value provenance & Deployable \\
 \midrule
-Self    & student $K_S$   & student $V_S$    & no (anchor) \\
-Identity& student $K_S$   & student $V_S$    & no (anchor) \\
-K-only  & mapped $\hat{K}_S$ & student $V_S$  & no \\
-V-only  & student $K_S$   & mapped $\hat{V}_S$ & no \\
-Joint   & mapped $\hat{K}_S$ & mapped $\hat{V}_S$ & \textbf{yes} \\
-Oracle  & student-native state grafted into mapped cache & --- & no \\
+Self / Identity & student $K_S$ / $V_S$ & no (anchor) \\
+K-only & mapped $\hat{K}_S$ / student $V_S$ & no \\
+V-only & student $K_S$ / mapped $\hat{V}_S$ & no \\
+Joint & mapped $\hat{K}_S$ / $\hat{V}_S$ & \textbf{yes} \\
+Oracle & student-native state grafted into mapped cache & no \\
 \bottomrule
 \end{tabular}
 \end{table}
 
-\subsection{Proposed CF-RCT algorithm (design, not validated)}
+\subsection{Proposed CF-RCT algorithm (design, never validated)}
 \label{sec:cf-rct}
 
-We outline a family \texttt{CF-RCT} (`counterfactual response-constrained
-translation') with two instances, \texttt{CF-RCT-lite} and
-\texttt{CF-RCT-mech}, sharing a training skeleton. The mapper is a
-per-(layer, channel$\in$\{K,V\}, head) affine map with an optional low-rank
-residual $W=W_0+AB^\top$ (rank $0$ is the pure-affine special case). For non-equal-depth
-pairs (4B$\to$1.7B, $36\to28$ layers) a proportional layer map is used rather
-than forcing same-layer alignment. Initialization is a closed-form ridge
-regression from teacher to student caches on a calibration set; computation is
-done in de-RoPE'd content space and re-RoPE'd before injection, with bf16 +
-sdpa in every arm.
-
-For each calibration pair, two student forward passes under the mapped caches
-produce $D_{\mathrm{trans}}$, while a \texttt{no\_grad} pass under the native
-caches produces the offline anchor $D_{\mathrm{self}}$. The training objective is
-\begin{equation}
-L \;=\; \lambda_{\mathrm{KD}} L_{\mathrm{KD}}
-      + \lambda_{\mathrm{CF}} L_{\mathrm{CF}}
-      + \lambda_{\mathrm{local}} L_{\mathrm{local}}
-      + \lambda_{\mathrm{reg}} L_{\mathrm{reg}},
-\end{equation}
-where $L_{\mathrm{KD}}$ is the per-document forward KL between mapped and
-native candidate distributions (the strong behavioral baseline
-\texttt{kd\_only} corresponds to $\lambda_{\mathrm{CF}}=0$);
-$L_{\mathrm{CF}}=\mathrm{mean}_{i}[m_i\,\mathrm{Huber}_{\delta}
-(D_{\mathrm{trans}}^{i}-D_{\mathrm{self}}^{i})]$ is a paired counterfactual
-residual constrained only on the ``Self-valid'' subset
-$m_i=\mathbf{1}[\,|D_{\mathrm{self}}|\ge 0.1\,]$; $L_{\mathrm{local}}$ is a
-routing/consumption term used only by \texttt{mech} and only in training; and
-$L_{\mathrm{reg}}$ penalizes the low-rank residual. `lite' sets
-$\lambda_{\mathrm{local}}=0,\lambda_{\mathrm{CF}}>0$; `mech' additionally sets
-$\lambda_{\mathrm{local}}>0$. A key design guard is that $L_{\mathrm{CF}}$
-is computed only where the native signal is identifiable: forcing sensitivity
-where $D_{\mathrm{self}}\approx 0$ can induce a degenerate ``constant output''
-solution (Section~\ref{sec:metrics}).
-
-\paragraph{Mechanism diagnostics (executed at P2).} A routing/consumption
-decomposition at fixed receiver query $Q_S$ is the algebraic identity
-$\hat O-O_S=(\hat A-A_S)V_S W_O+\hat A(\hat V-V_S)W_O$, whose two terms are
-\emph{routing} and \emph{consumption}. This is a \emph{local, fixed-query
-identity}, not a global causal decomposition of task loss; $d_A$ and $d_B$ are
-diagnosed separately and their differences compared. Layer/head/token Oracle
-grafting ranked units by repair gain on 8 training pairs and tested them on 40
-held-out validation pairs with no overlap and no use of the sealed test;
-Oracle states never enter the Joint inference graph. At P2 (three runs
-\texttt{p2\_gpu\_mvp\_seed0\_delta\_rand\_audit}, \texttt{p2\_gpu\_mvp\_seed1},
-\texttt{p2\_gpu\_mvp\_seed2}; commit \texttt{6784780}) the decomposition
-residual over 17,920 units was $2.96\times10^{-13}$, and the held-out repair
-hit rate exceeded the random baseline in every seed (paired differences
-$0.275\;[0.150,0.425]$, $0.275\;[0.125,0.425]$, $0.350\;[0.200,0.500]$;
-direction consistency $0.725$--$0.750$). Details are in
-Section~\ref{sec:results}.
+We outline \texttt{CF-RCT} (`counterfactual response-constrained translation')
+as a \emph{proposed design}. It was never trained or evaluated: with the
+central premise (a clean, utility-preserving gap) withdrawn, the method layer
+has no target and work on it is suspended. The mapper is a per-(layer,
+channel$\in$\{K,V\}, head) affine map with an optional low-rank residual
+$W=W_0+AB^\top$; non-equal-depth pairs use a proportional layer map.
+Initialization is a closed-form ridge from teacher to student caches on a
+calibration set; computation is in de-RoPE'd content space, re-RoPE'd before
+injection, with bf16 + sdpa throughout. The intended objective is
+$L=\lambda_{\mathrm{KD}}L_{\mathrm{KD}}+\lambda_{\mathrm{CF}}L_{\mathrm{CF}}
++\lambda_{\mathrm{local}}L_{\mathrm{local}}+\lambda_{\mathrm{reg}}L_{\mathrm{reg}}$,
+where $L_{\mathrm{CF}}$ constrains the paired counterfactual residual
+$D_{\mathrm{trans}}-D_{\mathrm{self}}$ only on the Self-valid subset
+$|D_{\mathrm{self}}|\ge0.1$, and $L_{\mathrm{local}}$ (mech only) uses Oracle
+signals solely in training. We do not report any result for these designs.
 
 \subsection{Hyperparameter freezing status}
 \label{sec:huber}
 
-The Huber threshold $\delta$ (nominal $1.0$, logit units), label balance
-(A/B $1{:}1$, candidate order 50/50, F5 negative control fixed, $L_{\mathrm{CF}}$
-mask on Self-valid subset) and loss-weight selection rules are frozen by a
-dedicated preregistration file (protocol-v2.1). The validation grid
-$\delta\in\{0.5,1.0,2.0\}$ has now been completed, and the PI locked the final
-value at $\delta=0.5$ under the hard-guardrail reading of ``not worse than
-\texttt{kd\_only}'' (Section~\ref{sec:adverse}); $\delta=1.0$ and $\delta=2.0$
-were rejected for violating the dual/flip guardrail. The lock is on validation
-data only, formally registered in \texttt{configs/prereg/phase3\_loss\_config\_v2.2.yaml}
-(protocol-v2.2), and the value must not be adjusted during the sealed test.
-Still, no
-\texttt{CF-RCT} model was trained and the sealed test was never run, so we
-report no method result; the grid evidence in fact warns that no $\delta$
-beat \texttt{kd\_only} on the validation $E_{\mathrm{CF}}$.
+The Huber threshold $\delta$ was locked to $0.5$ on validation data under a
+hard-guardrail reading of ``not worse than \texttt{kd\_only}'' and formally
+registered in \texttt{configs/prereg/phase3\_loss\_config\_v2.2.yaml}
+(protocol-v2.2). Following the clean-data reversal, the PI has \emph{suspended}
+the $\delta$ verification recheck: with no clean gap to repair, the method
+layer has no further submission value. No $\delta$-dependent result is reported
+here.
 
 % ===========================================================================
 \section{Experimental Setup}
@@ -385,80 +276,106 @@ beat \texttt{kd\_only} on the validation $E_{\mathrm{CF}}$.
 
 Each evaluation unit is $u=(q,d_A,d_B,a,b,m)$: a query and a pair of documents
 differing in one targeted fact, with candidates A/B held fixed within the pair
-and their order randomly swapped. Six slices are designed to exclude distinct
-confounds (Figure~\ref{fig:f3}; protocol~\S3.2):
-\begin{itemize}
-\item \textbf{F1} direct fact substitution (who/when/how-many/where): holds
-      position and overall context nearly fixed;
-\item \textbf{F2} reasoning-chain change (alias/membership/comparison) with
-      the answer in a different span: excludes answer-string shortcuts;
-\item \textbf{F3} relation direction / negation reversal: excludes lexical
-      overlap with unchanged logical relation;
-\item \textbf{F4} distractors and coreference: excludes selection by entity
-      frequency or position;
-\item \textbf{F5} surface equivalence (paraphrase/word order/format): a
-      \emph{negative control} that should \emph{not} flip the answer; excluded
-      from the ``must-flip'' denominator;
-\item \textbf{F6} length/position control (matched token lengths; separate
-      mismatched and position-shifted subsets): excludes attributing RoPE /
-      position effects to fact infidelity.
-\end{itemize}
-Splits are isolated by entity, source, and template cluster; train/val/test
-counts are 120/60/300 with 40 probe pairs, and the train--eval template overlap
-is empty in the runs (data-quality gate `pass'). The reported P1 runs evaluate
-on the validation split (60 pairs); the sealed test is reserved for the
-(unrun) method stage.
+and their order randomly swapped. Six slices exclude distinct confounds:
+F1 direct fact substitution; F2 reasoning-chain change; F3 relation/negation
+reversal; F4 distractors and coreference; F5 surface equivalence (a
+\emph{non-flip negative control}); F6 length/position control. F5 is excluded
+from the flip denominator; F6 is excluded as well under the frozen v2.3
+convention (Section~\ref{sec:datafix}). The rebuilt corpus has 520 pairs
+(probe 40 / train 120 / val 60 / test 300 / real 0).
 
 \begin{figure}[t]
 \centering
 \fbox{\parbox{0.88\linewidth}{\centering
 \textbf{Figure~3 (placeholder).}\\
-Paired counterfactual document construction and positive/negative controls.\\
-Show $d_A$ vs.\ $d_B$ differing in one edited span; candidates A/B order
-randomly swapped; F1--F6 examples with F5 flagged as non-flip negative control
-and F6 as length/position control.}}
+Paired counterfactual document construction and positive/negative controls:
+$d_A$ vs.\ $d_B$ differing in one edited span, candidates A/B order swapped,
+F1--F6 examples with F5 flagged non-flip and F6 length/position control.}}
 \caption{Construction of counterfactual document pairs and controls.
-\emph{Textual placeholder; figure file not yet generated.}}
+\emph{Textual placeholder.}}
 \label{fig:f3}
 \end{figure}
+
+\subsection{Data correctness, defects, repair, and residual limitations}
+\label{sec:datafix}
+
+The original release of the synthetic corpus (SHA-256
+\texttt{6058fd6d$\ldots$d1887}, hereafter v2.0) carried internal-correctness
+defects. These are distinct from external-validity limitations and, unlike the
+latter, cannot be remedied by disclosure: they made the reported statistics
+themselves unreliable. Table~\ref{tab:datafix} summarizes the defects and the
+rebuild (SHA-256 \texttt{f910f1f1$\ldots$a894a}, \texttt{cf\_pairs\_v2.1}).
+
+\begin{table}[t]
+\centering
+\caption{Data defects in the original synthetic release and status after
+rebuild (source: \texttt{reports/data/data\_fix\_report.md},
+\texttt{reports/data/acceptance\_checks.json}, \texttt{docs/data/data\_card.md}).}
+\label{tab:datafix}
+\begin{tabular}{lll}
+\toprule
+Property & Before (v2.0) & After (v2.1-corrected) \\
+\midrule
+Degenerate pairs ($c_A{=}c_B$, \texttt{must\_flip}) & 18 (7 in test) & 0 \\
+Cross-split verbatim overlap & $\ge15$ groups & 0 \\
+Entity overlap across splits & 8 names shared & 0 \\
+Basic template structures / families & 8 / 40 & 24 / 56 \\
+Genuinely unseen templates & suffix-only & 32 families / 16 structures \\
+train/test skeleton intersection & 100\% overlap & $\emptyset$ \\
+flip denominator (excludes F5,F6) & 394 (incl.\ 18 degenerate) & 398 \\
+Bootstrap clusters & 300 pair-level (degenerate) & template-family \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+Degenerate pairs (identical candidates marked must-flip), cross-split verbatim
+leakage (including train$\leftrightarrow$test whole-pair overlap), and
+pair-level bootstrap clusters (300 unique pairs but only 8 independent template
+structures) inflated flip/dual/$E_{\mathrm{CF}}$ statistics and systematically
+narrowed confidence intervals. These defects directly produced the spurious
+positive findings withdrawn here (Section~\ref{sec:results}). The corpus was
+rebuilt with forced candidate distinctness, split-disjoint entity pools,
+deterministic deduplication, and 16 structurally distinct unseen templates.
+Independent acceptance checks pass 11/11 and the 53-test unit suite passes with
+no regressions. Under the frozen statistics convention
+\texttt{configs/prereg/stats\_convention\_v2.3.yaml}, the primary bootstrap
+cluster unit is now \texttt{template\_family}, with a mandatory pair-level
+sensitivity analysis reported alongside it (never only the narrower pairwise
+CI); runs with fewer than 24 families are flagged \texttt{exploratory}. The
+flip denominator is recomputed to $398$ under excludes $=[\mathrm{F5},\mathrm{F6}]$.
+A new manifest, its SHA-256 sidecar, and a data card
+\texttt{docs/data/data\_card.md} accompany the rebuild.
+
+\paragraph{Residual limitations (disclosed, not fixed).} (i)~All data are
+synthetic templates from a finite entity pool; even with 24 base structures the
+corpus does not represent real-world distributions. (ii)~\texttt{real=0}: no
+real documents and no external benchmark anchors; M4 produced only an
+acquisition plan and awaits a human/PI decision on sources and licensing.
+(iii)~The only clean-data evidence is the equal-depth MVP pair
+(1.7B$\to$0.6B); cross-pair generalization is unevaluated. (iv)~61
+length-mismatch pairs all fall in F5 (non-flip control) and are reported as a
+separate stratum. (v)~The original ``unseen-template'' slices were suffix-only;
+the rebuild adds structurally unseen templates, but the earlier positive
+results that are withdrawn here were obtained on the pre-fix release.
 
 \subsection{Model pairs}
 \label{sec:models}
 
-Two real-GPU pairs were run: (a) \emph{MVP}, equal-depth Qwen3-1.7B (teacher)
-$\to$ Qwen3-0.6B (student), $28\to28$ identity layer map; and (b) \emph{main
-validation}, non-equal-depth Qwen3-4B $\to$ Qwen3-1.7B, $36\to28$ proportional
-layer map. All runs use device CUDA, dtype \texttt{bfloat16}, attention kernel
-\texttt{sdpa}, protocol version 2.0, and \texttt{zero\_re\_prefill=true}.
-Three seeds ($0,1,2$) were run for each P1 pair. The 8B offline stress pair was
-not run.%
-\footnote{Data-integrity note (model pair): the \texttt{model\_pair} string in
-the main runs' \texttt{config.json}/\texttt{runs\_index.json} reads
-\texttt{qwen3-1.7b-to-0.6b}, but the actual \texttt{teacher}/\texttt{student}
-paths (\texttt{Qwen3-4B}/\texttt{Qwen3-1.7B}) and the $36\to28$ proportional
-layer map confirm these are Qwen3-4B$\to$1.7B runs. We therefore report the
-corrected label \texttt{qwen3-4b-to-1.7b}. The metadata erratum is recorded in
-\texttt{reports/runs\_index\_errata.json} (\texttt{model\_pair\_corrected});
-the frozen \texttt{scores.jsonl} were not modified, and no computed metric is
-affected.}}
-\paragraph{Provenance note.} Every run used for the main numeric tables was
-produced from commit \texttt{458de18}, which contains all scoring and
-implementation code; the benchmark is therefore reproducible from that commit.
-The authoritative runs are \texttt{e0\_gpu\_mvp\_repro\_seed0} and
-\texttt{p1\_gpu\_mvp\_repro\_seed\{0,1,2\}} (plus the \texttt{kd\_only} run
-described in Section~\ref{sec:pending}); each records
-\texttt{git\_hash=458de18}, \texttt{bootstrap\_seed=seed},
-\texttt{zero\_re\_prefill=true}, \texttt{dtype=bfloat16}, \texttt{kernel=sdpa},
-and \texttt{protocol\_version=2.0}. The earlier eight runs carry
-\texttt{git\_hash=53e9bc5} (a tree without the scoring code) and are marked
-\texttt{superseded / provenance-unverified} in
-\texttt{reports/runs\_index\_errata.json}; their frozen artifacts were not
-modified, and they are not used for any main-table number. The
-non-equal-depth pair has no \texttt{458de18} rerun, so its results
-(Section~\ref{sec:main}) are retained only as a provenance-limited
-broken-transfer record, not as authoritative numeric evidence.
+Two model pairs were used in earlier work: (a) \emph{MVP}, equal-depth
+Qwen3-1.7B (teacher) $\to$ Qwen3-0.6B (student), $28\to28$ identity layer map;
+and (b) \emph{main validation}, non-equal-depth Qwen3-4B $\to$ Qwen3-1.7B,
+$36\to28$ proportional layer map. All runs use device CUDA, dtype
+\texttt{bfloat16}, kernel \texttt{sdpa}, and protocol version 2.0. Clean-data
+results reported here (run prefix \texttt{p1\_clean\_mvp\_*} and
+\texttt{e0\_clean\_mvp\_*}) are at commit \texttt{efc3ba3}.%
+\footnote{Data-integrity note: the \texttt{model\_pair} string in some earlier
+runs reads \texttt{qwen3-1.7b-to-0.6b} where the teacher/student paths and the
+$36\to28$ layer map show Qwen3-4B$\to$1.7B; the corrected label
+\texttt{qwen3-4b-to-1.7b} is recorded in
+\texttt{reports/runs\_index\_errata.json}. This affects metadata only, not any
+metric.}
 
-\subsection{Metrics: $E_{\mathrm{CF}}$ and mandatory joint reporting}
+\subsection{Metrics: $E_{\mathrm{CF}}$ and joint reporting}
 \label{sec:metrics}
 
 For a candidate pair, define $g(C,q)=\log P(A\mid C,q)-\log P(B\mid C,q)$ at a
@@ -470,428 +387,281 @@ E_{\mathrm{CF}} &= |D_{\mathrm{trans}}-D_{\mathrm{self}}|,\qquad
 \mathrm{normalized}\ E_{\mathrm{CF}}=\frac{|D_{\mathrm{trans}}-D_{\mathrm{self}}|}
 {|D_{\mathrm{self}}|+\tau},\quad \tau=1.0 .
 \end{align}
-The key interpretation guard: $E_{\mathrm{CF}}$ alone is not a quality measure.
-When $D_{\mathrm{self}}\approx0$, a constant output can achieve small
-$E_{\mathrm{CF}}$. Therefore $E_{\mathrm{CF}}$ is \emph{always} jointly reported
-with (i)~dual-side per-document success \texttt{dual\_correct}, (ii)~direction
-consistency \texttt{flip\_consistency} on the Self-valid subset
-$|D_{\mathrm{self}}|\ge0.1$, (iii)~coverage \texttt{coverage} of the native
-evaluable subset, and (iv)~the gap to no-information controls
-\texttt{info\_gap}/\texttt{info\_attribution}. A decrease in $E_{\mathrm{CF}}$
-without these joint signals is not counted as an improvement.
-
-\paragraph{Information-attribution reporting note.} In the current pipeline the
-control groups are emitted as separate arms, so the per-pair
-\texttt{info\_gap} field is unset; the aggregate equivalent
+$E_{\mathrm{CF}}$ is not a quality measure by itself: when
+$D_{\mathrm{self}}\approx0$, a constant output can achieve small
+$E_{\mathrm{CF}}$. It is therefore always jointly reported with dual-side
+per-document success \texttt{dual\_correct}, direction consistency
+\texttt{flip\_consistency} on the Self-valid subset $|D_{\mathrm{self}}|\ge0.1$,
+coverage \texttt{coverage}, and the gap to no-information controls
 \texttt{info\_attribution} (control-group $E_{\mathrm{CF}}$ minus Joint
-$E_{\mathrm{CF}}$) is reported instead. This deviation is recorded, not used
-to alter any frozen criterion. Positive values mean the correct cache carries
-identifiable information beyond the controls.
+$E_{\mathrm{CF}}$). In the current pipeline the control groups are separate
+arms, so the per-pair \texttt{info\_gap} field is unset and the aggregate
+\texttt{info\_attribution} is reported instead. Crucially, a high
+$E_{\mathrm{CF}}$ with collapsed dual correctness and non-dominated controls
+is classified as broken transfer, \emph{not} as a faithful-but-distorted
+response: the orthogonal \texttt{transfer\_broken} annotation captures this.
 
 \subsection{Primary endpoint and statistical discipline}
 \label{sec:stats}
 
-The primary endpoint is defined for the \emph{method} stage: the paired
-$E_{\mathrm{CF}}$ difference on the sealed test between a new method and the
-strongest behavioral baseline (\texttt{primary\_baseline=kd\_only}), with a
-template/source-cluster paired bootstrap (10{,}000 resamples, 95\% CI). An
-improvement is declared only if the CI \emph{upper bound} is $<0$; $\ge3$
-training seeds are required and multiple comparisons use Holm. A result with
-$P>0.05$ is not treated as evidence of equivalence. The P1 runs reported here
-are the \emph{benchmark} stage: they use no new method, so the paired endpoint
-is degenerate (point $0$) and \emph{no improvement claim is made}; their CIs
-quantify the gap of Joint above the Self anchor (which has $E_{\mathrm{CF}}=0$).
+The primary endpoint is the paired $E_{\mathrm{CF}}$ difference on the sealed
+test between a new method and the strongest behavioral baseline
+(\texttt{primary\_baseline=kd\_only}), with a template-family-cluster paired
+bootstrap (10{,}000 resamples, 95\% CI) and a pair-level sensitivity CI. A gain
+would require the CI upper bound $<0$ with no joint-metric degradation; $\ge3$
+seeds and Holm correction are required. This endpoint is \emph{not evaluated}:
+no method was trained and the sealed test was never run. $P>0.05$ is nowhere
+treated as evidence of equivalence. The frozen machine verdict
+\texttt{distortion\_exists} (from \texttt{distortion\_present} and
+\texttt{quality\_pass}) remains in the artifacts but, as documented in
+Section~\ref{sec:pending}, it must be read jointly with
+\texttt{transfer\_broken}; the two answer different questions.
 
 \subsection{Baselines and fair alignment}
 \label{sec:baselines}
 
-Design requirement: \texttt{affine}, \texttt{consumer}, \texttt{kd\_only},
-\texttt{score}, plus ridge, CE-only, contrastive, mismatched-document and
-receiver-only-adapted controls, all on the same calibration pairs, dtype/kernel,
-forward budget, trainable parameter count, training steps, and tuning budget,
-with ordinary QA and counterfactual QA reported together. In the P1 runs the
-mapped arm is an affine mapper with \emph{zero} trainable parameters (closed-form
-ridge initialization), so the headline comparison here is Joint vs.\ Self /
-Identity and against mismatched / random / zero information controls; the
-full matched-baseline comparison belongs to the unrun method stage.
+The design requirement is matched calibration pairs, dtype/kernel, forward
+budget, trainable parameter count, training steps, and tuning budget across
+\texttt{affine}, \texttt{consumer}, \texttt{kd\_only}, \texttt{score}, ridge,
+CE-only, contrastive, and mismatched-document controls. In the clean-data
+results below, the mapping arm is a zero-trainable-parameter affine mapper
+(closed-form ridge initialization); the matched \texttt{kd\_only} control on
+clean data is reported in Section~\ref{sec:pending}.
 
 % ===========================================================================
 \section{Results}
 \label{sec:results}
 
-We report only real GPU results from \texttt{reports/runs/}. No mock number is
-used. All values are transcribed from frozen \texttt{config.json}/\texttt{metrics.json}
-and the engineering status report; no statistic was recomputed for this draft.
-The main numeric tables use the \texttt{458de18} authoritative runs listed in
-Section~\ref{sec:models}; the superseded runs appear only in the provenance
-footnotes.%
-\footnote{Bootstrap CI endpoints depend on the bootstrap seed; point estimates
-are exact. The scoring pipeline and the audit script now both read
-\texttt{bootstrap\_seed} from each run config, and the endpoint differences
-between the two were resolved by reviewer item R5 (closed in review round 2).}
+\paragraph{Status of every table.} All numeric results below are transcribed
+from frozen \texttt{config.json}/\texttt{metrics.json}; no statistic was
+recomputed for this draft. Old P1/P2 runs computed on the pre-fix v2.0 corpus
+are \textbf{superseded} and are used only in the historical before/after
+comparison (Section~\ref{sec:reversal}); they are not positive evidence. The
+clean-data P1 table (Section~\ref{sec:mvp}) uses commit \texttt{efc3ba3};
+the clean \texttt{kd\_only} rerun is pending.
 
-\subsection{E0: implementation gate (P0)}
+\subsection{E0 implementation gate on clean data (P0)}
 \label{sec:e0}
 
-E0 isolates pure implementation residual by using one model as both capture and
-inject (identity mapper) on 40 probe pairs. Both model pairs pass:
-\begin{table}[t]
-\centering
-\caption{E0 implementation gate, authoritative run \texttt{e0\_gpu\_mvp\_repro\_seed0}
-(commit \texttt{458de18}, real GPU). All thresholds met; the measurement-error
-ceiling is orders of magnitude below the effect under study. ``cosine'' refers
-to first-token logit cosine on the candidate pair.}
-\label{tab:e0}
-\begin{tabular}{lcc}
-\toprule
-Check (threshold) & MVP 1.7B$\to$0.6B (repro) & Pass \\
-\midrule
-Self/Identity cosine ($\ge0.9998$) & $1.000000$ & yes \\
-First-token KL ($\le0.001$) & $0.000000$ & yes \\
-Argmax/EM agreement ($\ge0.929$) & $1.000$ (80/80) & yes \\
-Round-trip bit-identical & True (80/80) & yes \\
-zero\_re\_prefill assert & 80/80 True & yes \\
-Measurement-error ceiling & $2.2\times10^{-16}$ & yes \\
-Effect estimate / tolerance (ceiling $<$ effect/3) & $20.86$ / $6.95$ & yes \\
-\bottomrule
-\end{tabular}
-\end{table}
-A parallel E0 check on the 1.7B student for the non-equal-depth pair was
-performed in an earlier run (\texttt{e0\_gpu\_main\_seed0}) that is now
-superseded and has no \texttt{458de18} equivalent; its values are not used as
-evidence here.
-A supplementary diagnostic measures the full-vocabulary residual of a one-shot
-whole-document prefill against the cached-plus-query two-step path
-(min cosine $0.9993$, 47/80 below $0.9998$); this comes from the sdpa kernel
-taking different paths for whole-prefill vs.\ cached+query, not an
-implementation error, and is excluded from the E0 anchors (the injection path
-is bit-identical to the native two-step path, cosine $1.0$).
+The implementation gate was re-verified on the cleaned corpus (run
+\texttt{e0\_clean\_mvp\_seed0}, commit \texttt{efc3ba3}): Self/Identity
+first-token logit cosine $1.0$, first-token KL $0$, round-trip bit-identical,
+\texttt{zero\_re\_prefill} true on all checked sides, and a measurement-error
+ceiling of $2.2\times10^{-16}$ far below the effect scale. EM agreement is
+$0.975$. The gate passes; the reversal below is therefore not an implementation
+residual at the cache round-trip level.
 
-\subsection{P1 benchmark, MVP pair (equal depth, 1.7B$\to$0.6B)}
+\subsection{Clean-data P1 benchmark, MVP pair (equal depth)}
 \label{sec:mvp}
 
 \begin{table}[t]
 \centering
-\caption{P1 MVP pair, authoritative runs \texttt{p1\_gpu\_mvp\_repro\_seed\{0,1,2\}}
-(commit \texttt{458de18}), three seeds, validation split (60 pairs). Joint
-$E_{\mathrm{CF}}$ with 95\% cluster-paired bootstrap CI; joint dual correctness,
-flip consistency, coverage, and normalized $E_{\mathrm{CF}}$ reported jointly.
-Self/Identity have $E_{\mathrm{CF}}=0$ by construction. The superseded
-non-repro runs give identical values but are not cited here.}
-\label{tab:mvp}
-\begin{tabular}{cccccc}
+\caption{Clean-data P1 MVP pair (1.7B$\to$0.6B), runs
+\texttt{p1\_clean\_mvp\_seed\{0,1,2\}}, commit \texttt{efc3ba3}, validation
+split (60 pairs). Joint $E_{\mathrm{CF}}$ [95\% cluster-paired bootstrap CI]
+reported jointly with dual correctness, flip consistency, coverage, and the
+transfer-break flag. Self/Identity have $E_{\mathrm{CF}}=0$ by construction.
+These are \emph{failure-boundary} observations, not distortion evidence.}
+\label{tab:cleanmvp}
+\begin{tabular}{ccccccc}
 \toprule
-seed & Joint $E_{\mathrm{CF}}$ [95\% CI] & dual\_correct & flip\_consistency & coverage & norm.\ $E_{\mathrm{CF}}$ \\
+seed & Joint $E_{\mathrm{CF}}$ [95\% CI] & Self dual & Joint dual & flip & cov.\ & \texttt{transfer\_broken} \\
 \midrule
-0 & $1.968\;[1.614,2.324]$ & $0.667$ & $0.938$ & $0.800$ & $0.334$ \\
-1 & $1.934\;[1.569,2.311]$ & $0.650$ & $0.898$ & $0.817$ & $0.290$ \\
-2 & $2.123\;[1.695,2.571]$ & $0.617$ & $0.958$ & $0.800$ & $0.322$ \\
+0 & $6.900\;[5.499,8.313]$ & $0.817$ & $0.417$ & $0.750$ & $0.867$ & true \\
+1 & $8.159\;[6.647,9.702]$ & $0.900$ & $0.283$ & $0.736$ & $0.883$ & true \\
+2 & $8.540\;[7.057,10.062]$ & $0.783$ & $0.383$ & $0.755$ & $0.883$ & true \\
 \bottomrule
 \end{tabular}
 \end{table}
 
-Across the three seeds reported here, the Joint counterfactual gap has a CI
-whose lower bound lies above zero:
-transfer is \emph{not} counterfactually faithful. The Self anchor's own dual
-correctness is $0.683/0.600/0.650$ (the synthetic task is not trivially solved
-by the native model), and Joint stays close to it. Direction consistency is
-high ($0.90$--$0.96$), and coverage $\approx0.80$. Information controls on seed 0
-(control $E_{\mathrm{CF}}-$ Joint $E_{\mathrm{CF}}$: mismatch $+4.134$,
-random $+2.249$, zero $+4.191$) are positive: the correct cache carries
-identifiable information, so the observed gap is not a ``no-information''
-artifact. The K/V four arms (seed 0: K-only $0.630$, V-only $1.851$,
-Joint $1.968$; similar in seeds 1 and 2) show V-only close to Joint---the
-\emph{directional clue} that the residual concentrates on the Value-consumption
-side. This clue was subsequently quantified at P2 (Section~\ref{sec:p2}), where
-K-only $0.582$, V-only $1.626$, Joint $1.777$ on 40 pairs confirmed it, while
-K-only being nonzero rules out Value consumption as the sole cause.
+Across the three seeds the Joint arm's dual-side correctness collapses from a
+native $\approx0.78$--$0.90$ to $0.28$--$0.42$ (a drop of $\approx0.4$ on seed
+0, far above the $0.2$ diagnostic threshold), while $E_{\mathrm{CF}}$ rises to
+$6.90$--$8.54$. On seed 0 the Joint $E_{\mathrm{CF}}$ ($6.900$) approaches but
+does \emph{not} exceed the mismatched ($8.383$) and zero-cache ($8.584$) controls,
+while \texttt{dual\_correct} collapses from Self $\approx0.82$ to $0.417$; the
+information attributions are mixed (mismatch $+1.483$, zero $+1.684$, random
+$-0.135$).
+This mixed signal---a large $E_{\mathrm{CF}}$ with collapsed answer correctness
+and controls not uniformly dominated---is exactly why the large error is
+interpreted as transfer failure rather than a clean utility-preserving
+distortion. We report this as a \emph{failure boundary} of the tested affine
+mapper on this equal-depth pair; it is not evidence for H1.
 
-\subsection{P1 benchmark, main pair (non-equal depth, 4B$\to$1.7B)}
-\label{sec:main}
+\subsection{The reversal: before vs.\ after data repair}
+\label{sec:reversal}
 
 \begin{table}[t]
 \centering
-\caption{P1 main pair (non-equal depth), three seeds, validation split (60
-pairs). \textbf{Provenance-limited record}: no \texttt{458de18} rerun of this
-pair exists; these values come from the superseded runs
-\texttt{p1\_gpu\_main\_seed\{0,1,2\}} and are shown only to document the
-broken-transfer failure boundary, not as authoritative numeric evidence. Model
-pair corrected to \texttt{qwen3-4b-to-1.7b} per
-\texttt{reports/runs\_index\_errata.json}. Joint $E_{\mathrm{CF}}$ [95\% CI]
-reported jointly with Self and Joint dual correctness, flip consistency,
-coverage, and normalized $E_{\mathrm{CF}}$.}
-\label{tab:main}
-\begin{tabular}{ccccccc}
+\caption{Directional reversal caused by repairing the data. Old (v2.0) values
+are superseded; new (v2.1-corrected) values are from
+\texttt{p1\_clean\_mvp\_seed\{0,1,2\}}. Ranges across three seeds.}
+\label{tab:reversal}
+\begin{tabular}{lll}
 \toprule
-seed & Joint $E_{\mathrm{CF}}$ [95\% CI] & Self dual & Joint dual & flip & coverage & norm.\ $E_{\mathrm{CF}}$ \\
+Quantity & Old v2.0 (superseded) & Clean v2.1 (authoritative) \\
 \midrule
-0 & $6.044\;[4.741,7.365]$ & $0.733$ & $0.300$ & $0.490$ & $0.817$ & $0.812$ \\
-1 & $5.365\;[4.156,6.663]$ & $0.650$ & $0.283$ & $0.562$ & $0.800$ & $0.827$ \\
-2 & $6.080\;[4.847,7.395]$ & $0.783$ & $0.283$ & $0.542$ & $0.800$ & $0.995$ \\
+Joint $E_{\mathrm{CF}}$ & $1.93$--$2.12$ & $6.90$--$8.54$ \\
+Joint dual correctness & $0.617$--$0.667$ & $0.283$--$0.417$ \\
+Self dual correctness & $0.600$--$0.683$ & $0.783$--$0.900$ \\
+flip consistency & $0.898$--$0.958$ & $0.736$--$0.755$ \\
+\texttt{transfer\_broken} & false & true (all seeds) \\
 \bottomrule
 \end{tabular}
 \end{table}
 
-The preregistered phase-1 decision rule returns \texttt{distortion\_exists}
-for all three seeds (a large gap is present and the data-quality gate passes).
-However, this large gap is \emph{not} a clean utility-preserving distortion: it
-coincides with a collapse of transferred dual correctness and weak direction
-consistency (Section~\ref{sec:adverse}). Information attributions are mostly
-negative or near zero (seed 0: mismatch $-0.488$, random $+0.229$, zero
-$-0.447$; seed 1: $+1.414$, $+0.441$, $-0.040$; seed 2: $-0.248$, $-0.262$,
-$-0.617$): unlike the MVP pair, the correct cache is not clearly separated
-from mismatched/zero controls on this pair. No \texttt{kd\_only} baseline was
-run for this pair, so we cannot distinguish ``strong baseline still distorted''
-from ``transfer failed outright'' on the basis of a behavior-matched control;
-the broken-transfer annotation is the basis for the failure-boundary
-classification.
+The positive findings previously reported from this benchmark---an apparent
+utility-preserving gap and a localized Value-consumption mechanism---came from
+the v2.0 data. Repairing the degenerate pairs, cross-split leakage, and
+template overlap (Section~\ref{sec:datafix}) made those findings disappear and
+reverse into a transfer failure. We therefore \textbf{withdraw contribution~(1)}
+(we no longer claim a reproducible gap between transfer utility and
+counterfactual fidelity) and \textbf{withdraw contribution~(2)} (we no longer
+claim receiver-side Value-consumption localization). The old P1 gap values and
+the old P2 mechanism numbers (repair-vs-random $0.275$--$0.350$, four stable
+core units) were computed on defective data and are excluded from all positive
+conclusions; they survive here only as the historical side of
+Table~\ref{tab:reversal}. This reversal is the central methodological lesson:
+concrete data defects were sufficient to manufacture a statistically convincing
+but false scientific finding.
 
-\subsection{P2 mechanism evidence (MVP equal-depth pair, three seeds)}
-\label{sec:p2}
+\subsection{KD control and mechanism stage: pending / withdrawn}
+\label{sec:pending}
 
-The mechanism stage was executed on the MVP equal-depth pair (1.7B$\to$0.6B)
-with three seeds: runs \texttt{p2\_gpu\_mvp\_seed0\_delta\_rand\_audit} (the F1
-pairwise-recomputation audit of seed 0), \texttt{p2\_gpu\_mvp\_seed1}, and
-\texttt{p2\_gpu\_mvp\_seed2}, all at commit \texttt{6784780}, with
-\texttt{zero\_re\_prefill=true} and forward counts
-$\{\mathrm{capture}=0,\mathrm{oracle}=0\}$. All three runs met the E2 criteria
-and yielded verdict \texttt{mechanism\_predictive}; the head-line
-repair-vs-random CI was independently recomputed pairwise from the frozen
-artifacts (F1 closed), and the three-seed requirement (F2) is satisfied.
+\begin{itemize}
+\item \textbf{Clean-data \texttt{kd\_only} (three seeds, commit
+      \texttt{6413ba0}): utility preserved, exploratory gap remains.} Table
+      \ref{tab:cleankd} reports the matched baseline on the cleaned corpus:
+      joint $E_{\mathrm{CF}}$ $6.388\;[5.360,7.400]$,
+      $6.479\;[5.419,7.539]$, $7.211\;[6.078,8.322]$; joint dual
+      $0.700$/$0.733$/$0.767$ (dual drop $0.117$/$0.167$/$0.017$); flip
+      $0.942$/$0.906$/$0.925$; all seeds \texttt{transfer\_broken=false}.
+      Unlike the affine arm, \texttt{kd\_only} preserves transfer utility, yet
+      its $E_{\mathrm{CF}}$ is still stable and far from zero. Per the PI
+      final ruling this is \emph{scenario C}, and the nonzero gap is reported
+      \emph{only as an exploratory observation}: under v2.3
+      \texttt{exploratory=true} (8 \texttt{template\_family} clusters $<24$),
+      a single synthetic equal-depth pair, and no evaluated primary endpoint, it
+      is \emph{not} restored as a protocol~\S10 contribution.
 
-\paragraph{Four arms (40 pairs per arm).} Self $0$, K-only $0.582$, V-only
-$1.626$, Joint $1.777$. Only Joint has \texttt{deployable=true}; K-only and
-V-only mix one mapped and one native cache half and are offline diagnostics.
-V-only $\approx$ Joint quantitatively confirms the P1 direction; K-only being
-nonzero means Value consumption is not the sole cause.
-
-\paragraph{Routing/consumption decomposition.} Over 17,920 units the mean
-routing norm is $24.846$ and the mean consumption norm $21.839$, with maximum
-residual $2.96\times10^{-13}$ ($\approx0$ at tolerance $10^{-3}$). $d_A$ and
-$d_B$ were diagnosed separately before taking differences. This is a local,
-fixed-query algebraic identity, \emph{not} a global causal decomposition of
-task loss.
-
-\paragraph{Oracle held-out prediction.} For each seed the candidate unit set
-$U$ was chosen on 8 training pairs (5,376 units scored) and tested on 40
-held-out validation pairs with zero pair overlap, train/val prefix isolation,
-and no use of the sealed test. Repair hit rates for $U$ versus random units
-were $0.725/0.450$, $0.725/0.450$, and $0.750/0.400$, with paired differences
-$0.275\;[0.150,0.425]$, $0.275\;[0.125,0.425]$, and $0.350\;[0.200,0.500]$
-(all lower bounds $>0$) and direction consistency $0.725$/$0.725$/$0.750$.
-Selected units are mostly V or both channels (no pure-K unit), concentrated at
-layer 12/head 5 and layer 25/head 4. Four core units
-$(12,5,\mathrm{V/both})$ and $(25,4,\mathrm{V/both})$ recur in all three seeds;
-the fifth drifts marginally (seed 0: $(14,1,\mathrm{V})$, seed 1:
-$(24,2,\mathrm{both})$, seed 2: $(14,1,\mathrm{both})$). We therefore describe
-Value consumption as the reparable \emph{primary} locus with Key routing as an
-\emph{accompanying} attention-redistribution effect --- not an exclusive or
-causal claim, and not a claim of a perfectly stable unit set.
-
-\paragraph{Interpretation, scope, and audit status.} The three E2 criteria are
-\emph{not} three independent lines of evidence: repair-vs-random and direction
-consistency share the unit-hit component (two statistical signals plus a
-majority-threshold restatement), with the near-zero residual as a numerical
-sanity check. The head-line repair-vs-random CI has been recomputed pairwise
-from the frozen artifacts by the audit run
-\texttt{p2\_gpu\_mvp\_seed0\_delta\_rand\_audit} (F1 closed), and the evidence
-now spans three seeds (F2 closed). Hit rates ($0.725$--$0.750$) and effect
-points ($0.275$--$0.350$) vary modestly across seeds, and the fifth unit drifts
-marginally, so we claim core-unit stability but not per-unit invariance. All
-mechanism claims are confined to the MVP equal-depth pair: the decomposition
-is a local, fixed-query identity, Oracle states are offline diagnostics only,
-and we make no causal or cross-model-pair assertion. Source:
-\texttt{reports/runs/p2\_gpu\_mvp\_seed\{0,1,2\}/mechanism.json},
-\texttt{reports/p2\_seed\_robustness.json}, and reviewer report
-\texttt{reports/review/p2\_f1f2\_closure\_review.md}.
+\begin{table}[t]
+\centering
+\caption{Clean-data \texttt{kd\_only} baseline, runs
+\texttt{p1\_kd\_clean\_mvp\_seed\{0,1,2\}}, commit \texttt{6413ba0}, validation
+split. Joint $E_{\mathrm{CF}}$ [95\% CI], joint dual with drop from Self, flip
+consistency, coverage, and the transfer-break flag. All CIs are
+\texttt{exploratory} under v2.3.}
+\label{tab:cleankd}
+\begin{tabular}{ccccccc}
+\toprule
+seed & Joint $E_{\mathrm{CF}}$ [95\% CI] & joint dual (drop) & flip & cov.\ & \texttt{transfer\_broken} \\
+\midrule
+0 & $6.388\;[5.360,7.400]$ & $0.700\;(0.117)$ & $0.942$ & $0.867$ & false \\
+1 & $6.479\;[5.419,7.539]$ & $0.733\;(0.167)$ & $0.906$ & $0.883$ & false \\
+2 & $7.211\;[6.078,8.322]$ & $0.767\;(0.017)$ & $0.925$ & $0.883$ & false \\
+\bottomrule
+\end{tabular}
+\end{table}
+\item \textbf{Frozen machine verdict vs.\ \texttt{transfer\_broken}.} The frozen
+      \texttt{phase1\_benchmark\_decision.yaml} rule maps
+      \{distortion\_present, quality\_pass\} to \texttt{distortion\_exists};
+      on clean data both inputs hold, so the machine verdict remains
+      \texttt{distortion\_exists}. But \texttt{quality\_pass} denotes only the
+      data-quality gate, not transfer utility, and the orthogonally annotated
+      \texttt{transfer\_broken=true} classifies the result as a failure
+      boundary. We do not read the verdict alone as evidence of a clean
+      distortion, and we disclose the coexistence of the two fields.
+\item \textbf{Mechanism stage (P2): withdrawn / not run on clean data.} The PI
+      has cancelled the planned P2 clean-data rerun: the premise of mechanism
+      localization (a clean distortion) is gone. No mechanism claim is made.
+\item \textbf{Primary endpoint / P3: not evaluated / suspended.} The paired
+      $E_{\mathrm{CF}}$ vs.\ \texttt{kd\_only} CI is unevaluated; no CF-RCT
+      method was trained; P3 is suspended for practical purposes. Contribution
+      (3) remains withheld.
+\end{itemize}
 
 \subsection{Adverse results and boundaries}
 \label{sec:adverse}
 
-We report the following unfavorable observations explicitly, as required by the
-protocol:
 \begin{enumerate}
-\item \textbf{Quality degradation on the main pair.} Joint dual correctness
-      falls from the native $0.65$--$0.78$ to $0.28$--$0.30$ in all three seeds,
-      and flip consistency is only $0.49$--$0.56$. Joint $E_{\mathrm{CF}}$
-      (approx.\ $5.4$--$6.1$) is close to or above the mismatched-document and
-      zero-cache controls. This is a real GPU result; we neither hide it nor
-      tune around it. It means the non-equal-depth affine transfer largely
-      \emph{fails}, and a high $E_{\mathrm{CF}}$ here reflects broken transfer
-      rather than a well-behaved counterfactual distortion. Following the PI
-      ruling (P1 Go/No-Go, \S4), this pair is recorded as a
-      \textbf{transfer-failure boundary} and is \emph{not} counted as positive
-      evidence for H1 (``counterfactual distortion exists''); the only current
-      distortion candidate is the MVP pair, and even that candidate rests on
-      three \texttt{kd\_only} seeds with an unequal training budget
-      (Section~\ref{sec:pending}); it is a persistent gap across seeds, not a
-      method-level improvement.
-\item \textbf{Meaning of \texttt{quality\_pass} vs.\ the machine-readable
-      verdict.} In this pipeline \texttt{quality\_pass=true} denotes only the
-      \emph{data-quality gate} (split isolation, empty train/eval template
-      overlap, annotation consistency); it contains no criterion of model
-      transfer utility. Because the frozen
-      \texttt{phase1\_benchmark\_decision} rule consumes
-      \{distortion\_present, quality\_pass\} as inputs, the machine-readable
-      verdict for the main pair is \texttt{distortion\_exists} even though the
-      narrative above classifies it as broken transfer: the two differ because
-      the flag and the verdict answer different questions. We therefore do not
-      read the verdict alone as evidence of a clean, utility-preserving
-      distortion; the metadata erratum
-      (\texttt{reports/runs\_index\_errata.json}) adds an orthogonal
-      \texttt{transfer\_broken} annotation without altering the frozen verdict.
-\item \textbf{V-only $\approx$ Joint on MVP.} The V-only arm nearly matches
-      Joint while K-only is small. E2 has since been executed (Section~\ref{sec:p2}),
-      confirmed at P2 across three seeds; K-only is nonzero, so Value
-      consumption is not the sole cause. The core-unit localization is stable
-      across seeds, with one marginal unit drifting.
-\item \textbf{Dual correctness below $0.7$ on MVP too ($0.62$--$0.67$).} The
-      native Self anchor itself is imperfect on these synthetic templates; this
-      is genuine model behavior not masked by any mock bias, and it would
-      trigger a \texttt{tradeoff} review if carried into a method comparison.
-\item \textbf{P3/P4 not run; P2 closed across three seeds.} P2 produced
-      \texttt{mechanism\_predictive} in all three seeds with the pairwise CI
-      recomputation audit closed (Section~\ref{sec:p2}). No \texttt{CF-RCT} training
-      (though $\delta=0.5$ is locked on validation data), no sealed test, no
-      generalization or cost measurement; these stages support no further
-      conclusion.
-\item \textbf{Huber $\delta$ locked, but no positive method direction.} The
-      validation grid is complete and the PI locked $\delta=0.5$ under the
-      hard-guardrail reading of ``not worse than \texttt{kd\_only}'':
-      $\delta=0.5$ has dual 0.700 and flip 1.000 with ordinary QA unchanged;
-      $\delta=1.0$ attains the smallest val $E_{\mathrm{CF}}$ (1.5968) but
-      violates the guardrail (dual 0.650 < 0.700); $\delta=2.0$ violates it
-      twice (dual 0.533, flip 0.958). All three candidate $E_{\mathrm{CF}}$
-      values (2.7496 / 1.5968 / 2.7625) are above \texttt{kd\_only} (0.735):
-      no $\delta$ in this grid makes CF-RCT-lite beat \texttt{kd\_only}, a real
-      adverse signal for P3. The grid used 60 pairs / 3 epochs versus 120 pairs
-      / 8 epochs for the \texttt{kd\_only} reference (unequal budget), and
-      $\delta=0.5$ meets the guardrail exactly (``on the line''); these caveats
-      are disclosed and do not justify relaxing the guardrail. P3/P5 remain
-      unrun, so no method-stage conclusion is drawn.
-\item \textbf{Confound caveats.} The E0 effect estimate uses multi-token
-      sequence log-probabilities (scale $\sim20$) while the main endpoint uses
-      2-dimensional candidate logits; because the measurement-error ceiling is
-      $2.2\times10^{-16}$ this does not affect the E0 decision. The one-shot
-      full-vocabulary kernel-path residual is disclosed above. The
-      \texttt{model\_pair} string of the main runs is mislabeled (footnote in
-      Section~\ref{sec:models}).
+\item \textbf{Quality collapse is the dominant observation.} On clean data the
+      Joint arm's \texttt{dual\_correct} collapses to $0.283$--$0.417$ from
+      Self $\approx0.82$, and its joint $E_{\mathrm{CF}}$ approaches but does
+      not exceed the mismatched/zero-cache controls. This is a real GPU result,
+      reported without tuning; the broken-transfer label rests on the dual
+      collapse, not on reaching the controls.
+\item \textbf{Mixed control signal.} Some information attributions are positive
+      (mismatch, zero) while random is negative, alongside the dual collapse
+      (Section~\ref{sec:mvp}). The failure classification rests on the joint
+      pattern (collapsed correctness + non-dominated controls), and an
+      adversarial review of whether this is an implementation bug versus a
+      genuine failure boundary is in progress.
+\item \textbf{Earlier non-equal-depth failure.} The non-equal-depth pair
+      (4B$\to$1.7B) previously showed joint dual $\approx0.28$--$0.30$ and was
+      classified as a broken-transfer boundary; those runs are superseded
+      (pre-fix data) and no clean-data equivalent exists.
+\item \textbf{Prior positive signals were data artifacts.} The reversal in
+      Section~\ref{sec:reversal} means the previously reported gap and
+      mechanism are not reproducible once the data are correct.
+\item \textbf{Unretrieved limitations.} Synthetic-only data, \texttt{real=0},
+      no external anchors, a single equal-depth pair, and F5-concentrated
+      length mismatch all bound the conclusion (Section~\ref{sec:datafix}).
+\item \textbf{Statistical caveat.} Old pairwise CIs were computed on 8 template
+      families and are exploratory under v2.3; clean-data CIs use
+      \texttt{template\_family} as the primary cluster with a required
+      pair-level sensitivity (not reported as the sole result here).
 \end{enumerate}
-Because the primary endpoint (paired $E_{\mathrm{CF}}$ vs.\ \texttt{kd\_only},
-CI upper $<0$) has not been evaluated, we make \emph{no} claim of an endpoint
-gain anywhere in this paper, and $P>0.05$ is nowhere interpreted as
-equivalence.
-
-\subsection{Strong baseline, $\delta$ lock, and endpoint status}
-\label{sec:pending}
-
-We summarize the available strong-baseline evidence and state explicitly which
-quantities remain unevaluated.
-
-\begin{itemize}
-\item \textbf{Strong behavioral baseline (\texttt{kd\_only}): three seeds.}
-      The P1 mapping arm is an affine mapper with zero trainable parameters, so
-      by itself it cannot test whether a strong behavioral mapper retains the
-      gap. On the MVP pair, \texttt{kd\_only} gives joint
-      $E_{\mathrm{CF}}=0.735\;[0.552,0.934]$ (dual 0.700, flip 1.000, coverage
-      0.800) for seed 0, $1.034\;[0.766,1.328]$ (dual 0.633, flip 1.000,
-      coverage 0.817) for seed 1, and $1.539\;[1.148,1.959]$ (dual 0.683, flip
-      0.979, coverage 0.800) for seed 2. All three have
-      \texttt{distortion\_present=true} and \texttt{transfer\_broken=false}.
-      Across the three seeds \texttt{kd\_only} narrows but does \emph{not}
-      eliminate the affine gap: $E_{\mathrm{CF}}$ ranges $0.735$--$1.539$ and
-      dual $0.633$--$0.700$, with every CI lower bound ($0.552$, $0.766$,
-      $1.148$) above zero. Seed 0 used 120 pairs/8 epochs at commit
-      \texttt{458de18}; seeds 1 and 2 used 120 pairs/8 epochs at commit
-      \texttt{a04990d}, an ancestry descendant of \texttt{458de18} with
-      identical run code under the round-2 audit. The unequal budget relative
-      to the $\delta$ grid (60 pairs/3 epochs) remains and is disclosed, but
-      the multi-seed evidence is complete. The gap being nonzero in all three
-      seeds is not a finding that the strong baseline is ``close to Self'';
-      equally, it does not establish a gain for CF-RCT, whose primary endpoint
-      is unevaluated. No \texttt{kd\_only} run exists for the non-equal-depth
-      pair.
-\item \textbf{Provenance-remediation reruns (complete).} The E0 gate and the
-      P1 MVP joint arm are now taken from \texttt{e0\_gpu\_mvp\_repro\_seed0}
-      and \texttt{p1\_gpu\_mvp\_repro\_seed\{0,1,2\}} (all
-      \texttt{git\_hash=458de18}); their values match the earlier
-      \texttt{53e9bc5} runs, which are now superseded and used only as a
-      cross-check. The non-equal-depth pair has no \texttt{458de18} rerun, so
-      it remains a provenance-limited record.
-\item \textbf{Primary endpoint: not evaluated.} The primary endpoint is the
-      paired $E_{\mathrm{CF}}$ difference between a new method and
-      \texttt{kd\_only} on the sealed test, with a cluster-paired 95\% CI; a
-      gain may be declared only if the CI upper bound is $<0$ and the jointly
-      reported metrics do not degrade. No CF-RCT model was trained, the sealed
-      test was never run, and no such paired CI exists. We therefore draw
-      \emph{no} conclusion about the primary endpoint, and $P>0.05$ is nowhere
-      read as equivalence. The three-seed \texttt{kd\_only} evidence shows a
-      persistent gap (all CI lower bounds $>0$, range $0.735$--$1.539$), so
-      ``strong baseline near Self'' is not supported; however, its unequal
-      budget and the absence of any CF-RCT endpoint mean no decision-tree
-      branch is confirmed by this evidence alone; P3/P4 remain unrun, while P2
-      is fully closed across three seeds.
-\end{itemize}
 
 % ===========================================================================
 \section{Conclusion and Limitations}
 \label{sec:conclusion}
 
-We introduced an evaluation layer for counterfactual functional fidelity in
-cross-model KV handoff and reported a preregistered, real-GPU benchmark.
-A machine-precision measurement gate establishes that the observed effects are
-not implementation artifacts. On an equal-depth pair, transfer exhibits a
-counterfactual gap whose CI excludes zero while ordinary direction
-consistency is largely preserved. On a non-equal-depth pair, the same gap is
-large but accompanied by a severe loss of answer correctness, delimiting a
-failure boundary for the current affine transfer.
+We set out to measure counterfactual functional fidelity in cross-model KV
+handoff. The earlier positive findings from this benchmark are withdrawn: they
+were produced by a synthetic corpus with degenerate pairs, cross-split
+document leakage, template-skeleton overlap, and a degenerate bootstrap. After
+rebuilding the corpus with those defects removed (acceptance 11/11; v2.3
+statistics), the apparent utility-preserving gap reverses into a
+\emph{transfer failure}: on the equal-depth MVP pair the tested affine mapper
+collapses \texttt{dual\_correct} to $0.28$--$0.42$ (from Self $\approx0.82$)
+while joint $E_{\mathrm{CF}}$ rises to $6.90$--$8.54$, approaching but not
+exceeding the no-information controls, with \texttt{transfer\_broken=true} on
+all three seeds.
 
-The evidence supports contribution (1) and contribution (2), but not
-contribution (3). Contribution (1) is limited to the affine/ridge
-mapper tested here; the three-seed \texttt{kd\_only} evidence narrows that gap
-without eliminating it, and the other strong baselines
-(\texttt{consumer}, \texttt{score}, ridge) are not evaluated. Contribution (2)
-rests on three-seed, MVP-pair held-out predictive evidence localizing the gap
-to receiver-side Value-consumption pathways with accompanying Key routing,
-reported without causal or cross-model-pair claims (Section~\ref{sec:p2}).
-There is \emph{no} trained
-method evaluated on the paired endpoint; the CF-RCT design is presented
-strictly as pending validation. The non-equal-depth results are a transfer-failure
-boundary and are not counted as positive evidence for H1. All experiments use
-synthetic templates, so the applicability of these observations to other
-domains or model families is not established. The main numeric tables come
-from the reproducible \texttt{458de18} runs described in
-Section~\ref{sec:models}; the non-equal-depth pair has no such rerun and is
-retained only as a provenance-limited failure-boundary record. Across three
-seeds \texttt{kd\_only} narrows the affine gap without eliminating it (all CI
-lower bounds above zero); the unequal budget remains a caveat and the locked
-$\delta=0.5$ grid gives no positive method direction. Following the
-decision tree
-(protocol~\S8), this work should
-be written and positioned as a \emph{boundary / empirical study}, not as a
-high-level method paper. Future work would need to (i)~test the mechanism
-localization on non-equal-depth pairs (E5/P4) before any cross-model-pair claim;
-(ii)~train CF-RCT-lite/mech, lock $\delta$ on validation, and evaluate the
-paired endpoint against \texttt{kd\_only} with $\ge3$ seeds and Holm; and
-(iii)~run generalization and cost stages before any claim of deployability or
-speedup. Until then, contribution (3) is withheld.
+The paper therefore reports a \textbf{negative / empirical boundary study}
+with two findings and no positive contribution in the sense of protocol~\S10.
+First, a failure boundary of affine KV transfer under the present data
+construction on one equal-depth pair. Second, a methodological lesson: concrete
+data-quality defects were sufficient to manufacture a statistically convincing
+but false positive, and repairing them erased the finding. This is a warning
+for synthetic benchmark design in KV transfer and, more broadly, for
+counterfactual evaluation claims that rest on template-generated data.
+
+We make \emph{no} claim of a general counterfactual gap, of a receiver-side
+mechanism, or of any method improvement. Contribution~(3) remains withheld;
+the primary endpoint (paired $E_{\mathrm{CF}}$ vs.\ \texttt{kd\_only}, CI upper
+$<0$) is unevaluated; P2/P3/P4 are not run or suspended; the sealed test was
+never evaluated; and $P>0.05$ is not treated as equivalence. Mock numbers are
+not scientific evidence. The clean-data \texttt{kd\_only} control is pending and
+will determine whether the failure is specific to the affine mapper or common
+to all tested mappers. Accordingly, \textbf{submission is deferred} pending the
+\texttt{kd\_only} result, completion of the adversarial review of the broken-
+transfer judgement, and PI sign-off. All data are synthetic, there are no real
+documents or external anchors, and the only clean-data evidence is a single
+equal-depth model pair; these limits bound every conclusion above.
 
 % ===========================================================================
 \section*{Appendix A: Figures, tables, and submission materials}
 
-Figure~\ref{fig:f1}--\ref{fig:f3} are textual placeholders; the complete figure
-plan (Figures~1--7) and Tables~1--3, a cover-letter outline, and reviewer
-response templates are maintained in \texttt{papers/readkv\_v2\_draft/notes.md}.
-All figures and tables must be generated directly from the frozen result files
-without recomputing statistics. Figures~4--7 (native vs.\ transferred response
-scatter, layer/head error heatmap with Oracle repair, method ablation,
-generalization and cost--Pareto) are deferred until their underlying stages are
-actually run; they must not be fabricated. Figure~5 material (layer/head error
-heatmap with Oracle repair) is available from the P2 run
-the P2 runs (\texttt{p2\_gpu\_mvp\_seed\{0,1,2\}} and the audit run
-\texttt{p2\_gpu\_mvp\_seed0\_delta\_rand\_audit}; \texttt{mechanism.json},
-\texttt{mechanism\_units.jsonl}, \texttt{decomposition.jsonl}) and may be drawn
-from those frozen artifacts; Figures~6--7 await P3/P4.
+Figure~\ref{fig:f1}--\ref{fig:f3} are textual placeholders; a complete figure
+plan and submission materials are maintained in
+\texttt{papers/readkv\_v2\_draft/notes.md}. All figures and tables must be
+generated directly from frozen result files without recomputing statistics.
+Figures~4--7 (response-difference scatter, any mechanism heatmap, method
+ablation, generalization/cost) are deferred: the mechanism and method results
+were withdrawn or never run, and must not be fabricated. Table~\ref{tab:datafix},
+Table~\ref{tab:cleanmvp}, and Table~\ref{tab:reversal} are generated from the
+data-fix report and the clean/superseded run artifacts as transcribed above.
 
 \bibliographystyle{plain}
 \begin{thebibliography}{9}

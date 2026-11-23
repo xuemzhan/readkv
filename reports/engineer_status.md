@@ -258,3 +258,56 @@ V-only≈Joint（1.626 vs 1.777），K-only 仅 0.582 —— **定量确认 P1 �
 ### 仍需人工决策
 
 F1/F2 已技术闭环；贡献(2) 措辞升格（限定→强形式）、投递时机、作者署名/期刊仍属 PI/人工决策。P3/P4 NO-GO、贡献(3) withheld 维持。
+
+
+---
+
+## 12. P3 暂停状态说明（PI data_readiness_ruling，2026-11-23）
+
+- **暂停原因**：数据正确性缺陷——18 条 `candidate_A==candidate_B && must_flip=true` 退化对、≥15 组跨 split 逐字文档泄漏（含 train↔test 整对）、bootstrap 簇退化为逐对 i.i.d.（CI 系统性偏窄）、flip 分母口径冲突（394 vs 457）；封存 test 已被污染，在其上跑 P3 主终点既不可发表也会消耗唯一封存评测机会。
+- **暂停时点**：2026-11-23，PI 裁决签发后立即生效；暂停发生在**任何正式 P3 test run 启动之前**。核查确认：无正在运行/排队中的 P3 正式 run；`reports/runs/` 下无任何 `p3_*` 产物；唯一 P3 产物为 `reports/_non_authoritative/p3_smoke_cflite_seed0`（已标 non-authoritative，scores 仅 val，**未读 test 标签**），不得作为证据引用。
+- **已完成的实现（允许范围内）**：`experiments/P3_gpu.py`（kd/cf_lite/cf_mech 三法入口、主终点=封存 test 上 vs kd_only 成对 E_CF 差异）、`GPUBackend.torch_candidate_logits`（可微、学生冻结、无人工偏置）、三法预算配平与逐步 loss 日志；commit `885a36a` → `ee74382`（HEAD），跑分路径工作区 clean、`git diff ee74382 HEAD` 为空；非 test 烟测门 PASS（梯度回传 448/448、学生梯度 0、loss 下降、schema/provenance 齐全），详见 `reports/p3_smoke_report.md`。
+- **未产出的正式证据**：无 P3 正式 run、无 test 评测、无主终点（cf vs kd_only 成对 E_CF 差异）真实结果；贡献(3) 维持 withheld；P3 阶段维持 NO-GO/暂停，不得以烟测数字充当证据。
+- **重启条件**：M1（退化对修复+重建）、M2（跨 split 去重）、M6′（聚类单元口径新版本文件）、M7′（flip 分母新版本文件）完成，数据重建 + manifest 更新，P1/P2 在干净数据上重跑确认 gap/机制仍成立，且统计口径新版本文件落地后，按 `p3_task_plan` 门控串行重启 P3；主终点须用新版本文件冻结的聚类口径。
+- **并行边界**：暂停期间不编辑 `data/**`、`src/readkv/data/**`、`scripts/**`（含 bootstrap/一致性脚本）与 manifest（数据工程师负责），不重跑任何 test 评测；仅保留上述 P3 实现收尾、非 test 烟测与单元测试。
+
+
+---
+
+## 13. 干净数据重跑结果（PI data_readiness_ruling + clean_data_reversal_ruling，2026-11-23）
+
+**数据**：新 sha256 `f910f1f1…a894a`，520 对（probe40/train120/val60/test300），退化对 0、跨 split 重叠 0、实体重叠 0、flip 分母 398；统计口径 v2.3（template_family 主 + pair-level 敏感性）。数据修复代码 commit `efc3ba3`；PI 回填 v2.3 的 commit `6413ba0`（HEAD）；`git diff efc3ba3 HEAD -- <跑分路径>` 为空，跑分路径 clean。
+
+### 13.1 已完成的重跑（7 个新 run，全部通过 consistency_check）
+
+- **E0**：`e0_clean_mvp_seed0` —— PASS（cosine 1.0、KL 0、EM 0.975、round-trip bit-identical、zero-re-prefill 全通过，git_hash=efc3ba3）。
+- **P1（affine）三 seed**：`p1_clean_mvp_seed0/1/2`（git_hash=efc3ba3）—— joint E_CF **6.900 [5.499,8.313] / 8.159 [6.647,9.702] / 8.540 [7.057,10.062]**；dual **0.417 / 0.283 / 0.383**（Self ≈0.82），flip 0.75/0.74/0.76，coverage 0.87/0.88/0.88；**三 seed 全部 `transfer_broken=true`**。机器 verdict 仍为 `distortion_exists`（冻结判据未改），但科学定性为**迁移失败边界**。
+- **kd_only 三 seed**：`p1_kd_clean_mvp_seed0/1/2`（git_hash=6413ba0，PI 的 v2.3 commit）—— E_CF **6.388 [5.360,7.400] / 6.479 [5.419,7.539] / 7.211 [6.078,8.322]**；Self dual 0.817/0.900/0.783，joint dual **0.700/0.733/0.767**（drop 0.117/0.167/0.017 <0.2），flip 0.942/0.906/0.925，coverage 0.867/0.883/0.883；**三 seed 全部 `transfer_broken=false`**。
+
+### 13.2 P1 gap 与机制状态
+
+- **gap 仍存在但性质翻转**：干净数据上 affine 的 E_CF 6.90–8.54 远大于旧数据的 1.93–2.12，且 dual 从 0.62–0.67 坍塌到 0.28–0.42、与错配/零缓存控制相当（mismatch 8.38、zero 8.58）——**这是迁移失败，不是 utility-preserving 的干净失真**。旧数据的正向 gap 信号源于数据缺陷（紧急裁决 §1）。
+- **kd_only 不是 broken**（dual 保持 0.70–0.77、drop<0.2），但 E_CF 6.39–7.21 仍稳定非零、远非「接近 Self」；按 PI §3.3 预承诺，属**情形 C**（kd 不 broken 但仍有稳定小/非零 gap）→ 边界研究，贡献(1)(2) 撤回、贡献(3) withheld。engineering 不自行重判。
+- **v2.3 审计口径**：bootstrap 主 CI 用 template_family、pair-level 敏感性同报；val 仅 8 个 template_family 簇（<24）→ `exploratory=true`，template-family CI 明显宽于 pair-level（例 seed0 joint 6.900 [3.564,10.100] vs pair [5.496,8.321]）；flip 分母 398。
+
+### 13.3 未运行项（按紧急裁决，非工程遗漏）
+
+- **δ=0.5 复核**：未启动 / 取消（P3 无意义）。**δ 无需 PI 重裁**——无新复核证据，v2.2 的 δ=0.5 形式登记不变。
+- **P2 三 seed 重跑**：未启动 / 取消（机制前提塌陷，旧 P2 证据撤回）。
+- **P3 正式 run**：维持暂停 / 实质取消。
+
+### 13.4 审计与产物
+
+- 7 个新 run 全部通过 `consistency_check`（git_hash/zero_re_prefill/dtype/kernel/model_pair 齐全）；`bootstrap_ci_report` 按 v2.3 输出 template-family 主 CI + pair-level 敏感性；`pytest` 53/53。
+- 产物：`reports/runs/e0_clean_mvp_seed0/`、`p1_clean_mvp_seed{0,1,2}/`、`p1_kd_clean_mvp_seed{0,1,2}/`；汇总 `reports/clean_data_rerun_summary.json`、`reports/consistency_report.json`。总耗时约 65 分钟（3923 s）。
+- 旧 run 全部溯源过期，在索引中已标 superseded，不删除、不作为证据；已写作者须按紧急裁决撤回正向 claim。
+
+
+---
+
+## 14. S1 溯源勘误（final_boundary_study_signoff §2 S1，2026-11-23）
+
+- **新增勘误文件**：`reports/data_hash_binding_erratum.json`（仅 metadata，不改任何既有 scores.jsonl / config.json / metrics.json）。
+- **绑定内容**：7 个 clean run（E0 `e0_clean_mvp_seed0`；P1 `p1_clean_mvp_seed0/1/2`；kd_only `p1_kd_clean_mvp_seed0/1/2`）的实际数据 sha256 = `f910f1f1196a21041765834654af8233d216ef4bf4f28f4c60abbd0641aa894a`（源于 `data/tasks/manifest.json::files[cf_pairs.jsonl].sha256`，与磁盘实测一致），并逐 run 记 commit（efc3ba3 / 6413ba0）。
+- **性质**：原 run config 未记录 data_sha256 属溯源遗漏（记录不全），非数据不一致；数据修复先于全部 clean run，跑分代码在两 commit 间逐字未变。
+- **未重跑任何实验**；`configs/prereg/**`、`data/**`、论文、任何已有 run 产物均未改。S2（manifest 的 v2.3 sha 回填前/后注记）属数据工程师侧残留，未在本文件处理。

@@ -1,0 +1,140 @@
+{
+  "gate": {
+    "passed": true,
+    "min_logit_cosine": 1.0,
+    "max_first_token_kl": 0.0,
+    "round_trip_ok": true,
+    "identity_self_gap": 0.0,
+    "n_samples": 0,
+    "measurement_error_ceiling": 2.220446049250313e-16,
+    "effect_size_floor": 7.961552670442163,
+    "n_cosines_below_reference": 0,
+    "cosine_reference": 0.9998,
+    "note": "E0 主判据为测量误差上限显著低于待研究效应；cosine≥0.9998 仅为 V1 继承参考",
+    "n_sides": 80,
+    "em_agreement": 0.975,
+    "zero_re_prefill_all": true,
+    "effect_estimate": 23.88465801132649,
+    "effect_method": "mean(|D_self|) on |D_self|>=0.1 subset (else median)",
+    "tolerance_effect_over_3": 7.961552670442163,
+    "min_cosine": 0.9999999999999998,
+    "max_kl": 0.0,
+    "n_valid_self": 36
+  },
+  "passed": true,
+  "data_quality": {
+    "total": 40,
+    "by_slice": {
+      "F1": 9,
+      "F2": 9,
+      "F3": 8,
+      "F4": 6,
+      "F5": 4,
+      "F6": 4
+    },
+    "by_split": {
+      "probe": 40
+    },
+    "length_mismatch": 4,
+    "length_mismatch_by_slice": {
+      "F5": 4
+    },
+    "length_mismatch_by_split": {
+      "probe": 4
+    },
+    "f5_negative_controls": 4,
+    "flip_denominator": 32,
+    "flip_denominator_excludes": [
+      "F5",
+      "F6"
+    ],
+    "degenerate_must_flip_pairs": 0,
+    "cross_split_overlap": {
+      "context_A": 0,
+      "context_B": 0,
+      "query": 0,
+      "edited_span": 0,
+      "source_doc_id": 0,
+      "cluster": 0
+    },
+    "entity_pool_overlap": {
+      "names": 0,
+      "projects": 0,
+      "cities": 0,
+      "dates": 0,
+      "numbers": 0,
+      "roles": 0,
+      "policies": 0,
+      "teams": 0
+    },
+    "template_overlap_train_eval": [],
+    "template_skeleton_overlap_train_test": [],
+    "query_skeleton_overlap_train_test": [],
+    "template_family_count_by_split": {
+      "probe": 16
+    },
+    "total_template_families": 16,
+    "structural_template_count": 24,
+    "unseen_template_subset": {
+      "splits": [
+        "probe",
+        "test"
+      ],
+      "family_count": 16,
+      "structural_template_count": 16,
+      "family_names": [
+        "U-F1-annex-P",
+        "U-F1-minutes-P",
+        "U-F1-register-P",
+        "U-F2-dossier-P",
+        "U-F2-filing-P",
+        "U-F2-log-P",
+        "U-F3-flow-P",
+        "U-F3-request-P",
+        "U-F3-token-P",
+        "U-F4-beforeafter-P",
+        "U-F4-change-P",
+        "U-F4-entry-P",
+        "U-F5-brief-P",
+        "U-F5-notice-P",
+        "U-F6-background-P",
+        "U-F6-index-P"
+      ]
+    },
+    "seen_template_families": [],
+    "quality_gate": "pass",
+    "note": "v2.1 修正版：退化对=0；跨 split 逐字重叠=0；实体池不相交；train/test 模板骨架不重合；flip 分母排除 F5+F6（stats_convention_v2.3.yaml）；length_mismatch 分层报告。"
+  },
+  "model": {
+    "path": "/root/.cache/modelscope/models/Qwen--Qwen3-0.6B/snapshots/master",
+    "dtype": "bfloat16",
+    "kernel": "sdpa",
+    "n_layers": 28,
+    "n_kv_heads": 8,
+    "head_dim": 128,
+    "config_fingerprint": "c9ef657d38f5b8e7"
+  },
+  "residuals": {
+    "min_logit_cosine": 0.9999999999999998,
+    "max_first_token_kl": 0.0,
+    "self_anchor_min_logit_cosine": 0.9999999999999998,
+    "one_shot_min_logit_cosine": 0.9991385569847122,
+    "one_shot_em_agreement": 0.975,
+    "kernel_path_note": "Self 锚点=学生原生缓存两步路径；one_shot=整段一次 prefill，二者残差来自 sdpa kernel 路径（非实现误差）；注入与原生两步路径 cosine=1.0",
+    "em_agreement": 0.975,
+    "measurement_error_ceiling": 2.220446049250313e-16,
+    "round_trip_bit_identical": true,
+    "zero_re_prefill_all": true
+  },
+  "effect": {
+    "estimate": 23.88465801132649,
+    "tolerance_effect_over_3": 7.961552670442163,
+    "n_valid_self": 36,
+    "n_pairs": 40
+  },
+  "elapsed_sec": 102.9,
+  "backend": "gpu",
+  "protocol_version": "2.0",
+  "release_to_P1": true,
+  "note": "E0 通过是 P0 放行的唯一门；未通过不得进入 P1。Mock 数字不构成证据。"
+}

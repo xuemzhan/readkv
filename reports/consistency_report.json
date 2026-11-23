@@ -1,14 +1,16 @@
 [
   {
     "run_id": "delta_lock_v2p1_0p5",
-    "ok": true,
-    "problems": [],
+    "ok": false,
+    "problems": [
+      "run-producing code differs between config.git_hash and HEAD"
+    ],
     "superseded": false,
     "git_hash": "458de18",
-    "head_hash": "6784780",
+    "head_hash": "6413ba0",
     "git_hash_in_history": true,
-    "run_code_unchanged_vs_head": true,
-    "traceable": true,
+    "run_code_unchanged_vs_head": false,
+    "traceable": false,
     "code_tracked": true,
     "missing_code_paths": [],
     "dirty_run_paths": [],
@@ -32,14 +34,16 @@
   },
   {
     "run_id": "delta_lock_v2p1_1p0_par",
-    "ok": true,
-    "problems": [],
+    "ok": false,
+    "problems": [
+      "run-producing code differs between config.git_hash and HEAD"
+    ],
     "superseded": false,
     "git_hash": "ff578b5",
-    "head_hash": "6784780",
+    "head_hash": "6413ba0",
     "git_hash_in_history": true,
-    "run_code_unchanged_vs_head": true,
-    "traceable": true,
+    "run_code_unchanged_vs_head": false,
+    "traceable": false,
     "code_tracked": true,
     "missing_code_paths": [],
     "dirty_run_paths": [],
@@ -63,11 +67,44 @@
   },
   {
     "run_id": "delta_lock_v2p1_2p0_par",
+    "ok": false,
+    "problems": [
+      "run-producing code differs between config.git_hash and HEAD"
+    ],
+    "superseded": false,
+    "git_hash": "a04990d",
+    "head_hash": "6413ba0",
+    "git_hash_in_history": true,
+    "run_code_unchanged_vs_head": false,
+    "traceable": false,
+    "code_tracked": true,
+    "missing_code_paths": [],
+    "dirty_run_paths": [],
+    "model_pair_check": {
+      "ok": true,
+      "model_pair": "qwen3-1.7b-to-0.6b",
+      "expected": {
+        "teacher": "Qwen3-1.7B",
+        "student": "Qwen3-0.6B",
+        "n_teacher_layers": 28,
+        "n_student_layers": 28
+      },
+      "problems": [],
+      "errata_hint": null
+    },
+    "protocol_compat": {
+      "ok": true,
+      "protocol_version": "2.0",
+      "problems": []
+    }
+  },
+  {
+    "run_id": "e0_clean_mvp_seed0",
     "ok": true,
     "problems": [],
     "superseded": false,
-    "git_hash": "a04990d",
-    "head_hash": "6784780",
+    "git_hash": "efc3ba3",
+    "head_hash": "6413ba0",
     "git_hash_in_history": true,
     "run_code_unchanged_vs_head": true,
     "traceable": true,
@@ -101,7 +138,7 @@
     ],
     "superseded": true,
     "git_hash": "53e9bc5",
-    "head_hash": "6784780",
+    "head_hash": "6413ba0",
     "git_hash_in_history": true,
     "run_code_unchanged_vs_head": false,
     "traceable": false,
@@ -134,14 +171,16 @@
   },
   {
     "run_id": "e0_gpu_mvp_repro_seed0",
-    "ok": true,
-    "problems": [],
+    "ok": false,
+    "problems": [
+      "run-producing code differs between config.git_hash and HEAD"
+    ],
     "superseded": false,
     "git_hash": "458de18",
-    "head_hash": "6784780",
+    "head_hash": "6413ba0",
     "git_hash_in_history": true,
-    "run_code_unchanged_vs_head": true,
-    "traceable": true,
+    "run_code_unchanged_vs_head": false,
+    "traceable": false,
     "code_tracked": true,
     "missing_code_paths": [],
     "dirty_run_paths": [],
@@ -172,7 +211,7 @@
     ],
     "superseded": true,
     "git_hash": "53e9bc5",
-    "head_hash": "6784780",
+    "head_hash": "6413ba0",
     "git_hash_in_history": true,
     "run_code_unchanged_vs_head": false,
     "traceable": false,
@@ -204,15 +243,110 @@
     }
   },
   {
-    "run_id": "p1_gpu_kdonly_mvp_seed0",
+    "run_id": "p1_clean_mvp_seed0",
     "ok": true,
     "problems": [],
     "superseded": false,
-    "git_hash": "458de18",
-    "head_hash": "6784780",
+    "git_hash": "efc3ba3",
+    "head_hash": "6413ba0",
     "git_hash_in_history": true,
     "run_code_unchanged_vs_head": true,
     "traceable": true,
+    "code_tracked": true,
+    "missing_code_paths": [],
+    "dirty_run_paths": [],
+    "model_pair_check": {
+      "ok": true,
+      "model_pair": "qwen3-1.7b-to-0.6b",
+      "expected": {
+        "teacher": "Qwen3-1.7B",
+        "student": "Qwen3-0.6B",
+        "n_teacher_layers": 28,
+        "n_student_layers": 28
+      },
+      "problems": [],
+      "errata_hint": null
+    },
+    "protocol_compat": {
+      "ok": true,
+      "protocol_version": "2.0",
+      "problems": []
+    }
+  },
+  {
+    "run_id": "p1_clean_mvp_seed1",
+    "ok": true,
+    "problems": [],
+    "superseded": false,
+    "git_hash": "efc3ba3",
+    "head_hash": "6413ba0",
+    "git_hash_in_history": true,
+    "run_code_unchanged_vs_head": true,
+    "traceable": true,
+    "code_tracked": true,
+    "missing_code_paths": [],
+    "dirty_run_paths": [],
+    "model_pair_check": {
+      "ok": true,
+      "model_pair": "qwen3-1.7b-to-0.6b",
+      "expected": {
+        "teacher": "Qwen3-1.7B",
+        "student": "Qwen3-0.6B",
+        "n_teacher_layers": 28,
+        "n_student_layers": 28
+      },
+      "problems": [],
+      "errata_hint": null
+    },
+    "protocol_compat": {
+      "ok": true,
+      "protocol_version": "2.0",
+      "problems": []
+    }
+  },
+  {
+    "run_id": "p1_clean_mvp_seed2",
+    "ok": true,
+    "problems": [],
+    "superseded": false,
+    "git_hash": "efc3ba3",
+    "head_hash": "6413ba0",
+    "git_hash_in_history": true,
+    "run_code_unchanged_vs_head": true,
+    "traceable": true,
+    "code_tracked": true,
+    "missing_code_paths": [],
+    "dirty_run_paths": [],
+    "model_pair_check": {
+      "ok": true,
+      "model_pair": "qwen3-1.7b-to-0.6b",
+      "expected": {
+        "teacher": "Qwen3-1.7B",
+        "student": "Qwen3-0.6B",
+        "n_teacher_layers": 28,
+        "n_student_layers": 28
+      },
+      "problems": [],
+      "errata_hint": null
+    },
+    "protocol_compat": {
+      "ok": true,
+      "protocol_version": "2.0",
+      "problems": []
+    }
+  },
+  {
+    "run_id": "p1_gpu_kdonly_mvp_seed0",
+    "ok": false,
+    "problems": [
+      "run-producing code differs between config.git_hash and HEAD"
+    ],
+    "superseded": false,
+    "git_hash": "458de18",
+    "head_hash": "6413ba0",
+    "git_hash_in_history": true,
+    "run_code_unchanged_vs_head": false,
+    "traceable": false,
     "code_tracked": true,
     "missing_code_paths": [],
     "dirty_run_paths": [],
@@ -236,14 +370,16 @@
   },
   {
     "run_id": "p1_gpu_kdonly_mvp_seed1_par",
-    "ok": true,
-    "problems": [],
+    "ok": false,
+    "problems": [
+      "run-producing code differs between config.git_hash and HEAD"
+    ],
     "superseded": false,
     "git_hash": "a04990d",
-    "head_hash": "6784780",
+    "head_hash": "6413ba0",
     "git_hash_in_history": true,
-    "run_code_unchanged_vs_head": true,
-    "traceable": true,
+    "run_code_unchanged_vs_head": false,
+    "traceable": false,
     "code_tracked": true,
     "missing_code_paths": [],
     "dirty_run_paths": [],
@@ -267,14 +403,16 @@
   },
   {
     "run_id": "p1_gpu_kdonly_mvp_seed2_fast",
-    "ok": true,
-    "problems": [],
+    "ok": false,
+    "problems": [
+      "run-producing code differs between config.git_hash and HEAD"
+    ],
     "superseded": false,
     "git_hash": "a04990d",
-    "head_hash": "6784780",
+    "head_hash": "6413ba0",
     "git_hash_in_history": true,
-    "run_code_unchanged_vs_head": true,
-    "traceable": true,
+    "run_code_unchanged_vs_head": false,
+    "traceable": false,
     "code_tracked": true,
     "missing_code_paths": [],
     "dirty_run_paths": [],
@@ -308,7 +446,7 @@
     ],
     "superseded": true,
     "git_hash": "53e9bc5",
-    "head_hash": "6784780",
+    "head_hash": "6413ba0",
     "git_hash_in_history": true,
     "run_code_unchanged_vs_head": false,
     "traceable": false,
@@ -355,7 +493,7 @@
     ],
     "superseded": true,
     "git_hash": "53e9bc5",
-    "head_hash": "6784780",
+    "head_hash": "6413ba0",
     "git_hash_in_history": true,
     "run_code_unchanged_vs_head": false,
     "traceable": false,
@@ -402,7 +540,7 @@
     ],
     "superseded": true,
     "git_hash": "53e9bc5",
-    "head_hash": "6784780",
+    "head_hash": "6413ba0",
     "git_hash_in_history": true,
     "run_code_unchanged_vs_head": false,
     "traceable": false,
@@ -439,14 +577,16 @@
   },
   {
     "run_id": "p1_gpu_mvp_repro_seed0",
-    "ok": true,
-    "problems": [],
+    "ok": false,
+    "problems": [
+      "run-producing code differs between config.git_hash and HEAD"
+    ],
     "superseded": false,
     "git_hash": "458de18",
-    "head_hash": "6784780",
+    "head_hash": "6413ba0",
     "git_hash_in_history": true,
-    "run_code_unchanged_vs_head": true,
-    "traceable": true,
+    "run_code_unchanged_vs_head": false,
+    "traceable": false,
     "code_tracked": true,
     "missing_code_paths": [],
     "dirty_run_paths": [],
@@ -470,14 +610,16 @@
   },
   {
     "run_id": "p1_gpu_mvp_repro_seed1",
-    "ok": true,
-    "problems": [],
+    "ok": false,
+    "problems": [
+      "run-producing code differs between config.git_hash and HEAD"
+    ],
     "superseded": false,
     "git_hash": "458de18",
-    "head_hash": "6784780",
+    "head_hash": "6413ba0",
     "git_hash_in_history": true,
-    "run_code_unchanged_vs_head": true,
-    "traceable": true,
+    "run_code_unchanged_vs_head": false,
+    "traceable": false,
     "code_tracked": true,
     "missing_code_paths": [],
     "dirty_run_paths": [],
@@ -501,14 +643,16 @@
   },
   {
     "run_id": "p1_gpu_mvp_repro_seed2",
-    "ok": true,
-    "problems": [],
+    "ok": false,
+    "problems": [
+      "run-producing code differs between config.git_hash and HEAD"
+    ],
     "superseded": false,
     "git_hash": "458de18",
-    "head_hash": "6784780",
+    "head_hash": "6413ba0",
     "git_hash_in_history": true,
-    "run_code_unchanged_vs_head": true,
-    "traceable": true,
+    "run_code_unchanged_vs_head": false,
+    "traceable": false,
     "code_tracked": true,
     "missing_code_paths": [],
     "dirty_run_paths": [],
@@ -539,7 +683,7 @@
     ],
     "superseded": true,
     "git_hash": "53e9bc5",
-    "head_hash": "6784780",
+    "head_hash": "6413ba0",
     "git_hash_in_history": true,
     "run_code_unchanged_vs_head": false,
     "traceable": false,
@@ -579,7 +723,7 @@
     ],
     "superseded": true,
     "git_hash": "53e9bc5",
-    "head_hash": "6784780",
+    "head_hash": "6413ba0",
     "git_hash_in_history": true,
     "run_code_unchanged_vs_head": false,
     "traceable": false,
@@ -619,7 +763,7 @@
     ],
     "superseded": true,
     "git_hash": "53e9bc5",
-    "head_hash": "6784780",
+    "head_hash": "6413ba0",
     "git_hash_in_history": true,
     "run_code_unchanged_vs_head": false,
     "traceable": false,
@@ -651,15 +795,110 @@
     }
   },
   {
-    "run_id": "p2_gpu_mvp_seed0",
+    "run_id": "p1_kd_clean_mvp_seed0",
     "ok": true,
     "problems": [],
     "superseded": false,
-    "git_hash": "9d474be",
-    "head_hash": "6784780",
+    "git_hash": "6413ba0",
+    "head_hash": "6413ba0",
     "git_hash_in_history": true,
     "run_code_unchanged_vs_head": true,
     "traceable": true,
+    "code_tracked": true,
+    "missing_code_paths": [],
+    "dirty_run_paths": [],
+    "model_pair_check": {
+      "ok": true,
+      "model_pair": "qwen3-1.7b-to-0.6b",
+      "expected": {
+        "teacher": "Qwen3-1.7B",
+        "student": "Qwen3-0.6B",
+        "n_teacher_layers": 28,
+        "n_student_layers": 28
+      },
+      "problems": [],
+      "errata_hint": null
+    },
+    "protocol_compat": {
+      "ok": true,
+      "protocol_version": "2.0",
+      "problems": []
+    }
+  },
+  {
+    "run_id": "p1_kd_clean_mvp_seed1",
+    "ok": true,
+    "problems": [],
+    "superseded": false,
+    "git_hash": "6413ba0",
+    "head_hash": "6413ba0",
+    "git_hash_in_history": true,
+    "run_code_unchanged_vs_head": true,
+    "traceable": true,
+    "code_tracked": true,
+    "missing_code_paths": [],
+    "dirty_run_paths": [],
+    "model_pair_check": {
+      "ok": true,
+      "model_pair": "qwen3-1.7b-to-0.6b",
+      "expected": {
+        "teacher": "Qwen3-1.7B",
+        "student": "Qwen3-0.6B",
+        "n_teacher_layers": 28,
+        "n_student_layers": 28
+      },
+      "problems": [],
+      "errata_hint": null
+    },
+    "protocol_compat": {
+      "ok": true,
+      "protocol_version": "2.0",
+      "problems": []
+    }
+  },
+  {
+    "run_id": "p1_kd_clean_mvp_seed2",
+    "ok": true,
+    "problems": [],
+    "superseded": false,
+    "git_hash": "6413ba0",
+    "head_hash": "6413ba0",
+    "git_hash_in_history": true,
+    "run_code_unchanged_vs_head": true,
+    "traceable": true,
+    "code_tracked": true,
+    "missing_code_paths": [],
+    "dirty_run_paths": [],
+    "model_pair_check": {
+      "ok": true,
+      "model_pair": "qwen3-1.7b-to-0.6b",
+      "expected": {
+        "teacher": "Qwen3-1.7B",
+        "student": "Qwen3-0.6B",
+        "n_teacher_layers": 28,
+        "n_student_layers": 28
+      },
+      "problems": [],
+      "errata_hint": null
+    },
+    "protocol_compat": {
+      "ok": true,
+      "protocol_version": "2.0",
+      "problems": []
+    }
+  },
+  {
+    "run_id": "p2_gpu_mvp_seed0",
+    "ok": false,
+    "problems": [
+      "run-producing code differs between config.git_hash and HEAD"
+    ],
+    "superseded": false,
+    "git_hash": "9d474be",
+    "head_hash": "6413ba0",
+    "git_hash_in_history": true,
+    "run_code_unchanged_vs_head": false,
+    "traceable": false,
     "code_tracked": true,
     "missing_code_paths": [],
     "dirty_run_paths": [],
@@ -683,14 +922,16 @@
   },
   {
     "run_id": "p2_gpu_mvp_seed0_delta_rand_audit",
-    "ok": true,
-    "problems": [],
+    "ok": false,
+    "problems": [
+      "run-producing code differs between config.git_hash and HEAD"
+    ],
     "superseded": false,
     "git_hash": "6784780",
-    "head_hash": "6784780",
+    "head_hash": "6413ba0",
     "git_hash_in_history": true,
-    "run_code_unchanged_vs_head": true,
-    "traceable": true,
+    "run_code_unchanged_vs_head": false,
+    "traceable": false,
     "code_tracked": true,
     "missing_code_paths": [],
     "dirty_run_paths": [],
@@ -714,14 +955,16 @@
   },
   {
     "run_id": "p2_gpu_mvp_seed1",
-    "ok": true,
-    "problems": [],
+    "ok": false,
+    "problems": [
+      "run-producing code differs between config.git_hash and HEAD"
+    ],
     "superseded": false,
     "git_hash": "6784780",
-    "head_hash": "6784780",
+    "head_hash": "6413ba0",
     "git_hash_in_history": true,
-    "run_code_unchanged_vs_head": true,
-    "traceable": true,
+    "run_code_unchanged_vs_head": false,
+    "traceable": false,
     "code_tracked": true,
     "missing_code_paths": [],
     "dirty_run_paths": [],
@@ -745,14 +988,16 @@
   },
   {
     "run_id": "p2_gpu_mvp_seed2",
-    "ok": true,
-    "problems": [],
+    "ok": false,
+    "problems": [
+      "run-producing code differs between config.git_hash and HEAD"
+    ],
     "superseded": false,
     "git_hash": "6784780",
-    "head_hash": "6784780",
+    "head_hash": "6413ba0",
     "git_hash_in_history": true,
-    "run_code_unchanged_vs_head": true,
-    "traceable": true,
+    "run_code_unchanged_vs_head": false,
+    "traceable": false,
     "code_tracked": true,
     "missing_code_paths": [],
     "dirty_run_paths": [],

@@ -23,7 +23,9 @@
     "transfer_broken": false,
     "huber_delta": 0.5,
     "complete": true,
-    "role": "Huber delta validation grid (v2.1)"
+    "role": "Huber delta validation grid (v2.1)",
+    "superseded": true,
+    "superseded_reason": "pre-clean-data (sha256 6058fd6d...) / frozen run; clean rerun supersedes"
   },
   {
     "run_id": "delta_lock_v2p1_1p0_par",
@@ -49,7 +51,9 @@
     "transfer_broken": false,
     "huber_delta": 1.0,
     "complete": true,
-    "role": "Huber delta validation grid (v2.1)"
+    "role": "Huber delta validation grid (v2.1)",
+    "superseded": true,
+    "superseded_reason": "pre-clean-data (sha256 6058fd6d...) / frozen run; clean rerun supersedes"
   },
   {
     "run_id": "e0_gpu_main_seed0",
@@ -70,7 +74,8 @@
     "huber_delta": null,
     "complete": true,
     "superseded": true,
-    "superseded_by": "git_hash=53e9bc5 lacks run code; see runs_index_errata.json"
+    "superseded_by": "git_hash=53e9bc5 lacks run code; see runs_index_errata.json",
+    "superseded_reason": "pre-clean-data (sha256 6058fd6d...) / frozen run; clean rerun supersedes"
   },
   {
     "run_id": "e0_gpu_mvp_repro_seed0",
@@ -89,7 +94,9 @@
     "joint_E_CF": null,
     "transfer_broken": null,
     "huber_delta": null,
-    "complete": true
+    "complete": true,
+    "superseded": true,
+    "superseded_reason": "pre-clean-data (sha256 6058fd6d...) / frozen run; clean rerun supersedes"
   },
   {
     "run_id": "e0_gpu_mvp_seed0",
@@ -110,7 +117,8 @@
     "huber_delta": null,
     "complete": true,
     "superseded": true,
-    "superseded_by": "git_hash=53e9bc5 lacks run code; see runs_index_errata.json"
+    "superseded_by": "git_hash=53e9bc5 lacks run code; see runs_index_errata.json",
+    "superseded_reason": "pre-clean-data (sha256 6058fd6d...) / frozen run; clean rerun supersedes"
   },
   {
     "run_id": "p1_gpu_kdonly_mvp_seed0",
@@ -136,7 +144,9 @@
     "transfer_broken": false,
     "huber_delta": null,
     "complete": true,
-    "role": "kd_only primary baseline (R3)"
+    "role": "kd_only primary baseline (R3)",
+    "superseded": true,
+    "superseded_reason": "pre-clean-data (sha256 6058fd6d...) / frozen run; clean rerun supersedes"
   },
   {
     "run_id": "p1_gpu_main_seed0",
@@ -164,7 +174,8 @@
     "complete": true,
     "superseded": true,
     "superseded_by": "git_hash=53e9bc5 lacks run code; see runs_index_errata.json",
-    "model_pair_corrected": "qwen3-4b-to-1.7b"
+    "model_pair_corrected": "qwen3-4b-to-1.7b",
+    "superseded_reason": "pre-clean-data (sha256 6058fd6d...) / frozen run; clean rerun supersedes"
   },
   {
     "run_id": "p1_gpu_main_seed1",
@@ -192,7 +203,8 @@
     "complete": true,
     "superseded": true,
     "superseded_by": "git_hash=53e9bc5 lacks run code; see runs_index_errata.json",
-    "model_pair_corrected": "qwen3-4b-to-1.7b"
+    "model_pair_corrected": "qwen3-4b-to-1.7b",
+    "superseded_reason": "pre-clean-data (sha256 6058fd6d...) / frozen run; clean rerun supersedes"
   },
   {
     "run_id": "p1_gpu_main_seed2",
@@ -220,7 +232,8 @@
     "complete": true,
     "superseded": true,
     "superseded_by": "git_hash=53e9bc5 lacks run code; see runs_index_errata.json",
-    "model_pair_corrected": "qwen3-4b-to-1.7b"
+    "model_pair_corrected": "qwen3-4b-to-1.7b",
+    "superseded_reason": "pre-clean-data (sha256 6058fd6d...) / frozen run; clean rerun supersedes"
   },
   {
     "run_id": "p1_gpu_mvp_repro_seed0",
@@ -245,7 +258,9 @@
     },
     "transfer_broken": false,
     "huber_delta": null,
-    "complete": true
+    "complete": true,
+    "superseded": true,
+    "superseded_reason": "pre-clean-data (sha256 6058fd6d...) / frozen run; clean rerun supersedes"
   },
   {
     "run_id": "p1_gpu_mvp_repro_seed1",
@@ -270,7 +285,9 @@
     },
     "transfer_broken": false,
     "huber_delta": null,
-    "complete": true
+    "complete": true,
+    "superseded": true,
+    "superseded_reason": "pre-clean-data (sha256 6058fd6d...) / frozen run; clean rerun supersedes"
   },
   {
     "run_id": "p1_gpu_mvp_repro_seed2",
@@ -295,7 +312,9 @@
     },
     "transfer_broken": false,
     "huber_delta": null,
-    "complete": true
+    "complete": true,
+    "superseded": true,
+    "superseded_reason": "pre-clean-data (sha256 6058fd6d...) / frozen run; clean rerun supersedes"
   },
   {
     "run_id": "p1_gpu_mvp_seed0",
@@ -322,7 +341,8 @@
     "huber_delta": null,
     "complete": true,
     "superseded": true,
-    "superseded_by": "git_hash=53e9bc5 lacks run code; see runs_index_errata.json"
+    "superseded_by": "git_hash=53e9bc5 lacks run code; see runs_index_errata.json",
+    "superseded_reason": "pre-clean-data (sha256 6058fd6d...) / frozen run; clean rerun supersedes"
   },
   {
     "run_id": "p1_gpu_mvp_seed1",
@@ -349,7 +369,8 @@
     "huber_delta": null,
     "complete": true,
     "superseded": true,
-    "superseded_by": "git_hash=53e9bc5 lacks run code; see runs_index_errata.json"
+    "superseded_by": "git_hash=53e9bc5 lacks run code; see runs_index_errata.json",
+    "superseded_reason": "pre-clean-data (sha256 6058fd6d...) / frozen run; clean rerun supersedes"
   },
   {
     "run_id": "p1_gpu_mvp_seed2",
@@ -376,7 +397,8 @@
     "huber_delta": null,
     "complete": true,
     "superseded": true,
-    "superseded_by": "git_hash=53e9bc5 lacks run code; see runs_index_errata.json"
+    "superseded_by": "git_hash=53e9bc5 lacks run code; see runs_index_errata.json",
+    "superseded_reason": "pre-clean-data (sha256 6058fd6d...) / frozen run; clean rerun supersedes"
   },
   {
     "run_id": "p2_gpu_mvp_seed0",
@@ -401,7 +423,9 @@
       0.15,
       0.425
     ],
-    "max_decomp_residual": 2.9560284346338096e-13
+    "max_decomp_residual": 2.9560284346338096e-13,
+    "superseded": true,
+    "superseded_reason": "pre-clean-data (sha256 6058fd6d...) / frozen run; clean rerun supersedes"
   },
   {
     "run_id": "p2_gpu_mvp_seed0_delta_rand_audit",
@@ -424,7 +448,9 @@
       0.15,
       0.425
     ],
-    "delta_rand_persisted": true
+    "delta_rand_persisted": true,
+    "superseded": true,
+    "superseded_reason": "pre-clean-data (sha256 6058fd6d...) / frozen run; clean rerun supersedes"
   },
   {
     "run_id": "p2_gpu_mvp_seed1",
@@ -447,7 +473,9 @@
       0.125,
       0.425
     ],
-    "delta_rand_persisted": true
+    "delta_rand_persisted": true,
+    "superseded": true,
+    "superseded_reason": "pre-clean-data (sha256 6058fd6d...) / frozen run; clean rerun supersedes"
   },
   {
     "run_id": "p2_gpu_mvp_seed2",
@@ -470,6 +498,134 @@
       0.2,
       0.5
     ],
-    "delta_rand_persisted": true
+    "delta_rand_persisted": true,
+    "superseded": true,
+    "superseded_reason": "pre-clean-data (sha256 6058fd6d...) / frozen run; clean rerun supersedes"
+  },
+  {
+    "run_id": "e0_clean_mvp_seed0",
+    "stage": "P0",
+    "gate": "E0",
+    "backend": "gpu",
+    "model_pair": "qwen3-1.7b-to-0.6b",
+    "seed": 0,
+    "dtype": "bfloat16",
+    "kernel": "sdpa",
+    "zero_re_prefill": true,
+    "protocol_version": "2.0",
+    "git_hash": "efc3ba3",
+    "n_scores": 80,
+    "complete": true,
+    "result": true,
+    "superseded": false,
+    "data_sha256": "f910f1f1196a21041765834654af8233d216ef4bf4f28f4c60abbd0641aa894a"
+  },
+  {
+    "run_id": "p1_clean_mvp_seed0",
+    "stage": "P1",
+    "gate": "counterfactual_benchmark",
+    "backend": "gpu",
+    "model_pair": "qwen3-1.7b-to-0.6b",
+    "seed": 0,
+    "dtype": "bfloat16",
+    "kernel": "sdpa",
+    "zero_re_prefill": true,
+    "protocol_version": "2.0",
+    "git_hash": "efc3ba3",
+    "n_scores": 600,
+    "complete": true,
+    "result": "distortion_exists",
+    "superseded": false,
+    "data_sha256": "f910f1f1196a21041765834654af8233d216ef4bf4f28f4c60abbd0641aa894a"
+  },
+  {
+    "run_id": "p1_clean_mvp_seed1",
+    "stage": "P1",
+    "gate": "counterfactual_benchmark",
+    "backend": "gpu",
+    "model_pair": "qwen3-1.7b-to-0.6b",
+    "seed": 1,
+    "dtype": "bfloat16",
+    "kernel": "sdpa",
+    "zero_re_prefill": true,
+    "protocol_version": "2.0",
+    "git_hash": "efc3ba3",
+    "n_scores": 600,
+    "complete": true,
+    "result": "distortion_exists",
+    "superseded": false,
+    "data_sha256": "f910f1f1196a21041765834654af8233d216ef4bf4f28f4c60abbd0641aa894a"
+  },
+  {
+    "run_id": "p1_clean_mvp_seed2",
+    "stage": "P1",
+    "gate": "counterfactual_benchmark",
+    "backend": "gpu",
+    "model_pair": "qwen3-1.7b-to-0.6b",
+    "seed": 2,
+    "dtype": "bfloat16",
+    "kernel": "sdpa",
+    "zero_re_prefill": true,
+    "protocol_version": "2.0",
+    "git_hash": "efc3ba3",
+    "n_scores": 600,
+    "complete": true,
+    "result": "distortion_exists",
+    "superseded": false,
+    "data_sha256": "f910f1f1196a21041765834654af8233d216ef4bf4f28f4c60abbd0641aa894a"
+  },
+  {
+    "run_id": "p1_kd_clean_mvp_seed0",
+    "stage": "P1",
+    "gate": "counterfactual_benchmark",
+    "backend": "gpu",
+    "model_pair": "qwen3-1.7b-to-0.6b",
+    "seed": 0,
+    "dtype": "bfloat16",
+    "kernel": "sdpa",
+    "zero_re_prefill": true,
+    "protocol_version": "2.0",
+    "git_hash": "6413ba0",
+    "n_scores": 600,
+    "complete": true,
+    "result": "distortion_exists",
+    "superseded": false,
+    "data_sha256": "f910f1f1196a21041765834654af8233d216ef4bf4f28f4c60abbd0641aa894a"
+  },
+  {
+    "run_id": "p1_kd_clean_mvp_seed1",
+    "stage": "P1",
+    "gate": "counterfactual_benchmark",
+    "backend": "gpu",
+    "model_pair": "qwen3-1.7b-to-0.6b",
+    "seed": 1,
+    "dtype": "bfloat16",
+    "kernel": "sdpa",
+    "zero_re_prefill": true,
+    "protocol_version": "2.0",
+    "git_hash": "6413ba0",
+    "n_scores": 600,
+    "complete": true,
+    "result": "distortion_exists",
+    "superseded": false,
+    "data_sha256": "f910f1f1196a21041765834654af8233d216ef4bf4f28f4c60abbd0641aa894a"
+  },
+  {
+    "run_id": "p1_kd_clean_mvp_seed2",
+    "stage": "P1",
+    "gate": "counterfactual_benchmark",
+    "backend": "gpu",
+    "model_pair": "qwen3-1.7b-to-0.6b",
+    "seed": 2,
+    "dtype": "bfloat16",
+    "kernel": "sdpa",
+    "zero_re_prefill": true,
+    "protocol_version": "2.0",
+    "git_hash": "6413ba0",
+    "n_scores": 600,
+    "complete": true,
+    "result": "distortion_exists",
+    "superseded": false,
+    "data_sha256": "f910f1f1196a21041765834654af8233d216ef4bf4f28f4c60abbd0641aa894a"
   }
 ]

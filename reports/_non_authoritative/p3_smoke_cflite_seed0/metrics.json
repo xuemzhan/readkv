@@ -1,0 +1,341 @@
+{
+  "run_id": "p3_smoke_cflite_seed0",
+  "backend": "gpu",
+  "protocol_version": "2.0",
+  "method": "cf_lite",
+  "n_calibration": 8,
+  "n_eval": 8,
+  "tau": 1.0,
+  "data_quality": {
+    "total": 16,
+    "by_slice": {
+      "F1": 4,
+      "F2": 3,
+      "F3": 4,
+      "F4": 3,
+      "F5": 1,
+      "F6": 1
+    },
+    "by_split": {
+      "train": 8,
+      "val": 8
+    },
+    "length_mismatch": 0,
+    "f5_negative_controls": 1,
+    "flip_denominator": 14,
+    "template_overlap_train_eval": [],
+    "quality_gate": "pass",
+    "note": "length_mismatch 需分层报告；F5 不计入必须翻转分母；template_overlap_train_eval 必须为空（否则违反训练/评估隔离）"
+  },
+  "arms": {
+    "self": {
+      "n_total": 8,
+      "n_evaluable": 6,
+      "E_CF": {
+        "mean": 0.0,
+        "ci": [
+          0.0,
+          0.0
+        ]
+      },
+      "normalized_E_CF": 0.0,
+      "flip_consistency": 1.0,
+      "dual_correct": 0.75,
+      "coverage": 0.75,
+      "info_gap": null,
+      "self_gap": 0.0,
+      "detail": {
+        "tau": 1.0,
+        "evaluable_threshold": 0.001,
+        "n_flip_evaluable": 6
+      }
+    },
+    "identity": {
+      "n_total": 8,
+      "n_evaluable": 6,
+      "E_CF": {
+        "mean": 0.0,
+        "ci": [
+          0.0,
+          0.0
+        ]
+      },
+      "normalized_E_CF": 0.0,
+      "flip_consistency": 1.0,
+      "dual_correct": 0.75,
+      "coverage": 0.75,
+      "info_gap": null,
+      "self_gap": 0.0,
+      "detail": {
+        "tau": 1.0,
+        "evaluable_threshold": 0.001,
+        "n_flip_evaluable": 6
+      }
+    },
+    "joint": {
+      "n_total": 8,
+      "n_evaluable": 6,
+      "E_CF": {
+        "mean": 3.912109375,
+        "ci": [
+          1.682470703125,
+          5.6592773437499995
+        ]
+      },
+      "normalized_E_CF": 0.4191465770245556,
+      "flip_consistency": 0.8333333333333334,
+      "dual_correct": 0.5,
+      "coverage": 0.75,
+      "info_gap": null,
+      "self_gap": 3.912109375,
+      "detail": {
+        "tau": 1.0,
+        "evaluable_threshold": 0.001,
+        "n_flip_evaluable": 6
+      }
+    },
+    "k_only": {
+      "n_total": 8,
+      "n_evaluable": 6,
+      "E_CF": {
+        "mean": 1.09375,
+        "ci": [
+          0.25625000000000014,
+          2.1250976562499995
+        ]
+      },
+      "normalized_E_CF": 0.12091148897330635,
+      "flip_consistency": 1.0,
+      "dual_correct": 0.75,
+      "coverage": 0.75,
+      "info_gap": null,
+      "self_gap": 1.09375,
+      "detail": {
+        "tau": 1.0,
+        "evaluable_threshold": 0.001,
+        "n_flip_evaluable": 6
+      }
+    },
+    "v_only": {
+      "n_total": 8,
+      "n_evaluable": 6,
+      "E_CF": {
+        "mean": 3.19140625,
+        "ci": [
+          1.5144531250000002,
+          5.196093749999999
+        ]
+      },
+      "normalized_E_CF": 0.361649677103729,
+      "flip_consistency": 0.8333333333333334,
+      "dual_correct": 0.625,
+      "coverage": 0.75,
+      "info_gap": null,
+      "self_gap": 3.19140625,
+      "detail": {
+        "tau": 1.0,
+        "evaluable_threshold": 0.001,
+        "n_flip_evaluable": 6
+      }
+    },
+    "control:mismatch": {
+      "n_total": 8,
+      "n_evaluable": 6,
+      "E_CF": {
+        "mean": 6.31640625,
+        "ci": [
+          2.121191406250002,
+          11.015722656249999
+        ]
+      },
+      "normalized_E_CF": 0.5926745370794765,
+      "flip_consistency": 0.6666666666666666,
+      "dual_correct": 0.375,
+      "coverage": 0.75,
+      "info_gap": null,
+      "self_gap": 6.31640625,
+      "detail": {
+        "tau": 1.0,
+        "evaluable_threshold": 0.001,
+        "n_flip_evaluable": 6
+      }
+    },
+    "control:random": {
+      "n_total": 8,
+      "n_evaluable": 6,
+      "E_CF": {
+        "mean": 3.73291015625,
+        "ci": [
+          1.3492492675781254,
+          6.842938232421874
+        ]
+      },
+      "normalized_E_CF": 0.39621842509543037,
+      "flip_consistency": 1.0,
+      "dual_correct": 0.5,
+      "coverage": 0.75,
+      "info_gap": null,
+      "self_gap": 3.73291015625,
+      "detail": {
+        "tau": 1.0,
+        "evaluable_threshold": 0.001,
+        "n_flip_evaluable": 6
+      }
+    },
+    "control:zero": {
+      "n_total": 8,
+      "n_evaluable": 6,
+      "E_CF": {
+        "mean": 6.59765625,
+        "ci": [
+          2.4731445312500013,
+          10.068164062499994
+        ]
+      },
+      "normalized_E_CF": 0.6632313713792077,
+      "flip_consistency": 0.0,
+      "dual_correct": 0.125,
+      "coverage": 0.75,
+      "info_gap": null,
+      "self_gap": 6.59765625,
+      "detail": {
+        "tau": 1.0,
+        "evaluable_threshold": 0.001,
+        "n_flip_evaluable": 6
+      }
+    },
+    "control:correct": {
+      "n_total": 8,
+      "n_evaluable": 6,
+      "E_CF": {
+        "mean": 3.912109375,
+        "ci": [
+          1.682470703125,
+          5.6592773437499995
+        ]
+      },
+      "normalized_E_CF": 0.4191465770245556,
+      "flip_consistency": 0.8333333333333334,
+      "dual_correct": 0.5,
+      "coverage": 0.75,
+      "info_gap": null,
+      "self_gap": 3.912109375,
+      "detail": {
+        "tau": 1.0,
+        "evaluable_threshold": 0.001,
+        "n_flip_evaluable": 6
+      }
+    },
+    "new_joint": {
+      "n_total": 8,
+      "n_evaluable": 6,
+      "E_CF": {
+        "mean": 3.912109375,
+        "ci": [
+          1.682470703125,
+          5.6592773437499995
+        ]
+      },
+      "normalized_E_CF": 0.4191465770245556,
+      "flip_consistency": 0.8333333333333334,
+      "dual_correct": 0.5,
+      "coverage": 0.75,
+      "info_gap": null,
+      "self_gap": 3.912109375,
+      "detail": {
+        "tau": 1.0,
+        "evaluable_threshold": 0.001,
+        "n_flip_evaluable": 6
+      }
+    }
+  },
+  "primary_endpoint": {
+    "point": 0.0,
+    "ci": [
+      0.0,
+      0.0
+    ],
+    "improved": false,
+    "n": 8,
+    "note": "paired E_CF difference (new - baseline); negative means new method is better"
+  },
+  "info_attribution": {
+    "control:mismatch": 2.404296875,
+    "control:random": -0.17919921875,
+    "control:zero": 2.685546875
+  },
+  "transfer_health": {
+    "transfer_broken": true,
+    "verdict_note": "quality_pass = data-quality gate only (split isolation / template non-overlap / annotation consistency); it does NOT assert transfer utility. transfer_broken=true: joint quality collapsed / controls not dominated — P1 result is a failure boundary, NOT positive evidence of utility-preserving distortion. frozen verdict=None is unchanged; this field is an orthogonal annotation.",
+    "quality_pass_scope": "data_quality_gate_only",
+    "signals": {
+      "joint_dual_drop_vs_self": 0.25,
+      "dual_drop_ge_0_2": true,
+      "joint_ecf_vs_controls": {
+        "control:mismatch": 6.3164,
+        "control:zero": 6.5977
+      },
+      "joint_ecf_ge_control": {
+        "control:mismatch": false,
+        "control:zero": false
+      },
+      "info_attribution": {
+        "control:mismatch": 2.404296875,
+        "control:random": -0.17919921875,
+        "control:zero": 2.685546875
+      },
+      "info_mostly_negative": false
+    }
+  },
+  "transfer_broken": true,
+  "verdict_note": "quality_pass = data-quality gate only (split isolation / template non-overlap / annotation consistency); it does NOT assert transfer utility. transfer_broken=true: joint quality collapsed / controls not dominated — P1 result is a failure boundary, NOT positive evidence of utility-preserving distortion. frozen verdict=None is unchanged; this field is an orthogonal annotation.",
+  "quality_pass_scope": "data_quality_gate_only",
+  "bootstrap_seed": 0,
+  "decision": {
+    "when": "no_method_gain",
+    "verdict": "method_downgraded",
+    "conditions": {
+      "ecf_improved": false
+    },
+    "action": "把机制/评测证据独立整理，方法贡献降级；不挑选种子掩盖无效"
+  },
+  "decision_facts": {
+    "ecf_improved": false,
+    "ecf_point": 0.0,
+    "ci_upper": 0.0,
+    "distortion_present": true,
+    "joint_ecf_mean": 3.912109375,
+    "identity_ecf_mean": 0.0,
+    "flip_consistency": 0.8333333333333334,
+    "coverage": 0.75,
+    "dual_correct": 0.5,
+    "quality_pass": true,
+    "transfer_broken": true
+  },
+  "budget": {
+    "epochs": 1,
+    "lr": 0.001,
+    "rank": 0,
+    "trainable_params": 7340032,
+    "student_forward_calls": 65,
+    "train_sec": 21.1
+  },
+  "loss_check": {
+    "n_steps": 8,
+    "first": 1.2254014015197754,
+    "last": 0.0,
+    "decreased": true
+  },
+  "gradient_check": {
+    "mapper_grad_norm": 1791.5002784522585,
+    "mapper_params_with_nonzero_grad": 448,
+    "mapper_params_total": 448,
+    "student_grad_tensors": 0,
+    "student_grad_norm": 0.0,
+    "mapper_backprop_ok": true,
+    "student_frozen_ok": true,
+    "loss_value": 13.53125
+  },
+  "primary_endpoint_definition": "sealed-test paired E_CF difference vs kd_only (CI upper<0)",
+  "elapsed_sec": 84.8
+}

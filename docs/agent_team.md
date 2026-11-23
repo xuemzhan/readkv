@@ -38,6 +38,7 @@ readkv 不是“训一个更强 mapper”的项目，而是一个**可复现的�
 | **Code Reviewer** | 实现一致性与契约审查 | 审查代码变更与实验实现是否符合 `docs/protocol.md`、规格书与 frozen configs；检查 zero-re-prefill、数据泄漏、指标计算、产物契约风险 |
 | **高级工程师 / Implementation Auditor** | 高风险实现审计与技术把关 | 对 GPU hooks、缓存注入、数据管线、评测统计实现做深度审查；评估性能/数值稳定性/可维护性风险；给出阻塞级技术意见，不直接改判据 |
 | **数据工程师** | 课题数据准备与数据资产管理 | 负责数据下载、清洗、格式化、反事实对构造输入准备、数据切分与 manifest；记录数据来源/许可证/哈希/版本，保证可复现与无泄漏 |
+| **研究问题顾问** | 联网独立评估方向 / 方案 / 实验 / 结果的合理性 | 结合互联网一手文献与仓库冻结产物，对抗性核查研究问题与证据链，输出带来源与不确定性说明的 Go / Conditional Go / Pivot / No-Go 建议；不改代码、数据、判据与运行产物 |
 
 ---
 
@@ -130,6 +131,7 @@ PI(拍板：投递、修改或按决策树改写)
 | `prompts/code-reviewer.md` | Code Reviewer（实现一致性） |
 | `prompts/senior-engineer.md` | 高级工程师 / Implementation Auditor |
 | `prompts/data-engineer.md` | 数据工程师（数据下载/构造/管理） |
+| `prompts/research-advisor.md` | 研究问题顾问（联网评估方向/方案/实验/结果） |
 
 每个 Prompt 包含统一结构：使命 → 在 readkv 中的职责 → 文件边界 → 否定约束 → 交互协议 → 项目硬约束 → 冲突升级。使用时将对应文件内容作为智能体的 system message 即可。
 

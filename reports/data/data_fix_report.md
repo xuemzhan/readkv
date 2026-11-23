@@ -99,7 +99,7 @@
 
 - **recomputed flip denominator = 398**（F1 111 + F2 90 + F3 110 + F4 87）
 - 口径：`excludes = [F5, F6]`（`stats_convention_v2.3.yaml`）
-- 待 PI 动作：把 `398` 写入 `configs/prereg/stats_convention_v2.3.yaml` 的 `flip_denominator_convention.recomputed_value`（当前 null）。本角色无该文件写权限，**未修改**。
+- ~~待 PI 动作：把 `398` 写入 v2.3 的 `recomputed_value`（当前 null），本角色未修改。~~ **S2 后续（2026-11-23）**：PI 已完成回填并以 commit `6413ba0` 锁定，v2.3 现哈希 `e44c6acb…c3d39bce0`；manifest / acceptance_checks 中登记的 v2.3 哈希已同步，旧值作历史保留。详见 `reports/data/s2_hash_annotation.md`。
 
 ## 5. 需 PI / 人工决策事项
 

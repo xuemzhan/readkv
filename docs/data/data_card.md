@@ -18,7 +18,7 @@
 | 导出脚本 | `scripts/export_task_data.py` |
 | 生成时 git HEAD | `ee74382c0eac6fde5e7cd0af6db28ffc819c97d5` |
 | 协议配置指纹 | `a6bc08cc997ac17a`（`configs/protocol.yaml` sha256 前 16 位） |
-| 统计口径引用 | `configs/prereg/stats_convention_v2.3.yaml`（只读；sha256 `5200940c…4776603`） |
+| 统计口径引用 | `configs/prereg/stats_convention_v2.3.yaml`（只读；最终 sha256 `e44c6acb…c3d39bce0`，commit `6413ba0`；回填前 `5200940c…4776603`） |
 
 复现命令：`python scripts/export_task_data.py --seed 0`（seed=0 时逐字节重建，见 §6）。
 
@@ -72,7 +72,7 @@ length_mismatch 共 **61** 对，**全部落在 F5**（表层同义改写替换�
 - 语义：F5 = 非翻转负控；F6 = 长度/位置控制，语义上答案不应翻转。两者均不计入“必须翻转”分母。
 - **重建后重算值：398**（F1 111 + F2 90 + F3 110 + F4 87 = 398）。
 - 对照：旧数据口径 394（排除 F5+F6 但含 18 条退化对）；冻结配置字面口径 457（仅排除 F5）。修复退化对并引入 M3 模板后，切片分布变化，最终为 398。
-- **待 PI 动作**：把 `398` 回填到 `configs/prereg/stats_convention_v2.3.yaml` 的 `flip_denominator_convention.recomputed_value`（当前为 null）。本数据工程角色无该文件的写权限，未修改。
+- **v2.3 版本过程（S2 已闭环）**：初版 `recomputed_value=null`（sha `5200940c…`）→ PI 回填 `398` 并以 commit `6413ba0` 锁定最终内容（sha `e44c6acb…`）。两次均属同一冻结版本 `protocol-v2.3` 的内容补全，非改判据。`manifest.json` 与 `acceptance_checks.json` 中的 v2.3 哈希已同步为最终值并保留回填前值作历史；详见 `reports/data/s2_hash_annotation.md`。
 
 ## 7. 已知限制
 

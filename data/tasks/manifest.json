@@ -12,7 +12,10 @@
   "stats_convention": {
     "path": "configs/prereg/stats_convention_v2.3.yaml",
     "version": "2.3",
-    "sha256": "5200940c0ad466af000aab74689a6f1101d5c486e7358d2fdd3c87afd4776603",
+    "sha256": "e44c6acb79649ae55e4880696a00cb406636f5958f3d2053f7e1504c3d39bce0",
+    "sha256_before_398_backfill": "5200940c0ad466af000aab74689a6f1101d5c486e7358d2fdd3c87afd4776603",
+    "locked_by_commit": "6413ba0",
+    "version_process_note": "v2.3 同一冻结版本 protocol-v2.3 的内容补全：初版（flip_denominator_convention.recomputed_value=null，sha 5200940c…）→ PI 回填 398（sha e44c6acb…，commit 6413ba0）。两次均非改判据；详见 reports/data/s2_hash_annotation.md。",
     "note": "read-only reference; flip_denominator_excludes=[F5,F6]"
   },
   "protocol_version": "2.0",

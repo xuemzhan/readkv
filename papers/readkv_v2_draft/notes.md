@@ -1,115 +1,101 @@
 # 写作者笔记 —— readkv_v2_draft（仅内部，不投递）
 
-> 状态：论文初稿配套笔记。所有数值只读自 `reports/runs/**` 冻结产物，本笔记未重新计算任何统计。
-> 硬约束遵循 `docs/protocol.md §10`（贡献门槛）、§8（决策树）、`docs/decisions/p0_direction.md §4`（mock 非证据）。
+> 状态：论文配套笔记。所有数值只读自 `reports/runs/**` 与 `reports/data/**` 冻结产物，本笔记未重新计算任何统计。
+> 最新裁决：**干净数据方向性翻转紧急裁决** `docs/decisions/clean_data_reversal_ruling.md`（2026-11-23）——贡献(1) 冻结降级、贡献(2) 撤回、旧 P1/P2 全部 superseded、论文重定位为负面/实证结果。
 
 ---
 
 ## 0. 本次已写文件
 
-- `papers/readkv_v2_draft/main.tex`：全文 LaTeX 初稿（摘要、引言、相关工作、方法、实验、结果、结论与局限、附录 A）。
-- `papers/readkv_v2_draft/notes.md`（本文件）：图表清单、cover letter 要点、数据完整性备案。
+- `papers/readkv_v2_draft/main.tex`：全文 LaTeX（摘要、引言、相关工作、方法、实验、结果、结论、附录 A），已按紧急裁决整体重写为「迁移失败边界 + 数据泄漏教训」的负面/实证结果论文。
+- `papers/readkv_v2_draft/notes.md`（本文件）：状态清单、贡献处理、图表清单、数据完整性备案、cover letter 要点。
 
-未写/未改：任何代码、`reports/runs/**`、`configs/prereg/**`；未重新计算任何统计量。
-
----
-
-## 0.5 本轮状态（数值定稿轮，2026-11-23）
-
-- **R1 已闭环**（审稿第 2 轮确认）：主表已切换为 `*_repro_*` 权威 run，`git_hash=458de18`；"reproducible" 措辞已恢复并附 commit 引用。旧 8 个 run 仅在 provenance 脚注标注 superseded。
-- **权威数值已填入，所有 TO BE FILLED 已删除**：
-  - E0 门：`e0_gpu_mvp_repro_seed0`（cosine 1.0、KL 0、EM 1.0、round-trip、2.2e-16 ≪ 6.95）。
-  - P1 MVP joint：`p1_gpu_mvp_repro_seed{0,1,2}` → E_CF 1.968/1.934/2.123，dual 0.667/0.650/0.617，flip 0.938/0.898/0.958，coverage 0.800/0.817/0.800。
-  - kd_only 三 seed：**seed0** `p1_gpu_kdonly_mvp_seed0` E_CF 0.735 [0.5517,0.9344]、dual 0.700、flip 1.0、cov 0.800；**seed1** `p1_gpu_kdonly_mvp_seed1_par` E_CF 1.034 [0.7663,1.3279]、dual 0.633、flip 1.0、cov 0.817；**seed2** `p1_gpu_kdonly_mvp_seed2_fast` E_CF 1.539 [1.1481,1.9588]、dual 0.683、flip 0.979、cov 0.800。三组 CI 下界均>0，全部 `distortion_present=true` / `transfer_broken=false`；范围 E_CF 0.735–1.539、dual 0.633–0.700。
-  - δ 网格：0.5/1.0/2.0 的 E_CF = 2.7496/1.5968/2.7625，PI 锁定 δ=0.5（硬护栏口径）。
-- **P2 三 seed 完全收口（本轮更新）**：三个 run `p2_gpu_mvp_seed0_delta_rand_audit`（F1 逐对重算审计）/`p2_gpu_mvp_seed1`/`p2_gpu_mvp_seed2`，全部 commit `6784780`、`zero_re_prefill=true`、三判据全达、`mechanism_predictive`。四臂 Self 0/K-only 0.582/V-only 1.626/Joint 1.777（仅 Joint deployable，40 对/臂）；分解 17,920 单元、残差 2.96e-13、d_A/d_B 分别取差。held-out（各 seed U 由 8 训练对选、val 40 对零重叠、未碰封存 test）：命中 U/随机 0.725/0.450、0.725/0.450、0.750/0.400；repair point 0.275 [0.150,0.425] / 0.275 [0.125,0.425] / 0.350 [0.200,0.500]，CI 下界均>0；方向一致 0.725/0.725/0.750。U 稳健性：4/5 核心单元 (12,5,V/both)、(25,4,V/both) 跨 3 seed 全重合，第 5 单元漂移（seed0=(14,1,V)、seed1=(24,2,both)、seed2=(14,1,both)），如实报告"核心定位跨 seed 稳健、非逐单元恒定"。
-- **F1/F2 已闭环**：头号判据成对 CI 已从审计 run 冻结产物独立重算（point 0.275、CI[0.150,0.425] 下界>0），F1 投递硬门槛闭环；三 seed 完成满足 `min_training_seeds=3`，F2 强度门槛闭环；不再写 "audit in progress"。
-- **仍明确未评估**：主终点（成对 E_CF vs kd_only，CI 上界<0；CF-RCT 未训练）、P3/P4、封存测试、非等深对 repro；主终点结果出来前不下任何改善结论。
-- **贡献(1) 全部 + 贡献(2) 强形式（限定于 MVP 等深对）；贡献(3) withheld；边界/实证研究定位不变**；所有未产出量均写"未评估/待补"，无推测数字。
+未写/未改：任何代码、`reports/runs/**`、`configs/prereg/**`；未重新计算任何统计量；未编造 kd/P2 数值。
 
 ---
 
-## 1. 贡献措辞如何处理（§10 门槛）
+## 0.5 本轮状态（紧急翻转轮，2026-11-23）
 
-- **只写贡献 (1)，且限定范围**："For the affine/ridge mapper tested here, we identify a gap between standard transfer utility and counterfactual response fidelity in cross-model KV handoff." 并附带：预注册成对反事实基准、机器精度实现门、`E_CF` 与 dual_correct/flip_consistency/coverage/info_gap 联合报告的纪律。
-- **"reproducible" 措辞已恢复（R1 闭环）**：审稿第 2 轮确认 `458de18` 含全部跑分代码、旧 run 已 superseded、7 个权威 run provenance 齐全。摘要、贡献(1)、§4.2、结论中的 "reproducible" 均附 commit `458de18` 引用；主表只引用 `*_repro_*` 权威 run。旧 `53e9bc5` run 仅在 provenance 脚注出现。
-- **贡献(1) 补 kd_only 说明**：kd 三 seed 缩小 gap 但未消除（E_CF 0.735–1.539、dual 0.633–0.700，三组 CI 下界均>0），跨 seed 仍有 gap；预算不对等（60对/3ep vs 120对/8ep）已披露，主终点因 CF-RCT 未训练而未评估 → 不声称 CF-RCT 改善。gap 仍限定为 tested affine/ridge mapper。
-- **贡献 (2) 按 PI `docs/decisions/contribution2_final_form.md` 解禁「强形式」**：可用强动词 "We localize the gap to receiver-side Value-consumption pathways under controlled cache interventions"，但**范围限定 MVP 等深对 (1.7B→0.6B)**、局部固定 Q 恒等式、Oracle 仅离线诊断。**禁用**："robustly/consistently across model pairs"、"across model pairs/families"、"causal / necessary and sufficient"、"sole cause / exclusively"。四条强制条件：①范围限定+禁用词；②强制披露 F4/F6 + U 漂移；③全文 seed 数更新为三 seed；④贡献(3) 与主终点门槛维持。
-- **F4/F6/稳健性披露（已落稿）**：V 消费为可修复主因、Key 路由为伴随的 attention 重分配效应；局部恒等式非全模型因果分解；三判据非独立（2 个统计信号 + 1 个多数门槛复述，repair-vs-random 与方向一致共享 hit_u）；4/5 核心单元跨 seed 稳定、第 5 单元轻微漂移；命中 0.725–0.750、效应点 0.275–0.350 有波动——支持"核心定位跨 seed 稳健"，不声称"逐单元恒定/完全不变"。
-- **贡献 (3)（方法层）维持 withheld**：正文引言用 `withheld` 小条目列出，理由为 CF-RCT 未训练、主终点未评估。
-- CF-RCT 方法章节（§3）明确标注 "design, not validated / proposed method not yet validated"。
-- 结论明确：按决策树（§8）本工作应定位为**边界/实证研究论文**，不是高水平方法论文。
-- 摘要与全文不出现任何"reduces / improves / localizes / mechanism-constrained mapper that closes the gap"等 (2)(3) 未证实措辞；withheld 条目只引用 protocol §10 的贡献模板编号，不含效果动词。
-- 不把 `P>0.05` 写成等效；主终点未评估前不作任何 endpoint gain 声明。
-- 全文定位为边界/实证研究；数据全为合成模板，标注"不适用于跨家族/真实世界迁移"的适用边界。
-- P1 V-only≈Joint 为 "directional clue"，已在 P2 定量确认（K-only 0.582 非零 → V 消费非唯一原因）；跨 seed 稳健性未检验。
-- 三判据非三条独立证据：两个统计信号（U 命中显著优于随机、方向一致 0.725>0.5 为多数门槛重述）+ 残差≈0 数值自检；正文 §5.x 已按此表述。
-- 复算缺口**已闭环**：审计 run `p2_gpu_mvp_seed0_delta_rand_audit` 产出逐对 delta_rand，头号判据成对 CI 从冻结产物独立重算复现（0.275 [0.150,0.425]）；F1/F2 均闭环，审计扩展 commit `6784780`。
+- **科学方向翻转（最高优先，PI 紧急裁决 `clean_data_reversal_ruling.md`）**：干净数据 P1 MVP 三 seed（`p1_clean_mvp_seed{0,1,2}`，git `efc3ba3`）显示 **broken transfer**：joint E_CF 6.900 / 8.159 / 8.540，dual 0.417 / 0.283 / 0.383，全部 `transfer_broken=true`。原贡献(1) 的「utility-preserving gap」与贡献(2) 的机制信号源于数据缺陷，**修复后翻转为迁移失败**。
+- **贡献(1) 冻结降级、贡献(2) 撤回 withheld**：不再以任何正向形式声称 gap 或 V 消费机制定位；旧 P1/P2 正向数值彻底移出结论，仅作为 Table 2（前后对照）的历史侧出现。
+- **主表换干净数据**：Table 1（`tab:cleanmvp`）填 P1 干净三 seed；Table 2（`tab:reversal`）为修复前后方向对照。**kd_only 干净数据位置写 "PENDING clean-data kd_only rerun"**，不得沿用旧 kd 值。
+- **kd_only 干净三 seed 仍在跑**；结果决定择支（都 broken→纯失败边界；kd 不 broken 且接近 Self→数据缺陷制造虚假发现的方法学负面结果）。
+- **δ 复核暂停、P2 不启动（取消）、P3 维持暂停/实质取消**；P2/P3/P4 均未在干净数据上运行。
+- **E0 干净复验已通过**（`e0_clean_mvp_seed0`，cosine 1.0、KL 0、EM 0.975、round-trip、2.2e-16 ≪ 效应、zero_re_prefill），翻转不是 cache round-trip 实现残差。
+- **数据修复披露保留**：v2.0→v2.1 缺陷/修复/验收 11/11/v2.3 口径（见正文 §「Data correctness...」与 `tab:datafix`）。
+- **投稿暂缓**（承接 `data_readiness_ruling`，且理由更强：核心贡献被推翻）；**审稿紧急复核中**（排除实现 bug、判 broken transfer 可信度）。
+- 历史状态（已被取代）：此前 R1 闭环、`*_repro_*` 权威 run（`458de18`）、P2 三 seed（`6784780`）强形式解禁等签 off **对新数据不再适用**，以紧急裁决为准。
 
 ---
 
-## 2. 如实写入的不利结果（结果章节 §5.4 "Adverse results and boundaries"）
+## 1. 贡献措辞如何处理（§10 门槛——现已全部撤回）
 
-1. **主验证对（4B→1.7B）质量退化**：joint dual_correct 从 Self 0.65–0.78 掉到 0.283–0.300，flip 仅 0.49–0.56，joint E_CF（≈5.37–6.08）接近/高于错文档与零缓存控制组；明确其为"broken transfer"而非干净的反事实失真，**定性为迁移失败边界、不计入 H1 正向证据**；`quality_pass` 仅表数据质量门，不含迁移效用（R4）。
-2. **MVP V-only≈Joint**：K-only 很小（P1 0.555–0.630 / P2 0.582），V-only（P1 1.660–1.851 / P2 1.626）接近 Joint（P1 1.934–2.123 / P2 1.777）；P2 已在单 seed 定量确认，但 K-only 非零 → V 消费非唯一原因，Key 路由为伴随效应；跨 seed 未检验。
-3. **MVP dual_correct 0.617–0.667 < 0.7**：Self 锚点本身在合成模板上不完美，未用 mock 偏置掩盖；若进方法比较会触发 tradeoff。
-4. **P3/P4 未运行；P2 三 seed 完全收口**：P2 产出三 seed 机制证据、F1/F2 闭环；无 CF-RCT 训练、无封存测试、无泛化/成本结果，不支持进一步结论（δ 已锁定但方法未训练/未评测）。
-5. **δ 网格无正方向 + 预算 caveat**：δ=0.5/1.0/2.0 的 E_CF（2.7496/1.5968/2.7625）**全部高于 kd_only（0.735）**，本网格无 δ 使 CF-RCT-lite 优于 kd_only；π 裁定硬护栏锁定 δ=0.5（dual 0.70、flip 1.0，δ=1.0 因 dual 0.65<0.70 被否，δ=2.0 双重违反）；δ 网格 60 对/3 epoch vs kd 120 对/8 epoch，δ=0.5 压线满足护栏，均已如实披露（P3 重大风险预警，但不触发 §8 分支）。
-6. **kd_only 三 seed 均有 gap**：E_CF 0.735–1.539、dual 0.633–0.700，三组 CI 下界均>0，跨 seed 未消除；不支持"强基线接近 Self"；主终点未评估，不声称 CF-RCT 改善。
-7. **主终点未评估**：成对 E_CF vs kd_only（CI 上界<0）未跑，全文不作改善声明； nowhere 把 P>0.05 写成等效。
-8. **Confound 备案**：E0 效应估计用多 token logprob（尺度≈20）与主终点 2 维 logit 尺度不同（误差上限 2.2e-16，不影响判定）；one-shot 全词表 kernel 路径残差 0.9993 已披露；主验证 run 的 `model_pair` 字符串误标（见 §4）。
+- **贡献(1) 撤回**：删除 "We identify a reproducible gap between standard transfer utility and counterfactual response fidelity…"。干净数据上 joint dual 坍塌、E_CF 达错配/零缓存控制水平，是 broken transfer，不是 utility-preserving 失真；正向证据基础已不存在。
+- **贡献(2) 撤回 withheld**：删除强形式 "We localize the gap to receiver-side Value-consumption pathways…" 及所有机制定位；原 P2 证据建立在被污染数据上，不可信；PI 不等 P2 重跑、直接撤回。
+- **贡献(3) 维持 withheld**：CF-RCT 未训练，主终点（成对 E_CF vs kd_only，CI 上界<0）未评估，P3 已暂停/取消。
+- **不声称的正向主张**：任何「反事实失真普遍存在」「V 消费侧机制定位」「方法改善 gap」「跨模型/真实世界泛化」。
+- **本报告的两条发现是负面/实证结果，非 §10 正向贡献**：① 干净数据上 affine mapper 在 MVP 等深对的迁移失败边界；② 数据泄漏如何制造虚假科学发现的前后对照方法学教训。
+- **禁止词**："reproducible gap"、"utility-preserving distortion"（正向用法）、"localize the gap"、"We identify a gap"、"robustly/across model pairs"、"causal/sole cause"。
+- 不把 `P>0.05` 写成等效；主终点未评估前不作任何 endpoint gain 声明；mock 数字非证据；封存 test 未评测。
 
 ---
 
-## 3. 图表清单（图 1–7 / 表 1–3，全部只读冻结结果生成，不重算统计）
+## 2. 如实写入的不利结果（结果章节 §「Adverse results and boundaries」）
+
+1. **质量坍塌是主观察**：干净数据 joint dual 较 Self 降约 0.4（seed0），E_CF 6.90–8.54 与错配/零缓存控制相当，三 seed 全 `transfer_broken=true`。
+2. **混合控制信号**：info_attribution mismatch +1.483、zero +1.684 为正、random −0.135 为负，伴随 dual 坍塌；失败判读依据联合模式，审稿紧急复核其稳健性（排除实现 bug）。
+3. **旧非等深对失败**：4B→1.7B 旧结果 joint dual 0.28–0.30、失败边界；run 已 superseded（pre-fix 数据），无干净数据等价物。
+4. **旧正向信号是数据产物**：修复后 gap 与机制消失并翻转（Table 2），是核心方法学教训。
+5. **剩余限制**：全合成数据、real=0、无外部锚点、单等深对、F5 长度分层 61，均限定结论。
+6. **统计 caveat**：旧 pairwise CI 仅 8 族、v2.3 下属探索性；干净 CI 以 template_family 为主簇 + 必报 pair-level 敏感性。
+
+---
+
+## 3. 图表清单（只读冻结结果生成，不重算统计）
 
 | 编号 | 内容 | 数据来源 | 当前状态 |
 |---|---|---|---|
-| 图 1 | 两篇已有工作→第三篇科学问题关系图 | 设计性示意 | 正文为文字占位；待绘图 |
-| 图 2 | 严格 zero re-prefill 流程与 Self/Identity/Joint/Oracle 分界 | `algorithm_spec.md §3.4/§6.1` | 正文为文字占位；待绘图 |
-| 图 3 | 反事实成对文档构造（含 F5 负控/F6 长度位置控制） | `protocol.md §3.2` | 正文为文字占位；待绘图 |
-| 图 4 | 原生 vs 迁移响应差散点（分色 K/V/Joint 与任务域） | `p2_gpu_mvp_seed{0,1,2}/scores.jsonl`、`p2_gpu_mvp_seed0_delta_rand_audit/scores.jsonl`（四臂 40 对/臂） | P2 三 seed 已产出，可从冻结产物绘制 |
-| 图 5 | 层/头误差热图与 Oracle 修复 | `p2_gpu_mvp_seed{0,1,2}/mechanism.json`、`mechanism_units.jsonl`、`decomposition.jsonl`、`reports/p2_seed_robustness.json`、`reports/p2_mechanism_summary.json` | P2 三 seed 已产出（17,920 单元、核心 U=(12,5,V/both)/(25,4,V/both) 跨 seed 稳定、命中 0.725–0.750；第 5 单元漂移如实标注）；可从冻结产物绘制 |
-| 图 6 | 方法消融（KD / CF / 机制约束） | E3 产物 | 未跑，不画 |
-| 图 7 | 泛化与成本—Pareto | E4/E5/E6 产物 | 未跑，不画 |
-| 表 1 | 数据切片 / E0 实现门 | `e0_gpu_mvp_repro_seed0/metrics.json`（458de18） | 正文 E0 表已呈现（旧 main E0 run 已 superseded，不引用） |
-| 表 2 | 主结果（P1 MVP repro joint + kd_only 三 seed + 主验证边界） | `p1_gpu_mvp_repro_seed{0,1,2}/`、`p1_gpu_kdonly_mvp_seed{0}_*`/`seed1_par`/`seed2_fast`、`p1_gpu_main_seed{0,1,2}/`（后者 provenance-limited） | 正文已呈现（kd 三 seed 齐） |
-| 表 3 | 控制实验 / 显著性 / 训练成本 | `metrics.json` info_attribution + 未跑项 | 控制组聚合已写入正文；显著性/成本未跑，明确"未评估"，不填占位 |
+| 图 1 | 两篇已有工作→科学问题关系图 | 设计性示意 | 文字占位；待绘图（叙事已改为数据泄漏教训） |
+| 图 2 | 严格 zero re-prefill 流程与四臂分界 | `algorithm_spec.md §3.4/§6.1` | 文字占位；待绘图 |
+| 图 3 | 反事实成对文档构造与正/负控制 | `protocol.md §3.2` | 文字占位；待绘图 |
+| 图 4 | 前后方向对照（旧 vs 干净 E_CF/dual） | `p1_gpu_mvp_repro_seed*`（旧，superseded）+ `p1_clean_mvp_seed*`（新） | 可据 Table 2 绘制；新表为权威 |
+| 图 5 | 机制热图 / Oracle 修复 | 旧 `p2_gpu_mvp_seed*`（已撤回） | **不画**：机制主张撤回，禁止伪造 |
+| 图 6 | 方法消融 | E3 | 未跑，不画 |
+| 图 7 | 泛化与成本—Pareto | E4/E5/E6 | 未跑，不画 |
+| 表 1（`tab:datafix`） | 数据缺陷前后对照 | `reports/data/data_fix_report.md`、`acceptance_checks.json`、`docs/data/data_card.md` | 正文已呈现 |
+| Table 1（`tab:cleanmvp`） | 干净 P1 MVP 三 seed | `p1_clean_mvp_seed{0,1,2}/metrics.json`（`efc3ba3`） | 正文已填新值 |
+| Table 2（`tab:reversal`） | 修复前后方向翻转对照 | 旧 repro run + 干净 clean run | 正文已呈现 |
+| — | kd_only 干净三 seed | **PENDING clean-data kd_only rerun** | 待补，不沿用旧 kd 值 |
 
-注：正文现已包含 E0 门表、P1 MVP repro 表、kd_only 三 seed 段、主验证 provenance-limited 表、P2 机制段（§5.x，四臂/分解/三 seed held-out/U 稳健性）（即表 1/表 2 + 机制结果）。图 4/5 素材来自 P2 三 seed 冻结产物（commit `6784780`）；图 6/7 与表 3 的成本/显著性部分须等 P3/P4 真实产物后再生成，不得用 mock 或占位数字填充。
-
----
-
-## 4. 数据完整性备案（写作者发现，需 PI/审稿人知悉）
-
-- **主验证 run 的 `model_pair` 字符串误标（R6）**：`p1_gpu_main_seed{0,1,2}` 的 `config.json` 与 `runs_index.json` 中 `model_pair` 字段为 `"qwen3-1.7b-to-0.6b"`，但同一 config 的 `teacher` 路径为 `Qwen--Qwen3-4B`、`student` 为 `Qwen--Qwen3-1.7B`，`layer_map` 为 `{kind: proportional, n_teacher_layers: 36, n_student_layers: 28}`。正文按 `qwen3-4b-to-1.7b` 报告，**勘误已发布**：`reports/runs_index_errata.json` 中 `model_pair_corrected="qwen3-4b-to-1.7b"`，依据为路径 + 36→28 layer map；未改冻结 `scores.jsonl`，不影响任何计算指标。
-- **可追溯性（R1，已闭环）**：旧 8 个 run（`git_hash=53e9bc5`）不含跑分代码，勘误标注 `superseded` 且冻结产物未改；新 commit `458de18` 含全部 11 个跑分/实现文件，权威 run `e0_gpu_mvp_repro_seed0`、`p1_gpu_mvp_repro_seed{0,1,2}` 全部 `git_hash=458de18`、工作区 clean。主表已切换到这些 repro run，"reproducible" 已恢复并附 commit。kd seed1 为 `a04990d`（458de18 后继、跑分代码一致，按 round-2 ancestry 口径审计）。非等深对无 repro run，保留为 provenance-limited 记录。
-- **`quality_pass` 与 verdict 口径（R4）**：`quality_pass=true` = 数据质量门（split 隔离、模板无重叠、标注一致），**不含**模型迁移效用；冻结判据返回 `distortion_exists` 是输入下的正确输出，但与"clean 失真"叙事不同。勘误新增正交字段 `transfer_broken`（主验证三 seed 为 true）作注释，不改冻结 verdict。论文 §5.4 已补该说明，且明确主验证对**不计入 H1 正向证据**。
-- **bootstrap seed（R5，已闭环）**：CI endpoints 依赖 bootstrap seed，point estimates 精确；pipeline 与审计脚本均按各 run 的 `bootstrap_seed` 取 seed，端点差异已消除（round 2 复核：repro 1.968/1.934/2.123、kd 0.735 [0.552,0.934] 一致）。正文脚注已更新。
-- **δ 锁定（PI 裁决 docs/decisions/huber_delta_lock.md，形式登记 `configs/prereg/phase3_loss_config_v2.2.yaml`，`frozen_at: protocol-v2.2`）**：硬护栏口径（不引入容差），锁定 δ=0.5；δ=1.0/2.0 因 dual/flip 违反护栏被否。三 δ 的 E_CF 均高于 kd_only，为 P3 风险预警；60对/3ep vs 120对/8ep 预算不对等、δ=0.5 压线非劣均如实披露。正文 §3.6/§5.4/§5.5 已同步。封存测试不得再调 δ。
-- **`info_gap` 字段为空**：当前编排把控制组作为独立臂，逐对 `info_gap` 未填充；聚合口径 `info_attribution`（控制组 E_CF − Joint E_CF）已在正文报告并声明此偏差，未改冻结判据。
-- **E0 尺度差异**：E0 效应估计用多 token 序列 logprob（≈17–20），主终点用候选首 token 2 维 logit；因测量误差上限 2.2e-16，远小于两种尺度，E0 判定不受影响，正文已备案。
-- **one-shot kernel 残差**：整段一次 prefill 全词表 cosine 最小 0.9993（47/80 低于 0.9998），来自 sdpa kernel 路径差异，不计入 E0 主锚点（注入路径与原生两步 bit-identical，cosine=1.0），正文已披露。
-- **P2 机制产物与审计（三 seed 收口）**：`p2_gpu_mvp_seed0_delta_rand_audit`/`p2_gpu_mvp_seed1`/`p2_gpu_mvp_seed2`（commit `6784780`，`zero_re_prefill=true`，`forward_counts.capture=0/oracle=0`），各含 `mechanism.json`/`scores.jsonl`/`decomposition.jsonl`/`mechanism_units.jsonl`；held-out train 8 对选 U（5,376 单元）、val 40 对零重叠、未碰封存 test、Oracle 未进推理图。F1 成对 CI 从审计 run 冻结产物独立重算闭环（0.275 [0.150,0.425]）；F2 三 seed 完成（repair CI 下界均>0）；贡献(2) 已解禁强形式（范围限定 MVP 等深对、Oracle 离线、局部恒等式）。底层 commit 由 P1 的 `458de18` 前进至 P2 的 `6784780`（扩展审计脚本），两者均在 HEAD ancestry、跑分代码一致。
-- **引用占位**：`main.tex`  bibliography 中 KV-Lingo / CacheLink 标为 citation placeholder，须按 `protocol.md §9` 核查正式版本、日期与实验口径后再定稿。
+注：正文数值表（数据修复表、干净 P1 表、翻转对照表）均从冻结产物转抄。旧 P1/P2 数值只出现在翻转对照的历史侧；不得用 mock 或旧 run 作最终结论。
 
 ---
 
-## 5. Cover letter 要点（草稿，待 PI 定稿）
+## 4. 数据完整性与口径备案
 
-1. 主题：将工作定位为"反事实功能保真的评价层 + 机制层（三 seed 支撑）+ 边界实证研究"，**不**宣称方法贡献；"reproducible" 仅在附 commit 时使用（P1 `458de18`、P2 机制 `6784780`）。
-2. 要点一：问题重要性——标准 KV 迁移分数不保证反事实响应保真，可能导致"答对了但功能依赖被破坏"。
-3. 要点二：贡献——(1) 预注册成对反事实基准（`458de18` 可复现）+ 机器精度实现门（2.2e-16）+ 强制联合报告纪律，gap 限定为 tested affine/ridge mapper（kd_only 三 seed 缩小但未消除，预算不对等已披露）；(2) **强形式**（限定 MVP 等深对、commit `6784780`、三 seed）：受控缓存干预下将 gap 定位到接收端 V 消费路径、Key 路由为伴随效应；repair point 0.275–0.350、CI 下界均>0、4/5 核心单元跨 seed 稳定（第 5 单元漂移如实报告）；不作因果/跨模型对主张。
-4. 要点三：诚实边界——主验证对揭示明显质量退化，如实报告为失败边界；贡献(3) 不声称；P3/P4 未运行、封存测试未跑、主终点未评估；三判据非独立（2 信号 + 1 门槛）、局部恒等式非全模型因果分解均已披露。
-5. 要点四：数据与复现——全部数字来自真实 GPU run（`reports/runs/`），主表为 `*_repro_*` 权威 run（commit `458de18`），bf16+sdpa，zero_re_prefill，MVP joint 与 kd_only 均 3 seed，簇级 paired bootstrap；mock 数字未使用；未产出量明确标"未评估"。
-6. 审稿人可重算：`scripts.bootstrap_ci_report` / `scripts.consistency_check`；附数据完整性备案（§4）。
+- **数据缺陷与修复（最高优先，`data_readiness_ruling.md`）**：旧 v2.0（sha `6058fd6d…d1887`）的 18 退化对、≥15 组跨 split 逐字泄漏、实体全共享、train/test 骨架 100% 重合、bootstrap 簇退化、flip 分母 394/457 冲突，是内部正确性缺陷（抬高指标、压窄 CI，披露无法补救）→ 重建 v2.1（sha `f910f1f1…a894a`，验收 11/11、53 单测通过）。剩余为外部效度限制（合成域、real=0、单 MVP 对、F5 长度分层 61），仅披露。**修复直接推翻了旧正向信号**（见翻转对照）。
+- **v2.3 统计口径**（`configs/prereg/stats_convention_v2.3.yaml`）：主簇 `template_family` + 必报 pair-level 敏感性；族数<24 标 exploratory；flip excludes=[F5,F6]=398。
+- **干净数据 provenance**：P1 clean 与 E0 clean 均 git `efc3ba3`、`zero_re_prefill=true`、bf16/sdpa、三 seed 齐全；审稿紧急复核正在排除「数据重建引入实现回归（实现 bug）」的可能。
+- **冻结 verdict 与正交字段并存**：干净数据上冻结判据仍返回 `distortion_exists`（distortion_present ∧ quality_pass），但 `quality_pass` 仅指数据质量门；正交 `transfer_broken=true` 将结果定性为失败边界。下游须联合读取，禁止只看 verdict 判「干净失真」。
+- **早期备案（仍有效）**：`model_pair` 字符串误标勘误见 `reports/runs_index_errata.json`；`info_gap` 逐对字段未填、报 `info_attribution`（控制 E_CF − joint E_CF）；one-shot kernel 残差 0.9993 不属实现误差；引用 KV-Lingo/CacheLink 为占位，须按 `protocol.md §9` 核验。
+
+---
+
+## 5. Cover letter 要点（草稿，待 PI 定稿；投递暂缓）
+
+1. 主题：负面/实证结果论文——「跨模型 KV 迁移的失败边界 + 数据泄漏如何制造虚假科学发现」；**不**宣称任何正向贡献。
+2. 要点一：数据质量对基准结论的决定性影响——前后对照实证显示修复缺陷后一项「显著」发现完全翻转。
+3. 要点二：干净数据上 affine mapper 在 MVP 等深对的迁移失败边界（dual 坍塌、E_CF 接近无信息控制、三 seed `transfer_broken=true`）。
+4. 要点三：诚实边界——贡献(1)(2) 撤回、贡献(3) withheld、主终点未评估、封存 test 未评测、P2/P3/P4 未跑；真实文档缺失、单模型对。
+5. 要点四：数据与复现——数字来自真实 GPU run（干净 `efc3ba3`），bf16/sdpa、zero_re_prefill；新 v2.1 数据验收 11/11，统计按 v2.3；mock 非证据；P>0.05 不作等效。
+6. 审稿人可重算：`scripts.bootstrap_ci_report` / `scripts.consistency_check`；附数据完整性备案（§4）；紧急复核结果待出。
 
 ---
 
 ## 6. 下一步（触发条件）
 
-- 章节/全文提交 → 触发审稿人 adversarial review；改审循环每阶段最多 2 轮，第 3 轮由 PI 裁决。
-- kd_only 三 seed 已齐（seed0/1/2 全部落盘）；若后续要做预算配平复核或"接近 Self"择支判断，由 PI 按 §7 裁决；当前证据为跨 seed 持续 gap、主终点未评估。
-- P2 三 seed 完全收口（`6784780`）：F1 逐对重算与 F2 三 seed 均闭环，贡献(2) 强形式已获准启用；若后续 E5/P4 产出非等深对证据，方可考虑放宽"MVP 等深对"范围限定；因果/跨模型对/sole cause 措辞始终禁用。
-- `[PLACEHOLDER]` 引用须按 `protocol.md §9` 投递前核实（PI P5 投递门槛之一）。
-- P3 方法后续真实运行并达到 §10 主终点门槛（成对 E_CF vs kd_only、CI 上界<0），再按决策树决定是否升级为方法论文并启用贡献 (3)；在此之前维持边界/实证定位。封存测试期间不得调整已锁定的 δ=0.5。
+- **最高优先**：kd_only 干净三 seed 跑完后补入正文 PENDING 位置，并按 §3.3 三情形判读（都 broken→纯失败边界；kd 不 broken 且近 Self→数据缺陷制造虚假发现）；随后 PI 择支。
+- **审稿紧急复核**：确认 broken transfer 可信度（排除实现 bug）；若为实现 bug 则冻结结论、工程修复重跑；若可信则维持紧急裁决。
+- **数据修复重跑**：E0 已复验、P1 干净已产出；P2 不启动、P3 暂停；按 v2.3 主报 template_family CI + pair-level 敏感性。
+- **引用核验**：`[PLACEHOLDER]` 引用按 `protocol.md §9` 投递前完成。
+- **投稿暂缓**：待 kd 择支 + 审稿复核 + PI 签 off；在此之前不得投递、不得沿用旧 run 作最终结论。
