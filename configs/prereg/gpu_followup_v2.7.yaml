@@ -1,0 +1,167 @@
+# ============================================================
+# 新增版本判据文件（protocol-v2.7）—— 2×2 GPU 补充实验（校准版本 × 验证版本）
+# 本文件为新增，不回写 v2.1–v2.6、protocol.yaml 或任何既有冻结文件。
+# 依据：docs/decisions/gpu_supplement_ruling.md（有条件 GO）、refine-logs/EXPERIMENT_PLAN.md、
+#       docs/decisions/human_decisions.md（决策 11，真实 PI 拍板"做实验，保住强叙事"）。
+# 性质：受控交叉对照，用于分离"校准语料版本"与"验证语料版本"对 affine 结论翻转的影响；
+#       先冻后跑；不改主终点、不恢复贡献、不碰封存 test。
+# ============================================================
+version: "2.7"
+frozen_at: "protocol-v2.7"
+frozen_on: "2026-11-23"
+frozen: true
+decision_ref:
+  - "docs/decisions/gpu_supplement_ruling.md"
+  - "refine-logs/EXPERIMENT_PLAN.md"
+  - "docs/decisions/human_decisions.md"
+
+freeze_rationale: >-
+  TMLR 独立审稿把"数据缺陷制造假发现"的因果归因列为首要必改障碍：整批重建同时改变校准与验证多个环节，
+  现有对照无法确定翻转由哪项变更造成。真实 PI 决策 11 要求执行 2×2 训练集版本×评估集版本交叉对照以保住强叙事。
+  refine-logs/EXPERIMENT_PLAN.md 是实验方案（plan），非冻结判据，不足以作为先写后跑的依据；本文件据此在
+  任何 A00–A11 run 启动前冻结设计、指标、判读与纪律，落实"判据先写后跑"与"不伪造"红线。
+
+# ------------------------------------------------------------
+# 0. 不可变边界
+# ------------------------------------------------------------
+invariants:
+  contributes_to: "仅用于分离校准/验证语料版本效应与支撑或限定因果措辞；不是新贡献"
+  contribution_1: "withdrawn —— 不得恢复"
+  contribution_2: "withdrawn —— 不得恢复"
+  contribution_3: "withheld —— 不得声称方法增益"
+  p2_p3_p4: "永久放弃 —— 本实验不是 P3 重启"
+  primary_endpoint: "V2.0 主终点不变（封存 test 上 cf vs kd_only 成对 E_CF 差异）；本实验不重算、不触碰"
+  sealed_test: "不读取、不评测封存 test；仅用 train/val 版本"
+  arc_hellaswag: "NO-Go 维持（final_implementation_plan §3）"
+  ai_generated_data: "v2.6 not-activated，无遗留产物"
+
+# ------------------------------------------------------------
+# 1. 2×2 设计（冻结）
+# ------------------------------------------------------------
+design:
+  factors:
+    calibration_corpus: ["old (生成器 commit 458de18)", "repaired (生成器 commit efc3ba3)"]
+    validation_corpus: ["old (458de18)", "repaired (efc3ba3)"]
+  cells:                    # 行=校准语料版本，列=验证语料版本
+    A00: {calibration: old,     validation: old,     role: "历史对角格复现"}
+    A01: {calibration: old,     validation: repaired, role: "固定旧校准，换修复 val"}
+    A10: {calibration: repaired, validation: old,     role: "固定旧 val，换修复校准"}
+    A11: {calibration: repaired, validation: repaired, role: "修复版对角格复现"}
+  seeds: [0, 1, 2]
+  per_cell:
+    n_train: 120
+    n_val: 60
+  fitting: "每 seed 两个 affine mapper 各拟合一次（6 次拟合）；每个 mapper 评估两个 val（12 次评估格）"
+  data_preparation:
+    method: "CPU 侧用旧生成器(458de18)/修复生成器(efc3ba3)各导出 seed 0/1/2 的 train 与 val，其他 split 设为 0"
+    expected: "6 组 train 各 120/120、6 组 val 各 60/60，与原规模/归档 Joint 行样本哈希一致"
+    registration: "每版本/split/seed 写规范 LF sha256；用版本+样本文本哈希标识记录，避免同名 pair_id 跨版本误配"
+    old_defects_logging: "在旧格登记重复文本、候选退化、实际 train–val 重叠；保留旧格历史样本"
+  run_environment:
+    model_pair: "MVP 等深 Qwen3-1.7B→0.6B（28→28）"
+    dtype: "bfloat16"
+    kernel: "sdpa"
+    zero_re_prefill: true
+    layer_map: "identity 等深 28→28"
+    mapper: "逐层逐头 K/V affine + ridge λ=0.001"
+    scoring: "候选首 token 评分（与主终点口径一致）"
+    revisions: "冻结 teacher/student 与 tokenizer 的 revision，记录权重文件指纹、运行代码 commit、软件版本"
+    input_length_audit: "记录实际送入模型的输入长度，核验严格 zero re-prefill"
+  audit_entrypoint:
+    requirement: "独立审计入口，显式接收两份 train 与两份 val；不得调用会自动重建数据的 P1_gpu.py"
+    defect_registration: "旧数据历史缺陷由审计入口按格登记；正式流程质量门继续生效"
+    fixed_val_protocol: "固定每个 val 的查询、金标签、候选 token、样本顺序与对照选择；同一 val 的 Self/Identity 可复用"
+    per_cell_artifacts: "每格保存 config、样本指纹、逐对各臂分数、审计告警与耗时"
+
+# ------------------------------------------------------------
+# 2. 分析口径（冻结）
+# ------------------------------------------------------------
+analysis:
+  primary_metric:
+    symbol: "L"
+    definition: "Self 双侧正确率 − Joint 双侧正确率（百分点）"
+    reporting: "主表用全部 60 对的 L；同时显示 Self 与 Joint 原值；四格分 seed 报告"
+  predeclared_contrasts:
+    - id: "calibration_effect"
+      definition: "固定 val 换校准语料：旧 val 上 A10−A00；修复 val 上 A11−A01"
+      supports: "同一批样本上，校准语料版本如何改变 affine 迁移"
+    - id: "eval_set_sensitivity"
+      definition: "固定 mapper 换 val：旧校准下 A01−A00；修复校准下 A11−A10"
+      supports: "同一 mapper 在两套不同验证样本上的表现差异（含任务组成/实体/标签/难度变化）"
+  bootstrap:
+    method: "同一验证集按样本配对、按 template_family 簇级重采样 10000 次；pair-level 逐对区间作敏感性（沿用 v2.3）"
+    cluster_unit: "template_family"
+    pair_level_sensitivity: "required（不得只报一套，沿用 v2.3 forbidden_after_freeze）"
+    min_clusters_for_inference: 24
+    if_below_min_clusters: "标 exploratory=true，逐 seed 保留各自模板族计数，可附逐族留一；不作强推断"
+    cross_version_note: "跨版本验证集比较按不同样本集处理，即使 pair_id 字符串相同"
+  predeclared_sensitivity:
+    - "F1–F4 双侧正确率"
+    - "剔除各自 val 中候选相同样本后的结果"
+    - "F6 单独结果"
+  secondary_metrics:
+    - "Joint E_CF"
+    - "方向一致率（F1–F4 且 |D_self|>0.1）及分母"
+    - "coverage"
+    - "同一验证集的对照结果"
+  joint_reporting: "联合报告 E_CF 与双侧正确率（不单独以 E_CF 下降为改善）"
+  reference: "历史 20 百分点阈值仅作图表参考"
+
+# ------------------------------------------------------------
+# 3. 判读四分支（预承诺，禁止事后择支）
+# ------------------------------------------------------------
+interpretation:
+  rule: "在看到结果前锁定以下四分支；按结果对号入座，不得事后改归类或改判据。"
+  branches:
+    - when: "固定 val 换校准语料后 L 差异持续且方向稳健"
+      verdict: "calibration_version_effect"
+      action: "论文可报告校准语料版本在这些样本上的影响；可保留受控观察措辞（非单项因果）"
+    - when: "固定 mapper 换 val 后变化更大"
+      verdict: "eval_set_sensitivity"
+      action: "强调迁移判断对评估样本构成的敏感性；论文相应表述"
+    - when: "两种换法都改变，或方向依赖 seed 和验证集"
+      verdict: "mixed_interaction"
+      action: "报告四格与交互，保留混合解释，不强行归因"
+    - when: "结果只能识别两个数据版本整体切换，无法定位单项"
+      verdict: "whole_version_only"
+      action: "如实限定归因边界，不得把整体效应说成去重/退化对/模板重叠中任一单项缺陷的因果"
+  causality_boundary: >-
+    四格识别的是两个数据版本整体切换的影响。若要把变化归因于去重、退化样本或模板重叠中的某一项，
+    需单独干预该项（本轮不做）。新增未见模板主要位于 probe/test，无法用当前 val 对照推断该改动效果。
+  causality_wording_rule: >-
+    若 calibration_version_effect 分支成立且方向稳健，论文可保留"校准语料版本影响迁移判断"的受控观察；
+    否则一律降级为描述性"重建后翻转"，撤除 main.tex "data defects manufactured/directly produced" 的因果强措辞。
+
+# ------------------------------------------------------------
+# 4. 执行纪律与门控
+# ------------------------------------------------------------
+execution:
+  run_id_scheme: "audit_2x2_A{ij}_s{k}（ij∈{00,01,10,11}，k∈{0,1,2}）→ 12 正式格"
+  gates:
+    smoke_gate:
+      requirement: "先 seed0：缓存恒等性检查 → 每个 val 固定小子集走四格 → Self/Identity 在容差内锚点、Joint 输入审计通过、同一 val 两 mapper 样本/对照一致"
+      action_if_fail: "冒烟门未过不得跑任何正式格；排查样本/checkpoint/logit/gold 差异"
+    seed0_full: "冒烟通过后先 A00、A11，再 A01、A10；对角格与历史逐对核对"
+    seed12_full: "seed0 技术门通过后完成 seed1/2 各四格（8 格）"
+  scheduling: "单卡串行（并发有 3–7× 惩罚）；预算 1–2 GPU 小时含冒烟排查，用 seed0 实测更新"
+  statistics_owner: "科学家 + 审稿人（配对差、模板族 bootstrap、探索性标记、对角格核对）"
+  review: "审稿人出具 2×2 审计报告 + 新 compliance note；触发 P5 重新签off"
+  deferred_options:
+    candidate_full_string_scoring: "推迟到投稿后（读数稳健性补充）"
+    single_defect_causal: "本轮不做、不建议在本文做"
+
+forbidden_after_freeze:
+  - "不得按结果改版本定义、换 val、挑 seed 或改 L 的口径"
+  - "不得把四格整体版本效应说成去重/退化对/模板重叠中单项缺陷的因果"
+  - "不得只报 pair-level CI 而不报 template_family 主 CI（沿用 v2.3）"
+  - "不得回写 v2.1–v2.6 或任何既有冻结文件"
+  - "不得改主终点、恢复贡献(1)(2)(3) 或触碰封存 test"
+  - "不得把 AI 生成集或 ARC/HellaSwag 混算进本实验"
+
+reviewer_checks:
+  - "审计入口显式接收两 train/两 val、未调用自动重建数据的 P1_gpu.py；旧格缺陷按格登记"
+  - "6+6 组 train/val 的规模、身份、重叠清单、LF sha256 齐全；跨版本用样本文本哈希区分"
+  - "冒烟门通过后才跑正式格；12 格 config 含 git_hash/版本/seed/数据哈希/zero_re_prefill"
+  - "两项预固定对比、模板族主 CI + pair 敏感性、<24 族 exploratory 标记落实"
+  - "判读按四分支对号入座、无事后择支、归因边界未被突破"
+  - "对角格与历史逐对核对、结论按受控观察或描述性如实表述"

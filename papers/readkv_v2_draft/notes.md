@@ -8,7 +8,8 @@
 ## 0. 本轮重写范围
 
 - `papers/readkv_v2_draft/main.tex`：重写摘要 / 引言 / 贡献段 / 结果段 / 讨论·限制·结论；新增相关工作（正面引用并区分 CacheLink、KV-Lingo、Heo、Does Accuracy Equal Evidence、Contrast Sets、Kaushik、Kapoor-Narayanan 及 addendum N1–N9）；修正 S4/S5；更新表格（干净 affine 三 seed、kd 三 seed、前后对照、数据修复、SQuAD 锚点）；删除机制热图与方法消融图。
-- `papers/readkv_v2_draft/notes.md`（本文件）：权威数值清单、投稿暂缓、venue、署名、引用核验状态、v2.6 处置。
+- `papers/readkv_v2_draft/notes.md`（本文件）：权威数值清单、投稿暂缓、venue、署名、引用核验状态、v2.6 处置、R2 cover letter 声明状态。
+- `papers/readkv_v2_draft/cover_letter.md`：TMLR cover letter（R2 路线），署名 Zhang Xuein \<zxm0813@gmail.com\>，含 N1–N9 标题/arXiv/年份级核验声明与全部限制披露。
 
 **未写 / 未改**：任何代码、`reports/runs/**`、`configs/prereg/**`、冻结判据；未重算统计。
 
@@ -174,7 +175,8 @@
 - **venue：TMLR（真实 PI 已指定，2026-11-23）**。`docs/decisions/venue_recommendation.md` 首选 TMLR（次选 EASE 2027 RENE、ACL 2027 ARR）；理由：接受 modest contribution、对单模型对 / exploratory / 无方法贡献的证据强度最友好、Reproducibility Certification 契合。P5 已获附条件最终签off（docs/decisions/p5_final_signoff.md），进入 ready-to-submit。
 - **署名（真实 PI 决策 6，已定）**：作者统一为 **Zhang Xuein \<zxm0813@gmail.com\>**；论文 `\author{}`、cover letter 与投稿元数据须一致。单作者原创，非会议扩写。
 - **格式状态（P5 R2 已修复）**：摘要已压缩至 191 个渲染 token（<200，TMLR 合规），保留全部强制边界措辞（见 §0.2 第 2 项）。图 1–3 仍为文字占位，TMLR 投稿时可说明、接受后补齐。
-- **cover letter（草稿要点）**：① 主题为负面 / 实证 / 数据审计研究，不宣称正向贡献；② 数据质量决定性影响——修复缺陷后「显著」发现完全翻转；③ 干净数据上 affine 在 MVP 等深对的迁移失败边界；④ 诚实披露贡献(1)(2) 撤回、(3) withheld、主终点未评估、封存 test 未评测、real=0、单模型对、exploratory；⑤ 复现：固定 SHA `f910f1f1…a894a`、commit 链、v2.1–v2.5 预注册、bf16/sdpa/zero re-prefill、mock 非证据、P>0.05 不作等效；⑥ 审稿人可重算 `bootstrap_ci_report` / `consistency_check`。无独立 cover letter 文件，本要点即草稿。
+- **cover letter（已成型文件）**：`papers/readkv_v2_draft/cover_letter.md`（TMLR，署名 Zhang Xuein \<zxm0813@gmail.com\>，venue=TMLR）。内容：① 负面 / 实证 / 数据审计定位，不宣称正向贡献；② 数据质量决定性影响（修复后「显著」发现翻转）+ 对通用读者的可复现审计方法论价值（避免 audience-too-narrow）；③ 干净数据上 affine 在 MVP 等深对的失败边界；④ 诚实披露全部限制——贡献(1)(2) 撤回、(3) withheld、主终点未评估、封存 test 未评测、real=0/M4 受阻、单合成等深对、8 簇<24 exploratory、锚点仅 exploratory_disclosure、无跨源/真实文档验证；⑤ 原创性声明（单作者原创、非会议扩写、不主张一般 utility/fidelity 区分或机制首创）；⑥ Reproducibility Certification 适用性（数据 SHA `f910f1f1…a894a`、commit 链 `efc3ba3`/`6413ba0`/`b7b9f50`、bf16/sdpa/zero re-prefill、脚本可重算；是否授予由编辑决定、不保证）；⑦ 最终提交由真实 PI 经 OpenReview 完成，agent 不代为投递。
+- **R2 声明状态（最终落实计划 `final_implementation_plan.md` §2 R2，已落 cover letter）**：cover letter 含声明 "Related-work citations N1–N9 are identified by title/arXiv/version/date from public metadata; full-text reading was not completed at submission."；N1–N9 仅作存在性 / 标题 / 摘要级引用，未写章节级细节为已核实事实；KV-Lingo/CacheLink/SQuAD 仅元数据级核验。明确该核验级别限制**不影响本文核心贡献**（数据审计方法论 + 失败边界）。审稿人合规复核时确认正文无「章节级细节当已核实」表述。
 
 ---
 

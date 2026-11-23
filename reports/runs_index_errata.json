@@ -16,7 +16,10 @@
     "e0_gpu_main_seed0",
     "p1_gpu_main_seed0",
     "p1_gpu_main_seed1",
-    "p1_gpu_main_seed2"
+    "p1_gpu_main_seed2",
+    "delta_lock_v2p1_2p0_par",
+    "p1_gpu_kdonly_mvp_seed1_par",
+    "p1_gpu_kdonly_mvp_seed2_fast"
   ],
   "authoritative_runs": [
     "e0_gpu_mvp_repro_seed0",
@@ -158,5 +161,16 @@
     "replaces_for_recompute": "p2_gpu_mvp_seed0 (frozen, unmodified)",
     "recompute": "scripts.bootstrap_ci_report reads per-pair delta_ecf/delta_rand from scores.jsonl oracle_U arm -> point 0.275 CI [0.150,0.425]",
     "smoke_cleanup": "p2_smoke_tmp moved to reports/_non_authoritative/p2_smoke_tmp"
+  },
+  "r4_historical_runs": {
+    "authority": "docs/decisions/final_implementation_plan.md §2 R4",
+    "runs": [
+      "delta_lock_v2p1_2p0_par",
+      "p1_gpu_kdonly_mvp_seed1_par",
+      "p1_gpu_kdonly_mvp_seed2_fast"
+    ],
+    "status": "superseded=true in runs_index.json; not among the 9 authoritative runs (7 clean + 2 anchors)",
+    "reason": "pre-clean-data / historical run; config.git_hash=a04990d is an old HEAD whose run-code diff vs current HEAD fails (PI final_implementation_plan §2 R4); not among the 9 authoritative runs (7 clean + 2 anchors); does not affect any conclusion",
+    "notes": "config.git_hash=a04990d is an old HEAD; run-code diff vs current HEAD fails for provenance — historical, not evidence. Scores/config/metrics untouched."
   }
 }
