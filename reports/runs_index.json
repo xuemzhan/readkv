@@ -627,5 +627,43 @@
     "result": "distortion_exists",
     "superseded": false,
     "data_sha256": "f910f1f1196a21041765834654af8233d216ef4bf4f28f4c60abbd0641aa894a"
+  },
+  {
+    "run_id": "anchor_squad_affine_seed0",
+    "stage": "external_anchor",
+    "gate": "SQuAD_v2.0_dev",
+    "backend": "gpu",
+    "model_pair": "qwen3-1.7b-to-0.6b",
+    "seed": 0,
+    "dtype": "bfloat16",
+    "kernel": "sdpa",
+    "zero_re_prefill": true,
+    "protocol_version": "2.4",
+    "git_hash": "b7b9f50",
+    "n_scores": 480,
+    "complete": true,
+    "role": "SQuAD anchor (v2.4, evaluation-only)",
+    "data_sha256": "80a5225e94905956a6446d296ca1093975c4d3b3260f1d6c8f68bc2ab77182d8",
+    "method": "affine",
+    "superseded": false
+  },
+  {
+    "run_id": "anchor_squad_kd_seed0",
+    "stage": "external_anchor",
+    "gate": "SQuAD_v2.0_dev",
+    "backend": "gpu",
+    "model_pair": "qwen3-1.7b-to-0.6b",
+    "seed": 0,
+    "dtype": "bfloat16",
+    "kernel": "sdpa",
+    "zero_re_prefill": true,
+    "protocol_version": "2.4",
+    "git_hash": "b7b9f50",
+    "n_scores": 480,
+    "complete": true,
+    "role": "SQuAD anchor (v2.4, evaluation-only)",
+    "data_sha256": "80a5225e94905956a6446d296ca1093975c4d3b3260f1d6c8f68bc2ab77182d8",
+    "method": "kd_only",
+    "superseded": false
   }
 ]

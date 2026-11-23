@@ -1,6 +1,7 @@
 # readkv 智能体群协作协议（V1.1）
 
 > 状态：Accepted（角色设计与协作协议已冻结，可据此构建智能体）。需求来源：本项目 V2.0 研究主线（反事实功能保真，主终点 `E_CF`）；基础协议见 `docs/protocol.md`，目标架构见 `docs/architecture.md`，GPU 接续见 `docs/gpu_handoff.md`。
+> **当前项目状态（2026-11-23）**：本文定义角色与协作协议；项目最终科学定性已 PIVOT 为「失败边界 + 数据泄漏教训」的负面 / 实证研究（见 `docs/decisions/final_boundary_study_signoff.md`）。P0/E0、P1 为 GO（终局），P2/P3/P4 正式取消并永久放弃，P5 暂缓；贡献(1)(2) 撤回、贡献(3) withheld、`real=0`。协议纪律（§5/§6）仍全部适用；GPU hooks 已实现（见 §8 更新）。
 > 本协议定义核心编制与扩展审查/数据角色、职责边界、协作流程与阶段交接判据。Prompt 模板见 `prompts/` 目录。
 
 ---
@@ -139,6 +140,6 @@ PI(拍板：投递、修改或按决策树改写)
 
 ## 8. 未决事项
 
-1. **GPU 后端适配**（唯一剩余技术阻塞）：工程师需实现 `models/hooks.py`，使 `--backend gpu` 可用；详见 `docs/gpu_handoff.md`。
+1. **GPU 后端适配**（已闭环，非阻塞）：`models/hooks.py` 真实前向适配已实现并通过 P0/E0 实现门，`--backend gpu` 可用；历史背景见 `docs/gpu_handoff.md`。
 2. **多智能体框架选型**：本协议定义角色与协作协议，不绑定具体框架；可选用 OpenCode subagent、AutoGen、CrewAI 等实现。
 3. **阶段排期**：P0–P5 窗口见 `docs/architecture.md §7`，为估算而非承诺；实际时间取决于 GPU 资源与强基线实现可用性。

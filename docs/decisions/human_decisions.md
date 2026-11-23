@@ -18,7 +18,7 @@
 
 | 编号 | 决策项 | 真实 PI 答复 | 执行含义 |
 |---|---|---|---|
-| 5 | 目标期刊/会议（venue） | **仍不指定，等 SQuAD 锚点结果出来再定**（2026-11-23 第二轮答复） | PI 已给出 TMLR / EASE RENE / ACL 候选（docs/decisions/venue_recommendation.md）供届时选择；venue 未定前只到"投递就绪"，不最终签 off |
+| 5 | 目标期刊/会议（venue） | **TMLR**（2026-11-23，锚点结果出来后指定；采纳 PI 首选推荐） | 目标为 Transactions on Machine Learning Research；按 PI 推荐理由（modest/复现性友好、Reproducibility Certification、OA 零费用、滚动投稿）；P5 可进入最终签off |
 | 8 | 是否长期放弃 P3/方法层路线 | **确认放弃，以边界研究收口** | P2/P3/P4 正式取消且永久放弃；不另立「修复 broken transfer」新课题；论文维持负面/边界实证定位 |
 
 ## 第三轮答复（标注口径）

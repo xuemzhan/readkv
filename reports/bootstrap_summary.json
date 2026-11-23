@@ -16,6 +16,22 @@
     "note": "PI 负责把 recomputed_value 回填到 configs/prereg/stats_convention_v2.3.yaml"
   },
   "runs": {
+    "runs/anchor_squad_affine_seed0": {
+      "run_id": "anchor_squad_affine_seed0",
+      "arms": {},
+      "protocol": "v1.0",
+      "stats_convention": "n/a (v1 scores)",
+      "bootstrap_seed": 0,
+      "bootstrap_seed_source": "run config (experiment_config.bootstrap_seed / seed)"
+    },
+    "runs/anchor_squad_kd_seed0": {
+      "run_id": "anchor_squad_kd_seed0",
+      "arms": {},
+      "protocol": "v1.0",
+      "stats_convention": "n/a (v1 scores)",
+      "bootstrap_seed": 0,
+      "bootstrap_seed_source": "run config (experiment_config.bootstrap_seed / seed)"
+    },
     "runs/delta_lock_v2p1_0p5": {
       "run_id": "delta_lock_v2p1_0p5",
       "arms": {
@@ -2423,6 +2439,408 @@
           "n": 60,
           "E_CF": "2.123 [1.396, 2.746]",
           "E_CF_pair_level_sensitivity": "2.123 [1.702, 2.568]",
+          "cluster_unit": "template_family",
+          "n_clusters": 8,
+          "exploratory": true,
+          "protocol": "v2.0",
+          "stats_convention": "v2.3"
+        }
+      },
+      "primary_endpoint": {
+        "point": 0.0,
+        "ci": [
+          0.0,
+          0.0
+        ],
+        "improved": false,
+        "cluster_unit": "template_family",
+        "n_clusters": 8,
+        "exploratory": true,
+        "pair_level_sensitivity": {
+          "point": 0.0,
+          "ci": [
+            0.0,
+            0.0
+          ]
+        },
+        "note": "paired E_CF difference (new - baseline); primary cluster = template_family"
+      },
+      "repair_vs_random": null,
+      "protocol": "v2.0",
+      "stats_convention": "v2.3",
+      "cluster_bootstrap_convention": {
+        "primary_cluster_unit": "template_family",
+        "pair_level_sensitivity_reported": true,
+        "min_clusters_for_inference": 24
+      },
+      "bootstrap_seed": 2,
+      "bootstrap_seed_source": "run config (experiment_config.bootstrap_seed / seed)"
+    },
+    "runs/p1_kd_clean_mvp_seed0": {
+      "run_id": "p1_kd_clean_mvp_seed0",
+      "arms": {
+        "self": {
+          "n": 60,
+          "E_CF": "0.000 [0.000, 0.000]",
+          "E_CF_pair_level_sensitivity": "0.000 [0.000, 0.000]",
+          "cluster_unit": "template_family",
+          "n_clusters": 8,
+          "exploratory": true,
+          "protocol": "v2.0",
+          "stats_convention": "v2.3"
+        },
+        "identity": {
+          "n": 60,
+          "E_CF": "0.000 [0.000, 0.000]",
+          "E_CF_pair_level_sensitivity": "0.000 [0.000, 0.000]",
+          "cluster_unit": "template_family",
+          "n_clusters": 8,
+          "exploratory": true,
+          "protocol": "v2.0",
+          "stats_convention": "v2.3"
+        },
+        "joint": {
+          "n": 60,
+          "E_CF": "6.388 [3.653, 8.814]",
+          "E_CF_pair_level_sensitivity": "6.388 [5.340, 7.400]",
+          "cluster_unit": "template_family",
+          "n_clusters": 8,
+          "exploratory": true,
+          "protocol": "v2.0",
+          "stats_convention": "v2.3"
+        },
+        "k_only": {
+          "n": 60,
+          "E_CF": "2.641 [1.803, 3.278]",
+          "E_CF_pair_level_sensitivity": "2.641 [2.143, 3.151]",
+          "cluster_unit": "template_family",
+          "n_clusters": 8,
+          "exploratory": true,
+          "protocol": "v2.0",
+          "stats_convention": "v2.3"
+        },
+        "v_only": {
+          "n": 60,
+          "E_CF": "5.856 [3.197, 8.341]",
+          "E_CF_pair_level_sensitivity": "5.856 [4.829, 6.869]",
+          "cluster_unit": "template_family",
+          "n_clusters": 8,
+          "exploratory": true,
+          "protocol": "v2.0",
+          "stats_convention": "v2.3"
+        },
+        "control:mismatch": {
+          "n": 60,
+          "E_CF": "8.785 [4.793, 12.404]",
+          "E_CF_pair_level_sensitivity": "8.785 [7.303, 10.244]",
+          "cluster_unit": "template_family",
+          "n_clusters": 8,
+          "exploratory": true,
+          "protocol": "v2.0",
+          "stats_convention": "v2.3"
+        },
+        "control:random": {
+          "n": 60,
+          "E_CF": "8.199 [4.374, 11.614]",
+          "E_CF_pair_level_sensitivity": "8.199 [6.755, 9.600]",
+          "cluster_unit": "template_family",
+          "n_clusters": 8,
+          "exploratory": true,
+          "protocol": "v2.0",
+          "stats_convention": "v2.3"
+        },
+        "control:zero": {
+          "n": 60,
+          "E_CF": "8.584 [4.620, 12.112]",
+          "E_CF_pair_level_sensitivity": "8.584 [7.101, 9.994]",
+          "cluster_unit": "template_family",
+          "n_clusters": 8,
+          "exploratory": true,
+          "protocol": "v2.0",
+          "stats_convention": "v2.3"
+        },
+        "control:correct": {
+          "n": 60,
+          "E_CF": "6.388 [3.653, 8.814]",
+          "E_CF_pair_level_sensitivity": "6.388 [5.340, 7.400]",
+          "cluster_unit": "template_family",
+          "n_clusters": 8,
+          "exploratory": true,
+          "protocol": "v2.0",
+          "stats_convention": "v2.3"
+        },
+        "new_joint": {
+          "n": 60,
+          "E_CF": "6.388 [3.653, 8.814]",
+          "E_CF_pair_level_sensitivity": "6.388 [5.340, 7.400]",
+          "cluster_unit": "template_family",
+          "n_clusters": 8,
+          "exploratory": true,
+          "protocol": "v2.0",
+          "stats_convention": "v2.3"
+        }
+      },
+      "primary_endpoint": {
+        "point": 0.0,
+        "ci": [
+          0.0,
+          0.0
+        ],
+        "improved": false,
+        "cluster_unit": "template_family",
+        "n_clusters": 8,
+        "exploratory": true,
+        "pair_level_sensitivity": {
+          "point": 0.0,
+          "ci": [
+            0.0,
+            0.0
+          ]
+        },
+        "note": "paired E_CF difference (new - baseline); primary cluster = template_family"
+      },
+      "repair_vs_random": null,
+      "protocol": "v2.0",
+      "stats_convention": "v2.3",
+      "cluster_bootstrap_convention": {
+        "primary_cluster_unit": "template_family",
+        "pair_level_sensitivity_reported": true,
+        "min_clusters_for_inference": 24
+      },
+      "bootstrap_seed": 0,
+      "bootstrap_seed_source": "run config (experiment_config.bootstrap_seed / seed)"
+    },
+    "runs/p1_kd_clean_mvp_seed1": {
+      "run_id": "p1_kd_clean_mvp_seed1",
+      "arms": {
+        "self": {
+          "n": 60,
+          "E_CF": "0.000 [0.000, 0.000]",
+          "E_CF_pair_level_sensitivity": "0.000 [0.000, 0.000]",
+          "cluster_unit": "template_family",
+          "n_clusters": 8,
+          "exploratory": true,
+          "protocol": "v2.0",
+          "stats_convention": "v2.3"
+        },
+        "identity": {
+          "n": 60,
+          "E_CF": "0.000 [0.000, 0.000]",
+          "E_CF_pair_level_sensitivity": "0.000 [0.000, 0.000]",
+          "cluster_unit": "template_family",
+          "n_clusters": 8,
+          "exploratory": true,
+          "protocol": "v2.0",
+          "stats_convention": "v2.3"
+        },
+        "joint": {
+          "n": 60,
+          "E_CF": "6.479 [3.899, 8.798]",
+          "E_CF_pair_level_sensitivity": "6.479 [5.431, 7.529]",
+          "cluster_unit": "template_family",
+          "n_clusters": 8,
+          "exploratory": true,
+          "protocol": "v2.0",
+          "stats_convention": "v2.3"
+        },
+        "k_only": {
+          "n": 60,
+          "E_CF": "4.027 [2.428, 5.508]",
+          "E_CF_pair_level_sensitivity": "4.027 [3.287, 4.798]",
+          "cluster_unit": "template_family",
+          "n_clusters": 8,
+          "exploratory": true,
+          "protocol": "v2.0",
+          "stats_convention": "v2.3"
+        },
+        "v_only": {
+          "n": 60,
+          "E_CF": "4.868 [3.029, 6.600]",
+          "E_CF_pair_level_sensitivity": "4.868 [4.055, 5.688]",
+          "cluster_unit": "template_family",
+          "n_clusters": 8,
+          "exploratory": true,
+          "protocol": "v2.0",
+          "stats_convention": "v2.3"
+        },
+        "control:mismatch": {
+          "n": 60,
+          "E_CF": "8.948 [4.971, 12.543]",
+          "E_CF_pair_level_sensitivity": "8.948 [7.429, 10.478]",
+          "cluster_unit": "template_family",
+          "n_clusters": 8,
+          "exploratory": true,
+          "protocol": "v2.0",
+          "stats_convention": "v2.3"
+        },
+        "control:random": {
+          "n": 60,
+          "E_CF": "8.794 [4.968, 12.196]",
+          "E_CF_pair_level_sensitivity": "8.794 [7.343, 10.227]",
+          "cluster_unit": "template_family",
+          "n_clusters": 8,
+          "exploratory": true,
+          "protocol": "v2.0",
+          "stats_convention": "v2.3"
+        },
+        "control:zero": {
+          "n": 60,
+          "E_CF": "9.065 [5.096, 12.642]",
+          "E_CF_pair_level_sensitivity": "9.065 [7.578, 10.549]",
+          "cluster_unit": "template_family",
+          "n_clusters": 8,
+          "exploratory": true,
+          "protocol": "v2.0",
+          "stats_convention": "v2.3"
+        },
+        "control:correct": {
+          "n": 60,
+          "E_CF": "6.479 [3.899, 8.798]",
+          "E_CF_pair_level_sensitivity": "6.479 [5.431, 7.529]",
+          "cluster_unit": "template_family",
+          "n_clusters": 8,
+          "exploratory": true,
+          "protocol": "v2.0",
+          "stats_convention": "v2.3"
+        },
+        "new_joint": {
+          "n": 60,
+          "E_CF": "6.479 [3.899, 8.798]",
+          "E_CF_pair_level_sensitivity": "6.479 [5.431, 7.529]",
+          "cluster_unit": "template_family",
+          "n_clusters": 8,
+          "exploratory": true,
+          "protocol": "v2.0",
+          "stats_convention": "v2.3"
+        }
+      },
+      "primary_endpoint": {
+        "point": 0.0,
+        "ci": [
+          0.0,
+          0.0
+        ],
+        "improved": false,
+        "cluster_unit": "template_family",
+        "n_clusters": 8,
+        "exploratory": true,
+        "pair_level_sensitivity": {
+          "point": 0.0,
+          "ci": [
+            0.0,
+            0.0
+          ]
+        },
+        "note": "paired E_CF difference (new - baseline); primary cluster = template_family"
+      },
+      "repair_vs_random": null,
+      "protocol": "v2.0",
+      "stats_convention": "v2.3",
+      "cluster_bootstrap_convention": {
+        "primary_cluster_unit": "template_family",
+        "pair_level_sensitivity_reported": true,
+        "min_clusters_for_inference": 24
+      },
+      "bootstrap_seed": 1,
+      "bootstrap_seed_source": "run config (experiment_config.bootstrap_seed / seed)"
+    },
+    "runs/p1_kd_clean_mvp_seed2": {
+      "run_id": "p1_kd_clean_mvp_seed2",
+      "arms": {
+        "self": {
+          "n": 60,
+          "E_CF": "0.000 [0.000, 0.000]",
+          "E_CF_pair_level_sensitivity": "0.000 [0.000, 0.000]",
+          "cluster_unit": "template_family",
+          "n_clusters": 8,
+          "exploratory": true,
+          "protocol": "v2.0",
+          "stats_convention": "v2.3"
+        },
+        "identity": {
+          "n": 60,
+          "E_CF": "0.000 [0.000, 0.000]",
+          "E_CF_pair_level_sensitivity": "0.000 [0.000, 0.000]",
+          "cluster_unit": "template_family",
+          "n_clusters": 8,
+          "exploratory": true,
+          "protocol": "v2.0",
+          "stats_convention": "v2.3"
+        },
+        "joint": {
+          "n": 60,
+          "E_CF": "7.210 [4.417, 9.799]",
+          "E_CF_pair_level_sensitivity": "7.210 [6.074, 8.331]",
+          "cluster_unit": "template_family",
+          "n_clusters": 8,
+          "exploratory": true,
+          "protocol": "v2.0",
+          "stats_convention": "v2.3"
+        },
+        "k_only": {
+          "n": 60,
+          "E_CF": "2.960 [1.898, 3.987]",
+          "E_CF_pair_level_sensitivity": "2.960 [2.403, 3.570]",
+          "cluster_unit": "template_family",
+          "n_clusters": 8,
+          "exploratory": true,
+          "protocol": "v2.0",
+          "stats_convention": "v2.3"
+        },
+        "v_only": {
+          "n": 60,
+          "E_CF": "6.129 [3.687, 8.483]",
+          "E_CF_pair_level_sensitivity": "6.129 [5.096, 7.144]",
+          "cluster_unit": "template_family",
+          "n_clusters": 8,
+          "exploratory": true,
+          "protocol": "v2.0",
+          "stats_convention": "v2.3"
+        },
+        "control:mismatch": {
+          "n": 60,
+          "E_CF": "9.554 [5.517, 13.343]",
+          "E_CF_pair_level_sensitivity": "9.554 [7.972, 11.124]",
+          "cluster_unit": "template_family",
+          "n_clusters": 8,
+          "exploratory": true,
+          "protocol": "v2.0",
+          "stats_convention": "v2.3"
+        },
+        "control:random": {
+          "n": 60,
+          "E_CF": "9.441 [5.567, 12.924]",
+          "E_CF_pair_level_sensitivity": "9.441 [7.943, 10.907]",
+          "cluster_unit": "template_family",
+          "n_clusters": 8,
+          "exploratory": true,
+          "protocol": "v2.0",
+          "stats_convention": "v2.3"
+        },
+        "control:zero": {
+          "n": 60,
+          "E_CF": "9.684 [5.640, 13.347]",
+          "E_CF_pair_level_sensitivity": "9.684 [8.154, 11.177]",
+          "cluster_unit": "template_family",
+          "n_clusters": 8,
+          "exploratory": true,
+          "protocol": "v2.0",
+          "stats_convention": "v2.3"
+        },
+        "control:correct": {
+          "n": 60,
+          "E_CF": "7.210 [4.417, 9.799]",
+          "E_CF_pair_level_sensitivity": "7.210 [6.074, 8.331]",
+          "cluster_unit": "template_family",
+          "n_clusters": 8,
+          "exploratory": true,
+          "protocol": "v2.0",
+          "stats_convention": "v2.3"
+        },
+        "new_joint": {
+          "n": 60,
+          "E_CF": "7.210 [4.417, 9.799]",
+          "E_CF_pair_level_sensitivity": "7.210 [6.074, 8.331]",
           "cluster_unit": "template_family",
           "n_clusters": 8,
           "exploratory": true,

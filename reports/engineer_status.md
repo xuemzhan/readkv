@@ -311,3 +311,26 @@ F1/F2 已技术闭环；贡献(2) 措辞升格（限定→强形式）、投递�
 - **绑定内容**：7 个 clean run（E0 `e0_clean_mvp_seed0`；P1 `p1_clean_mvp_seed0/1/2`；kd_only `p1_kd_clean_mvp_seed0/1/2`）的实际数据 sha256 = `f910f1f1196a21041765834654af8233d216ef4bf4f28f4c60abbd0641aa894a`（源于 `data/tasks/manifest.json::files[cf_pairs.jsonl].sha256`，与磁盘实测一致），并逐 run 记 commit（efc3ba3 / 6413ba0）。
 - **性质**：原 run config 未记录 data_sha256 属溯源遗漏（记录不全），非数据不一致；数据修复先于全部 clean run，跑分代码在两 commit 间逐字未变。
 - **未重跑任何实验**；`configs/prereg/**`、`data/**`、论文、任何已有 run 产物均未改。S2（manifest 的 v2.3 sha 回填前/后注记）属数据工程师侧残留，未在本文件处理。
+
+
+---
+
+## 15. SQuAD 外部锚点评测（v2.4，锚点先行，2026-11-23）
+
+- **数据**：`data/anchors/squad/dev-v2.0.json`（官方 SQuAD v2.0 dev，CC BY-SA 4.0，仅评测/不改写/不发布衍生语料），sha256 实测 `80a5225e…82d8` 与五项登记一致；240 个 answerable 确定性子集，seed0。
+- **代码 commit**：`938f3a0`（锚点评测入口）；run 时 HEAD=`b7b9f50`（数据工程师后续归档 commit），`git diff 938f3a0 HEAD -- <跑分路径>` 为空、工作区 clean，无 R1 重演。
+- **两个 run**（均 `git_hash=b7b9f50`、`protocol_version` top=2.0/experiment=2.4、bf16/sdpa、`zero_re_prefill=true`、`data_sha256=80a5225e…`、480 行 scores）：
+  - `anchor_squad_affine_seed0`：Self EM/F1 = 0.000/0.1975；Joint(affine) EM/F1 = 0.000/**0.0051**（F1 坍塌至 self 的 2.6
+
+---
+
+## 15. SQuAD 外部锚点评测（v2.4，锚点先行，2026-11-23）
+
+- **数据**：`data/anchors/squad/dev-v2.0.json`（官方 SQuAD v2.0 dev，CC BY-SA 4.0，仅评测/不改写/不发布衍生语料），sha256 实测 `80a5225e…82d8` 与五项登记一致；240 个 answerable 确定性子集，seed0。
+- **代码 commit**：`938f3a0`（锚点评测入口）；run 时 HEAD=`b7b9f50`（数据工程师后续归档 commit），`git diff 938f3a0 HEAD -- <跑分路径>` 为空、工作区 clean，无 R1 重演。
+- **两个 run**（均 `git_hash=b7b9f50`、`protocol_version` top=2.0/experiment=2.4、bf16/sdpa、`zero_re_prefill=true`、`data_sha256=80a5225e…`、480 行 scores）：
+  - `anchor_squad_affine_seed0`：Self EM/F1 = 0.000/0.1975；Joint(affine) EM/F1 = 0.000/**0.0051**（F1 坍塌至 self 的 2.6%）。
+  - `anchor_squad_kd_seed0`：Self 同 0.000/0.1975；Joint(kd_only) EM/F1 = 0.000/**0.0014**（F1 坍塌至 self 的 0.7%）。
+- **v2.4 预承诺三情形判读**：affine 失败方向复现，但 kd_only 在锚点上也坍塌（未复现合成域「kd 保持 utility」对照），且 EM 全臂触底（base 0.6B 未针对 SQuAD 微调）、仅 seed0/240 例 → **混合/样本有限 → `exploratory_disclosure`**（探索性披露）。**不**判 `reinforce_external_validity`、**不**判 `narrow_scope`；不反转叙事、不恢复贡献(1)(2)(3)、不与合成 test 混算、不重算冻结 CI。
+- **是否跨数据源复现失败边界**：affine 坍塌方向在 SQuAD 上复现（F1 0.1975→0.0051），但 kd 对照未复现 → 只能作**探索性外部锚点观察**，不足以强化失败边界的跨数据源普适性。
+- **审计**：两锚点 run 通过 `consistency_check`（ok=true）；`bootstrap_ci_report` 31 runs 正常；`pytest` 保持通过。产物：`reports/runs/anchor_squad_{affine,kd}_seed0/`、`reports/anchor_eval_summary.json`、`reports/consistency_report.json`。

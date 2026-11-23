@@ -1,251 +1,167 @@
-# CF-RCT 算法规格书（V2.0 · 反事实功能保真）
+# 反事实审计与数据质量门禁诊断框架规格书（V3.0 · 失败边界 / 数据泄漏教训的负面结果实证研究）
 
-> 状态：**设计产出 / 待 PI 批复**。本文定义算法、损失函数与机制诊断的可实现规格；文中所有阈值、效应量与数字均为**待验证的设计目标**，不是实验结论。Mock 后端数字一律不构成证据（见 `docs/protocol.md` 首段、`docs/decisions/p0_direction.md §4`）。
-> 依据：`docs/protocol.md §1–§6/§9/§10`、`docs/decisions/p0_direction.md §1–§5`、`docs/architecture.md §3–§6`、`docs/gpu_handoff.md §2/§5`、`configs/protocol.yaml`、`configs/eval.yaml`、`configs/prereg/*`。
-> 边界：本文只写设计，不写代码、不改 `configs/prereg/**` 既有冻结文件、不改运行产物、不改主终点定义。
-
----
-
-## 0. 硬约束（贯穿全部设计）
-
-1. **严格 zero re-prefill**：可部署迁移臂只有 **Joint**（K、V 都来自映射教师缓存）。K-only / V-only / Self / Oracle 均为离线诊断或训练期工具，不得宣传为可部署方法；Joint 推理图禁止学生处理文档 token，禁止在线读取 `C_S(d)`；每次运行写 `zero_re_prefill=true` 并由 `verify_zero_re_prefill` 断言。
-2. **主终点不可改**：封存测试上新方法与 `primary_baseline=kd_only` 的**成对 `E_CF` 差异**，模板 / 来源簇级 paired bootstrap（10000 resamples），95% CI **上界 < 0** 才算稳健改善；`E_CF` 必须与 `dual_correct` / `flip_consistency` / `coverage` / `info_gap` 联合报告。
-3. **判据先写后跑**：`τ=1.0`、`self_threshold=0.1` 已冻结（仅引用）；Huber 阈值 δ、标签平衡、机制单元选择规则须在封存测试前用**验证集**确定并经 PI 以**新增版本判据文件**冻结（见 §5）。不得按测试结果调任何阈值 / 权重 / 种子。
-4. **双文档独立**：`d_A`、`d_B` 由教师各自独立 Prefill，禁止篡改缓存字节伪造另一文档；GQA、QK-Norm、位置 / RoPE、dtype / kernel 在全部对照中一致。
-5. **Oracle 隔离**：`L_local` 与层 / 头 / Token 诊断依赖学生原生状态，只允许在训练期 / 离线诊断期使用，不得进入 Joint 推理图；推理期预算分配只能用教师缓存、映射状态、学生当前 Query 等可观测量。
-6. **反事实分别诊断**：须在 `d_A` 与 `d_B` 上分别诊断映射误差，再比较差值；不可用单文档注意力误差替代反事实误差。
-7. **不把“加一个 loss / 多做一套评测”当贡献**（见 §7 与 `protocol.md §10`）。
+> 状态：**设计产出（承接 PI 最终收口裁决）**。本文把原 V2.0「CF-RCT 方法增益 + 机制定位」的算法/机制叙事，重写为**负面结果与方法论审计**叙事：核心对象不再是"训练一个降低 E_CF 的 Mapper"，而是**用 E_CF 成对反事实审计 + 控制组 + 数据质量门禁刻画跨模型 KV 迁移的失败边界，并揭示数据缺陷如何制造虚假发现**。
+> 依据：`reports/review/meta_review/current_task_meta_review.md`、`reports/review/research_advisor/third_round_online_addendum.md`、`docs/decisions/{final_boundary_study_signoff,clean_data_reversal_ruling,anchor_confirmation,ai_dataset_final_ruling,agent_crosscheck_ruling}.md`、`configs/prereg/{stats_convention_v2.3,external_validity_v2.4,annotation_convention_v2.5,ai_generated_data_v2.6}.yaml`、`docs/protocol.md §4/§7/§8/§10`。
+> 边界：只写设计；不改 `configs/prereg/**`、不改代码、不改运行产物、不改论文、不改主终点定义；**不重算任何统计**（文中引用的数值均为已冻结产物的记录值，出处随文标注）。Mock 数字一律不构成证据。
 
 ---
 
-## 1. 记号与对象
+## 0. 研究定位（V3.0 相对 V2.0 的根本变更）
 
-| 记号 | 含义 | 备注 |
+### 0.1 已删除的研究目标（V2.0 → V3.0）
+
+| V2.0 目标 | V3.0 处置 | 处置依据 |
 |---|---|---|
-| `T` / `S` | 教师 / 接收学生；`S` 全部主权重冻结 | `Ĉ_S(d)=gθ(C_T(d))` |
-| `C_T(d)` / `C_S(d)` | 教师缓存 / 学生原生缓存 | `C_S(d)` 是离线 Oracle，不进 Joint |
-| `gθ` | K/V Mapper，待训练的唯一可训练对象 | 详见 §2 |
-| `u=(q,d_A,d_B,a,b,m)` | 反事实评测最小单元 | 候选 A/B 在每对内一致，顺序随机交换 |
-| `g(C,q) = log P(A|C,q) − log P(B|C,q)` | 单候选对的响应强度差 | 单 token 同一生成位置取 logits |
-| `D_self = g(C_S(d_A),q) − g(C_S(d_B),q)` | 原生反事实差 | 离线锚点，不参与梯度 |
-| `D_trans = g(Ĉ_S(d_A),q) − g(Ĉ_S(d_B),q)` | 迁移反事实差 | Joint 路径产出 |
-| `E_CF = |D_trans − D_self|` | 主终点原值 | 封存测试上比对成对差异 |
-| `normalized_E_CF = |D_trans − D_self| / (|D_self| + τ)` | 跨模型归一 | `τ=1.0`，仅验证集固定 |
-| Self 有效子集 | `|D_self| ≥ self_threshold = 0.1` | `flip_consistency` 在此子集计算；`E_CF` 全量 + 子集同报 |
-| `Q_S`, `A_S`, `V_S` | 固定接收端局部 Query / 学生注意力 / 学生 Value | `L_local` 与诊断的固定条件 |
+| CF-RCT / CF-RCT-lite / CF-RCT-mech 方法增益（贡献 3） | **删除为研究目标**；P3 永久放弃、贡献(3) withheld | clean 数据上 affine 迁移坍塌、kd 稳定非零 gap 但无方法主终点；`final_boundary_study_signoff §1.2/§4` |
+| `L_KD/L_CF/L_local/L_reg` 作为"要优化的损失" | **删除**（原设计服务于已撤回的方法层）；下文只在"历史记录"中提及 | 同上；Huber δ 冻结流程随 P3 取消而失效 |
+| K/V 四臂 + Routing/Consumption 分解 + Oracle 层/头/Token 移植作为**机制定位贡献**（贡献 2） | **删除为贡献目标**；P2 永久放弃、贡献(2) 撤回 | 机制对象（干净失真）不存在、旧证据污染；`clean_data_reversal_ruling §1.2` |
+| "可复现 utility-preserving gap"（贡献 1） | **删除为正式贡献**；降为 kd 三 seed 的**探索性观察** | 贡献(1) 撤回；`final_boundary_study_signoff §1.2` 情形 C 细化 |
+
+> **不把"加一个 loss / 多做一套评测 / 换一个 Mapper"自动成立为贡献**（`protocol.md §10`）。V3.0 没有任何可训练 Mapper 作为研究对象；affine 与 kd_only 均为**固定的对照基线**，不是待优化方法。
+
+### 0.2 V3.0 的三个研究问题（均为审计/实证问题，非方法优化问题）
+
+- **RQ1（失败边界）**：在修复数据缺陷后的干净数据上，tested mapper（affine）在单一等深 MVP 对上是否发生**迁移失败**（dual 坍塌、`transfer_broken=true`），而非早期声称的"utility-preserving 失真"？
+- **RQ2（数据泄漏教训，方法学核心）**：退化对、跨 split 文档/实体泄漏、模板骨架重合如何制造**虚假的正向发现**？修复前后结论如何从"gap 存在"翻转为"迁移失败"？
+- **RQ3（基线对照 / 探索性观察）**：强行为基线 kd_only 保持迁移 utility（dual 0.70–0.77）却仍有稳定非零 `E_CF` gap（6.4–7.2）——这是 **v2.3 exploratory 口径下的探索性观察**，不是贡献(1) 的恢复，也不进方法主终点。
+
+### 0.3 贡献与阶段状态（冻结结论，本文只引用不改动）
+
+- 贡献(1) 撤回、贡献(2) 撤回、贡献(3) withheld（`final_boundary_study_signoff §1.2`）。
+- P0/E0 GO（终局）、P1 GO（终局）；**P2 / P3 / P4 永久放弃**（不重启）；P5 投递暂缓；G1 仅可选低优先级确认，**不纳入必做**（`third_round_online_addendum §3.2/§3.3`）。
+- 论文定位：**失败边界 + 数据泄漏教训的负面/实证结果研究（empirical / boundary study）**，不是方法论文。
 
 ---
 
-## 2. Mapper 参数化（容量逐级控制）
+## 1. 硬约束（贯穿全部设计）
 
-按 `protocol.md §6.1` 的“低风险起步、逐级放量”原则，默认只用 ① + ②，③ 仅在显著必要时开启并单列参数量：
-
-1. **① per-(layer, channel, head) affine + 层映射**：对每个 `(层, 通道∈{K,V}, 头)` 一个 `d×d` 线性矩阵 `W_{ℓ,ch,h}`；非等深对（4B→1.7B，36→28 层）由 `models/layer_map.py` 给出教师层→学生层对应，不强行同层对齐。以训练校准集上的闭式 ridge（`K_T→K_S`、`V_T→V_S`）作初始化，降低训练起步风险。
-2. **② 低秩残差修正**：`W = W_0 + A Bᵀ`（`r≪d`），`L_reg` 约束其范数；`rank=0` 时退化为纯 affine（便于消融“容量是否解释增益”）。
-3. **③ 小型跨层 Mixer（不默认启用）**：仅当 ①+② 明显停滞且消融证明需要跨层信息时加入；必须与 lite 版本单列可训练参数量，否则不能排除“更多参数解释全部增益”。
-
-实现约束：de-RoPE 后在内容空间回归，注入前按学生位置 / RoPE 元数据 re-RoPE；GQA 下多个 Query Head 共享 KV Head，按 KV head 聚合；dtype/kernel 与基线完全一致（`configs/eval.yaml`：bf16 + sdpa）。
+1. **严格 zero re-prefill**：Joint 是唯一报告路径；K-only / V-only / Self / Oracle 均为离线诊断臂，带 `deployable=false`，不进 Joint 推理图；每条 run 写 `zero_re_prefill=true`。
+2. **封存 test 不评**：当前全部证据为 `eval_splits=["val"]`；**封存 test 从不评测**，无方法主终点、无"成对 E_CF vs kd_only 的 CI 上界<0"检验。不得为"救原研究"提前碰 test。
+3. **判据先写后跑 / 不改冻结判据**：主终点定义、τ=1.0、self_threshold=0.1、v2.3–v2.5 口径均已冻结；v2.6 已冻结但为 not-activated（提案撤回、无适用对象），本文只引用；禁止按结果改阈值/换聚类单元/挑种子。
+4. **E_CF 联合报告**：`E_CF` 永远与 `dual_correct` / `flip_consistency` / `coverage` / `info_attribution` 同报；`E_CF` 单独变化不构成"成功"或"失败"的充分证据。
+5. **Oracle 隔离**：局部 Oracle 信号只允许离线诊断，不得进入任何推理图；本文不鼓励任何新的 Oracle 移植实验（P2 已放弃）。
+6. **反事实分别诊断**：在 `d_A`、`d_B` 上分别诊断再比较差值；不可用单文档注意力误差替代反事实误差。
+7. **机器 verdict 与科学定性分离**：`phase1_benchmark_decision.yaml` 把 `distortion_present` 操作化为"joint E_CF>0"，冻结 verdict 仍返回 `distortion_exists`；但科学定性以正交字段 `transfer_broken=true` 为准，二者并存须如实披露（`clean_data_reversal_ruling §3.1`）。
+8. **v2.6 AI 数据提案已撤回**：经最终裁定撤回有条件 GO、not-activated，**不生成、无产物、仅作历史记录**（见 §5.3）；外部效度只保留 SQuAD（必要时 ARC）锚点，`real=0` 维持。
 
 ---
 
-## 3. 三版本算法定义与伪代码
+## 2. 记号与审计量（E_CF 的用途从"优化目标"改为"审计度量"）
 
-`CF-RCT`（Counterfactual Response-Constrained Translation）为**算法族工作名**；两个可运行实例为 `CF-RCT-lite` 与 `CF-RCT-mech`。三者共享同一训练骨架，仅损失开关与机制单元来源不同。**先 lite 后 mech**；只有 mech 对 lite 和最强公共基线均有增益，才允许把“机制引导”写成核心方法创新（`protocol.md §6.4`）。
+| 记号 | 含义 | V3.0 用途 |
+|---|---|---|
+| `T` / `S` | 教师 / 接收学生（S 主权重冻结） | 固定对象，无训练 |
+| `C_T(d)` / `C_S(d)` | 教师缓存 / 学生原生缓存 | `C_S(d)` 仅离线锚点 |
+| `Ĉ_S(d)` | 固定 affine 映射（或 kd_only 行为蒸馏）后的缓存 | **对照基线**，非待训练模型 |
+| `u=(q,d_A,d_B,a,b,m)` | 反事实评测最小单元 | F1–F6 切片；F5 非翻转、F6 条件扰动 |
+| `g(C,q)=log P(A\|C,q)−log P(B\|C,q)` | 响应强度差 | 同一生成位置取 logits |
+| `D_self` / `D_trans` | 原生 / 迁移反事实响应差 | 审计量 |
+| `E_CF=\|D_trans−D_self\|` | 主审计量 | **描述失败边界 gap，不作为要最小化的训练目标** |
+| `normalized_E_CF` | `\|D_trans−D_self\|/(\|D_self\|+τ)`，`τ=1.0`（仅引用冻结值） | 跨量纲归一，仅报告 |
+| Self 有效子集 | `\|D_self\| ≥ 0.1`（仅引用冻结值） | `flip_consistency` 在此子集计算 |
+| `transfer_broken` | 正交标注字段（由 dual drop≈0.4 单信号触发） | 失败边界定性依据；与冻结 verdict 分离披露 |
+| `info_attribution` | 错配 / zero / random 无信息控制下的 gap 符号 | 信息归因审计；当前为混合信号（2 正 1 负，见 S4） |
 
-### 3.1 CF-RCT 训练骨架（umbrella）
+> 注：原 V2.0 的 `Q_S/A_S/V_S`、`L_local`、`rank_units_by_repair` 等机制单元记号随 P2 放弃而不再用于贡献产出；若仅需刻画失败边界，可保留 Self/K-only/V-only/Joint 四臂作为**诊断臂**（见 §4.3），但不得写成机制定位。
+
+---
+
+## 3. V3.0 核心诊断框架（替代原 CF-RCT 训练骨架）
+
+### 3.1 反事实成对审计管线（Algorithm A · 唯一"算法"）
 
 ```
-Algorithm 1  CF_RCT_TRAIN                      # 唯一可训练对象为 gθ，S 冻结
-Input : 校准反事实对 {u_i}; 离线教师缓存 C_T(d_A), C_T(d_B);
-        学生原生锚点 C_S(d_A), C_S(d_B) (离线);
-        λ_KD, λ_CF, λ_local, λ_reg; τ=1.0, δ (验证集冻结), δ 见 §5;
-        self_threshold=0.1; epochs E; lr; seed
-Output: gθ
+Algorithm A  COUNTERFACTUAL_AUDIT_PIPELINE        # 无训练；纯审计
+Input : 干净 val 反事实对 {u_i}（已过数据质量门禁 §3.3）；
+        固定基线集合 B = {affine, kd_only}；控制组集合 C（§3.2）；
+        冻结统计口径 v2.3（template_family 主聚类 + pair-level 敏感性）
+Output: 失败边界 verdict + 数据审计报告（无"方法增益"输出）
 
-  torch.manual_seed(seed)
-  gθ ← RidgeInit(C_T, C_S, 校准对)             # per-(layer,ch,head) 闭式解
-  opt ← Adam(gθ.parameters(), lr)
-  for epoch = 1 .. E:
-      shuffle(校准对, seed=seed+epoch)
-      for each u_i = (q, d_A, d_B, ...):
-          Ĉ_A ← gθ(C_T(d_A));  Ĉ_B ← gθ(C_T(d_B))     # 两次映射，共享参数
-          # ——离线锚点，no_grad，梯度不触及 C_S——
-          with no_grad:
-              p_A^S ← S_forward(C_S(d_A), q);  p_B^S ← S_forward(C_S(d_B), q)
-              D_self ← g(p_A^S) − g(p_B^S)
-          # ——Joint 路径，梯度经映射缓存回传至 gθ，学生权重冻结——
-          p_A^t ← S_forward(Ĉ_A, q);  p_B^t ← S_forward(Ĉ_B, q)
-          D_trans ← g(p_A^t) − g(p_B^t)
-
-          L_KD    ← KL(p_A^t ‖ p_A^S) + KL(p_B^t ‖ p_B^S)     # 逐文档分布一致
-          m       ← 1[ |D_self| ≥ self_threshold ]           # Self 有效掩码
-          L_CF    ← mean_i[ m_i · Huber_δ(D_trans^i − D_self^i) ]
-          L_local ← (mech only) 见 §3.3 / §6.2；lite 时为 0
-          L_reg   ← ‖低秩残差‖² (rank=0 时为 0)
-
-          L ← λ_KD·L_KD + λ_CF·L_CF + λ_local·L_local + λ_reg·L_reg
-          zero_grad(); L.backward(); clip_grad_norm(gθ, 1.0); opt.step()
-  return gθ
+  for each baseline b in B:
+    for each u_i:
+      D_self   ← g(C_S(d_A),q) − g(C_S(d_B),q)          # 离线锚点
+      D_trans  ← g(Ĉ_b(d_A),q) − g(Ĉ_b(d_B),q)          # Joint 路径
+      E_CF_i   ← |D_trans − D_self|
+      记录 dual_correct / flip_consistency / coverage / info_attribution（d_A、d_B 分别打分）
+    # 与控制组对比（错配 / zero / random / shuffled-target / self-identity / receiver-only）
+    gap_vs_controls ← E_CF(b) − E_CF(control)             # 不得据"接近控制"夸大（见 S4）
+    bootstrap ← v2.3：template_family 主 CI + pair-level 敏感性；簇数<24 → exploratory=true
+  failure_boundary ← (affine 迁移失败：dual 坍塌 + transfer_broken=true)
+                     ∧ (kd 保 utility：dual 0.70–0.77 但 gap 稳定非零，exploratory)
+  return 双 bar 对照 + 控制组表 + 证据强度边界（§6）
 ```
 
 要点：
+- **无 `L.backward()`、无可训练参数、无 δ / λ 调参**。原 `Algorithm 1/2/3`（训练骨架 / Joint 推理 / Oracle 排序）和 §5 Huber δ 冻结流程**随方法层放弃而整体删除**；如读者需要历史出处，见 V2.0 版文档（已被本文取代）。
+- 每条 run 记录 `zero_re_prefill`、`protocol_version`、git hash、配置指纹、逐对 schema（`protocol.md` 附录 A）。
 
-- `L_CF` 只在 **Self 有效子集**上求均值：`|D_self|<0.1` 处 Self 本就无可辨识信息，强行要求 Mapper 更敏感会诱发目标退化（`protocol.md §6.3`）；该子集仍进入 `L_KD` 与全量指标报告。
-- 两次学生 Query Forward 是**唯一**的接收端 Forward 预算来源；`C_S` 的 Forward 为离线预计算、不计入可部署成本，但需在超参配平时如实记录。
-- 标签平衡：每对 `d_A/d_B` 1:1、候选 A/B 顺序 50/50 交换，F5 非翻转负控按固定比例纳入；策略与 δ 一同冻结（§5）。
-- 退化防护：联合监控 `dual_correct`、`flip_consistency`、`coverage`、`info_gap`；若出现“`D_trans→0` 换取低 `E_CF`”，按 `protocol.md §6.3 / §8` 处理，不把它写成改善。
+### 3.2 控制组（信息归因，沿用冻结口径）
 
-### 3.2 CF-RCT-lite（L_KD + L_CF）
+七类最小控制（沿用 `protocol.md §4.4`）：`correct` / `mismatch derangement` / `random` / `zero` / `shuffled-target` / `self-identity` / `receiver-only adapted`。F5 为非翻转负控、不入翻转分母；flip 分母按 v2.3 排除 F5+F6 = 398（冻结值，仅引用）。当前记录在案的混合信号：seed0 `joint E_CF≈6.90` 仍低于 mismatch 8.38 / zero 8.58，**不得写"达到无信息水平"**（S4，`final_boundary_study_signoff §2`）。
 
-`Algorithm 1` 中置 `λ_local=0`、`λ_CF>0`。用途：检验“在逐样本 KD 之上叠加成对反事实约束是否带来**独立**增益”，并作为 mech 的直接消融对象。若 lite 相对 `kd_only` 无增益，则 `λ_CF` 不得作为方法贡献（协议 §6.2）。
+### 3.3 数据质量门禁（方法学教训的核心，RQ2）
 
-### 3.3 CF-RCT-mech（加机制约束）
+审计维度（修复前后对照的判据，数值均为已冻结审计产物记录，出处 `reports/data/{data_readiness_audit,data_fix_report,acceptance_checks}.json`）：
 
-`Algorithm 1` 中 `λ_local>0`，且机制单元 `(层, 头[, Token])` 由**训练 / 验证集**的局部干预排序选出（§6.3 的 `rank_units_by_repair`），不使用封存测试标签。`L_local` 在固定的接收端局部 `Q_S` 下约束：
-
-```
-L_local = Σ_{(ℓ,h)∈U} [ ‖(Â−A_S) V_S W_O‖₂ + ‖Â (V̂−V_S) W_O‖₂ ]
-          (+ 可选 attention score KL 项，见 §6.2)
-```
-
-`U` 为选出的机制单元集合。**`Q_S`、`C_S(d)`、`A_S` 均为 Oracle 训练信号，只存在于训练图；推理 Joint 臂不计算 `L_local`。**
-
-### 3.4 严格零重 Prefill 推理（唯一可部署路径）
-
-```
-Algorithm 2  JOINT_INFER                        # 主报告路径
-Input : q, 教师离线缓存 C_T(d), 训练好的 gθ, 冻结学生 S
-  Ĉ ← gθ(C_T(d))
-  断言 verify_zero_re_prefill(): q 之外无文档 token 进入 S；未读取 C_S(d)
-  logits ← S_decode(Ĉ, q)                        # 首 token 取自 prefill logits
-  return logits, zero_re_prefill=true
-```
-
-K-only / V-only / Oracle 移植只在 `Algorithm 3`（§6.1）中调用，输出带 `deployable=false` 标记。
-
----
-
-## 4. 损失函数：理论动机与超参数选择原则
-
-| 损失 | 形式 | 理论动机 | 选择原则 / 固定位置 |
-|---|---|---|---|
-| `L_KD` | `KL(p_trans‖p_self)` 逐文档求和 | 逐样本分布匹配，是 KV-Lingo 类行为的直接强基线；保证映射缓存仍保留单文档预测语义，抑制 `D_trans→0` 塌缩 | 候选 logits 统一在同一位置取；`λ_KD` 固定为 1.0 作锚点，与基线同预算；验证集确认不过拟合后不再调 |
-| `L_CF` | `mean_{Self有效} Huber_δ(D_trans − D_self)` | 直接约束**反事实响应差**的幅度与方向；对离群对稳健（Huber 二次→线性过渡），避免少数难例主导 | `δ` **只在验证集固定**（§5）；两份文档共享 `gθ`、成对更新；`λ_CF` 用验证集网格，且与所有基线同调参次数 |
-| `L_local` | routing 项 + consumption 项（§5.1 分解的监督版），可选 score KL | 由 `V̂` 的消费输出与 routing 分布一致，间接约束 K/V 分工；仅在被局部诊断选中的层/头施加，容量可控 | Oracle 信号**仅训练期**；`λ_local` 验证集固定；仅 mech 启用；只在 mech>lite 且>最强基线时才可写成创新 |
-| `L_reg` | `‖低秩残差‖²`（rank=0 时为 0） | 小型合成域上抑制过拟合；使“容量解释增益”可被消融 | `λ_reg=1e-4` 起步，验证集固定；不用于掩盖 seed 方差 |
-
-总损失 `L = λ_KD·L_KD + λ_CF·L_CF + λ_local·L_local + λ_reg·L_reg`（与 `protocol.md §6.2` 一致）。所有 `λ` 用**同一验证集、同一网格、同一调参预算**选择；选择过程记录网格与搜索成本；封存测试运行后不得改动（prereg `forbidden_after_run`）。`L_total` 本身不构成理论新颖性证据。
-
-**与基线的公平配平**：KD-only、CE-only、Consumer-space、错文档对比、强行为 Mapper 使用同校准对、同 Self Forward 次数、同可训练参数量、同训练步数与学习率调参次数；普通 QA 与反事实 QA 同报（`protocol.md §7`、`p0_direction.md §5.1`）。
-
----
-
-## 5. Huber 阈值缺口：建议值与冻结流程
-
-**缺口事实**：`configs/protocol.yaml` 与全部 prereg 文件均无 Huber 阈值数值；`docs/protocol.md §6.2` 只要求“在验证集固定”。`experiments/P3_method.py` 中的 `huber_delta: 1.0` 仅为 mock 接线占位，**不是冻结值、也不是证据**（`p0_direction.md §2.3 / §4`）。
-
-**建议值（供 PI 冻结参考，科学家不写入 prereg）**：
-
-- `L_CF` 的残差 `r = D_trans − D_self` 是 logit 差尺度上的量，与 `τ=1.0` 的归一化尺度同量纲。建议 **δ 标称值 = 1.0**（logit 单位），理由：①与已冻结 `τ=1.0` 同尺度，避免 `δ≪|r|` 退化为 L1-型弱梯度或 `δ≫|r|` 退化为 L2 被离群对主导；②与现有 mock 占位一致，便于判据接线回归。
-- 确定流程（验证集，不碰封存测试）：在验证集 Self 有效子集上取 `q70 = quantile(|D_self|, 0.7)`，在网格 `δ ∈ {0.5, 1.0, 2.0}`（必要时以 `clip(q70, 0.5, 2.0)` 补充候选）上训练候选 Mapper，按“验证集 `E_CF` 最小，且 `dual_correct`、`flip_consistency` 不劣于 `kd_only`，普通 QA 不退化”的固定优先级选择；若网格最优偏离 1.0，以网格结果为准。
-- 标签平衡同步冻结：每对 A/B 1:1、候选顺序 50/50 交换、F5 负控固定配比、`L_CF` 仅在 Self 有效子集求均值。
-
-**冻结流程请求（PI 权限）**：请 PI 在封存测试运行前，**新增**版本判据文件（建议 `configs/prereg/phase3_loss_config_v2.1.yaml`，注明 `frozen_at: protocol-v2.1`），写入：δ 数值、选择网格与验证集 split id、`λ_KD/λ_CF/λ_local/λ_reg`、标签平衡策略、机制单元选择规则、选择理由与 `forbidden_after_run`；**不得回写**已冻结的 `configs/protocol.yaml` 或既有 `phase1_*` / `phase3_*` / `stage*_decision` 文件。**未冻结前 P3 封存测试为 No-Go**；审稿人须专项复核（见 `p0_direction.md §2.3 / §5.3`）。
-
----
-
-## 6. 机制诊断设计
-
-### 6.1 K/V 四臂（Self / K-only / V-only / Joint）
-
-| 臂 | Key | Value | `deployable` | 用途 |
-|---|---|---|---|---|
-| Self | 学生自身 `K_S` | 学生自身 `V_S` | false | 原生锚点；训练 / 诊断参考 |
-| K-only | 映射教师 `K̂_S` | 学生自身 `V_S` | false | 分离寻址 / 路由扰动 |
-| V-only | 学生自身 `K_S` | 映射教师 `V̂_S` | false | 分离读取 / 消费扰动 |
-| Joint | 映射教师 `K̂_S` | 映射教师 `V̂_S` | **true** | 唯一严格零重 Prefill 可部署路径 |
-
-四臂须在**同一 `q`、同一位置、同一 dtype/kernel**下打分；比较 `(D_trans^arm − D_self)` 而非单文档 logits。**两类效应必须分开**：在 `d_A`、`d_B` 上分别诊断，再比较差值（`protocol.md §5.3`）。K-only / V-only 的另一半缓存来自学生自身 Prefill，**不得宣传为零重 Prefill 方法**。
-
-### 6.2 局部 Routing / Consumption 分解
-
-固定接收端 Query `Q_S`、固定位置与当前层，记 `A_S = softmax(Q_S K_Sᵀ/√d)`、`Â = softmax(Q_S K̂_Sᵀ/√d)`，则代数恒等式：
-
-```
-Ô − O_S = (Â − A_S) V_S W_O^S  +  Â (V̂ − V_S) W_O^S
-          └─── Routing ───┘     └──── Consumption ────┘
-```
-
-- 第一项：**Routing**（Key 改变导致注意力分布变化，读取学生 Value）；第二项：**Consumption**（在映射注意力分布下读取 Value 的变化）。
-- 数值校验：`‖routing + consumption − total‖` 应≈0，写入逐单元记录（`diagnostics/route_value.py::AttentionDecomposition.residual_norm`）。
-- **解释边界**：这是固定 Q / 固定位置的**局部代数恒等式**，不能直接解释为全模型任务损失的加性因果分解；前层注入会改变后层 Q 与非线性状态。不得把热图直接称为因果分解。
-
-三层推进（A/B 只是关联，C 才具因果识别力）：
-
-- **A 缓存层**：K/V `R²`、score 差、attention top-k / TV、`W_O` 输出误差；
-- **B 模型层**：候选答案响应差、token-level KL；
-- **C 因果层**：层 / 头 / Token Oracle 状态移植，观察 `E_CF` 改变，并用独立文档验证。
-
-### 6.3 层 / 头 / Token Oracle 移植
-
-```
-Algorithm 3  ORACLE_RANK_AND_VERIFY                 # 仅训练/验证集 + 离线诊断
-Input : (C_S(d_A), C_S(d_B)), (Ĉ(d_A), Ĉ(d_B)), 基线 E_CF, 训练/验证 split
-  对每层 ℓ、头 h、通道 ch∈{K,V,both}、Token t（含 t=None 表示整头）:
-      把学生原生状态移植回映射缓存 → 修复后 cache
-      Δ(ℓ,h,ch,t) = E_CF_before − E_CF_after
-  按 Δ 降序取候选单元集 U                            # 只用训练/验证集
-  在独立验证文档上检验 U 的 repair 命中率 / E_CF 改善       # 预测价值检验
-  return U, 稳定性统计
-```
-
-- Oracle 依赖学生原生 Prefill，**只在离线诊断 / 训练期出现**；推理期预算分配预测器只能用可观测量（教师缓存、映射状态、学生当前 Query），不得在线读 `C_S(d)`。
-- **预测价值判据（运行前冻结）**：候选单元在独立验证文档上的 repair 效果需显著优于随机单元 / 全层平均（具体阈值由 PI 在新增版本判据冻结，建议先以“top-k 命中率显著高于随机基线、且 held-out `E_CF` 改善方向一致”为原则）；仅事后相关 → 机制层降级为现象报告（`protocol.md §8`）。
-
-### 6.4 对称 Key 四目标（前置机制实验）
-
-比较（V 侧暂固定 consumer-space Mapper）：
-
-| 目标 | 定义 | 说明 |
+| 维度 | 旧数据（已 superseded） | 干净数据（权威） |
 |---|---|---|
-| A | per-head ridge `K_T → K_S` | 缓存层基线，非任务因果 |
-| B | student attention-mass 加权回归 | 以注意力质量加权 |
-| C | 对学生 pre-softmax score 的回归 | 含 C-score / C-score-weighted |
-| D | attention KL / ranking 目标 | 可微学生 attention，SGD |
+| 退化必须翻转对 | 18 | 0 |
+| 跨 split 逐字泄漏（含 train↔test 整对） | ≥15 组 | 0 |
+| 实体池重叠 | 全共享 | 0 |
+| 模板骨架 | 重合、簇退化为逐对 i.i.d. | 已修复；flip 分母排除 F5+F6 = 398 |
+| 结论方向 | "gap 存在 / H1 成立" | "迁移失败 / 失败边界" |
 
-GQA 下按多个 Query Head 对应同一 KV Head 聚合；对 RoPE 前 / 后回归分别测试并报告位置扰动。**阳性判据（跑前冻结于 `configs/prereg/stage1_decision.yaml`，V1 遗留机制基线）**：C 显著优于 A/B 且 D 不优于 C；routing 改善而 `E_CF`/EM 不动 → 阴性，指向 query–key 交互或需重算。两种结果都写入论文。Key 侧无论正负都只是机制基线（第二篇对称性补全 + 第三篇机制前置），**只有发现新型可迁移规律才可提升为方法主贡献**。
+> 该前后对照是 RQ2 的**主证据**：它证明数据缺陷可以**制造**虚假科学发现，修复后结论发生方向性翻转（`clean_data_reversal_ruling §0/§4`）。本文不重算这些统计，只引用冻结审计产物。
 
----
+### 3.4 证据强度边界（S4/S5，写作者必守）
 
-## 7. 三个贡献层次：独立证据与 §10 门槛对应
-
-| 层次 | 研究问题 / 假设 | 独立证据（不可互借） | 主实验 | 成立后才可用的措辞（`protocol.md §10`） |
-|---|---|---|---|---|
-| **①评价层** | RQ1 / H1：常规分数不保证反事实保真 | 在 Self 可答对文档对上，强基线（`kd_only`/consumer/affine/score/ridge）的 `E_CF` 相对 Self 仍有稳定差距；七类控制组差距齐全；`coverage`/`dual_correct`/`flip_consistency` 同报 | E0 + E1（+ P1 `phase1_benchmark_decision`：distortion_present ∧ quality_pass） | (1) "We identify a reproducible gap between standard transfer utility and counterfactual response fidelity…" |
-| **②机制层** | RQ2 / H2：失真可归因于 Key 路由与 Value 消费 | K/V 四臂分离 + Routing/Consumption 分解残差≈0 + Oracle 修复在**独立文档**上有预测价值（非事后热图）；Key 四目标阳性/阴性如实报告 | E2（+ P2 机制报告） | (2) "We localize the gap to receiver-side routing and consumption effects…" |
-| **③方法层** | RQ3 / H3：同预算下机制感知 Mapper 定向恢复 | 封存测试上 CF-RCT 相对 `kd_only` 的成对 `E_CF` 差异 CI 上界<0、`flip_consistency≥0.7`、`dual_correct≥0.7`、≥3 seed、Holm；mech 对 lite 与最强公共基线均有额外增益；普通 QA 不退化；成本已核算 | E3 + E4 + E5 + E6（+ P3 `phase3_method_decision`） | (3) "We present a mechanism-constrained mapper that reduces this gap… without target-side re-prefill at inference." |
-
-**降级规则**：仅 ① 成立 → 改写为边界 / 实证研究论文，**不得保留 (2)(3) 措辞**；H2 只有事后相关 → 机制主张降级；H3 只有 `E_CF` 下降而常规任务退化 → 如实报告权衡（`tradeoff`）；mech 不优于 lite → 方法贡献降级，不挑种子掩盖无效。评价层新增或单纯“加一个 `λ_CF`”**不自动成立为贡献**。
+- joint `E_CF` **大幅升高、接近但未超过**错配/零控制，伴随 dual 坍塌（不是"达到无信息"）。
+- `transfer_broken` 由**单一信号（dual drop）**触发；info 归因 seed0 为 2 正 1 负（混合信号）。
+- 所有 clean CI 在 v2.3 下为 **exploratory**（仅 8 个 `template_family` < 24）、**单一 MVP 等深对**、**纯合成域**、**封存 test 未评**。
+- 禁止"强显著性 / 跨模型泛化 / 因果 / 真实世界 / 可复现 gap"等措辞。
 
 ---
 
-## 8. Novelty 与研究范畴核查（文献边界）
+## 4. 诊断臂（保留为失败边界刻画工具，非机制贡献；P2 已放弃）
 
-- 四个范畴必须区分，不得混淆：①**跨模型传输**（本工作主线）；②**同模型增量编辑缓存修复**（明确不研究）；③**无信息消息适应**（作为控制组 / 信息归因，非本贡献）；④**内容依赖审计**（沿用公开因果审计原则，不主张原创指标）。
-- 强基线可复现性：优先复现 **KV-Lingo** 的同模型对、同协议行为蒸馏；**CacheLink** 若无可运行官方实现，按公开文档实现并明确报告偏差，不假定原作者结果可在当前任务直接复现（`protocol.md §7`）。
-- 不主张的创新：表示误差 / `R²` 等于任务质量、单文档注意力误差等于反事实原因、Oracle 诊断可部署、identity 审计本身。论文 novelty 须落在“反事实功能保真评价 + 可外推机制诊断 + 配平预算下经检验的方法增益”三者的**独立证据**上。
-- 同期工作引用须核查正式版本、日期与实验口径（`protocol.md §9`）。
+- **K/V 四臂**：Self / K-only / V-only / Joint（带 `deployable` 标记）。用途：验证"K/V-only 近 Self、仅 Joint 坍塌"→ 支持"迁移失败而非跑分实现坏"（`clean_data_reversal_emergency_review`）。**这是稳健性诊断，不是 V-consumption 机制定位**。
+- **Routing/Consumption 分解 `Ô−O_S=(Â−A_S)V_S W_O + Â(V̂−V_S)W_O`**：仅作**局部代数恒等式自检**，不得解释为全模型因果分解；不作为新实验目标（原 E2 随 P2 放弃）。
+- **Oracle 层/头/Token 移植、对称 Key 四目标**：P2 永久放弃，不再启动；旧证据（repair 0.275–0.350 等）建立在污染数据上，须撤回，不得进论文主表。
 
 ---
 
-## 9. 交接事项
+## 5. 统计口径与外部效度（沿用冻结版本，不重算、不回写）
 
-**给工程师**：按 §2–§4 实现 / 对齐 `models/cf_rct.py`、`train/cf_rct.py`、`diagnostics/route_value.py`；`L_CF` 加 Self 有效掩码；`L_local` 仅在 mech 且仅训练期；Joint 推理写 `zero_re_prefill=true`；四臂带 `deployable` 标记；逐对记录按 `protocol.md` 附录 A schema 落盘。**不得**把 placeholder `huber_delta=1.0` 当作冻结值写进正式 run 配置。
+### 5.1 v2.3（主统计口径）
+- `template_family` 为**主聚类单元**；**pair-level 敏感性必须同时报告**；`min_clusters_for_inference=24`，簇数<24 → `exploratory=true`（当前 8 族）。
+- flip 分母排除 F5+F6 = 398（冻结值）；`forbidden_after_freeze`：不得按结果改聚类单元、不得只报 pair-level CI、不得回写旧文件。
+- 当前全部证据为 val-only；kd 三 seed 的 C 类判读须统一为 v2.3 簇级口径（或明确标注 pair-level 为敏感性，见 meta_review §3.2 的口径混用提示），**由 PI/审稿人出说明，本文不重算**。
 
-**给 PI（需裁决 / 冻结）**：
-1. 批复本规格书后触发工程师实现；
-2. 用验证集确定 δ 与标签平衡策略，**新增** `phase3_loss_config_v2.1.yaml`（`frozen_at: protocol-v2.1`）冻结；科学家不写 prereg；
-3. 冻结机制诊断的“独立文档预测价值”阈值（§6.3）；
-4. P3 封存测试在上述冻结完成前维持 No-Go。
+### 5.2 v2.4（锚点 / 真实文档外部效度）
+- 主聚类单元 `source_document_or_topic_cluster` + pair-level 敏感性 + min 24 / exploratory；预承诺三情形：`reinforce_external_validity` / `narrow_scope` / `exploratory_disclosure`。
+- **仅增强外部效度，不替换合成主实验、不重跑冻结主终点、不恢复任何已撤回贡献**。SQuAD 锚点仅 seed0、仅评测、不改写/再发布语料。
 
-**给写作者 / 审稿人**：方法章节素材来自 §2–§6；贡献措辞严格按 §7 门槛；审稿复核 δ 冻结、Oracle 不泄漏、`E_CF` 联合报告三处。
+### 5.3 v2.5 / v2.6（校验主体与 AI 数据）
+- v2.5：real split 校验一律为 `automated_agent_crosscheck`（两独立 agent + 第三 agent ≥20% 抽检），**不是人类标注**；禁用 `annotator_*` 等人类身份字段；外部效度弱于真人标注，须披露。
+- v2.6：按 `ai_dataset_final_ruling.md`，HellaSwag 种子 AI 数据提案的**有条件 GO 已最终撤回**，状态 **not-activated / 无适用对象**——**不启动生成、无产物、仅作历史记录**。它不是探针、不是数据工作包、不填补 `real=0`、不恢复贡献。外部效度仅由 **SQuAD 主锚点（必要时 ARC 辅锚点）** 承担，`real=0` 维持受阻披露。
+
+---
+
+## 6. 图表规划（更新：保留前后对照，删除机制/方法图）
+
+| 规划项 | V3.0 处置 | 来源 |
+|---|---|---|
+| 数据审计前后对照表 | **保留（核心方法学证据）** | §3.3 |
+| 干净数据三 seed 表（affine 失败 + kd 情形 C） | **保留（主实证证据，标注 exploratory）** | P1 产物 |
+| 控制组 / 信息归因表 | **保留** | §3.2 |
+| 外部锚点表（SQuAD，必要时 ARC） | **保留（增强外部效度，不恢复贡献）** | §5.2 |
+| 机制热图（原图 5：层/头反事实误差 + Oracle 修复） | **删除**（P2 永久放弃、证据污染） | §4 |
+| 方法消融图（原图 6：KD/CF/机制约束） | **删除**（P3 永久放弃、贡献(3) withheld） | §0.1 |
+
+---
+
+## 7. 交接
+
+- **给工程师**：本版无新训练/新 Mapper 任务；只执行配套 `docs/experiment_design_E0_E7.md` 中已授权的收尾与锚点评测（SQuAD，必要时 ARC）；v2.6 AI 数据提案已撤回、无产物，不实现任何生成脚本，不得碰封存 test。
+- **给 PI / 审稿人**：v2.6 AI 数据提案已按 `ai_dataset_final_ruling.md` 最终撤回、not-activated、无产物、仅历史记录，外部效度只靠 SQuAD（必要时 ARC）锚点、`real=0` 维持——本设计与该裁定已一致，无残留处置项；kd 三 seed 的 v2.3 簇级口径由 PI/审稿人出说明，本文不重算。
+- **给写作者**：方法/机制素材从本框架 §3–§5 取，贡献措辞严格按 `final_boundary_study_signoff §3.2` 可写/禁写清单；图表按 §6 取舍。

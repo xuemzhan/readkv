@@ -18,8 +18,9 @@
 
 - **M4 正式记为「受阻（blocked）」，real=0（PI `docs/decisions/m4_target_adjustment.md`）**：已尽力来源筛选/许可预评估/抓取/语义适配评估，三重阻塞——①许可/网络：Census 403（ToS 冲突永久剔除）、Wikidata 超时、gov.cn 无出网、Wikipedia 正文因 CC BY-SA 义务排除；②语义适配：唯一 CC0 可下载候选 SciTSR-pd 为科学表格短串、非连续事实句，F2 推理链/F3 方向否定不可构造，F1/F4/F6 仅有限且 F6 有位置-事实绑定缺陷，原始文件 sha256 未算，故未采纳；③人力/登记：v2.5 交叉校验口径冻结但无适用对象、双人留痕与登记未到位。**不生成 real 文件、不启动 real run**；禁写"真实文档已验证/外部效度已证实/跨真实文本泛化/human-verified"。
 - **v2.5 保持冻结、无适用对象**：real=0 故无校验对象；严禁"为了用 v2.5 而接受语义不合格源"；作为后续 real 备用口径保留。
-- **外部效度保守表述**："合成域 + 标准 QA（SQuAD）锚点观察，真实文档外部效度**未验证**"；SQuAD 锚点仅为有限标准 QA 外部锚点，不替代真实反事实文档、不替代 E4 泛化证据、不恢复任何贡献。**锚点先行进行中，锚点结果待工程师产出后补入**。
-- **锚点通道独立于 M4**：SQuAD（主）/ARC（辅）授权不受 M4 受阻影响，按 v2.4 三情形报告；锚点数值本稿暂缺、不得编造。
+- **外部效度保守表述**："合成域 + 标准 QA（SQuAD）锚点观察，真实文档外部效度**未验证**"；SQuAD 锚点仅为有限标准 QA 外部锚点，不替代真实反事实文档、不替代 E4 泛化证据、不恢复任何贡献。
+- **SQuAD 锚点已完成并补入正文（v2.4，锚点先行）**：`anchor_squad_{affine,kd}_seed0`，git `b7b9f50`、data_sha `80a5225e…82d8`、240 answerable、bf16/sdpa、zero_re_prefill、仅评测不改写发布。数值：affine Self EM/F1=0.000/0.1975、Joint=0.000/0.0051（2.6%）；kd Self=0.000/0.1975、Joint=0.000/0.0014（0.7%）。**三情形判读=`exploratory_disclosure`（混合）**：affine 失败方向复现，但 kd_only 也坍塌（合成域"kd 保持 utility"对照未复现），EM 全臂触底（base 0.6B 未微调）、仅 seed0/240 例；**不**判 reinforce_external_validity / narrow_scope，不反转叙事、不恢复贡献、不与合成 test 混算、不重算冻结 CI。正文 §「External anchor (SQuAD)」+ 表 `tab:anchor`。
+- **锚点通道独立于 M4**：SQuAD（已完成）；ARC/HellaSwag 顺位跟进（未跑），不受 M4 受阻影响；均按 v2.4 三情形报告。
 - （下节为紧急翻转轮历史状态，数值/贡献状态仍有效）
 
 - **科学方向翻转（最高优先，PI 紧急裁决 `clean_data_reversal_ruling.md`）**：干净数据 P1 MVP 三 seed（`p1_clean_mvp_seed{0,1,2}`，git `efc3ba3`）显示 **broken transfer**：joint E_CF 6.900 / 8.159 / 8.540，dual 0.417 / 0.283 / 0.383，全部 `transfer_broken=true`。原贡献(1) 的「utility-preserving gap」与贡献(2) 的机制信号源于数据缺陷，**修复后翻转为迁移失败**。
@@ -52,7 +53,7 @@
 2. **混合控制信号**：info_attribution mismatch +1.483、zero +1.684 为正、random −0.135 为负，伴随 dual 坍塌；失败判读依据联合模式，审稿紧急复核其稳健性（排除实现 bug）。
 3. **旧非等深对失败**：4B→1.7B 旧结果 joint dual 0.28–0.30、失败边界；run 已 superseded（pre-fix 数据），无干净数据等价物。
 4. **旧正向信号是数据产物**：修复后 gap 与机制消失并翻转（Table 2），是核心方法学教训。
-5. **剩余限制**：全合成数据、real=0（M4 受阻，真实文档外部效度未验证）、锚点仅有限标准 QA 观察（结果待补）、单等深对、F5 长度分层 61，均限定结论。
+5. **剩余限制**：全合成数据、real=0（M4 受阻，真实文档外部效度未验证）、SQuAD 锚点仅有限标准 QA 探索性观察（`exploratory_disclosure`，无跨源普适性）、单等深对、F5 长度分层 61，均限定结论。
 6. **统计 caveat**：旧 pairwise CI 仅 8 族、v2.3 下属探索性；干净 CI 以 template_family 为主簇 + 必报 pair-level 敏感性。
 
 ---
@@ -110,7 +111,7 @@
 - **审稿紧急复核**：确认 broken transfer 可信度（排除实现 bug）；若为实现 bug 则冻结结论、工程修复重跑；若可信则维持紧急裁决。
 - **数据修复重跑**：E0 已复验、P1 干净已产出；P2/P3/P4 正式取消且永久放弃（真实 PI 决策 8，不另立新课题）；按 v2.3 主报 template_family CI + pair-level 敏感性。
 - **引用核验**：已完成——KV-Lingo/CacheLink 两条引用按 `protocol.md §9` 实际核验并替换为真实 arXiv 条目（见 §4）；`main.tex` 无 `[PLACEHOLDER]` 残留。
-- **待办（venue 由真实 PI 投递前指定）**：真实 PI 第二轮答复——venue **暂不指定，执行完 M4 再定**（决策 5）；现 M4 结论已定（受阻披露 real=0），venue 由真实 PI 投递前指定，未定前只到"投递就绪"不最终签 off。投递时机按决策 4 选 B——补齐锚点（SQuAD/ARC）+ S1–S5 收尾后投更强版本；M4 已受阻披露、不再等待真实文档。
-- **锚点数值待补**：SQuAD/ARC 锚点评测进行中，结果产出后按 v2.4 三情形补入正文；本稿不含任何锚点数值，不得编造。
+- **待办（venue 由真实 PI 投递前指定）**：真实 PI 第二轮答复——venue **暂不指定，执行完 M4 再定**（决策 5）；现 M4 结论已定（受阻披露 real=0），venue 由真实 PI 投递前指定，未定前只到"投递就绪"不最终签 off。投递时机按决策 4 选 B——S1–S5 收尾后投更强版本；M4 已受阻披露、不再等待真实文档。
+- **锚点数值待补事项已清零**：SQuAD 锚点已完成并补入正文（见上）；ARC/HellaSwag 为顺位增强项（未跑、非本稿待补项），venues 仍待真实 PI 指定。
 - **P3/方法层路线（决策 8，已定，无遗留待确认项）**：真实 PI **确认放弃，以边界研究收口**——P2/P3/P4 正式取消且**永久放弃**，**不另立「修复 broken transfer」新课题**；论文维持负面/边界实证定位，补 M4/锚点后不恢复任何已撤回贡献。上述 1–8 项均已答复，无未答复项。
 - **投稿暂缓**：kd 择支已定（情形 C）；仍待 S1–S5 溯源/措辞收尾 + 审稿复核 + PI 签 off；在此之前不得投递、不得沿用旧 run 作最终结论。

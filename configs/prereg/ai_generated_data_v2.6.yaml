@@ -1,0 +1,127 @@
+# ============================================================
+# 新增版本判据文件（protocol-v2.6）—— 人种子·模型生成反事实对的生成协议（先写后跑）
+# 本文件为新增，不回写 v2.1–v2.5、protocol.yaml 或任何既有冻结文件。
+# 依据：docs/decisions/ai_generated_dataset_ruling.md（PI 裁决）、reports/data/anchor_license_check.md、
+#       Datasheets for Datasets (Gebru et al., CACM 2021)。
+# 性质：新数据构建工作包，不是重启 P3；仅作额外探针，不恢复任何已撤回贡献。
+# ============================================================
+version: "2.6"
+frozen_at: "protocol-v2.6"
+frozen_on: "2026-11-23"
+frozen: true
+decision_ref: "docs/decisions/ai_generated_dataset_ruling.md"
+
+freeze_rationale: >-
+  真实 PI 提议"以真实人类行为数据为种子、由 AI 生成反事实对并公开"。PI 裁定：种子仅可用 MIT 许可的
+  HellaSwag（允许衍生与再发布、无 SA），产物只能定性为 human-seeded, model-generated counterfactual pairs，
+  不得称"真实人类行为数据 / real split"；real=0 与贡献(1)(2) 撤回/(3) withheld 不变。本文件在生成运行前
+  冻结生成协议与质量门槛，落实"先写后跑"与"不伪造"红线；任何结果不得按评测回改生成器/prompt。
+
+# ------------------------------------------------------------
+# 0. 定性、命名与不可变边界
+# ------------------------------------------------------------
+identity:
+  official_name: "human-seeded, model-generated counterfactual pairs"
+  forbidden_names:
+    - "real documents / real split / 真实人类行为数据 / human-annotated / human-verified"
+  non_human_declaration: >-
+    本数据集由模型生成、以 HellaSwag（真人撰写的常识句，MIT）为种子；生成文本不是人类撰写或标注的文档，
+    不得据此声称真实文档外部效度已验证。real=0 状态不变。
+  invariants:
+    contribution_1: "withdrawn —— 不得恢复"
+    contribution_2: "withdrawn —— 不得恢复"
+    contribution_3: "withheld —— 不得声称方法增益"
+    p2_p3_p4: "永久放弃 —— 本工作包不是 P3 重启"
+    role: "仅作额外探针（additional probe），不并入合成 test、不重算主终点、不恢复贡献"
+
+# ------------------------------------------------------------
+# 1. 种子语料（仅 HellaSwag MIT）
+# ------------------------------------------------------------
+seed_corpus:
+  source: "HellaSwag (Zellers et al., ACL 2019)"
+  license: "MIT（一手证据：HF 官方卡 Licensing Information + github.com/rowanz/hellaswag/LICENSE；镜像口径不一致时以一手为准）"
+  permitted_uses: "允许衍生与再发布；须保留版权/许可声明、署名 Zellers et al. 2019"
+  forbidden_seeds:
+    - "SQuAD (CC BY-SA 4.0) —— 发布衍生语料会触发 SA，禁止作为生成种子"
+    - "ARC (CC BY-SA 4.0) —— 同上，禁止"
+    - "任何许可不清 / 仅研究用途 / SA 语料"
+  underling_source_disclosure: >-
+    HellaSwag 底层文本源自 ActivityNet 与 WikiHow；数据卡须如实披露这一点，MIT 适用于 HellaSwag 作者的
+    整理与标注；若某条种子句含可识别第三方内容或个人信息则剔除。
+  five_item_registration:
+    - "① 来源 URL/标识（HF Rowan/hellaswag 或官方 GitHub；固定版本）"
+    - "② 版本/日期（split 与下载日期）"
+    - "③ 许可原文（官方 LICENSE 文件，归档并算 sha256）"
+    - "④ 原始文件真实 sha256（sha256sum 实测，禁止编造）"
+    - "⑤ 处理脚本 commit（下载/清洗/生成脚本的 git hash）"
+
+# ------------------------------------------------------------
+# 2. 生成协议（固定，先冻结后跑）
+# ------------------------------------------------------------
+generation_protocol:
+  generator_model:
+    role: "仅用于数据生成，须与本项目 teacher/student 不同以避免循环自我生成"
+    allowed: "Qwen3-0.6B / 1.7B / 4B（本机 ModelScope 已下载）中选定一个固定版本"
+    constraint: "不得使用做 KV 迁移实验的 teacher 或 student 本体作为 generator；固定 model revision 并记录"
+  seed: "固定随机种子（如 0），连同 generator 版本、prompt 模板一并记入每个 run config"
+  prompt_template:
+    requirement: "固定 prompt 模板（含 F1–F6 指令），先在生成前冻结模板全文，生成中不得改动"
+    versioned: true
+  scale: "80–150 对，建议 100 对（留质量筛选剔除余量）"
+  slice_coverage:
+    target: "F1–F6 全覆盖"
+    note: "以 HellaSwag 常识句为种子，F2 推理链/F3 方向否定的构造若不可行须逐切片如实标注覆盖不足，不得强行填充"
+  deduplication: "生成后按归一化 context 哈希去重；与合成 cf_pairs 与 HellaSwag 种子逐字比对，剔除重复"
+  personal_info: "含个人信息或可识别第三方内容的生成样本整批剔除"
+
+# ------------------------------------------------------------
+# 3. 质量门槛（预承诺，先写后跑）
+# ------------------------------------------------------------
+quality_gate:
+  degenerate_pair_assertion:  # 复用 M1
+    rule: "对每个 must_flip=true 样本断言 candidate_A != candidate_B、correct_A != correct_B、context_A != context_B；F5 相同候选且 must_flip=false 为设计使然"
+  semantic_checks:
+    - "仅关键事实位点不同（无无意第二处改动）"
+    - "候选互斥、答案可由文档读出、逻辑一致"
+    - "F5 非翻转、F6 条件扰动标注正确"
+  double_check_convention: "质量审计按 v2.5 automated_agent_crosscheck 口径（两个独立 agent + 第三 agent ≥20% 抽检）；非人类标注声明适用"
+  clustering:
+    primary_cluster_unit: "seed_document（同一 HellaSwag 种子派生的生成对归入同一簇）"
+    bootstrap: "簇级 paired bootstrap，附 pair-level 敏感性；簇数 <24 标 exploratory=true（沿用 v2.3/v2.4 原则）"
+  no_tuning_on_eval: "不得按后续评测结果回改生成器、prompt、种子或筛选规则；违反即视为 p-hacking"
+
+# ------------------------------------------------------------
+# 4. 使用边界
+# ------------------------------------------------------------
+usage_boundary:
+  - "仅作额外探针（additional probe / qualitative illustration），不是合成主实验的替代或扩展统计基础"
+  - "不并入合成 test、不重算 V2.0 主终点、不参与任何已冻结 CI / flip 分母"
+  - "不用于恢复贡献(1)(2) 或支撑贡献(3)；不得声称真实文档外部效度已验证"
+  - "结果按探索性披露；生成集与合成域/锚点不得混算"
+
+# ------------------------------------------------------------
+# 5. 公开与文档
+# ------------------------------------------------------------
+publication:
+  location: "data/generated/"
+  required_files:
+    - "生成对数据文件（含来源种子 ID、generator 版本、seed、prompt 版本字段）"
+    - "manifest（文件 sha256、规模、切片覆盖、五项种子登记）"
+    - "数据卡（Datasheets for Datasets 风格，含'AI 生成、非真实人类标注'声明、MIT 许可与 Zellers et al. 2019 署名、HellaSwag 底层来源披露）"
+    - "生成脚本与 commit、质量报告（审计结论、覆盖与剔除统计）"
+  readme_update: "README 增加 data/generated/ 条目与定性说明"
+
+forbidden_after_freeze:
+  - "不得回写 v2.1–v2.5 或任何既有冻结文件"
+  - "不得伪造种子哈希、生成记录、质量审计或 any provenance"
+  - "不得将生成集称为 real/真实人类行为数据/人类标注"
+  - "不得用 SQuAD/ARC 派生内容作为生成种子或并入公开集"
+  - "不得按评测结果调生成器/prompt/筛选"
+  - "不得据生成集恢复贡献或重算主终点"
+
+reviewer_checks:
+  - "种子仅 HellaSwag MIT、五项登记齐全、LICENSE 与 Zellers 引用归档"
+  - "generator 与 teacher/student 不同、版本/seed/prompt 冻结且如实记录"
+  - "退化对断言、双人 agent 交叉校验、≥20% 抽检、簇级 bootstrap、exploratory 标记"
+  - "定性/命名合规（human-seeded model-generated，非 real/人类标注），数据卡声明齐全"
+  - "未并入合成 test、未重算主终点、未恢复贡献"
