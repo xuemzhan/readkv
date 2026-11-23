@@ -62,6 +62,74 @@ class GPUBackend:
     def inject_counterfactual_distortion(self, cache: KVCache, **kwargs: Any) -> KVCache:
         raise NotImplementedError("GPU backend does not inject synthetic distortion")
 
+    def torch_candidate_logits(
+        self,
+        mapped: Mapping[int, tuple[torch.Tensor, torch.Tensor]],
+        query_doc: Mapping[str, Any],
+        candidates: Sequence[str],
+        *,
+        correct_index: int | None = None,
+        correct_bonus: float = 0.0,
+        **kwargs: Any,
+    ) -> torch.Tensor:
+        """可微候选 readout（与 MockBackend.torch_candidate_logits 同接口/返回形状）。
+
+        `mapped`: `{layer: (K, V)}`，K/V 为内容空间 torch 张量 (H, T, d)，fp32，
+        可由 CFRCTModule.map_cache 产出并携带梯度。学生主权重冻结（requires_grad=False），
+        梯度经映射缓存回传到 gθ，不更新学生权重。
+
+        候选在同一生成位置（query 末位）取首 token logits，返回 (n_candidates,) 张量。
+        `correct_index` / `correct_bonus` 仅为接口兼容保留；真实 GPU 前向**不注入**
+        任何人工正确性偏置（默认 0.0），logits 全部来自冻结学生真实前向。
+        """
+        from transformers import DynamicCache
+
+        from readkv.models.hooks import _apply_rope, _rope_cos_sin
+
+        # 防御性冻结：学生（与教师）主权重不得进入梯度更新
+        for p in self.student.parameters():
+            if p.requires_grad:
+                raise RuntimeError("student parameters must be frozen for torch_candidate_logits")
+
+        cands = tuple(candidates)
+        if len(cands) < 2:
+            raise ValueError("torch_candidate_logits needs at least two candidates")
+        device = next(self.student.parameters()).device
+        dtype = next(self.student.parameters()).dtype
+
+        k0, v0 = next(iter(mapped.values()))
+        doc_len = int(k0.shape[1])
+        doc_pos = torch.arange(doc_len, device=device).unsqueeze(0)
+        cos, sin = _rope_cos_sin(self.student, doc_pos, dtype=torch.float32)
+
+        kv = DynamicCache(config=self.student.config)
+        for layer in sorted(mapped):
+            k, v = mapped[layer]
+            k = k.to(device=device, dtype=torch.float32)
+            v = v.to(device=device, dtype=torch.float32)
+            k_roped = _apply_rope(k.unsqueeze(0), cos, sin).to(dtype=dtype)
+            kv.update(k_roped, v.unsqueeze(0).to(dtype=dtype), layer)
+
+        q_ids = self._tokens(str(query_doc.get("query", query_doc.get("text", ""))), "student")
+        q_t = torch.as_tensor(q_ids, device=device, dtype=torch.long).unsqueeze(0)
+        q_pos = (torch.arange(len(q_ids), device=device) + doc_len).unsqueeze(0)
+        self.n_injections += 1
+        logits = self.student(
+            input_ids=q_t, cache=kv, position_ids=q_pos, use_cache=True, return_dict=True
+        ).logits[0, -1].float()
+
+        idx = []
+        for cand in cands[:2]:
+            tids = self._tokens(str(cand), "student")
+            idx.append(tids[0] if tids else 0)
+        out = logits[torch.as_tensor(idx, device=device, dtype=torch.long)]
+        if correct_index is not None and correct_bonus:
+            if not 0 <= correct_index < out.shape[0]:
+                raise ValueError("correct_index out of range")
+            out = out.clone()
+            out[correct_index] = out[correct_index] + float(correct_bonus)
+        return out
+
     def candidate_logits(self, cache: KVCache, query_doc: Mapping[str, Any],
                          *, candidates: Sequence[str] | None = None,
                          correct_index: int | None = None,
