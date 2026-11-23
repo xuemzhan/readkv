@@ -68,7 +68,8 @@
 - Self EM/F1 = 0.000 / 0.1975（两臂同）；Joint EM = 0.000（两臂）。
 - `anchor_squad_affine_seed0`：Joint F1 = 0.0051（Joint/Self = 2.6%，drop 0.1924）。
 - `anchor_squad_kd_seed0`：Joint F1 = 0.0014（Joint/Self = 0.7%，drop 0.1961）。
-- v2.4 三情形判读：`exploratory_disclosure`（affine 失败方向复现，但 kd 保持 utility 的对照未复现、EM 全臂触底、仅 seed0/240 例）。**不**强化外部效度、**不**反转叙事、**不**恢复贡献；不与合成 test 混算、不重算冻结 CI。
+- v2.4 三情形判读：`exploratory_disclosure`（affine 失败方向复现，但 kd 保持 utility 的对照未复现、EM 全臂触底因 base 0.6B 未微调、仅 seed0/240 例）。**不**强化外部效度、**不**反转叙事、**不**恢复贡献；不与合成 test 混算、不重算冻结 CI；仅为探索性外部锚点观察，无跨数据源普适性主张。
+- **锚点数值待补事项已清零**：SQuAD 锚点数值已全部补入正文 §「External anchor」与表 `tab:anchor`；ARC/HellaSwag 为顺位增强项（未跑、非本稿待补项）。venue 已由真实 PI 指定为 **TMLR**（见决策记录）。
 - 引用要求（`anchor_confirmation.md` §3）：Rajpurkar et al., EMNLP 2016（doi:10.18653/v1/D16-1264）与 Rajpurkar, Jia et al., ACL 2018（doi:10.18653/v1/P18-2124）。**待投递前加入 bibliography**（当前 main.tex 锚点表已注明数据来源，但未列这两条 bibitem）。
 
 ---
@@ -139,8 +140,9 @@
 ## 6. 投稿状态 / venue / 署名
 
 - **投稿暂缓（Submission deferred）**：核心贡献被推翻、S4/S5 措辞刚修正、引用（N1–N9 全文口径、SQuAD 两条）待核验、kd 的 v2.3 簇级口径说明待 PI/审稿人出；P5 重开前不得投递、不得沿用旧 run 作最终结论。
-- **venue：TMLR（推荐；真实 PI 未拍板）**。`docs/decisions/venue_recommendation.md` 首选 TMLR（次选 EASE 2027 RENE、ACL 2027 ARR）；理由：接受 modest contribution、对单模型对 / exploratory / 无方法贡献的证据强度最友好、Reproducibility Certification 契合。最终 venue 由真实 PI 决定，agent 不代为拍板；venue 未定前只到「投递就绪」，不最终签 off。
+- **venue：TMLR（真实 PI 已指定，2026-11-23）**。`docs/decisions/venue_recommendation.md` 首选 TMLR（次选 EASE 2027 RENE、ACL 2027 ARR）；理由：接受 modest contribution、对单模型对 / exploratory / 无方法贡献的证据强度最友好、Reproducibility Certification 契合。P5 已获附条件最终签off（docs/decisions/p5_final_signoff.md），进入 ready-to-submit。
 - **署名（真实 PI 决策 6，已定）**：作者统一为 **Zhang Xuein \<zxm0813@gmail.com\>**；论文 `\author{}`、cover letter 与投稿元数据须一致。单作者原创，非会议扩写。
+- **格式待办（不属科学结论，投递前处理）**：当前摘要约 270–290 词，超过 TMLR 的 ≤200 词上限；定稿时须压缩（保留「接近但未超过控制 + dual 坍塌」「kd exploratory」「贡献撤回」「test 未评」等强制边界措辞）。图 1–3 仍为文字占位，TMLR 投稿时可说明、接受后补齐。
 - **cover letter（草稿要点）**：① 主题为负面 / 实证 / 数据审计研究，不宣称正向贡献；② 数据质量决定性影响——修复缺陷后「显著」发现完全翻转；③ 干净数据上 affine 在 MVP 等深对的迁移失败边界；④ 诚实披露贡献(1)(2) 撤回、(3) withheld、主终点未评估、封存 test 未评测、real=0、单模型对、exploratory；⑤ 复现：固定 SHA `f910f1f1…a894a`、commit 链、v2.1–v2.5 预注册、bf16/sdpa/zero re-prefill、mock 非证据、P>0.05 不作等效；⑥ 审稿人可重算 `bootstrap_ci_report` / `consistency_check`。无独立 cover letter 文件，本要点即草稿。
 
 ---
@@ -150,5 +152,5 @@
 - **引用核验**：N1–N9 全文口径 + SQuAD 两条 bibitem，投递前按 §9 完成；替换任何未核实细节。
 - **kd v2.3 口径说明**：由 PI / 审稿人统一 pair-level vs template-family 口径，写作者不改表、不重算。
 - **S1–S5 闭环**：S1 数据哈希绑定勘误、S2 manifest sha 同步、S3 runs_index 已闭环；S4/S5 本稿已写入；收尾后由审稿人出 P5 合规意见。
-- **投稿**：待引用核验、口径说明、审稿复核、真实 PI 指定 venue 并签 off 后再重开 P5；在此之前维持暂缓。
+- **投稿状态**：引用已实际核验、口径与审稿复核（含锚点合规）均已完成、venue=TMLR 已指定、P5 已签off → **ready-to-submit**；由真实 PI 本人通过 OpenReview 提交（agent 不代为提交）。
 - **不变量**：P2/P3/P4 永久放弃、不另立「修复 broken transfer」新课题；v2.6 not activated、`data/generated/` 不创建；封存 test 不碰；不恢复任何已撤回贡献。
