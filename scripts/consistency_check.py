@@ -73,6 +73,31 @@ def _dirty_run_paths() -> list[str]:
     return [line.strip() for line in out.splitlines() if line.strip()]
 
 
+# 审计脚本自身不属于"产出 run 的代码"，HEAD 可独立演进；从代码一致性比对中排除。
+_RUN_PRODUCING_PATHS = tuple(p for p in RUN_CODE_PATHS if p != "scripts/consistency_check.py")
+
+
+def _hash_in_history(commit_hash: str) -> bool:
+    if not commit_hash:
+        return False
+    r = subprocess.run(
+        ["git", "merge-base", "--is-ancestor", commit_hash, "HEAD"],
+        cwd=ROOT, stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL,
+    )
+    return r.returncode == 0
+
+
+def _run_code_unchanged(commit_hash: str) -> bool:
+    """config.git_hash 与 HEAD 之间的跑分代码是否完全一致（HEAD 可含无关后续 commit）。"""
+    if not commit_hash or not _hash_in_history(commit_hash):
+        return False
+    r = subprocess.run(
+        ["git", "diff", "--quiet", commit_hash, "HEAD", "--", *_RUN_PRODUCING_PATHS],
+        cwd=ROOT, stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL,
+    )
+    return r.returncode == 0
+
+
 def _check_model_pair(cfg: dict) -> dict[str, Any]:
     ec = cfg.get("experiment_config", {})
     pair = str(ec.get("model_pair", ""))
@@ -148,9 +173,13 @@ def check_run(run_dir: Path, head: str, dirty: list[str], superseded: bool = Fal
 
     git_hash = str(config.get("git_hash", ""))
     tracked = _code_tracked(git_hash)
-    hash_matches = bool(git_hash) and git_hash == head
-    if not hash_matches:
-        problems.append(f"git_hash={git_hash!r} != HEAD={head!r}")
+    in_history = _hash_in_history(git_hash)
+    code_same = _run_code_unchanged(git_hash)
+    traceable = bool(in_history and code_same and tracked["code_tracked"])
+    if not in_history:
+        problems.append(f"git_hash={git_hash!r} not in HEAD history (HEAD={head!r})")
+    if in_history and not code_same:
+        problems.append("run-producing code differs between config.git_hash and HEAD")
     if not tracked["code_tracked"]:
         problems.append("commit tree lacks run code: " + ",".join(tracked["missing_code_paths"][:4]))
     if dirty:
@@ -170,7 +199,9 @@ def check_run(run_dir: Path, head: str, dirty: list[str], superseded: bool = Fal
         "superseded": superseded,
         "git_hash": git_hash,
         "head_hash": head,
-        "git_hash_matches_head": hash_matches,
+        "git_hash_in_history": in_history,
+        "run_code_unchanged_vs_head": code_same,
+        "traceable": traceable,
         **tracked,
         "dirty_run_paths": list(dirty),
         "model_pair_check": pair_check,
