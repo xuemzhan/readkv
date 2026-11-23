@@ -124,6 +124,7 @@ def train_cf_rct(
         prepared.append((pair, ta, tb, sa, sb))
 
     module.train()
+    loss_log: list[float] = []
     for _ in range(epochs):
         for pair, ta, tb, sa, sb in prepared:
             optimizer.zero_grad()
@@ -176,10 +177,12 @@ def train_cf_rct(
 
             l_reg = module.regularization()
             loss = lam_kd * l_kd + lam_cf * l_cf + lam_local * l_local + lam_reg * l_reg
+            loss_log.append(float(loss.detach()))
             loss.backward()
             torch.nn.utils.clip_grad_norm_(module.parameters(), 1.0)
             optimizer.step()
 
     module.eval()
     setattr(module, "method", method)
+    setattr(module, "train_loss_log", loss_log)
     return CFRCTMapper(module)

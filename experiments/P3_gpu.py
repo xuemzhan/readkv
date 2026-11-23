@@ -203,6 +203,13 @@ def main() -> None:
         "trainable_params": sum(p.numel() for p in mapper.module.parameters()),
         "student_forward_calls": counter["n"], "train_sec": round(train_sec, 1),
     }
+    loss_log = list(getattr(mapper.module, "train_loss_log", []))
+    metrics["loss_check"] = {
+        "n_steps": len(loss_log),
+        "first": loss_log[0] if loss_log else None,
+        "last": loss_log[-1] if loss_log else None,
+        "decreased": bool(len(loss_log) > 1 and loss_log[-1] < loss_log[0]),
+    }
     metrics["gradient_check"] = grad_check
     metrics["method"] = args.method
     metrics["primary_endpoint_definition"] = "sealed-test paired E_CF difference vs kd_only (CI upper<0)"
@@ -215,7 +222,8 @@ def main() -> None:
         "run_id": args.run_id, "non_authoritative": args.smoke,
         "method": args.method, "decision": metrics.get("decision"),
         "primary_endpoint": metrics.get("primary_endpoint"),
-        "gradient_check": grad_check, "budget": metrics["budget"],
+        "gradient_check": grad_check, "loss_check": metrics["loss_check"],
+        "budget": metrics["budget"],
         "elapsed_sec": metrics["elapsed_sec"],
     }, ensure_ascii=False, indent=2))
 
