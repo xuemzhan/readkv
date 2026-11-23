@@ -1,0 +1,42 @@
+# 统计口径新增版本文件（不回写 protocol.yaml 或任何已冻结文件）
+# 依据：docs/decisions/data_readiness_ruling.md §3.3 / §3.4（PI 主裁）
+version: "2.3"
+frozen_at: protocol-v2.3
+frozen_on: 2026-11-23
+frozen: true
+decision_ref: docs/decisions/data_readiness_ruling.md
+scope: "澄清主终点 cluster bootstrap 聚类单元与 flip 分母口径；不改任何主终点定义、τ、δ 或统计门槛"
+
+cluster_bootstrap_convention:
+  primary_cluster_unit: template_family
+  rationale: >-
+    原实现以 pair_id/source_doc 为簇（test 300 对逐对唯一簇），实际退化为 pair 级 i.i.d. bootstrap，
+    忽略仅 8 个独立模板结构的相关性，使 CI 系统性偏窄、显著性被夸大。按 template_family 聚类
+    可恢复独立性假设；修复数据后模板族数应 ≥24（M3）。
+  pair_level_sensitivity:
+    required: true
+    description: "同时报告以 pair 为簇的敏感性分析，明确两套口径的 CI 与结论差异；不得只报较窄的一套。"
+  min_clusters_for_inference: 24
+  if_below_min_clusters: "报告为探索性结果，不得作强显著性主张；按 protocol §8 降级措辞。"
+  applies_to: "所有成对 E_CF 主终点与 repair-vs-random 等成对 bootstrap 终点（P1/P2/P3）"
+
+flip_denominator_convention:
+  excludes: [F5, F6]
+  base_value_before_degenerate_fix: 394
+  rationale: >-
+    F5 为非翻转负控（设计使然，must_flip=false）；F6 为长度/位置控制，语义上非翻转。
+    configs/protocol.yaml 字面写 excludes=[F5]（分母 457），与代码实现排除 F5+F6（分母 394）冲突。
+    PI 裁定维持排除 F5+F6，理由是 F6 非翻转；本文件消除配置与代码冲突，不回写 protocol.yaml。
+  after_degenerate_fix: "M1 退化对归零 + M3 新增结构模板后，按修复后数据重算：F1 111 + F2 90 + F3 110 + F4 87 = 398（排除 F5 61 / F6 61）；原 394 为修复前旧切片分布，376 为仅做 M1 时的中间值，均非最终值。依据 reports/data/data_fix_report.md 与 reports/data/acceptance_checks.json，数据工程师重算、PI 复核。"
+  recomputed_value: 398
+
+forbidden_after_freeze:
+  - changing_cluster_unit_based_on_test_results
+  - reporting_only_pair_level_ci_without_template_family_ci
+  - flipping_back_to_excludes_F5_only_without_new_version
+  - any_backdating_or_edit_of_prior_frozen_files
+
+reviewer_checks:
+  - "验证 bootstrap 实现的 cluster_unit 与 template_family 一致，且 pair-level 敏感性同时报告"
+  - "验证 flip 分母在修复后数据上重算，excludes=[F5,F6] 与代码一致"
+  - "确认 configs/protocol.yaml 与其他冻结文件未被回写"
