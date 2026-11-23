@@ -35,6 +35,7 @@ from readkv.config import load_config
 from readkv.data.build_cf_pairs import CFPair
 from readkv.evaluate.controls import build_control
 from readkv.evaluate.counterfactual import PairCFRecord, summarize_cf
+from readkv.evaluate.pipeline import combine, stack_caches
 from readkv.mapper.representation import AffineMapper
 from readkv.models.gpu_backend import GPUBackend
 from readkv.models.hooks import inject_and_generate, verify_zero_re_prefill
@@ -125,7 +126,6 @@ def arm_caches(backend: GPUBackend, mapper: AffineMapper, pair: Mapping[str, Any
     out["self"] = (self_a, self_b)
     out["identity"] = (backend.inject(self_a), backend.inject(self_b))
     out["joint"] = (m_a, m_b)
-    from readkv.evaluate.pipeline import combine
     out["k_only"] = (combine(m_a, self_a), combine(m_b, self_b))
     out["v_only"] = (combine(self_a, m_a), combine(self_b, m_b))
     out["control:random"] = (
