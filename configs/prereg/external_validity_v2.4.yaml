@@ -1,0 +1,158 @@
+# ============================================================
+# 新增版本判据文件（protocol-v2.4）—— 外部验证口径（M4 真实文档 + 外部锚点）
+# 本文件为新增，不回写 v2.1/v2.2/v2.3、protocol.yaml 或任何既有冻结文件。
+# 依据：docs/decisions/m4_anchor_execution_plan.md、docs/decisions/human_decisions.md、
+#       docs/decisions/final_boundary_study_signoff.md（情形 C / 贡献撤回裁定）。
+# ============================================================
+version: "2.4"
+frozen_at: "protocol-v2.4"
+frozen_on: "2026-11-23"
+frozen: true
+decision_ref:
+  - "docs/decisions/m4_anchor_execution_plan.md"
+  - "docs/decisions/human_decisions.md"
+
+freeze_rationale: >-
+  真实 PI 已决策（human_decisions.md）：采用 M4 真实文档、需要外部锚点、投递选 B（补齐后再投）、
+  署名 Zhang Xuein、引用按需实际引用；venue 延后至 M4 完成后再定，P2/P3/P4 永久放弃（以边界研究收口）。
+  执行计划（m4_anchor_execution_plan.md）要求 real split 与外部锚点的评测口径、聚类单元、判据与
+  预承诺规则须在 run 启动前以新增版本文件冻结（先写后跑）。本文件据此冻结上述口径；不改任何
+  主终点定义、τ、δ=0.5、统计门槛或贡献状态，且不得用于恢复任何已撤回的贡献。
+
+invariants:                      # 不可变前提（承接 final_boundary_study_signoff）
+  contribution_status:
+    contribution_1: "withdrawn（原 utility-preserving gap 主张已证伪，不得恢复）"
+    contribution_2: "withdrawn（机制定位前提已塌、旧证据污染，不得恢复）"
+    contribution_3: "withheld（主终点未评估、P3 永久放弃，不得恢复）"
+  paper_positioning: "失败边界 + 数据泄漏教训的负面/实证结果研究（empirical/boundary study）"
+  enhancement_only: >-
+    M4 真实文档与外部锚点仅增强外部效度，不替换合成主实验、不重跑已冻结主终点、不恢复任何已撤回贡献。
+  p2_p3_p4: "永久放弃（真实 PI 第二轮决策，不另立修复 broken transfer 新课题）"
+
+# ------------------------------------------------------------
+# 一、real split（M4 真实文档）评测口径
+# ------------------------------------------------------------
+real_split:
+  source_file: "data/tasks/cf_pairs_real.jsonl"   # 独立 real split，须在数据卡/manifest 登记后使用
+  isolation: >-
+    独立 `real` split；与合成 probe/train/val/test 完全隔离；不得并入合成 test、不得参与或重算
+    V2.0 主终点；real 与主终点混算属 forbidden（见 forbidden_after_freeze）。
+  admitted_only_after: >-
+    来源 URL/标识、版本/日期、许可证原文、原始文件 sha256、处理脚本 commit 五项登记齐全，
+    且许可属执行计划白名单（公共领域/CC0/CC BY/CC BY-SA 落实义务/明确允许改写再分发的官方开放条款），
+    并经 PI 合规签off 后方可进入主实验；许可不清不得入。
+  cluster_bootstrap_convention:
+    primary_cluster_unit: "source_document_or_topic_cluster"
+    rationale: >-
+      真实文档每对对应一个可追溯来源原文/主题，聚类和方差估计须按来源文档或主题簇（层级/批次），
+      而非逐对唯一簇；避免重演合成 test 上"逐对唯一簇退化为 pair 级 i.i.d.、CI 偏窄"的缺陷（v2.3 教训）。
+    definition: >-
+      每个 real 评测对须带 `source_doc_id`（或等价主题簇标识）；同一来源原文派生的多个反事实对归入同一簇；
+      bootstrap 以簇为重采样单位，簇内成对配对保留。数据工程师在入库时生成 `cluster` 字段，
+      评测脚本按该字段重采样，禁止用逐对唯一 id 充当簇。
+    pair_level_sensitivity:
+      required: true
+      description: "同时报告以 pair 为簇的敏感性分析，明确两套口径 CI 与结论差异，不得只报较窄一套（沿用 v2.3）。"
+    min_clusters_for_inference: 24
+    applicability_to_real: >-
+      ≥24 簇的强推断门槛对 real 子集同样适用；但 M4 目标仅 80–150 对、真实来源/主题簇数可能 <24。
+      若 real 簇数 <24：标 `exploratory=true`，CI 变宽、作探索性外部效度观察，不得作强显著性或普遍化主张，
+      按 protocol §8 降级措辞；不得因簇数不足而回退到 pair 级唯一簇冒充独立样本。
+    if_below_min_clusters: "标 exploratory=true；探索性报告；不得强推断/不得声称跨数据源普遍成立"
+  flip_denominator: >-
+    按 real 数据实际切片重算，excludes=[F5,F6]（沿用 v2.3 口径）；具体值由数据工程师在 real 入库后重算并记入
+    manifest/报告，不在本文件预设数值。
+  arms_and_comparison: >-
+    Joint（affine）与 kd_only 两臂在 real split 上评测；沿用冻结的 E_CF 定义、τ=1.0、self_threshold=0.1；
+    联合报告 dual_correct/flip_consistency/coverage/info_attribution 与 transfer_broken 正交字段。
+
+# ------------------------------------------------------------
+# 二、外部锚点（SQuAD 主 / ARC 辅）评测口径
+# ------------------------------------------------------------
+external_anchors:
+  purpose: >-
+    检验"affine 迁移失败边界"是否跨数据源成立，并为自建 E_CF 提供与标准 QA 的外部锚点；
+    **不是**重跑或替换 V2.0 主终点，也不是贡献(3) 证据。
+  benchmarks:
+    - name: "SQuAD"
+      role: "primary anchor（事实/抽取式，最接近文档事实编辑语义）"
+      license_handling: "按其 license（常见 CC BY-SA 4.0）合规用于评测；仅评测不改写/再发布语料；履行署名义务"
+    - name: "ARC"
+      role: "secondary anchor（选择题，候选结构与 A/B 口径相近）"
+      license_handling: "按研究用途许可合规评测；不改写发布衍生"
+    - name: "HellaSwag"
+      role: "optional supplement（常识补全，可比性较低，优先级最低）"
+      license_handling: "仅当许可允许当前评测用途时使用，否则跳过"
+  fallback_rule: "若某基准许可不允许当前用途 → 换用次选，不强用；许可不清者不纳入。"
+  metrics:
+    - "标准 QA 常规质量：EM / Accuracy（Joint affine vs kd_only）"
+    - "答案对编辑/干扰的响应（若基准结构允许）"
+    - "qualitative：迁移失败边界是否在锚点上复现"
+  scale: >-
+    每个选定基准取合规子集，量级以 1–2 人日内完成评测为准；条数由数据工程师按可比性抽取并记录。
+  seeds: "锚点臂 seed0 即可（外部效度观察，非主终点）；real 臂遵循 ≥3 seed（见下）。"
+
+# ------------------------------------------------------------
+# 三、预承诺三情形（防事后择支 / 防结果反转叙事）
+# ------------------------------------------------------------
+predeclared_interpretation:
+  rule: "在看到 real/锚点结果前锁定判读；结果按以下三情形归类，不得事后改动归类或贡献状态。"
+  scenarios:
+    - when: "real/锚点复现合成域结论（affine 迁移失败、kd 保持 utility）"
+      verdict: "reinforce_external_validity"
+      action: "强化'失败边界具有跨数据源外部效度'，按负面结果论文写；仍不恢复任何贡献。"
+    - when: "real/锚点与合成域相反（如 affine 在真实/标准 QA 上不坍塌、或 gap 消失）"
+      verdict: "narrow_scope"
+      action: >-
+        如实报告'失败边界依赖数据构造/合成域条件'，作为适用边界进一步收窄的证据；
+        **不得反转论文为正面贡献论文**；贡献(1)(2)(3) 状态一律不变。
+    - when: "结果混合或样本不足（real 量小、簇数<24、exploratory）"
+      verdict: "exploratory_disclosure"
+      action: "如实披露为探索性，不作强推断，维持现状定位。"
+  hard_rule: >-
+    任何情形下均不得因 real/锚点结果调整已撤回的贡献状态、不得挑选有利子集报告、
+    不得事后修改冻结判据、不得把外部验证结果写成贡献(1)(2) 恢复或贡献(3) 证据。
+
+# ------------------------------------------------------------
+# 四、run 纪律（real 臂 / 锚点臂）
+# ------------------------------------------------------------
+run_discipline:
+  real_arm:
+    run_ids: "eval_real_affine_seed{0,1,2} / eval_real_kd_seed{0,1,2}"
+    seeds: [0, 1, 2]              # ≥3 seed，遵循 min_training_seeds=3
+  anchor_arm:
+    run_ids: "anchor_{squad|arc}_{affine|kd}_seed0"
+    seeds: [0]
+  shared:
+    dtype: "bfloat16"
+    kernel: "sdpa"
+    zero_re_prefill: true
+    provenance: >-
+      沿用 repro 权威代码（commit 在 HEAD 历史、跑分代码与 HEAD 一致）；任何新增评测代码须纳入新 commit
+      以避免 R1 重演；每 run config 写 git_hash/protocol_version/seed/dtype/kernel/bootstrap_seed/zero_re_prefill。
+    execution: "串行（并发有 3–7× 惩罚）；real/锚点为新增外部验证臂，不替换合成 P0–P3，不重跑已冻结主终点。"
+  synthetic_test_unchanged: >-
+    v2.3 的 template_family 主聚类口径 + pair-level 敏感性 + min 24 簇/exploratory 规则在合成 test 上继续适用，
+    不受本文件影响；合成域干净 E0/P1 结果保留为主证据，不重跑。
+
+# ------------------------------------------------------------
+# 五、禁止事项
+# ------------------------------------------------------------
+forbidden_after_freeze:
+  - "不得按 real/锚点结果改判据、改贡献状态或事后择支"
+  - "不得把 real split 与合成 test 混算 V2.0 主终点或重算已冻结 CI"
+  - "不得用逐对唯一 id 充当 real 聚类单元（须按来源文档/主题簇）"
+  - "real 簇数<24 时不得回退 pair 级唯一簇冒充独立样本或作强推断"
+  - "许可不清或未 PI 合规签off 的真实文档不得入主实验"
+  - "不得改写/再发布外部锚点基准语料（仅合规评测）"
+  - "不得恢复贡献(1)/贡献(2)/贡献(3) 或写任何方法增益/跨模型普遍化主张"
+  - "不得回写 v2.1/v2.2/v2.3/protocol.yaml 或任何既有冻结文件"
+  - "venue 未由真实 PI 指定前不得最终签 off 投递（仅可投递就绪）"
+
+reviewer_checks:
+  - "real split 五项来源/许可登记齐全、PI 合规签off、许可属白名单"
+  - "real 聚类单元为来源文档/主题簇、pair-level 敏感性同时报告、簇数<24 标 exploratory"
+  - "外部锚点按各自 license 合规评测、未改写发布语料"
+  - "预承诺三情形按结果正确归类、贡献状态未变、无事后择支"
+  - "real/锚点 run ≥3 seed（锚点臂 seed0）、provenance 齐全、未与合成 test 混算"
+  - "v2.1/v2.2/v2.3/protocol.yaml 未被回写"

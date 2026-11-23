@@ -25,13 +25,15 @@
 %     (8 template_family clusters < 24), single MVP equal-depth pair;
 %   - contribution (3) withheld; primary endpoint unevaluated; submission held.
 % All numbers are transcribed from frozen artifacts. No statistic recomputed.
-% Figure placeholders are textual. Citations [PLACEHOLDER] need verification.
+% Figure placeholders are textual. The two citations (kvlingo, cachelink) were
+% verified against their arXiv records on 2026-11-23 (real authors/title/year/
+% version/DOI); no [PLACEHOLDER] references remain.
 % ---------------------------------------------------------------------------
 
 \title{Broken Transfer and a Leakage-Induced False Positive in Cross-Model KV
 Handoff: An Empirical Boundary Study}
 
-\author{readkv project (author list to be finalized)}
+\author{Zhang Xuein \texttt{zxm0813@gmail.com}}
 \date{Draft --- generated from frozen results; submission deferred}
 
 \begin{document}
@@ -155,9 +157,9 @@ distillation and CacheLink-style cache translation)~\cite{kvlingo,cachelink}
 evaluate whether the receiver retains ordinary task accuracy or matches token
 distributions. They do not score counterfactual response change. We treat them
 as baselines to be matched on data, forward budget, parameters, and tuning
-budget; we do not assume their reported numbers transfer to our task. All
-citations in this draft are placeholders pending verification under
-protocol~\S9.
+budget; we do not assume their reported numbers transfer to our task. Both
+references below are verified against their arXiv records (title, authors,
+year, version, and stated protocol/scope), per protocol~\S9.
 
 \paragraph{Data quality and benchmark validity.} Our negative result connects
 to the broader concern that leakage and weak controls can inflate reported
@@ -243,7 +245,8 @@ Oracle & student-native state grafted into mapped cache & no \\
 We outline \texttt{CF-RCT} (`counterfactual response-constrained translation')
 as a \emph{proposed design}. It was never trained or evaluated: with the
 central premise (a clean, utility-preserving gap) withdrawn, the method layer
-has no target and work on it is suspended. The mapper is a per-(layer,
+has no target; per real-PI decision the method route (P3) is permanently
+abandoned. The mapper is a per-(layer,
 channel$\in$\{K,V\}, head) affine map with an optional low-rank residual
 $W=W_0+AB^\top$; non-equal-depth pairs use a proportional layer map.
 Initialization is a closed-form ridge from teacher to student caches on a
@@ -262,10 +265,10 @@ signals solely in training. We do not report any result for these designs.
 The Huber threshold $\delta$ was locked to $0.5$ on validation data under a
 hard-guardrail reading of ``not worse than \texttt{kd\_only}'' and formally
 registered in \texttt{configs/prereg/phase3\_loss\_config\_v2.2.yaml}
-(protocol-v2.2). Following the clean-data reversal, the PI has \emph{suspended}
-the $\delta$ verification recheck: with no clean gap to repair, the method
-layer has no further submission value. No $\delta$-dependent result is reported
-here.
+(protocol-v2.2). Following the clean-data reversal and real-PI decision~(8),
+the $\delta$ verification recheck is \emph{permanently cancelled} (the method
+route is abandoned): with no clean gap to repair, the method layer has no
+further submission value. No $\delta$-dependent result is reported here.
 
 % ===========================================================================
 \section{Experimental Setup}
@@ -575,10 +578,13 @@ seed & Joint $E_{\mathrm{CF}}$ [95\% CI] & joint dual (drop) & flip & cov.\ & \t
 \item \textbf{Mechanism stage (P2): withdrawn / not run on clean data.} The PI
       has cancelled the planned P2 clean-data rerun: the premise of mechanism
       localization (a clean distortion) is gone. No mechanism claim is made.
-\item \textbf{Primary endpoint / P3: not evaluated / suspended.} The paired
-      $E_{\mathrm{CF}}$ vs.\ \texttt{kd\_only} CI is unevaluated; no CF-RCT
-      method was trained; P2/P3/P4 are formally cancelled. Contribution (3)
-      remains withheld.
+\item \textbf{Primary endpoint / P3: not evaluated; method route permanently
+      abandoned.} The paired $E_{\mathrm{CF}}$ vs.\ \texttt{kd\_only} CI is
+      unevaluated; no CF-RCT method was trained. By real-PI decision~(8),
+      P2/P3/P4 are formally and permanently cancelled (not merely suspended),
+      and no separate ``fix-broken-transfer'' follow-up project is planned:
+      the study closes as a boundary/empirical work. Contribution~(3) remains
+      withheld.
 \end{itemize}
 
 \subsection{Adverse results and boundaries}
@@ -641,8 +647,9 @@ counterfactual evaluation claims that rest on template-generated data.
 We make \emph{no} claim of a general counterfactual gap, of a receiver-side
 mechanism, or of any method improvement. Contribution~(3) remains withheld;
 the primary endpoint (paired $E_{\mathrm{CF}}$ vs.\ \texttt{kd\_only}, CI upper
-$<0$) is unevaluated; P2/P3/P4 are \emph{formally cancelled} (not merely
-suspended); the sealed test was never evaluated; and $P>0.05$ is not treated as
+$<0$) is unevaluated; by real-PI decision, P2/P3/P4 are \emph{formally and
+permanently cancelled}, and no new ``fix-broken-transfer'' project is planned;
+the sealed test was never evaluated; and $P>0.05$ is not treated as
 equivalence. Mock numbers are not scientific evidence. The clean-data
 \texttt{kd\_only} baseline (scenario~C) preserves transfer utility while
 retaining a stable, exploratory nonzero gap---reported as an exploratory
@@ -671,11 +678,17 @@ data-fix report and the clean/superseded run artifacts as transcribed above.
 
 \bibliographystyle{plain}
 \begin{thebibliography}{9}
-\bibitem{kvlingo} KV-Lingo. \emph{Citation placeholder---verify formal version,
-date, and experimental protocol before submission (protocol \S9).}
-\bibitem{cachelink} CacheLink. \emph{Citation placeholder---verify formal
-version, date, and experimental protocol; report deviations if no runnable
-implementation exists.}
+\bibitem{kvlingo} V.~Castin, K.~Sakamoto, A.~Filippova, J.~Monteiro, M.~Cuturi,
+and P.~Ablin. KV-Lingo: Learning KV-cache translators with distillation.
+\emph{arXiv preprint arXiv:2609.32610} [cs.CL], 2026. v1, submitted 26 Sep 2026;
+doi:10.48550/arXiv.2609.32610. Per-layer linear K/V maps trained by
+distillation for zero-prefill model switching.
+
+\bibitem{cachelink} H.~Qiu, Y.~Tang, Z.~Song, R.~Han, Z.~Qiao, and M.~Zhang.
+CacheLink: Functional KV transport for zero-prefill cross-model context handoff.
+\emph{arXiv preprint arXiv:2610.15509} [cs.LG], 2026. v1, submitted 11 Oct 2026;
+doi:10.48550/arXiv.2610.15509. Coupled K/V correction trained with functional
+supervision from a frozen receiver.
 \end{thebibliography}
 
 \end{document}

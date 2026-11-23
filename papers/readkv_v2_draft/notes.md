@@ -20,7 +20,7 @@
 - **贡献(1) 冻结降级、贡献(2) 撤回 withheld**：不再以任何正向形式声称 gap 或 V 消费机制定位；旧 P1/P2 正向数值彻底移出结论，仅作为 Table 2（前后对照）的历史侧出现。
 - **主表换干净数据**：Table 1（`tab:cleanmvp`）填 P1 干净三 seed；Table 2（`tab:reversal`）为修复前后方向对照。**kd_only 干净数据三 seed 已补入**：E_CF 6.388/6.479/7.211、joint dual 0.700/0.733/0.767、flip 0.91–0.94、transfer_broken=false；按情形 C 仅作探索性观察，不恢复为正式贡献。
 - **kd_only 干净三 seed 已跑完并按 §3.3 判读为情形 C**（见第 21 行）：kd 不 broken、不接近 Self、稳定非零 exploratory gap → 边界研究；不是"都 broken"（情形 A）也不是"接近 Self"（情形 B）。PENDING 已清零。
-- **δ 复核暂停、P2 不启动（取消）、P3 维持暂停/实质取消**；P2/P3/P4 均未在干净数据上运行。
+- **P2/P3/P4 正式取消且永久放弃（真实 PI 决策 8，以边界研究收口，不另立修复 broken transfer 新课题）**；δ 复核永久取消；P2/P3/P4 均未在干净数据上运行。
 - **E0 干净复验已通过**（`e0_clean_mvp_seed0`，cosine 1.0、KL 0、EM 0.975、round-trip、2.2e-16 ≪ 效应、zero_re_prefill），翻转不是 cache round-trip 实现残差。
 - **数据修复披露保留**：v2.0→v2.1 缺陷/修复/验收 11/11/v2.3 口径（见正文 §「Data correctness...」与 `tab:datafix`）。
 - **投稿暂缓**（承接 `data_readiness_ruling`，且理由更强：核心贡献被推翻）；**审稿紧急复核中**（排除实现 bug、判 broken transfer 可信度）。
@@ -32,7 +32,7 @@
 
 - **贡献(1) 撤回**：删除 "We identify a reproducible gap between standard transfer utility and counterfactual response fidelity…"。干净数据上 joint dual 坍塌到 0.28–0.42（Self≈0.82）、joint E_CF 接近但未超过错配/零缓存控制（seed0 6.90 vs 8.38/8.58），是 broken transfer，不是 utility-preserving 失真；正向证据基础已不存在。**S4 措辞**：全文禁"与控制相当/达到无信息水平"，统一写"接近但未超过控制 + dual 坍塌"。
 - **贡献(2) 撤回 withheld**：删除强形式 "We localize the gap to receiver-side Value-consumption pathways…" 及所有机制定位；原 P2 证据建立在被污染数据上，不可信；PI 不等 P2 重跑、直接撤回。
-- **贡献(3) 维持 withheld**：CF-RCT 未训练，主终点（成对 E_CF vs kd_only，CI 上界<0）未评估，P3 已暂停/取消。
+- **贡献(3) 维持 withheld**：CF-RCT 未训练，主终点（成对 E_CF vs kd_only，CI 上界<0）未评估，P3 已正式取消且永久放弃（真实 PI 决策 8）。
 - **不声称的正向主张**：任何「反事实失真普遍存在」「V 消费侧机制定位」「方法改善 gap」「跨模型/真实世界泛化」。
 - **本报告的两条发现是负面/实证结果，非 §10 正向贡献**：① 干净数据上 affine mapper 在 MVP 等深对的迁移失败边界；② 数据泄漏如何制造虚假科学发现的前后对照方法学教训。
 - **禁止词**："reproducible gap"、"utility-preserving distortion"（正向用法）、"localize the gap"、"We identify a gap"、"robustly/across model pairs"、"causal/sole cause"。
@@ -77,11 +77,17 @@
 - **v2.3 统计口径**（`configs/prereg/stats_convention_v2.3.yaml`）：主簇 `template_family` + 必报 pair-level 敏感性；族数<24 标 exploratory；flip excludes=[F5,F6]=398。
 - **干净数据 provenance**：P1 clean 与 E0 clean 均 git `efc3ba3`、`zero_re_prefill=true`、bf16/sdpa、三 seed 齐全；审稿紧急复核正在排除「数据重建引入实现回归（实现 bug）」的可能。
 - **冻结 verdict 与正交字段并存**：干净数据上冻结判据仍返回 `distortion_exists`（distortion_present ∧ quality_pass），但 `quality_pass` 仅指数据质量门；正交 `transfer_broken=true` 将结果定性为失败边界。下游须联合读取，禁止只看 verdict 判「干净失真」。
-- **早期备案（仍有效）**：`model_pair` 字符串误标勘误见 `reports/runs_index_errata.json`；`info_gap` 逐对字段未填、报 `info_attribution`（控制 E_CF − joint E_CF）；one-shot kernel 残差 0.9993 不属实现误差；引用 KV-Lingo/CacheLink 为占位，须按 `protocol.md §9` 核验。
+- **早期备案（仍有效）**：`model_pair` 字符串误标勘误见 `reports/runs_index_errata.json`；`info_gap` 逐对字段未填、报 `info_attribution`（控制 E_CF − joint E_CF）；one-shot kernel 残差 0.9993 不属实现误差。
+- **引用已实际核验并替换（真实 PI 决策 7「按需实际引用」）**：`main.tex` 中两条 `\cite{kvlingo,cachelink}` 已从 `[PLACEHOLDER]` 替换为经 arXiv 记录核实的真实条目，无占位引用残留：
+  - KV-Lingo: V.~Castin, K.~Sakamoto, A.~Filippova, J.~Monteiro, M.~Cuturi, P.~Ablin, \emph{arXiv:2609.32610} [cs.CL], 2026 (v1, 2026-09-26, doi:10.48550/arXiv.2609.32610)；
+  - CacheLink: H.~Qiu, Y.~Tang, Z.~Song, R.~Han, Z.~Qiao, M.~Zhang, \emph{arXiv:2610.15509} [cs.LG], 2026 (v1, 2026-10-11, doi:10.48550/arXiv.2610.15509)。
+  - 核验方式：websearch + 直接 webfetch arXiv abs 页（标题/作者/年份/版本/DOI/口径逐项对照）。两者均为真实存在的预印本，正文仅讨论这两篇（跨模型 KV 迁移的方法基线），无其他被引用文献；无无法核实的文献需删除。
 
 ---
 
 ## 5. Cover letter 要点（草稿，待 PI 定稿；投递暂缓）
+
+> **署名（真实 PI 决策 6，已定）**：作者统一为 **Zhang Xuein \<zxm0813@gmail.com\>**。论文 `\author{}` 已改为 `Zhang Xuein \texttt{zxm0813@gmail.com}`；cover letter 与投稿元数据须使用同一署名。无独立 cover letter 文件，本文件要点即为草稿。
 
 1. 主题：负面/实证结果论文——「跨模型 KV 迁移的失败边界 + 数据泄漏如何制造虚假科学发现」；**不**宣称任何正向贡献。
 2. 要点一：数据质量对基准结论的决定性影响——前后对照实证显示修复缺陷后一项「显著」发现完全翻转。
@@ -96,6 +102,8 @@
 
 - **最高优先**：kd_only 干净三 seed 已补入正文并按 §3.3 判读为情形 C（kd 不 broken、不接近 Self、稳定非零 gap → 边界研究）；PI 已最终收口，贡献(1)(2) 撤回、贡献(3) withheld、P2/P3/P4 取消、投稿暂缓。
 - **审稿紧急复核**：确认 broken transfer 可信度（排除实现 bug）；若为实现 bug 则冻结结论、工程修复重跑；若可信则维持紧急裁决。
-- **数据修复重跑**：E0 已复验、P1 干净已产出；P2 不启动、P3 暂停；按 v2.3 主报 template_family CI + pair-level 敏感性。
-- **引用核验**：`[PLACEHOLDER]` 引用按 `protocol.md §9` 投递前完成。
+- **数据修复重跑**：E0 已复验、P1 干净已产出；P2/P3/P4 正式取消且永久放弃（真实 PI 决策 8，不另立新课题）；按 v2.3 主报 template_family CI + pair-level 敏感性。
+- **引用核验**：已完成——KV-Lingo/CacheLink 两条引用按 `protocol.md §9` 实际核验并替换为真实 arXiv 条目（见 §4）；`main.tex` 无 `[PLACEHOLDER]` 残留。
+- **待办（venue 由真实 PI 投递前指定）**：真实 PI 第二轮答复——venue **暂不指定，执行完 M4 再定**（决策 5）；投递前由真实 PI 指定，venue 未定前只到"投递就绪"不最终签 off。投递时机按决策 4 选 B——补齐 M4 + 外部锚点后投更强版本。
+- **P3/方法层路线（决策 8，已定，无遗留待确认项）**：真实 PI **确认放弃，以边界研究收口**——P2/P3/P4 正式取消且**永久放弃**，**不另立「修复 broken transfer」新课题**；论文维持负面/边界实证定位，补 M4/锚点后不恢复任何已撤回贡献。上述 1–8 项均已答复，无未答复项。
 - **投稿暂缓**：kd 择支已定（情形 C）；仍待 S1–S5 溯源/措辞收尾 + 审稿复核 + PI 签 off；在此之前不得投递、不得沿用旧 run 作最终结论。
