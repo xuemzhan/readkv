@@ -44,7 +44,7 @@ promises generation with ``zero re-prefill'' of the source document. We set out
 to evaluate whether such transfer preserves the \emph{counterfactual response}
 of the student---whether its answer changes, in direction and magnitude, when a
 single fact in the document is edited. An initial synthetic benchmark appeared
-to show a stable counterfactual gap and a localized mechanism, and these
+to show a stable counterfactual gap and a receiver-side mechanism, and these
 findings were previously reported as contributions. A subsequent data-quality
 audit overturned them. The original 520-pair corpus contained 18 degenerate
 pairs (identical candidates marked must-flip), at least 15 groups of verbatim
@@ -90,7 +90,7 @@ by the counterfactual error $E_{\mathrm{CF}}$ (Section~\ref{sec:metrics}), and
 built a paired benchmark with preregistered controls.
 
 An earlier version of this study reported two positive findings on a synthetic
-corpus: a reproducible gap between standard transfer utility and counterfactual
+corpus: an apparent gap between standard transfer utility and counterfactual
 fidelity (contribution~1), and a receiver-side Value-consumption mechanism
 (contribution~2). \textbf{Both are withdrawn here.} An independent data-quality
 audit found that the corpus contained degenerate pairs, cross-split document
@@ -129,7 +129,7 @@ positive contributions).}
       $0.70$--$0.77$, \texttt{transfer\_broken=false}) yet retains a stable,
       nonzero $E_{\mathrm{CF}}$ of $6.39$--$7.21$. We report this only as an
       \emph{exploratory} observation on a single synthetic equal-depth pair, not
-      as a restored contribution (Section~\ref{sec:pending}).
+      as a restored contribution (Section~\ref{sec:kdbase}).
 \item \textbf{Methodological negative result.} We document, with a
       before/after controlled comparison, how three concrete data defects
       (degenerate pairs, verbatim cross-split leakage, template-skeleton
@@ -143,7 +143,7 @@ particular we no longer claim to identify a general counterfactual gap, to
 localize a mechanism, or to improve transfer. Contribution~(3) (a
 method that reduces the gap) remains \emph{withheld}: no method was trained,
 and the primary endpoint is unevaluated. Submission is deferred pending the
-outstanding control rerun and adversarial review (Section~\ref{sec:conclusion}).
+provenance/wording closure and adversarial review (Section~\ref{sec:conclusion}).
 
 % ===========================================================================
 \section{Related Work}
@@ -414,7 +414,7 @@ no method was trained and the sealed test was never run. $P>0.05$ is nowhere
 treated as evidence of equivalence. The frozen machine verdict
 \texttt{distortion\_exists} (from \texttt{distortion\_present} and
 \texttt{quality\_pass}) remains in the artifacts but, as documented in
-Section~\ref{sec:pending}, it must be read jointly with
+Section~\ref{sec:kdbase}, it must be read jointly with
 \texttt{transfer\_broken}; the two answer different questions.
 
 \subsection{Baselines and fair alignment}
@@ -426,7 +426,7 @@ budget, trainable parameter count, training steps, and tuning budget across
 CE-only, contrastive, and mismatched-document controls. In the clean-data
 results below, the mapping arm is a zero-trainable-parameter affine mapper
 (closed-form ridge initialization); the matched \texttt{kd\_only} control on
-clean data is reported in Section~\ref{sec:pending}.
+clean data is reported in Section~\ref{sec:kdbase}.
 
 % ===========================================================================
 \section{Results}
@@ -438,7 +438,7 @@ recomputed for this draft. Old P1/P2 runs computed on the pre-fix v2.0 corpus
 are \textbf{superseded} and are used only in the historical before/after
 comparison (Section~\ref{sec:reversal}); they are not positive evidence. The
 clean-data P1 table (Section~\ref{sec:mvp}) uses commit \texttt{efc3ba3};
-the clean \texttt{kd\_only} baseline (Section~\ref{sec:pending}) uses commit
+the clean \texttt{kd\_only} baseline (Section~\ref{sec:kdbase}) uses commit
 \texttt{6413ba0}.
 
 \subsection{E0 implementation gate on clean data (P0)}
@@ -516,7 +516,7 @@ utility-preserving gap and a localized Value-consumption mechanism---came from
 the v2.0 data. Repairing the degenerate pairs, cross-split leakage, and
 template overlap (Section~\ref{sec:datafix}) made those findings disappear and
 reverse into a transfer failure. We therefore \textbf{withdraw contribution~(1)}
-(we no longer claim a reproducible gap between transfer utility and
+(we no longer claim a utility-preserving gap between transfer and
 counterfactual fidelity) and \textbf{withdraw contribution~(2)} (we no longer
 claim receiver-side Value-consumption localization). The old P1 gap values and
 the old P2 mechanism numbers (repair-vs-random $0.275$--$0.350$, four stable
@@ -526,8 +526,8 @@ Table~\ref{tab:reversal}. This reversal is the central methodological lesson:
 concrete data defects were sufficient to manufacture a statistically convincing
 but false scientific finding.
 
-\subsection{KD control and mechanism stage: pending / withdrawn}
-\label{sec:pending}
+\subsection{KD baseline, verdict boundary, and cancelled stages}
+\label{sec:kdbase}
 
 \begin{itemize}
 \item \textbf{Clean-data \texttt{kd\_only} (three seeds, commit
@@ -577,8 +577,8 @@ seed & Joint $E_{\mathrm{CF}}$ [95\% CI] & joint dual (drop) & flip & cov.\ & \t
       localization (a clean distortion) is gone. No mechanism claim is made.
 \item \textbf{Primary endpoint / P3: not evaluated / suspended.} The paired
       $E_{\mathrm{CF}}$ vs.\ \texttt{kd\_only} CI is unevaluated; no CF-RCT
-      method was trained; P3 is suspended for practical purposes. Contribution
-      (3) remains withheld.
+      method was trained; P2/P3/P4 are formally cancelled. Contribution (3)
+      remains withheld.
 \end{itemize}
 
 \subsection{Adverse results and boundaries}
@@ -641,13 +641,18 @@ counterfactual evaluation claims that rest on template-generated data.
 We make \emph{no} claim of a general counterfactual gap, of a receiver-side
 mechanism, or of any method improvement. Contribution~(3) remains withheld;
 the primary endpoint (paired $E_{\mathrm{CF}}$ vs.\ \texttt{kd\_only}, CI upper
-$<0$) is unevaluated; P2/P3/P4 are not run or suspended; the sealed test was
-never evaluated; and $P>0.05$ is not treated as equivalence. Mock numbers are
-not scientific evidence. The clean-data \texttt{kd\_only} control is pending and
-will determine whether the failure is specific to the affine mapper or common
-to all tested mappers. Accordingly, \textbf{submission is deferred} pending the
-\texttt{kd\_only} result, completion of the adversarial review of the broken-
-transfer judgement, and PI sign-off. All data are synthetic, there are no real
+$<0$) is unevaluated; P2/P3/P4 are \emph{formally cancelled} (not merely
+suspended); the sealed test was never evaluated; and $P>0.05$ is not treated as
+equivalence. Mock numbers are not scientific evidence. The clean-data
+\texttt{kd\_only} baseline (scenario~C) preserves transfer utility while
+retaining a stable, exploratory nonzero gap---reported as an exploratory
+observation only, not a restored contribution. All clean-data conclusions are
+marked \texttt{exploratory} (8 \texttt{template\_family} clusters $<24$), come
+from a single synthetic equal-depth pair, and rest on the single dual-drop
+signal for the broken-transfer label; no cross-pair, real-world, or strong-
+significance claim is made. Accordingly, \textbf{submission is deferred} pending
+closure of the data-provenance and wording items, the adversarial review of the
+broken-transfer judgement, and PI sign-off. All data are synthetic, there are no real
 documents or external anchors, and the only clean-data evidence is a single
 equal-depth model pair; these limits bound every conclusion above.
 

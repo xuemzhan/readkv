@@ -19,7 +19,7 @@
 - **科学方向翻转（最高优先，PI 紧急裁决 `clean_data_reversal_ruling.md`）**：干净数据 P1 MVP 三 seed（`p1_clean_mvp_seed{0,1,2}`，git `efc3ba3`）显示 **broken transfer**：joint E_CF 6.900 / 8.159 / 8.540，dual 0.417 / 0.283 / 0.383，全部 `transfer_broken=true`。原贡献(1) 的「utility-preserving gap」与贡献(2) 的机制信号源于数据缺陷，**修复后翻转为迁移失败**。
 - **贡献(1) 冻结降级、贡献(2) 撤回 withheld**：不再以任何正向形式声称 gap 或 V 消费机制定位；旧 P1/P2 正向数值彻底移出结论，仅作为 Table 2（前后对照）的历史侧出现。
 - **主表换干净数据**：Table 1（`tab:cleanmvp`）填 P1 干净三 seed；Table 2（`tab:reversal`）为修复前后方向对照。**kd_only 干净数据三 seed 已补入**：E_CF 6.388/6.479/7.211、joint dual 0.700/0.733/0.767、flip 0.91–0.94、transfer_broken=false；按情形 C 仅作探索性观察，不恢复为正式贡献。
-- **kd_only 干净三 seed 仍在跑**；结果决定择支（都 broken→纯失败边界；kd 不 broken 且接近 Self→数据缺陷制造虚假发现的方法学负面结果）。
+- **kd_only 干净三 seed 已跑完并按 §3.3 判读为情形 C**（见第 21 行）：kd 不 broken、不接近 Self、稳定非零 exploratory gap → 边界研究；不是"都 broken"（情形 A）也不是"接近 Self"（情形 B）。PENDING 已清零。
 - **δ 复核暂停、P2 不启动（取消）、P3 维持暂停/实质取消**；P2/P3/P4 均未在干净数据上运行。
 - **E0 干净复验已通过**（`e0_clean_mvp_seed0`，cosine 1.0、KL 0、EM 0.975、round-trip、2.2e-16 ≪ 效应、zero_re_prefill），翻转不是 cache round-trip 实现残差。
 - **数据修复披露保留**：v2.0→v2.1 缺陷/修复/验收 11/11/v2.3 口径（见正文 §「Data correctness...」与 `tab:datafix`）。
@@ -30,7 +30,7 @@
 
 ## 1. 贡献措辞如何处理（§10 门槛——现已全部撤回）
 
-- **贡献(1) 撤回**：删除 "We identify a reproducible gap between standard transfer utility and counterfactual response fidelity…"。干净数据上 joint dual 坍塌、E_CF 达错配/零缓存控制水平，是 broken transfer，不是 utility-preserving 失真；正向证据基础已不存在。
+- **贡献(1) 撤回**：删除 "We identify a reproducible gap between standard transfer utility and counterfactual response fidelity…"。干净数据上 joint dual 坍塌到 0.28–0.42（Self≈0.82）、joint E_CF 接近但未超过错配/零缓存控制（seed0 6.90 vs 8.38/8.58），是 broken transfer，不是 utility-preserving 失真；正向证据基础已不存在。**S4 措辞**：全文禁"与控制相当/达到无信息水平"，统一写"接近但未超过控制 + dual 坍塌"。
 - **贡献(2) 撤回 withheld**：删除强形式 "We localize the gap to receiver-side Value-consumption pathways…" 及所有机制定位；原 P2 证据建立在被污染数据上，不可信；PI 不等 P2 重跑、直接撤回。
 - **贡献(3) 维持 withheld**：CF-RCT 未训练，主终点（成对 E_CF vs kd_only，CI 上界<0）未评估，P3 已暂停/取消。
 - **不声称的正向主张**：任何「反事实失真普遍存在」「V 消费侧机制定位」「方法改善 gap」「跨模型/真实世界泛化」。
@@ -42,7 +42,7 @@
 
 ## 2. 如实写入的不利结果（结果章节 §「Adverse results and boundaries」）
 
-1. **质量坍塌是主观察**：干净数据 joint dual 较 Self 降约 0.4（seed0），E_CF 6.90–8.54 与错配/零缓存控制相当，三 seed 全 `transfer_broken=true`。
+1. **质量坍塌是主观察**：干净数据 joint dual 坍塌到 0.28–0.42（较 Self≈0.82 降约 0.4），joint E_CF 6.90–8.54 接近但未超过错配/零缓存控制（seed0 6.90 vs 8.38/8.58），三 seed 全 `transfer_broken=true`；broken 定性由 dual 坍塌支撑，非"达到控制"。
 2. **混合控制信号**：info_attribution mismatch +1.483、zero +1.684 为正、random −0.135 为负，伴随 dual 坍塌；失败判读依据联合模式，审稿紧急复核其稳健性（排除实现 bug）。
 3. **旧非等深对失败**：4B→1.7B 旧结果 joint dual 0.28–0.30、失败边界；run 已 superseded（pre-fix 数据），无干净数据等价物。
 4. **旧正向信号是数据产物**：修复后 gap 与机制消失并翻转（Table 2），是核心方法学教训。
@@ -98,4 +98,4 @@
 - **审稿紧急复核**：确认 broken transfer 可信度（排除实现 bug）；若为实现 bug 则冻结结论、工程修复重跑；若可信则维持紧急裁决。
 - **数据修复重跑**：E0 已复验、P1 干净已产出；P2 不启动、P3 暂停；按 v2.3 主报 template_family CI + pair-level 敏感性。
 - **引用核验**：`[PLACEHOLDER]` 引用按 `protocol.md §9` 投递前完成。
-- **投稿暂缓**：待 kd 择支 + 审稿复核 + PI 签 off；在此之前不得投递、不得沿用旧 run 作最终结论。
+- **投稿暂缓**：kd 择支已定（情形 C）；仍待 S1–S5 溯源/措辞收尾 + 审稿复核 + PI 签 off；在此之前不得投递、不得沿用旧 run 作最终结论。
