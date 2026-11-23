@@ -41,6 +41,10 @@
 |---|---|---|---|
 | 11 | GPU 2×2 补充实验（校准版本 × 验证版本） | **做实验，保住强叙事** | 执行 refine-logs/EXPERIMENT_PLAN.md 的 A00/A01/A10/A11 × 3 seed；先冻 v2.7，数据导出+审计入口+seed0 冒烟门，通过后跑 12 格；重新审稿与 P5 签off，投递时点后移；候选整串评分推迟投稿后、单缺陷因果实验不做 |
 
+## N1 计数勘误登记（2026-11-23，PI 只读补记）
+
+> 审稿人 `final_compliance_note.md` §4 N1 指出 R5 计数漂移：R4 落实后 `runs_index.json` 为 **31 run（22 superseded + 9 权威）**，而旧裁决/计划记"26/28"。PI 已以**只读勘误**方式登记于 `docs/decisions/run_count_erratum.md`（26→28→31 演化链，**权威 run 数恒为 9**，以 `reports/runs_index.json` 为唯一权威来源）。**无需回写** `final_implementation_plan.md` 或其他已签/已冻结裁决文档。该勘误为计数一致性补记，不改变任何科学结论；不预判后续 2×2 GPU 实验（决策 11）产生的新 run 计数。
+
 ## 已闭环说明
 
 上述 1–8 项均已由真实 PI 答复，无遗留未答复项；venue 属于"延后到 M4 完成后再定"，不是拒绝决策。
