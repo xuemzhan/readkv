@@ -1,0 +1,20 @@
+{
+  "run_id": "anchor_squad_affine_seed0",
+  "files": [
+    {
+      "name": "config.json",
+      "sha256": "1f92b52ba2a5ecd11cf3c6f63bb77976623be2e34cdd6a87761c1860f2ae90b6",
+      "size": 1577
+    },
+    {
+      "name": "metrics.json",
+      "sha256": "b9d67d41d9690afa84a943b681f1c4779a9b5f389ab91a5e07f060b304544632",
+      "size": 904
+    },
+    {
+      "name": "scores.jsonl",
+      "sha256": "18d425565ee700183e4c145e89033d007185bcabc92384e068d9457eb7aa0a6d",
+      "size": 162434
+    }
+  ]
+}

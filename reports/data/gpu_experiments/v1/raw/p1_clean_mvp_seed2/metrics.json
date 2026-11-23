@@ -1,0 +1,423 @@
+{
+  "run_id": "p1_clean_mvp_seed2",
+  "backend": "gpu",
+  "protocol_version": "2.0",
+  "method": "none",
+  "n_calibration": 120,
+  "n_eval": 60,
+  "tau": 1.0,
+  "data_quality": {
+    "total": 520,
+    "by_slice": {
+      "F1": 111,
+      "F2": 90,
+      "F3": 110,
+      "F4": 87,
+      "F5": 61,
+      "F6": 61
+    },
+    "by_split": {
+      "probe": 40,
+      "train": 120,
+      "val": 60,
+      "test": 300
+    },
+    "length_mismatch": 61,
+    "length_mismatch_by_slice": {
+      "F5": 61
+    },
+    "length_mismatch_by_split": {
+      "probe": 4,
+      "train": 14,
+      "val": 7,
+      "test": 36
+    },
+    "f5_negative_controls": 61,
+    "flip_denominator": 398,
+    "flip_denominator_excludes": [
+      "F5",
+      "F6"
+    ],
+    "degenerate_must_flip_pairs": 0,
+    "cross_split_overlap": {
+      "context_A": 0,
+      "context_B": 0,
+      "query": 0,
+      "edited_span": 0,
+      "source_doc_id": 0,
+      "cluster": 0
+    },
+    "entity_pool_overlap": {
+      "names": 0,
+      "projects": 0,
+      "cities": 0,
+      "dates": 0,
+      "numbers": 0,
+      "roles": 0,
+      "policies": 0,
+      "teams": 0
+    },
+    "template_overlap_train_eval": [],
+    "template_skeleton_overlap_train_test": [],
+    "query_skeleton_overlap_train_test": [],
+    "template_family_count_by_split": {
+      "probe": 16,
+      "train": 16,
+      "val": 8,
+      "test": 16
+    },
+    "total_template_families": 56,
+    "structural_template_count": 24,
+    "unseen_template_subset": {
+      "splits": [
+        "probe",
+        "test"
+      ],
+      "family_count": 32,
+      "structural_template_count": 16,
+      "family_names": [
+        "U-F1-annex-D",
+        "U-F1-annex-P",
+        "U-F1-minutes-D",
+        "U-F1-minutes-P",
+        "U-F1-register-D",
+        "U-F1-register-P",
+        "U-F2-dossier-D",
+        "U-F2-dossier-P",
+        "U-F2-filing-D",
+        "U-F2-filing-P",
+        "U-F2-log-D",
+        "U-F2-log-P",
+        "U-F3-flow-D",
+        "U-F3-flow-P",
+        "U-F3-request-D",
+        "U-F3-request-P",
+        "U-F3-token-D",
+        "U-F3-token-P",
+        "U-F4-beforeafter-D",
+        "U-F4-beforeafter-P",
+        "U-F4-change-D",
+        "U-F4-change-P",
+        "U-F4-entry-D",
+        "U-F4-entry-P",
+        "U-F5-brief-D",
+        "U-F5-brief-P",
+        "U-F5-notice-D",
+        "U-F5-notice-P",
+        "U-F6-background-D",
+        "U-F6-background-P",
+        "U-F6-index-D",
+        "U-F6-index-P"
+      ]
+    },
+    "seen_template_families": [
+      "S-F1-city-A",
+      "S-F1-city-B",
+      "S-F1-person-A",
+      "S-F1-person-B",
+      "S-F2-alias-A",
+      "S-F2-alias-B",
+      "S-F3-direction-A",
+      "S-F3-direction-B",
+      "S-F3-negation-A",
+      "S-F3-negation-B",
+      "S-F4-distractor-A",
+      "S-F4-distractor-B",
+      "S-F5-paraphrase-A",
+      "S-F5-paraphrase-B",
+      "S-F6-position-A",
+      "S-F6-position-B"
+    ],
+    "quality_gate": "pass",
+    "note": "v2.1 修正版：退化对=0；跨 split 逐字重叠=0；实体池不相交；train/test 模板骨架不重合；flip 分母排除 F5+F6（stats_convention_v2.3.yaml）；length_mismatch 分层报告。"
+  },
+  "arms": {
+    "self": {
+      "n_total": 60,
+      "n_evaluable": 53,
+      "E_CF": {
+        "mean": 0.0,
+        "ci": [
+          0.0,
+          0.0
+        ]
+      },
+      "normalized_E_CF": 0.0,
+      "flip_consistency": 1.0,
+      "dual_correct": 0.7833333333333333,
+      "coverage": 0.8833333333333333,
+      "info_gap": null,
+      "self_gap": 0.0,
+      "detail": {
+        "tau": 1.0,
+        "evaluable_threshold": 0.001,
+        "n_flip_evaluable": 53
+      }
+    },
+    "identity": {
+      "n_total": 60,
+      "n_evaluable": 53,
+      "E_CF": {
+        "mean": 0.0,
+        "ci": [
+          0.0,
+          0.0
+        ]
+      },
+      "normalized_E_CF": 0.0,
+      "flip_consistency": 1.0,
+      "dual_correct": 0.7833333333333333,
+      "coverage": 0.8833333333333333,
+      "info_gap": null,
+      "self_gap": 0.0,
+      "detail": {
+        "tau": 1.0,
+        "evaluable_threshold": 0.001,
+        "n_flip_evaluable": 53
+      }
+    },
+    "joint": {
+      "n_total": 60,
+      "n_evaluable": 53,
+      "E_CF": {
+        "mean": 8.540242513020834,
+        "ci": [
+          7.056510416666667,
+          10.062029622395833
+        ]
+      },
+      "normalized_E_CF": 0.7435044762901268,
+      "flip_consistency": 0.7547169811320755,
+      "dual_correct": 0.38333333333333336,
+      "coverage": 0.8833333333333333,
+      "info_gap": null,
+      "self_gap": 8.540242513020834,
+      "detail": {
+        "tau": 1.0,
+        "evaluable_threshold": 0.001,
+        "n_flip_evaluable": 53
+      }
+    },
+    "k_only": {
+      "n_total": 60,
+      "n_evaluable": 53,
+      "E_CF": {
+        "mean": 3.1751302083333335,
+        "ci": [
+          2.4393066406250004,
+          3.9790494791666666
+        ]
+      },
+      "normalized_E_CF": 0.271676646548604,
+      "flip_consistency": 0.9622641509433962,
+      "dual_correct": 0.8166666666666667,
+      "coverage": 0.8833333333333333,
+      "info_gap": null,
+      "self_gap": 3.1751302083333335,
+      "detail": {
+        "tau": 1.0,
+        "evaluable_threshold": 0.001,
+        "n_flip_evaluable": 53
+      }
+    },
+    "v_only": {
+      "n_total": 60,
+      "n_evaluable": 53,
+      "E_CF": {
+        "mean": 4.41171875,
+        "ci": [
+          3.5984375,
+          5.194296875
+        ]
+      },
+      "normalized_E_CF": 0.37821383241263196,
+      "flip_consistency": 0.9811320754716981,
+      "dual_correct": 0.6833333333333333,
+      "coverage": 0.8833333333333333,
+      "info_gap": null,
+      "self_gap": 4.41171875,
+      "detail": {
+        "tau": 1.0,
+        "evaluable_threshold": 0.001,
+        "n_flip_evaluable": 53
+      }
+    },
+    "control:mismatch": {
+      "n_total": 60,
+      "n_evaluable": 53,
+      "E_CF": {
+        "mean": 9.43203125,
+        "ci": [
+          7.833248697916667,
+          11.008385416666666
+        ]
+      },
+      "normalized_E_CF": 0.7489181027049657,
+      "flip_consistency": 0.6037735849056604,
+      "dual_correct": 0.16666666666666666,
+      "coverage": 0.8833333333333333,
+      "info_gap": null,
+      "self_gap": 9.43203125,
+      "detail": {
+        "tau": 1.0,
+        "evaluable_threshold": 0.001,
+        "n_flip_evaluable": 53
+      }
+    },
+    "control:random": {
+      "n_total": 60,
+      "n_evaluable": 53,
+      "E_CF": {
+        "mean": 9.85439453125,
+        "ci": [
+          8.33433837890625,
+          11.359453938802083
+        ]
+      },
+      "normalized_E_CF": 0.9450758867746085,
+      "flip_consistency": 0.5094339622641509,
+      "dual_correct": 0.2833333333333333,
+      "coverage": 0.8833333333333333,
+      "info_gap": null,
+      "self_gap": 9.85439453125,
+      "detail": {
+        "tau": 1.0,
+        "evaluable_threshold": 0.001,
+        "n_flip_evaluable": 53
+      }
+    },
+    "control:zero": {
+      "n_total": 60,
+      "n_evaluable": 53,
+      "E_CF": {
+        "mean": 9.684244791666666,
+        "ci": [
+          8.155569661458333,
+          11.189329427083333
+        ]
+      },
+      "normalized_E_CF": 0.7737316013007405,
+      "flip_consistency": 0.11320754716981132,
+      "dual_correct": 0.11666666666666667,
+      "coverage": 0.8833333333333333,
+      "info_gap": null,
+      "self_gap": 9.684244791666666,
+      "detail": {
+        "tau": 1.0,
+        "evaluable_threshold": 0.001,
+        "n_flip_evaluable": 53
+      }
+    },
+    "control:correct": {
+      "n_total": 60,
+      "n_evaluable": 53,
+      "E_CF": {
+        "mean": 8.540242513020834,
+        "ci": [
+          7.056510416666667,
+          10.062029622395833
+        ]
+      },
+      "normalized_E_CF": 0.7435044762901268,
+      "flip_consistency": 0.7547169811320755,
+      "dual_correct": 0.38333333333333336,
+      "coverage": 0.8833333333333333,
+      "info_gap": null,
+      "self_gap": 8.540242513020834,
+      "detail": {
+        "tau": 1.0,
+        "evaluable_threshold": 0.001,
+        "n_flip_evaluable": 53
+      }
+    },
+    "new_joint": {
+      "n_total": 60,
+      "n_evaluable": 53,
+      "E_CF": {
+        "mean": 8.540242513020834,
+        "ci": [
+          7.056510416666667,
+          10.062029622395833
+        ]
+      },
+      "normalized_E_CF": 0.7435044762901268,
+      "flip_consistency": 0.7547169811320755,
+      "dual_correct": 0.38333333333333336,
+      "coverage": 0.8833333333333333,
+      "info_gap": null,
+      "self_gap": 8.540242513020834,
+      "detail": {
+        "tau": 1.0,
+        "evaluable_threshold": 0.001,
+        "n_flip_evaluable": 53
+      }
+    }
+  },
+  "primary_endpoint": {
+    "point": 0.0,
+    "ci": [
+      0.0,
+      0.0
+    ],
+    "improved": false,
+    "n": 60,
+    "note": "paired E_CF difference (new - baseline); negative means new method is better"
+  },
+  "info_attribution": {
+    "control:mismatch": 0.8917887369791657,
+    "control:random": 1.3141520182291657,
+    "control:zero": 1.1440022786458321
+  },
+  "transfer_health": {
+    "transfer_broken": true,
+    "verdict_note": "quality_pass = data-quality gate only (split isolation / template non-overlap / annotation consistency); it does NOT assert transfer utility. transfer_broken=true: joint quality collapsed / controls not dominated — P1 result is a failure boundary, NOT positive evidence of utility-preserving distortion. frozen verdict=None is unchanged; this field is an orthogonal annotation.",
+    "quality_pass_scope": "data_quality_gate_only",
+    "signals": {
+      "joint_dual_drop_vs_self": 0.4,
+      "dual_drop_ge_0_2": true,
+      "joint_ecf_vs_controls": {
+        "control:mismatch": 9.432,
+        "control:zero": 9.6842
+      },
+      "joint_ecf_ge_control": {
+        "control:mismatch": false,
+        "control:zero": false
+      },
+      "info_attribution": {
+        "control:mismatch": 0.8917887369791657,
+        "control:random": 1.3141520182291657,
+        "control:zero": 1.1440022786458321
+      },
+      "info_mostly_negative": false
+    }
+  },
+  "transfer_broken": true,
+  "verdict_note": "quality_pass = data-quality gate only (split isolation / template non-overlap / annotation consistency); it does NOT assert transfer utility. transfer_broken=true: joint quality collapsed / controls not dominated — P1 result is a failure boundary, NOT positive evidence of utility-preserving distortion. frozen verdict=None is unchanged; this field is an orthogonal annotation.",
+  "quality_pass_scope": "data_quality_gate_only",
+  "bootstrap_seed": 2,
+  "decision": {
+    "when": "distortion_present",
+    "verdict": "distortion_exists",
+    "conditions": {
+      "distortion_present": true,
+      "quality_pass": true
+    },
+    "action": "继续 P2 机制诊断与 P3 方法；报告 E_CF 与基线差距"
+  },
+  "decision_facts": {
+    "ecf_improved": false,
+    "ecf_point": 0.0,
+    "ci_upper": 0.0,
+    "distortion_present": true,
+    "joint_ecf_mean": 8.540242513020834,
+    "identity_ecf_mean": 0.0,
+    "flip_consistency": 0.7547169811320755,
+    "coverage": 0.8833333333333333,
+    "dual_correct": 0.38333333333333336,
+    "quality_pass": true,
+    "transfer_broken": true
+  },
+  "n_captures": 840,
+  "n_injections": 2400,
+  "elapsed_sec": 194.2
+}

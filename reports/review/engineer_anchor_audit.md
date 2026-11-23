@@ -71,9 +71,9 @@
 
 ### 4.2 `scripts/consistency_check.py`（默认输出 `reports/consistency_report.json`）
 
-- 结果：`checked=31`、`failed=22`、`head_hash=b7b9f50`、`dirty_run_paths=[]`。
-- **两个锚点**：`ok=true`、`traceable=true`、`problems=[]`、`git_hash_in_history=true`、`run_code_unchanged_vs_head=true`、`code_tracked=true`、`protocol_compat.ok=true`。
-  - 非致命提示：`model_pair_check.ok=false`（`unknown model_pair ''`）。原因是锚点 config 按设计不声明 `model_pair` 字段（teacher/student 路径已记于 `experiment_config`），而该检查是为 P0/P1 主验证 run 设计的；返回对象不含 `problems` 键，故不影响 `ok=true`。未据此修改任何不可变产物。
+- 首次结果（M1/M2 修复前）：`checked=31`、`failed=22`、`head_hash=b7b9f50`、`dirty_run_paths=[]`；当时锚点 `model_pair_check.ok=false`（`unknown model_pair ''`）且返回对象无 `problems` 键 → 静默放行（M2 缺陷，详见 §7）。
+- 修复后重跑结果：`checked=31`、`failed=22`（数量不变）、`head_hash=9d80bce`（重跑期间 HEAD 因并发论文 commit 前进；`b7b9f50` 仍为 HEAD 祖先且跑分代码无差异）、`dirty_run_paths=[]`。
+- **两个锚点**：`ok=true`、`traceable=true`、`problems=[]`、`anchor_code_checked=true`、`code_tracked=true`、`protocol_compat.ok=true`。M2 修复后 `model_pair_check` 为**显式豁免**：`ok=true`、`exempt=true`、`inferred_model_pair=qwen3-1.7b-to-0.6b`、`exempt_reason` 说明"锚点 config 直接声明 teacher/student 路径、按路径推断并核验标记"，不再静默放行。
 - **clean affine/kd 三 seed**：6 个 run 全部 `ok=true`、`traceable=true`、`model_pair_check.ok=true`，彼此一致。
 - 22 个 `failed` 均为**既有遗留/已 superseded run**的代码漂移（`run-producing code differs between config.git_hash and HEAD`）或早期 commit 缺跑分代码，与锚点无关；本轮不修、不改判据、不手改报告。
 
@@ -98,4 +98,36 @@
   - 锚点摘要（既有）：`reports/anchor_eval_summary.json`
 - 下游提示：写作者按 v2.4 三情形如实披露（锚点摘要现归类为 `exploratory_disclosure`）；审稿人可用 `sha256sum` 复算归档数据哈希；**不得**将锚点结果写成贡献恢复或合成主终点证据。
 
-**签署：工程师（readkv）· 锚点收尾审计 · 2026-11-23**
+---
+
+## 7. 代码审查 M1/M2 修复与重跑结果
+
+### 7.1 修改行（`scripts/consistency_check.py`，唯一被改代码文件）
+
+| 项 | 位置 | 修改 |
+|---|---|---|
+| M1 | `RUN_CODE_PATHS` | 新增 `"experiments/anchor_squad_gpu.py"`（锚点评测真正的产出代码） |
+| M1 | 新增 `ANCHOR_CODE_PATHS` / `LEGACY_RUN_CODE_PATHS` / `_is_anchor_run` / `_producing_paths` | 锚点 run 用含锚点脚本的全量集合校验；历史 run 用其 commit 时代已存在的集合（文件于 `938f3a0` 才引入），按 ancestry 语义避免误伤，不改任何 run |
+| M1 | `_code_tracked` / `_run_code_unchanged` | 增加 `code_paths` 参数；`check_run` 按 run 类型传入；结果新增 `anchor_run` / `code_paths_checked` / `anchor_code_checked` 字段 |
+| M2 | `_check_model_pair` | 所有分支都返回 `problems` 键；未知/空 `model_pair` 不再静默：锚点 run 从 teacher/student 路径推断已知配对并给 `exempt=true` + `exempt_reason`，否则返回明确 problem |
+| M2 | `check_run` | 改为 `problems.extend(pair_check["problems"])`（显式取键，缺键即报错，不再 `.get(..., [])` 静默放行）；`protocol_compat` 同步改为显式取键 |
+| 附带 | `_dirty_run_paths` | 用 `_producing_paths(...)` 排除审计脚本自身（与既有"审计脚本非产出 run 代码"语义一致），否则本次修改审计脚本会使全部 run 误报脏 |
+| 可选 | `check_run`（仅锚点） | `experiment_config.data_sha256` 缺失即记为 problem；`metrics.json.zero_re_prefill` 非 true 即记为 problem（zero_ok 硬门） |
+
+未改评分/评测逻辑、未改 `src/**`、未改冻结判据/数据/论文/任何 `reports/runs`。
+
+### 7.2 重跑结果（覆盖 31 项）
+
+- `python -m scripts.consistency_check` → `checked=31`、`failed=22`（与修复前**一致**）、`head_hash=9d80bce`、`dirty_run_paths=[]`。
+- 两锚点：`ok=true`、`traceable=true`、`problems=[]`、`anchor_code_checked=true`、`missing_code_paths=[]`；`git cat-file b7b9f50:experiments/anchor_squad_gpu.py` 确认锚点脚本确实存在于 config 记录的 commit → M1 校验真实生效。
+- clean affine 三 seed + clean kd 三 seed：6/6 `ok=true`、`traceable=true`，无回归。
+- M1 不变式：仅锚点 run 的 `code_paths_checked` 含 `experiments/anchor_squad_gpu.py`，其余 run 使用历史集合 → 旧 run 结论不变。
+- M2 不变式：31/31 条 `model_pair_check` 均含 `problems` 键；`ok=false` 者 `problems` 均非空（未知空配对、无豁免锚点、4B→1.7B 错标均被显式记录）。负例单测（未知配对非锚点 / 锚点无可识别路径）返回 `ok=false` 且带明确 problem。
+- 可选硬门：两锚点 `data_sha256` 存在、`metrics.zero_re_prefill=true`，通过。
+- 已知限制（不回改 run）：锚点 `config.json` 缺 `bootstrap_seed`（锚点为 seed0 单 seed 仅评测臂，既有 run 不可回改），仅在此记录，不计为 problem。
+
+### 7.3 是否影响任何 run 结论
+
+**不影响。** 两个锚点的 `ok/traceable` 与 6 个 clean 3-seed run 的结论在修复前后一致；22 个 failed 集合未变；scores/metrics/config/manifest、冻结 CI、贡献状态、合成 test 均未触碰。M2 只是把此前被静默吞掉的检查变成可审计的显式豁免或显式失败，不改变任何数值结果。
+
+**签署：工程师（readkv）· 代码审查 M1/M2 修复与复核 · 2026-11-23**

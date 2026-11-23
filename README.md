@@ -4,7 +4,7 @@
 
 > **最终科学定性（2026-11-23，PI 收口）**：原 V2.0「反事实功能保真」主线（H1/H2/H3：utility-preserving gap → V 消费侧机制定位 → CF-RCT 方法改善）在干净数据上被**证伪**，已整体 NO-GO / PIVOT。项目现定位为「**跨模型 KV 迁移的失败边界 + 数据泄漏如何制造虚假科学发现**」的失败边界 / 数据教训实证研究：干净数据上 tested affine mapper 在等深 MVP 对迁移失败（dual 坍塌、`transfer_broken=true`），旧正向 gap / 机制信号源于数据泄漏 / 退化对 / 模板重合；强基线 kd_only 保持迁移效用但仍有稳定非零 gap（**情形 C，仅探索性观察**）。
 
-需求来源：`docs/raw/跨模型KV迁移_第三篇论文研究方案_V2.0_详细版.pdf`（V2.0 方案，2026-11-22）与两篇已有论文 PDF。目标架构见 `docs/architecture.md`，冻结判据与统计设计见 `docs/protocol.md`，GPU 接续见 `docs/gpu_handoff.md`，智能体群协作见 `docs/agent_team.md`。**当前唯一有效的裁决链**：`docs/decisions/clean_data_reversal_ruling.md` → `docs/decisions/final_boundary_study_signoff.md` → `docs/decisions/human_decisions.md`（真实 PI）+ `docs/decisions/{m4_target_adjustment,ai_dataset_final_ruling}.md`；旧签 off（`final_signoff.md`、`contribution2_final_form.md` 等）对干净数据**不再适用**。V2.0 论文题目、指标名（`E_CF`）、算法名（`CF-RCT`）均为工作版本。**正式数值只来自真实 GPU 产物（`reports/runs/**`）；mock / smoke / `reports/_non_authoritative/**` 数字只用于接线回归，不是科学证据。**
+需求来源：`docs/raw/跨模型KV迁移_第三篇论文研究方案_V2.0_详细版.pdf`（V2.0 方案，2026-11-22）与两篇已有论文 PDF。目标架构见 `docs/architecture.md`，冻结判据与统计设计见 `docs/protocol.md`，GPU 接续见 `docs/gpu_handoff.md`，智能体群协作见 `docs/agent_team.md`。**当前唯一有效的裁决链**：`docs/decisions/clean_data_reversal_ruling.md` → `docs/decisions/final_boundary_study_signoff.md` → `docs/decisions/research_scope_update.md` → **`docs/decisions/p5_final_signoff.md`（P5 附条件最终签 off / ready-to-submit，venue=TMLR）** → `docs/decisions/human_decisions.md`（真实 PI，决策 5 已指定 TMLR；决策 6 署名）+ `docs/decisions/{m4_target_adjustment,ai_dataset_final_ruling}.md`；旧签 off（`final_signoff.md`、`contribution2_final_form.md` 等）对干净数据**不再适用**。V2.0 论文题目、指标名（`E_CF`）、算法名（`CF-RCT`）均为工作版本。**正式数值只来自真实 GPU 产物（`reports/runs/**`）；mock / smoke / `reports/_non_authoritative/**` 数字只用于接线回归，不是科学证据。**
 
 ## 设计原则
 
@@ -21,10 +21,10 @@
 
 - **V2 全栈已落地（实现层面）**：评价层 / 机制层 / 方法层（设计）在 mock 后端完整实现；GPU 后端的 `models/hooks.py` 真实前向适配已实现并通过 P0 / E0 实现门，不再需要按 `docs/gpu_handoff.md` 补做 hooks；`--backend gpu` 可用。
 - **测试**：`pytest` **53 passed**（V1 + V2 + hooks/kd 相关测试）。
-- **真实 GPU 证据（最终口径）**：干净数据权威主证据为 **7 个 clean run**：`e0_clean_mvp_seed0`、`p1_clean_mvp_seed{0,1,2}`、`p1_kd_clean_mvp_seed{0,1,2}`；另有 **2 个 SQuAD 外部锚点 run**：`anchor_squad_{affine,kd}_seed0`。`reports/runs/` 下共 31 个 run 目录，其余为已 `superseded` 的旧 run（pre-fix 数据）与 δ 网格 run，仅作历史 / 前后对照，不进入当前结论。`bootstrap_summary.json` 尚未纳入 kd_clean 三 seed 与锚点（投稿前审计收尾项，见 `reports/review/meta_review/current_task_meta_review.md`）。
+- **真实 GPU 证据（最终口径）**：干净数据权威主证据为 **7 个 clean run**：`e0_clean_mvp_seed0`、`p1_clean_mvp_seed{0,1,2}`、`p1_kd_clean_mvp_seed{0,1,2}`；另有 **2 个 SQuAD 外部锚点 run**：`anchor_squad_{affine,kd}_seed0`。`reports/runs/` 下共 31 个 run 目录，其余为已 `superseded` 的旧 run（pre-fix 数据）与 δ 网格 run，仅作历史 / 前后对照，不进入当前结论。`bootstrap_summary.json` / `consistency_report.json` 当前均 31 项，7 clean + 2 锚点 `ok=true/traceable=true`（kd 情形 C 的 pair-level vs v2.3 簇级 CI 标注统一见 `docs/reproducibility.md §5.2`）。
 - **数据**：`data/tasks/manifest.json`（`cf_pairs_v2.1`，sha `f910f1f1…a894a`，520 对：probe40/train120/val60/test300、`real=0`）；退化对 0、跨 split 重叠 0、实体重叠 0、flip 分母 398；统计口径 v2.3（`template_family` 主簇 + pair-level 敏感性，8 族 < 24 → `exploratory=true`）。
-- **阶段门控**：P0 / E0、P1 为 **GO（终局）**；**P2 / P3 / P4 正式取消且永久放弃**（真实 PI 决策 8，不另立「修复 broken transfer」新课题）；**P5 投递暂缓**，按失败边界 / 数据教训定位，待 S1–S5、锚点、引用核验与 venue 指定后重开。
-- **贡献与投稿**：贡献(1) 撤回、贡献(2) 撤回（withheld）、贡献(3) withheld；`real=0`；主终点未评估、封存 test 未评测；**现在投稿为 NO-GO / 暂缓**。外部效度仅保留 SQuAD/ARC 锚点 + `real=0` 受阻披露；AI 生成数据集提案已评估并撤回（not activated），无遗留产物，不恢复任何贡献。
+- **阶段门控**：P0 / E0、P1 为 **GO（终局）**；**P2 / P3 / P4 正式取消且永久放弃**（真实 PI 决策 8，不另立「修复 broken transfer」新课题）；**P5 = 附条件最终签 off（ready-to-submit）**, venue 已由真实 PI 指定为 **TMLR**（决策 5）；唯一机械性收尾为「写作者把 SQuAD 锚点探索性结果补入论文 + 审稿人出 P5 compliance note」，完成后由**真实 PI 本人经 OpenReview 提交**（agent 不代为提交）。详见「阶段状态」与 `docs/decisions/p5_final_signoff.md`。
+- **贡献与投稿**：贡献(1) 撤回、贡献(2) 撤回（withheld）、贡献(3) withheld；`real=0`；主终点未评估、封存 test 未评测；论文定位为 TMLR 的**失败边界 / 数据教训负面实证研究（modest contribution）**，已完成 S1–S5、署名、引用核验（无 `[PLACEHOLDER]` 残留），进入附条件最终签 off / ready-to-submit。外部效度仅保留 SQuAD/ARC 锚点 + `real=0` 受阻披露；AI 生成数据集提案已评估并撤回（not activated），无遗留产物，不恢复任何贡献。§9 章节级全文口径复核为非阻塞投递前项。
 
 ## 目录
 
@@ -157,6 +157,37 @@ uv pip install --python .venv/bin/python -e ".[dev]" modelscope
 - **SQuAD 外部锚点**（`anchor_squad_{affine,kd}_seed0`）已完成，仅 seed0、仅评测、按 v2.4 预承诺三情形归类为 `exploratory_disclosure`；不与合成 test 主终点混算，不恢复任何已撤回贡献。外部效度仅保留 SQuAD/ARC 锚点 + `real=0` 受阻披露；AI 生成数据集提案已评估并撤回（not activated），v2.6 冻结但无 `data/generated/` 遗留产物，`real=0` 硬边界不变。
 - 当前权威 run 均**串行**跑（并发会因 GPU 争用放大 3–7×，见 `docs/p3_resource_estimate.md`）；≥3 seed 是硬约束（外部锚点例外：仅 seed0）；封存 test 全程**未评测**；δ 复核已永久取消，v2.2 的 δ=0.5 仅为形式登记、不再调整。
 
+### 4. 可复现性（从零复现权威证据）
+
+面向外部人员的完整从零复现指南见 **`docs/reproducibility.md`**（环境版本、模型路径、数据哈希、逐 run 命令、产物核对与审计、已知限制、禁止事项）。命令摘要（均在 `/root/readkv` 执行；权威证据只需 Qwen3-0.6B + 1.7B）：
+
+```bash
+# 安装 + 测试 + 模型
+uv venv .venv
+uv pip install --python .venv/bin/python -e ".[dev]" modelscope
+.venv/bin/python -m pytest                                   # 53 passed
+.venv/bin/modelscope download Qwen/Qwen3-0.6B
+.venv/bin/modelscope download Qwen/Qwen3-1.7B
+
+# 权威 9 run（串行）；T=1.7B snapshot，S=0.6B snapshot（见 docs/reproducibility.md §1）
+.venv/bin/python -m experiments.P0_gpu --run-id e0_clean_mvp_seed0 \
+  --model <S> --n-probes 40 --seed 0 --dtype bfloat16 --kernel sdpa
+.venv/bin/python -m experiments.P1_gpu --run-id p1_clean_mvp_seed{0,1,2} \
+  --teacher <T> --student <S> --seed {0,1,2} --mapper affine --n-resamples 10000
+.venv/bin/python -m experiments.P1_kd_gpu --run-id p1_kd_clean_mvp_seed{0,1,2} \
+  --teacher <T> --student <S> --seed {0,1,2} --method kd --epochs 8 --lr 1e-3 --eval-splits val
+.venv/bin/python -m experiments.anchor_squad_gpu --run-id anchor_squad_{affine,kd}_seed0 \
+  --teacher <T> --student <S> --method {affine,kd} --seed 0 --n-examples 240
+
+# 数据哈希 / 审计（权威期望：consistency 9 ok = 7 clean + 2 锚点，22 failed 为历史 superseded）
+sha256sum data/tasks/cf_pairs.jsonl          # f910f1f1…a894a
+sha256sum data/anchors/squad/dev-v2.0.json   # 80a5225e…82d8
+.venv/bin/python -m scripts.consistency_check
+.venv/bin/python -m scripts.bootstrap_ci_report
+```
+
+> `{0,1,2}` 表示按 seed 逐条展开为 3 条独立命令（串行），`<T>/<S>` 为 §1 的本地 snapshot 绝对路径。上述命令复现的是**产物格式与统计口径**，不恢复任何已撤回贡献；封存 test 未评测、主终点未评估、`real=0` 仍为硬边界。已知限制（模型 revision 未钉 commit、驱动/uv 版本未记录、整理数据 `reports/data/gpu_experiments/v1/` 待补等）见 `docs/reproducibility.md §6–§7`。
+
 ## 关键结果摘要
 
 全部数值转抄自 `reports/runs/**/metrics.json`、`reports/engineer_status.md`、`docs/decisions/**`、`papers/readkv_v2_draft/notes.md`，不重新计算统计。CI 为簇级 paired bootstrap（10,000 resamples）；干净数据按 v2.3 以 `template_family` 为主簇，8 族 < 24 → `exploratory=true`。
@@ -190,7 +221,7 @@ uv pip install --python .venv/bin/python -e ".[dev]" modelscope
 | **P2 机制** | **正式取消（不重启）** | 前提（干净失真）已塌，旧证据污染；重启仅当重新构造干净 utility-preserving 失真数据并经 PI 新裁决，当前无此计划 |
 | **P3 方法** | **正式取消（永久放弃）** | 真实 PI 决策 8：方法层无目标、三 δ 负值、翻转后无意义；不另立「修复 broken transfer」新课题 |
 | **P4 泛化** | **正式取消 / NO-GO** | 上游取消、无跨模型 / 真实文档证据、`real=0` |
-| **P5 投递** | **暂缓（Conditional，未签 off）** | 按负面 / 边界实证定位；M4 受阻披露 real=0 已完成，待 S1–S5、kd 数值入稿、锚点 / 引用核验、署名统一、审稿合规意见；**venue 未由真实 PI 指定前只到「投递就绪」，不最终签 off**（首选 TMLR，见 `venue_recommendation.md`）；决策 4 选 B——暂不投递 |
+| **P5 投递** | **附条件最终签 off / ready-to-submit（TMLR）** | `p5_final_signoff.md`：S1–S5、数据修复 / real=0 披露、kd 三 seed 入稿、署名（Zhang Xuein）、引用核验（无 PLACEHOLDER）、贡献清单全部达标；**venue 已由真实 PI 指定为 TMLR**（`human_decisions.md` 决策 5，采纳 PI 首选推荐）；唯一收尾：写作者补入 SQuAD 锚点探索性结果 + 审稿人出 P5 compliance note（机械性收尾，不改科学结论），随后由**真实 PI 本人经 OpenReview 提交，agent 不代为提交** |
 
 ## Agent 团队
 
@@ -207,7 +238,7 @@ uv pip install --python .venv/bin/python -e ".[dev]" modelscope
 | **engineer-3** | 并行工程师实例：分担 Huber δ 网格并行锁定与审计辅助 |
 | **doc-engineer** | 维护 `README.md` 与 `docs/` 说明文档，只转抄冻结产物，不改代码 / 判据 / 运行产物 |
 | **research-advisor** | 联网独立评估方向 / 方案 / 实验 / 结果，给出 Go / Conditional Go / Pivot / No-Go 结论（不改判据 / 数据 / 运行产物）；产物 `reports/review/research_advisor/current_task_review.md`（PIVOT）与 `third_round_online_addendum.md`（第三轮主会话代执行，因额度不足，非独立 agent 签署） |
-| **meta_review（审查产物）** | `reports/review/meta_review/current_task_meta_review.md`：对顾问报告的元审查，裁定 PIVOT 确认、失败边界研究 CONDITIONAL GO、投稿暂缓 |
+| **meta_review（审查产物）** | `reports/review/meta_review/current_task_meta_review.md`：对顾问报告的元审查，裁定 PIVOT 确认、失败边界研究 CONDITIONAL GO、投稿暂缓（**历史结论，已被 `p5_final_signoff.md` 的附条件最终签 off / TMLR 超越**） |
 
 协作流程：PI（定方向/冻结判据）→ 科学家（规格书 + E0–E7 设计）→ 数据工程师 / 工程师（数据 manifest + 实现 + 跑实验 + `scores.jsonl`）→ reviewer / 顾问 / 元审查（统计合规、对抗审阅）→ writer（论文 / 投递材料）→ PI（Go/No-Go 与投递拍板）。角色间分歧由 PI 裁决；每个阶段写改审循环最多 2 轮，第 3 轮由 PI 直裁。所有角色共同遵守「判据先写后跑」「mock / smoke / `_non_authoritative` 非证据」「zero re-prefill」「不可逆产物」等硬约束。
 
@@ -233,4 +264,4 @@ uv pip install --python .venv/bin/python -e ".[dev]" modelscope
 - `final_boundary_study_signoff.md §1.1` 的 kd 表使用 pair-level CI；元审查（`reports/review/meta_review/current_task_meta_review.md`）指出 v2.3 主簇口径与 kd 审计产物尚需统一或明确标注，属投稿前审计收尾项，须由 PI 解释、不得私下改表。
 - 不可变产物：`reports/runs/<run_id>/` 一经落盘不改；统计结论只能由 `scores.jsonl` 重算（`scripts.bootstrap_ci_report`）；`scripts.consistency_check` 校验 git_hash ancestry / 跑分代码一致性 / zero_re_prefill / model_pair / dtype / kernel。
 - 引用（KV-Lingo arXiv:2609.32610、CacheLink arXiv:2610.15509、SQuAD 两篇）已按 `protocol.md §9` 实际核验并替换 `[PLACEHOLDER]`（`main.tex` 无占位残留）；外部文献的章节级口径须在投递前复核。
-- 署名统一：**Zhang Xuein \<zxm0813@gmail.com\>**（真实 PI 决策 6）；venue 延后到锚点 / M4 结论后由真实 PI 指定（首选 TMLR）。
+- 署名统一：**Zhang Xuein \<zxm0813@gmail.com\>**（真实 PI 决策 6）；**venue 已由真实 PI 指定为 TMLR**（`human_decisions.md` 决策 5，锚点结果出来后指定、采纳 PI 首选推荐；依据 `venue_recommendation.md`），不再是「延后 / 首选」。**投递由真实 PI 本人经 OpenReview 提交，agent 不代为提交**；投稿前须完成人工最终检查清单（署名邮箱有效、TMLR 账号与作者配额、CC0/CC BY-SA/引用许可声明、cover letter 与 AE/reviewer 建议、锚点已补入 + P5 compliance note + 稿件编译无误；见 `docs/decisions/p5_final_signoff.md §6`）。§9 章节级引用全文口径复核为非阻塞投递前项。

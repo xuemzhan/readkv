@@ -1,0 +1,97 @@
+{
+  "schema_version": "gpu_experiments_v1",
+  "generated_on": "2026-11-23",
+  "method": "column/field projection only; no statistic recomputed; no numeric value altered",
+  "source_files": [
+    {
+      "path": "reports/runs_index.json",
+      "sha256": "06e2ce309a049baae997985c31405111186d3a1bd1714c9c04730311e3317287"
+    },
+    {
+      "path": "reports/bootstrap_summary.json",
+      "sha256": "3c79fd6edb845e8c0f1b21246a74d6162cbd11bc8cd3eccb140b1c54dee59a08"
+    },
+    {
+      "path": "reports/anchor_eval_summary.json",
+      "sha256": "46986d5f6530ba086d9466e4ab5cdb61ea5821ad5db5139227cc1d7a959a00a8"
+    },
+    {
+      "path": "reports/data/data_fix_report.md",
+      "sha256": "e0e6421a1f72996f977176e28a3c354899c3e46840acc6ab8ad7d4e5e0c81fa5"
+    },
+    {
+      "path": "reports/data/data_readiness_audit.md",
+      "sha256": "67819a36487623c0a0deb51a11552ea183d2736952e3d8761f5f244dee9cee3e"
+    }
+  ],
+  "raw": {
+    "run_count": 28,
+    "file_count": 126,
+    "aggregate_sha256_over_sorted_raw_file_bytes": "4dba89ed5a02b30fb61eed53bdaa9d64a4c9b5ff39edf1b133bf81f82776a443",
+    "inventory_path": "file_inventory.json",
+    "inventory_sha256": "ea1a888976a999fa74ebf0783d945e111ea6e19f10d0bc5eb43d2dfd23ab1b28"
+  },
+  "processed": {
+    "file_count": 5,
+    "files": [
+      {
+        "path": "processed/runs_summary.csv",
+        "rows": 28,
+        "sha256": "ba46cd99d9d73ee3a50f9542ccaeeeba62b52c9fba19c8313237cc93e79d5d69"
+      },
+      {
+        "path": "processed/pair_scores_tidy.jsonl",
+        "rows": 12040,
+        "sha256": "39b3066af0cf692cd77cf067e1a99d7e48d3db461664a1c075702352f60aafaa"
+      },
+      {
+        "path": "processed/anchor_scores_tidy.jsonl",
+        "rows": 960,
+        "sha256": "36ee0cc1d5410591d71189640b0b3d61b8472f94357fe3b9a38c8c8d06be0221"
+      },
+      {
+        "path": "processed/data_quality_before_after.csv",
+        "rows": 16,
+        "sha256": "fbbe42bc5159000feadf57edfbc420c1c5632fa0ef20e357f76d01f3d17d8dad"
+      },
+      {
+        "path": "processed/cluster_map.csv",
+        "rows": 1400,
+        "sha256": "2ccc71783f04facdcb3fef51537827eea1f7e466bab18b2dfea39b07502c6bad"
+      }
+    ]
+  },
+  "exclusions": {
+    "cache_npz": {
+      "count": 320,
+      "total_size_bytes": 1236406365,
+      "reason": "regenerable KV-cache tensors (cache/*.npz); not copied per task scope"
+    },
+    "runs_not_in_runs_index": {
+      "run_ids": [
+        "delta_lock_v2p1_2p0_par",
+        "p1_gpu_kdonly_mvp_seed1_par",
+        "p1_gpu_kdonly_mvp_seed2_fast"
+      ],
+      "reason": "reports/runs_index.json is the authoritative 28-run list; these dirs are not indexed"
+    },
+    "mock_smoke_non_authoritative": {
+      "reason": "reports/_non_authoritative/** (smoke tests) excluded from all formal data"
+    }
+  },
+  "validation": {
+    "raw_sha256_matches_source": true,
+    "raw_sha256_mismatches": [],
+    "scores_line_count_matches_runs_index": true,
+    "scores_line_count_mismatches": [],
+    "runs_summary_rows": 28,
+    "pair_scores_tidy_rows": 12040,
+    "pair_scores_expected_rows": 12040,
+    "pair_scores_rows_match_source": true,
+    "anchor_scores_tidy_rows": 960,
+    "anchor_scores_expected_rows": 960,
+    "anchor_scores_rows_match_source": true,
+    "cluster_map_rows": 1400,
+    "data_quality_rows": 16
+  }
+}

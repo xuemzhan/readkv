@@ -2,7 +2,7 @@
 
 本文档说明如何把 CPU mock 验证过的管线切换到 24GB GPU 机器。原则是**逐项替换、逐项回归**：每替换一个 mock 组件，就用同一阶段脚本与同一判据重跑，确认产物格式不变。判据细节见 `docs/protocol.md`，目标结构见 `docs/architecture.md`。V2.0 是待验证的研究计划，以下数字（除硬件 / 缓存体积的理论估算外）均为目标值，不是实验结论。
 
-> **实现状态**：V2 全部功能已在 mock 后端落地（51 个测试通过，阶段脚本 `P0..P5` 可在 CPU 上跑通完整管线）。**GPU 侧唯一剩余工作是实现 `models/hooks.py` 的真实前向**——接口契约与 mock 完全一致，替换后无需改动评测 / 训练 / 诊断代码。封存测试运行前须完成 `configs/prereg/` 预注册。
+> **实现状态（已更新，2026-11-23）**：V2 全部功能已在 mock 后端落地；`models/hooks.py` 的真实 GPU 前向**已实现并通过 P0/E0 实现门**（`--backend gpu` 可用），单元测试 **53 passed**。本文下方为历史接续说明（目标值与理论估算，非当前结论）。当前权威 GPU run 的从零复现命令、环境版本与数据哈希见 **`docs/reproducibility.md`**。项目已 PIVOT 为失败边界 / 数据泄漏教训的负面实证研究（见 `docs/decisions/final_boundary_study_signoff.md`）；P2/P3/P4 取消、封存 test 未评测，不得据本文历史目标值启动已取消阶段。封存测试运行前须完成 `configs/prereg/` 预注册。
 
 ## 0. 环境
 
