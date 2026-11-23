@@ -1,0 +1,169 @@
+{
+  "dataset": "audit_2x2_cpu_prep",
+  "description": "CPU-only export of train/val for the 2x2 calibration-version x validation-version GPU follow-up. 6 train + 6 val, seeds 0/1/2, two generator versions.",
+  "created_utc": "2026-11-23",
+  "generator_versions": {
+    "legacy": {
+      "commit": "458de18",
+      "source": "git show 458de18:src/readkv/data/build_cf_pairs.py",
+      "dir": "legacy/"
+    },
+    "fixed": {
+      "commit": "efc3ba3",
+      "source": "git show efc3ba3:src/readkv/data/build_cf_pairs.py",
+      "dir": "fixed/"
+    }
+  },
+  "sizes_used": {
+    "probe": 0,
+    "train": 120,
+    "val": 60,
+    "test": 0,
+    "real": 0
+  },
+  "export_note": "Each version's generator imported in isolated PYTHONPATH; sizes set so only train+val emitted; seed_RNG = Random(f'{seed}-{split}') per split so other splits=0 does not affect train/val.",
+  "sample_identity": {
+    "sample_hash": "sha256(query|context_A|context_B|candidate_A|candidate_B) == stable_hash == archived scores cache_hash",
+    "sample_id": "<version_tag>|<sample_hash[:16]>",
+    "note": "pair_id strings collide across versions (e.g. val-F1-0000 in both); sample_hash differs -> always key on version_tag+sample_hash, never pair_id alone."
+  },
+  "files": [
+    {
+      "version": "458de18",
+      "version_tag": "legacy_458de18",
+      "split": "train",
+      "seed": 0,
+      "path": "data/audit_2x2/legacy/train_seed0.jsonl",
+      "rows": 120,
+      "sha256": "81da04a041a4e7757caa02e502c10ca9a9236d7f98da5419fb226ca95a02b00a",
+      "bytes": 121597
+    },
+    {
+      "version": "458de18",
+      "version_tag": "legacy_458de18",
+      "split": "train",
+      "seed": 1,
+      "path": "data/audit_2x2/legacy/train_seed1.jsonl",
+      "rows": 120,
+      "sha256": "7385245c6b2db4e4f78abc837aaa31817cd7025eaa23dc099b2dc92c9f4a793e",
+      "bytes": 121506
+    },
+    {
+      "version": "458de18",
+      "version_tag": "legacy_458de18",
+      "split": "train",
+      "seed": 2,
+      "path": "data/audit_2x2/legacy/train_seed2.jsonl",
+      "rows": 120,
+      "sha256": "3ad49eea2a41ff0e0ffd516b0fb1b8dc5282dce9a8336d7f371bf28adc97bb11",
+      "bytes": 121548
+    },
+    {
+      "version": "458de18",
+      "version_tag": "legacy_458de18",
+      "split": "val",
+      "seed": 0,
+      "path": "data/audit_2x2/legacy/val_seed0.jsonl",
+      "rows": 60,
+      "sha256": "24a5077bec11657c70d8eeddeed6fbe4871253d6d141daf16989903d1ebccaaa",
+      "bytes": 60282
+    },
+    {
+      "version": "458de18",
+      "version_tag": "legacy_458de18",
+      "split": "val",
+      "seed": 1,
+      "path": "data/audit_2x2/legacy/val_seed1.jsonl",
+      "rows": 60,
+      "sha256": "6f5c2b553832bdb2e03dd56ab39a7e6b2a6e4b5ec726448692f9fae1ebb849ff",
+      "bytes": 60294
+    },
+    {
+      "version": "458de18",
+      "version_tag": "legacy_458de18",
+      "split": "val",
+      "seed": 2,
+      "path": "data/audit_2x2/legacy/val_seed2.jsonl",
+      "rows": 60,
+      "sha256": "df24f7cf9d6fae8ce2e8a7af9b2a68aefe040a447534d30119aed99cd7f0c759",
+      "bytes": 60212
+    },
+    {
+      "version": "efc3ba3",
+      "version_tag": "fixed_efc3ba3",
+      "split": "train",
+      "seed": 0,
+      "path": "data/audit_2x2/fixed/train_seed0.jsonl",
+      "rows": 120,
+      "sha256": "9b03522746825f3fe0794c7f62ec7b1fb430f46734bb175b90a55a788d91e953",
+      "bytes": 124602
+    },
+    {
+      "version": "efc3ba3",
+      "version_tag": "fixed_efc3ba3",
+      "split": "train",
+      "seed": 1,
+      "path": "data/audit_2x2/fixed/train_seed1.jsonl",
+      "rows": 120,
+      "sha256": "024a69e9f35c777ad1030227eed37ef8f3dd43a82fb0a905a569e9150a37633f",
+      "bytes": 124439
+    },
+    {
+      "version": "efc3ba3",
+      "version_tag": "fixed_efc3ba3",
+      "split": "train",
+      "seed": 2,
+      "path": "data/audit_2x2/fixed/train_seed2.jsonl",
+      "rows": 120,
+      "sha256": "53258777ab214fb9226b85389673672c9c4b1b17c8cb9d07cf1a97beddcf3e6e",
+      "bytes": 124685
+    },
+    {
+      "version": "efc3ba3",
+      "version_tag": "fixed_efc3ba3",
+      "split": "val",
+      "seed": 0,
+      "path": "data/audit_2x2/fixed/val_seed0.jsonl",
+      "rows": 60,
+      "sha256": "19e9839e4e27b584c53d30242411ab14a659ac5cc487849b205928f5caa3c595",
+      "bytes": 61853
+    },
+    {
+      "version": "efc3ba3",
+      "version_tag": "fixed_efc3ba3",
+      "split": "val",
+      "seed": 1,
+      "path": "data/audit_2x2/fixed/val_seed1.jsonl",
+      "rows": 60,
+      "sha256": "b4f9587fc7e28a780b923c7e4a3e1aec96ddf6cde3c63a50fd0cc4b8423e7921",
+      "bytes": 61857
+    },
+    {
+      "version": "efc3ba3",
+      "version_tag": "fixed_efc3ba3",
+      "split": "val",
+      "seed": 2,
+      "path": "data/audit_2x2/fixed/val_seed2.jsonl",
+      "rows": 60,
+      "sha256": "5633a8bf052f33c44ec694704baef64c96898a1548fc313abc2fb537a5e5b475",
+      "bytes": 61890
+    }
+  ],
+  "diagnostics": {
+    "path": "data/audit_2x2/diagnostics.json",
+    "sha256": "a7b8f9b3ea7c00f72c2400627ba6f3d2a67c27aeaf22ee2b68a979a45c0e5ea0"
+  },
+  "acceptance": {
+    "n_train_groups": 6,
+    "n_val_groups": 6,
+    "all_train_120": true,
+    "all_val_60": true,
+    "val_hash_match_legacy": "EXACT vs old runs (git 458de18/53e9bc5/ff578b5/a04990d), seeds 0/1/2",
+    "val_hash_match_fixed": "EXACT vs clean runs (git efc3ba3/6413ba0), seeds 0/1/2"
+  },
+  "boundary": {
+    "cf_pairs_jsonl_unchanged": "f910f1f1196a21041765834654af8233d216ef4bf4f28f4c60abbd0641aa894a",
+    "no_gpu_run": true,
+    "no_frozen_file_changed": true
+  }
+}

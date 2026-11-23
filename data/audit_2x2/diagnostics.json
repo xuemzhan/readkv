@@ -1,0 +1,750 @@
+{
+  "generated_by": "CPU-only 2x2 data prep",
+  "note": "legacy=458de18 old generator; fixed=efc3ba3 repaired generator",
+  "per_seed": {
+    "legacy_seed0": {
+      "n_train": 120,
+      "n_val": 60,
+      "duplicate_text_groups": 0,
+      "duplicate_text_examples": [],
+      "degenerate_candidate_count": 9,
+      "degenerate_candidates": [
+        {
+          "pair_id": "train-F4-0007",
+          "candidate_A": "吴九",
+          "candidate_B": "吴九",
+          "slice": "F4"
+        },
+        {
+          "pair_id": "train-F4-0039",
+          "candidate_A": "郑十",
+          "candidate_B": "郑十",
+          "slice": "F4"
+        },
+        {
+          "pair_id": "train-F2-0050",
+          "candidate_A": "李四",
+          "candidate_B": "李四",
+          "slice": "F2"
+        },
+        {
+          "pair_id": "train-F2-0051",
+          "candidate_A": "赵六",
+          "candidate_B": "赵六",
+          "slice": "F2"
+        },
+        {
+          "pair_id": "train-F4-0054",
+          "candidate_A": "周八",
+          "candidate_B": "周八",
+          "slice": "F4"
+        },
+        {
+          "pair_id": "val-F3-0002",
+          "candidate_A": "王五",
+          "candidate_B": "王五",
+          "slice": "F3"
+        },
+        {
+          "pair_id": "val-F2-0009",
+          "candidate_A": "周八",
+          "candidate_B": "周八",
+          "slice": "F2"
+        },
+        {
+          "pair_id": "val-F3-0010",
+          "candidate_A": "吴九",
+          "candidate_B": "吴九",
+          "slice": "F3"
+        },
+        {
+          "pair_id": "val-F2-0017",
+          "candidate_A": "周八",
+          "candidate_B": "周八",
+          "slice": "F2"
+        }
+      ],
+      "identical_doc_mustflip_count": 5,
+      "identical_doc_ids": [
+        "train-F4-0007",
+        "train-F4-0039",
+        "train-F4-0054",
+        "val-F3-0002",
+        "val-F3-0010"
+      ],
+      "train_val_overlap": {
+        "context_A": {
+          "count": 1,
+          "values": [
+            "项目远航的联络人是周八。该项目已于2024-01-12完成评审。"
+          ]
+        },
+        "context_B": {
+          "count": 1,
+          "values": [
+            "项目白鹭早期由孙七跟进。编号56的项目现由孙七负责。另有吴九负责归档。"
+          ]
+        },
+        "query": {
+          "count": 23,
+          "values": [
+            "与星河合作的团队负责人是谁？",
+            "与灯塔合作的团队负责人是谁？",
+            "与白鹭合作的团队负责人是谁？",
+            "与磐石合作的团队负责人是谁？",
+            "与黑马合作的团队负责人是谁？",
+            "谁向谁汇报？",
+            "项目星河的落地城市是哪里？",
+            "项目星河的负责人是谁？",
+            "项目灯塔是否允许外部访问？",
+            "项目灯塔的落地城市是哪里？",
+            "项目灯塔的负责人是谁？",
+            "项目白鹭的负责人是谁？",
+            "项目白鹭（编号56）当前负责人是谁？",
+            "项目磐石是否允许外部访问？",
+            "项目磐石的负责人是谁？",
+            "项目赤兔的负责人是谁？",
+            "项目远航是否允许外部访问？",
+            "项目远航的落地城市是哪里？",
+            "项目远航的负责人是谁？",
+            "项目青云是否允许外部访问？",
+            "项目黑马是否允许外部访问？",
+            "项目黑马的落地城市是哪里？",
+            "项目黑马的负责人是谁？"
+          ]
+        },
+        "edited_span": {
+          "count": 11,
+          "values": [
+            "city: 南京 -> 上海",
+            "city: 成都 -> 武汉",
+            "direction: flipped",
+            "distractor target: 孙七 -> 吴九",
+            "negation: flipped",
+            "person: 周八 -> 孙七",
+            "person: 张三 -> 周八",
+            "person: 李四 -> 张三",
+            "position: 孙七 -> 李四",
+            "position: 赵六 -> 张三",
+            "surface: 主导人 -> 技术负责人 (same answer)"
+          ]
+        },
+        "sample_hash": {
+          "count": 0,
+          "values": []
+        }
+      },
+      "train_val_overlap_id_pairs": {
+        "context_A": [
+          {
+            "train": [
+              "train-F5-0073"
+            ],
+            "val": "val-F1-0040"
+          }
+        ],
+        "context_B": [
+          {
+            "train": [
+              "train-F4-0070"
+            ],
+            "val": "val-F4-0027"
+          }
+        ]
+      }
+    },
+    "legacy_seed1": {
+      "n_train": 120,
+      "n_val": 60,
+      "duplicate_text_groups": 1,
+      "duplicate_text_examples": [
+        [
+          "train-F3-0046",
+          "train-F3-0062"
+        ]
+      ],
+      "degenerate_candidate_count": 7,
+      "degenerate_candidates": [
+        {
+          "pair_id": "train-F3-0068",
+          "candidate_A": "王五",
+          "candidate_B": "王五",
+          "slice": "F3"
+        },
+        {
+          "pair_id": "train-F4-0070",
+          "candidate_A": "周八",
+          "candidate_B": "周八",
+          "slice": "F4"
+        },
+        {
+          "pair_id": "train-F2-0114",
+          "candidate_A": "李四",
+          "candidate_B": "李四",
+          "slice": "F2"
+        },
+        {
+          "pair_id": "val-F4-0003",
+          "candidate_A": "吴九",
+          "candidate_B": "吴九",
+          "slice": "F4"
+        },
+        {
+          "pair_id": "val-F4-0027",
+          "candidate_A": "郑十",
+          "candidate_B": "郑十",
+          "slice": "F4"
+        },
+        {
+          "pair_id": "val-F2-0033",
+          "candidate_A": "王五",
+          "candidate_B": "王五",
+          "slice": "F2"
+        },
+        {
+          "pair_id": "val-F4-0043",
+          "candidate_A": "李四",
+          "candidate_B": "李四",
+          "slice": "F4"
+        }
+      ],
+      "identical_doc_mustflip_count": 5,
+      "identical_doc_ids": [
+        "train-F3-0068",
+        "train-F4-0070",
+        "val-F4-0003",
+        "val-F4-0027",
+        "val-F4-0043"
+      ],
+      "train_val_overlap": {
+        "context_A": {
+          "count": 0,
+          "values": []
+        },
+        "context_B": {
+          "count": 0,
+          "values": []
+        },
+        "query": {
+          "count": 20,
+          "values": [
+            "与灯塔合作的团队负责人是谁？",
+            "与磐石合作的团队负责人是谁？",
+            "与赤兔合作的团队负责人是谁？",
+            "谁向谁汇报？",
+            "项目星河的负责人是谁？",
+            "项目星河（编号78）当前负责人是谁？",
+            "项目灯塔是否允许外部访问？",
+            "项目灯塔的落地城市是哪里？",
+            "项目灯塔的负责人是谁？",
+            "项目灯塔（编号90）当前负责人是谁？",
+            "项目白鹭是否允许外部访问？",
+            "项目白鹭的落地城市是哪里？",
+            "项目白鹭的负责人是谁？",
+            "项目磐石的负责人是谁？",
+            "项目赤兔的负责人是谁？",
+            "项目远航是否允许外部访问？",
+            "项目远航的负责人是谁？",
+            "项目青云的落地城市是哪里？",
+            "项目青云的负责人是谁？",
+            "项目黑马的负责人是谁？"
+          ]
+        },
+        "edited_span": {
+          "count": 8,
+          "values": [
+            "direction: flipped",
+            "negation: flipped",
+            "person: 周八 -> 赵六",
+            "person: 郑十 -> 张三",
+            "position: 李四 -> 王五",
+            "position: 赵六 -> 王五",
+            "surface: 负责人 -> 归档人 (same answer)",
+            "surface: 项目经理 -> 负责人 (same answer)"
+          ]
+        },
+        "sample_hash": {
+          "count": 0,
+          "values": []
+        }
+      },
+      "train_val_overlap_id_pairs": {
+        "context_A": [],
+        "context_B": []
+      }
+    },
+    "legacy_seed2": {
+      "n_train": 120,
+      "n_val": 60,
+      "duplicate_text_groups": 0,
+      "duplicate_text_examples": [],
+      "degenerate_candidate_count": 9,
+      "degenerate_candidates": [
+        {
+          "pair_id": "train-F4-0006",
+          "candidate_A": "张三",
+          "candidate_B": "张三",
+          "slice": "F4"
+        },
+        {
+          "pair_id": "train-F3-0036",
+          "candidate_A": "孙七",
+          "candidate_B": "孙七",
+          "slice": "F3"
+        },
+        {
+          "pair_id": "train-F3-0068",
+          "candidate_A": "郑十",
+          "candidate_B": "郑十",
+          "slice": "F3"
+        },
+        {
+          "pair_id": "train-F3-0116",
+          "candidate_A": "赵六",
+          "candidate_B": "赵六",
+          "slice": "F3"
+        },
+        {
+          "pair_id": "val-F2-0017",
+          "candidate_A": "周八",
+          "candidate_B": "周八",
+          "slice": "F2"
+        },
+        {
+          "pair_id": "val-F3-0026",
+          "candidate_A": "李四",
+          "candidate_B": "李四",
+          "slice": "F3"
+        },
+        {
+          "pair_id": "val-F4-0027",
+          "candidate_A": "赵六",
+          "candidate_B": "赵六",
+          "slice": "F4"
+        },
+        {
+          "pair_id": "val-F2-0049",
+          "candidate_A": "张三",
+          "candidate_B": "张三",
+          "slice": "F2"
+        },
+        {
+          "pair_id": "val-F3-0058",
+          "candidate_A": "张三",
+          "candidate_B": "张三",
+          "slice": "F3"
+        }
+      ],
+      "identical_doc_mustflip_count": 7,
+      "identical_doc_ids": [
+        "train-F4-0006",
+        "train-F3-0036",
+        "train-F3-0068",
+        "train-F3-0116",
+        "val-F3-0026",
+        "val-F4-0027",
+        "val-F3-0058"
+      ],
+      "train_val_overlap": {
+        "context_A": {
+          "count": 0,
+          "values": []
+        },
+        "context_B": {
+          "count": 1,
+          "values": [
+            "项目赤兔早期由王五跟进。编号23的项目现由王五负责。另有赵六负责归档。"
+          ]
+        },
+        "query": {
+          "count": 26,
+          "values": [
+            "与星河合作的团队负责人是谁？",
+            "与白鹭合作的团队负责人是谁？",
+            "与磐石合作的团队负责人是谁？",
+            "与青云合作的团队负责人是谁？",
+            "与黑马合作的团队负责人是谁？",
+            "谁向谁汇报？",
+            "项目星河是否允许外部访问？",
+            "项目星河的落地城市是哪里？",
+            "项目星河的负责人是谁？",
+            "项目灯塔是否允许外部访问？",
+            "项目灯塔的负责人是谁？",
+            "项目白鹭是否允许外部访问？",
+            "项目白鹭的负责人是谁？",
+            "项目磐石是否允许外部访问？",
+            "项目磐石的落地城市是哪里？",
+            "项目磐石的负责人是谁？",
+            "项目赤兔是否允许外部访问？",
+            "项目赤兔的落地城市是哪里？",
+            "项目赤兔的负责人是谁？",
+            "项目赤兔（编号23）当前负责人是谁？",
+            "项目远航的落地城市是哪里？",
+            "项目远航的负责人是谁？",
+            "项目青云是否允许外部访问？",
+            "项目青云的落地城市是哪里？",
+            "项目青云的负责人是谁？",
+            "项目黑马的负责人是谁？"
+          ]
+        },
+        "edited_span": {
+          "count": 11,
+          "values": [
+            "direction: flipped",
+            "distractor target: 孙七 -> 王五",
+            "distractor target: 赵六 -> 李四",
+            "negation: flipped",
+            "person: 孙七 -> 李四",
+            "person: 郑十 -> 张三",
+            "position: 孙七 -> 赵六",
+            "surface: 主导人 -> 联络人 (same answer)",
+            "surface: 归档人 -> 联络人 (same answer)",
+            "surface: 联络人 -> 归档人 (same answer)",
+            "surface: 负责人 -> 主导人 (same answer)"
+          ]
+        },
+        "sample_hash": {
+          "count": 0,
+          "values": []
+        }
+      },
+      "train_val_overlap_id_pairs": {
+        "context_A": [],
+        "context_B": [
+          {
+            "train": [
+              "train-F4-0118"
+            ],
+            "val": "val-F4-0019"
+          }
+        ]
+      }
+    },
+    "fixed_seed0": {
+      "n_train": 120,
+      "n_val": 60,
+      "duplicate_text_groups": 0,
+      "duplicate_text_examples": [],
+      "degenerate_candidate_count": 0,
+      "degenerate_candidates": [],
+      "identical_doc_mustflip_count": 0,
+      "identical_doc_ids": [],
+      "train_val_overlap": {
+        "context_A": {
+          "count": 0,
+          "values": []
+        },
+        "context_B": {
+          "count": 0,
+          "values": []
+        },
+        "query": {
+          "count": 0,
+          "values": []
+        },
+        "edited_span": {
+          "count": 0,
+          "values": []
+        },
+        "sample_hash": {
+          "count": 0,
+          "values": []
+        }
+      },
+      "train_val_overlap_id_pairs": {
+        "context_A": [],
+        "context_B": []
+      }
+    },
+    "fixed_seed1": {
+      "n_train": 120,
+      "n_val": 60,
+      "duplicate_text_groups": 0,
+      "duplicate_text_examples": [],
+      "degenerate_candidate_count": 0,
+      "degenerate_candidates": [],
+      "identical_doc_mustflip_count": 0,
+      "identical_doc_ids": [],
+      "train_val_overlap": {
+        "context_A": {
+          "count": 0,
+          "values": []
+        },
+        "context_B": {
+          "count": 0,
+          "values": []
+        },
+        "query": {
+          "count": 0,
+          "values": []
+        },
+        "edited_span": {
+          "count": 0,
+          "values": []
+        },
+        "sample_hash": {
+          "count": 0,
+          "values": []
+        }
+      },
+      "train_val_overlap_id_pairs": {
+        "context_A": [],
+        "context_B": []
+      }
+    },
+    "fixed_seed2": {
+      "n_train": 120,
+      "n_val": 60,
+      "duplicate_text_groups": 0,
+      "duplicate_text_examples": [],
+      "degenerate_candidate_count": 0,
+      "degenerate_candidates": [],
+      "identical_doc_mustflip_count": 0,
+      "identical_doc_ids": [],
+      "train_val_overlap": {
+        "context_A": {
+          "count": 0,
+          "values": []
+        },
+        "context_B": {
+          "count": 0,
+          "values": []
+        },
+        "query": {
+          "count": 0,
+          "values": []
+        },
+        "edited_span": {
+          "count": 0,
+          "values": []
+        },
+        "sample_hash": {
+          "count": 0,
+          "values": []
+        }
+      },
+      "train_val_overlap_id_pairs": {
+        "context_A": [],
+        "context_B": []
+      }
+    }
+  },
+  "cross_version_pairid_collision": {
+    "train_seed0": {
+      "shared_pair_ids": 120,
+      "different_sample_hash": 120,
+      "examples": [
+        {
+          "pair_id": "train-F1-0000",
+          "legacy_hash": "4ca4afc08a211c981f5ab05eceb0f9e1fdf485b2f1d893edc80e478b491a94ee",
+          "fixed_hash": "76e1a18a25b8f7388252ec96ffe247d7609643033567a640ea250a0f7c02eb7c"
+        },
+        {
+          "pair_id": "train-F1-0001",
+          "legacy_hash": "c081d4863bfbd95e22ba947b655cb2ad5a4f69dc91c40cb3058364baa488ca52",
+          "fixed_hash": "03b866621d9b9b30bb47f1389e2105cdf0465517fed7a68751060f4bc91350d5"
+        },
+        {
+          "pair_id": "train-F1-0012",
+          "legacy_hash": "2ea97776ac1065515d534c49d8161fbb6c5bc0761bc1c6a5150f767cc81fdb64",
+          "fixed_hash": "6484c3ecefe9c3324693025e2341f9f761ba4f229f17c8a7c94e51d729d3156c"
+        },
+        {
+          "pair_id": "train-F1-0013",
+          "legacy_hash": "064e671992c585bbc5f926fcee92a5df076adc74e49a9c44ef23ec5cb1a682e6",
+          "fixed_hash": "77358cb614036ec4222991ed5dfe000c11cf121a49bc83c598af90a53b839de5"
+        },
+        {
+          "pair_id": "train-F1-0016",
+          "legacy_hash": "9a4c530ce2845328185b2303bc200ca6d353d5d985a49718d305befbcff5451f",
+          "fixed_hash": "d0988d5563098e6cd2a8d25268e71a7f546befdff04ef091b4fb6d3cc033e418"
+        },
+        {
+          "pair_id": "train-F1-0017",
+          "legacy_hash": "04cdde6b1e660ce36db131617d18adfc3382e1201f3c1441d4ccab7ee171355d",
+          "fixed_hash": "f48f14d3f762c835cbfcb0d65419af5f618634cf8546ee23e1f6905fdf1f1642"
+        }
+      ]
+    },
+    "val_seed0": {
+      "shared_pair_ids": 60,
+      "different_sample_hash": 60,
+      "examples": [
+        {
+          "pair_id": "val-F1-0000",
+          "legacy_hash": "a659c1c331c43f61970e0ecd42a7eb8a8acb070625ccaa608c8d9e6aaa05568a",
+          "fixed_hash": "a987ce93d87d7c0c364bc43f4b9f10ccb36f0e9cecffaa9a79a6de0b2ffaf362"
+        },
+        {
+          "pair_id": "val-F1-0006",
+          "legacy_hash": "a1d91cd061b015126a8d9e5c07101099177ef9d8d933e81b472435579908efa5",
+          "fixed_hash": "ea4eb229bd62c18ecfb9799f326bc5584f48a54fe6d754b21f46056253be3400"
+        },
+        {
+          "pair_id": "val-F1-0008",
+          "legacy_hash": "593e13f155ada64d21f3d9faf4767817e02c5dda4a0569e0342cf271930c9e9f",
+          "fixed_hash": "b8bf60d0c8508775e69f5caff734832f54c54ee5bd3da763fbb70dc16040f2f9"
+        },
+        {
+          "pair_id": "val-F1-0014",
+          "legacy_hash": "3217ea8069f222c1771efef8aaa4a9c3b08e4c2fb31e7b3190a230861e692967",
+          "fixed_hash": "d0772aa28085d00d0f3d5b780dd022a38cc43d1c54577c825e514a29b322459c"
+        },
+        {
+          "pair_id": "val-F1-0016",
+          "legacy_hash": "e26068103de91d870edee63065f1ae93fe311190efd7f8ade7e305c332934622",
+          "fixed_hash": "0a7b90c3599a26907fceca2d84e01bfd60cc8482798e924b5f3961eeeb670ccc"
+        },
+        {
+          "pair_id": "val-F1-0022",
+          "legacy_hash": "a29e24cc73ae18d7992a76bf5061b61ad25051014c37183d1707ef69295ff18f",
+          "fixed_hash": "e2078a209e9e02ebef5d263698e37031efce429d5613f4abee0aa3c0bbd290d5"
+        }
+      ]
+    },
+    "train_seed1": {
+      "shared_pair_ids": 120,
+      "different_sample_hash": 120,
+      "examples": [
+        {
+          "pair_id": "train-F1-0000",
+          "legacy_hash": "01e5419cdc3cb004951574a7b7c943f7142738ad5f6d141ec0c57bbbc09934bb",
+          "fixed_hash": "e8121d9bb4bf95db18f6cad8f35c9364067bbcc6301ed0c6d9f05f6e92d0d2c8"
+        },
+        {
+          "pair_id": "train-F1-0001",
+          "legacy_hash": "4f0750bb297d0f809d33e4c4226db74bfb3a2c98e5cef97792f15633272a405e",
+          "fixed_hash": "1256ffe3598b23ea29ac5c4b255b171ef531d2d05974ec34b84be3d48a9c3ad5"
+        },
+        {
+          "pair_id": "train-F1-0012",
+          "legacy_hash": "702ad7da2109387f4e169a4392481b44770bbe89f4c94fcd78d70b3a8b0f428e",
+          "fixed_hash": "d1073a9de9c0b98e643d6d932574a71cfc89aaef86decab428f42f50d6d259e0"
+        },
+        {
+          "pair_id": "train-F1-0013",
+          "legacy_hash": "dc89c32b105dca01ed1db6b9bfc7b155d452d459599ddecb1d6c2cafbd4cf36d",
+          "fixed_hash": "ec95a133d0915fd5e5bae714c2427341d5e445df96920669ff800d121f2befb1"
+        },
+        {
+          "pair_id": "train-F1-0016",
+          "legacy_hash": "5c05aa5acb2df8e071413da61d6d05567924664378637cf20418b2b9e652be17",
+          "fixed_hash": "6e69390a74118848f9bf952b1a21d56bc4c75d19ad404138fa91c48d91206522"
+        },
+        {
+          "pair_id": "train-F1-0017",
+          "legacy_hash": "9b6889b538d8a103d43b194a718844cd63c7f27776b538009098fcb68f3c5ebc",
+          "fixed_hash": "c29379610e61acb6ce52cbcdb5ec4d1722bfd2e808cb679233a34b479152b0fd"
+        }
+      ]
+    },
+    "val_seed1": {
+      "shared_pair_ids": 60,
+      "different_sample_hash": 60,
+      "examples": [
+        {
+          "pair_id": "val-F1-0000",
+          "legacy_hash": "ce4f9fdabc99fd5c39dcb1e04ae8c4378e2f3dd9761af3f2d19d3ee424d7a25f",
+          "fixed_hash": "e7442ec1030c827adf358fb42e13ec2c2724b31ae1cc923a18ac40faf664c583"
+        },
+        {
+          "pair_id": "val-F1-0006",
+          "legacy_hash": "d94f89130a72ee612a49a2ffa16fb4a551439e3898ce781178b7b47e0c2cea83",
+          "fixed_hash": "7e43803adfc9599c0027d82cddf0f5787955cd447f9f4b8afdac6bb685a697ba"
+        },
+        {
+          "pair_id": "val-F1-0008",
+          "legacy_hash": "60b28310cde91c7e220c165661c6dbaef02acaf9f94ff0b6504ae088cd54cbe4",
+          "fixed_hash": "32bb20feb08094be22f46ecf98895f82cd65a67889b59f9e308f09ca2887888d"
+        },
+        {
+          "pair_id": "val-F1-0014",
+          "legacy_hash": "00811f67540ac386d4a006f58b2bab9e18c91433743274151202bd28b8c2cd96",
+          "fixed_hash": "ff326bb26cba78d85243fc5197d2018bfda2da97b0b539c26b262cfe8594fd23"
+        },
+        {
+          "pair_id": "val-F1-0016",
+          "legacy_hash": "c725ec2601723b7de204cb2e438727ce21f30650efd58bd30b874ca8e1206f09",
+          "fixed_hash": "c66f55f68e6ba4060f9aed8ae8f358fa2058af3ec7f3e768ef2afb2311734054"
+        },
+        {
+          "pair_id": "val-F1-0022",
+          "legacy_hash": "22724e34ec0315c5ffed9f70e30effc7da78b05d8159d958045f614eae461633",
+          "fixed_hash": "a268a3b5f3c12cfaa9727b23c050d5201b97d4c8cfddf377a9492f982d8ee53b"
+        }
+      ]
+    },
+    "train_seed2": {
+      "shared_pair_ids": 120,
+      "different_sample_hash": 120,
+      "examples": [
+        {
+          "pair_id": "train-F1-0000",
+          "legacy_hash": "938edda0a23b74790823dde9f8adaeca76499f208d825ec09933590576ee2e89",
+          "fixed_hash": "e0f110a64ff1aea5ff22b6141a9528674c784ebf584404f551bd6db8928caaeb"
+        },
+        {
+          "pair_id": "train-F1-0001",
+          "legacy_hash": "76daf5eee951737d7efbb469a4b415d4704d6121c52c2cd4edf0f7a32a8531a5",
+          "fixed_hash": "12f2c343ecceebd6f50dc29435d85589c928f2e7fb5c54d413289ad379497f90"
+        },
+        {
+          "pair_id": "train-F1-0012",
+          "legacy_hash": "ccc4e3cf26f5651f58876f862e1d260b25a45cd6fe20cb157861ec408738c33a",
+          "fixed_hash": "4af9d1ac048861c0db55d534f92d2aa3f19f39988ec4a51a0c78b7f05948db5e"
+        },
+        {
+          "pair_id": "train-F1-0013",
+          "legacy_hash": "adeb3991cab00cd6f2e47c246f28935956ff9b6632abe27106a94f277154b5f1",
+          "fixed_hash": "fc3ef3883d3fca68d6308c15320c40028693bbd9233e0c661f77349957df90ba"
+        },
+        {
+          "pair_id": "train-F1-0016",
+          "legacy_hash": "663cd430a7085fe77630042d8e1036cc517fda696ad803d472738b2d24c07943",
+          "fixed_hash": "fe5f67fc997ffd8b69ba9e8e2e3cf5535c744e2d2537df3467ae67bccb2a3a6a"
+        },
+        {
+          "pair_id": "train-F1-0017",
+          "legacy_hash": "12fb8b0d691551315085f3527af03f1acb34c10df6d46999ee472e564118eeb5",
+          "fixed_hash": "c817bd23a467c4b041b02b365665c314ff8a546d11bb476d4a2872cf27502ff7"
+        }
+      ]
+    },
+    "val_seed2": {
+      "shared_pair_ids": 60,
+      "different_sample_hash": 60,
+      "examples": [
+        {
+          "pair_id": "val-F1-0000",
+          "legacy_hash": "ccbff39ac9fb41cc90f2469e9f36a12c31198de7583a6ff5b16fba899f925cc4",
+          "fixed_hash": "b5b06d91632be8f1117c502db315b4aed2675d5aba7d21e6187234fafee90ab1"
+        },
+        {
+          "pair_id": "val-F1-0006",
+          "legacy_hash": "479bf20be3628ef706880339792556105cf9e4384e3dc4e110192998cc30161a",
+          "fixed_hash": "61f7cf0f163f34f7ce451fbde32406321528b21bef70653de3d0c8e7cb1b45ef"
+        },
+        {
+          "pair_id": "val-F1-0008",
+          "legacy_hash": "face5e7c757eb0c886010c2b451db800e90c06c0979973173ef21ab0807aa25c",
+          "fixed_hash": "207a1728671145fac7f7f85dd93da7a305e9c91246922a613ca8453573dfe0fb"
+        },
+        {
+          "pair_id": "val-F1-0014",
+          "legacy_hash": "22c0396521b0c957c11762852861714bc4648f1a40a1c058e332b2f351bbf9fb",
+          "fixed_hash": "92f30f32b60be7d5cf2b814cb28f77128a6554a02ab4073cc919fbff4b5401b9"
+        },
+        {
+          "pair_id": "val-F1-0016",
+          "legacy_hash": "486a49ffa62f16a64498c85914af257d8659c06b7bc1cc31dae1d56799ce984e",
+          "fixed_hash": "814d8a67d46441584c005a2ac43531dfd7ee08af08842b3ad85682d0c98933ad"
+        },
+        {
+          "pair_id": "val-F1-0022",
+          "legacy_hash": "2436597e83f2c902c5b0325d584e31072c8c6acddd079346f756432202c4aaca",
+          "fixed_hash": "dae7e307518bf8253605dc7f6b303a09b5d301cbeae24f127958253804fd178b"
+        }
+      ]
+    }
+  }
+}
