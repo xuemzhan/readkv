@@ -334,3 +334,18 @@ F1/F2 已技术闭环；贡献(2) 措辞升格（限定→强形式）、投递�
 - **v2.4 预承诺三情形判读**：affine 失败方向复现，但 kd_only 在锚点上也坍塌（未复现合成域「kd 保持 utility」对照），且 EM 全臂触底（base 0.6B 未针对 SQuAD 微调）、仅 seed0/240 例 → **混合/样本有限 → `exploratory_disclosure`**（探索性披露）。**不**判 `reinforce_external_validity`、**不**判 `narrow_scope`；不反转叙事、不恢复贡献(1)(2)(3)、不与合成 test 混算、不重算冻结 CI。
 - **是否跨数据源复现失败边界**：affine 坍塌方向在 SQuAD 上复现（F1 0.1975→0.0051），但 kd 对照未复现 → 只能作**探索性外部锚点观察**，不足以强化失败边界的跨数据源普适性。
 - **审计**：两锚点 run 通过 `consistency_check`（ok=true）；`bootstrap_ci_report` 31 runs 正常；`pytest` 保持通过。产物：`reports/runs/anchor_squad_{affine,kd}_seed0/`、`reports/anchor_eval_summary.json`、`reports/consistency_report.json`。
+
+
+---
+
+## 16. 2×2 GPU 补充实验 12 格正式结果（protocol-v2.7，2026-11-23）
+
+- **入口**：`experiments/audit_2x2_gpu.py`（显式四份 train/val JSONL，不调 P1_gpu 自动重建）；数据来自 `data/audit_2x2/{legacy,fixed}/`（旧 458de18 / 修复 efc3ba3），12 文件 sha256 全匹配 `_index.json`。bf16/sdpa、等深 28→28、逐层逐头 K/V affine、ridge λ=0.001、首 token 评分、zero_re_prefill=true。
+- **12 格 L=Self−Joint（百分点，三 seed）**：A00=[0.017, −0.050, 0.033]；A11=[0.400, 0.617, 0.400]；A01=[0.267, 0.283, 0.333]；A10=[0.383, 0.233, 0.250]。全部 joint dual < self dual（除 A00_s1 微小负 L −0.05）。
+- **预固定对比**：①固定 val 换校准语料：legacy val A10−A00=[0.367,0.283,0.217]、fixed val A11−A01=[0.133,0.333,0.067]，三 seed 均正 → 校准版本效应方向稳健；②固定 mapper 换 val：legacy cal A01−A00=[0.250,0.333,0.300]、fixed cal A11−A10=[0.017,0.383,0.150]，亦多为正 → 评估集构成敏感。按 v2.7 归因边界，只能识别两个数据版本整体切换，不作单项缺陷因果。
+- **对角格核对**：A00 s0/s1/s2 与 `p1_gpu_mvp_repro_seed{0,1,2}`、A11 与 `p1_clean_mvp_seed{0,1,2}` 各 60/60 joint E_CF 逐对完全一致（`sample_hash==cache_hash`）。
+- **失败/重试**：正式 12 格 0 失败、全部 attempt 1 完成（冒烟阶段 attempt1/2 失败、attempt3 成功，见 `reports/audit_2x2_smoke_report.md`）。每格完成即 commit+push 后才跑下一格，远程每次同步确认。
+- **commit 链**（逐格已 push）：入口 `8aeb282`；冒烟修复 `c1a161a`/`03c9f50`；冒烟通过 `fec8a64`；seed0 `43cc800`→`80f0421`→`2ef23ab`(核对修正)→`290e959`→`c58f0d1`；seed1 `26feb0d`→`eca1b1d`→`97e6fe0`→`9485596`；seed2 `14b1a57`→`dce2ee4`→`8e85071`→`3ed85f0`；汇总 `见本次 commit`。
+- **审计**：`bootstrap_ci_report` 43 runs 正常（报告层 `reports/audit_2x2_bootstrap.json`）；`consistency_check` 对 12 格报 ok=false，唯一原因为审计脚本要求 `model_pair` 字段而审计入口 config 未写该字段（其被显式 `calibration_version/validation_version` + teacher/student 路径替代）——属字段对接假阳性，非数据/指标错误；12 格 traceable（git 在历史、跑分代码一致、code_tracked=true）全部为真。`pytest` 保持通过。
+- **总耗时**：12 格 GPU 合计约 23.7 分钟（单卡串行），加每格 commit/push 开销；远低于 1–2 GPU 小时预算。
+- **产物**：`reports/runs/audit_2x2_A{00,01,10,11}_s{0,1,2}/`（12 格各 config/manifest/metrics/scores）、`reports/audit_2x2_formal_summary.json`、`reports/audit_2x2_bootstrap.json`、`reports/consistency_report.json`。贡献状态不变（(1)(2) 撤回、(3) withheld），主终点未触碰。

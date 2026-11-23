@@ -1,0 +1,4318 @@
+{
+  "stats_convention": "v2.3",
+  "cluster_bootstrap_convention": {
+    "primary_cluster_unit": "template_family",
+    "pair_level_sensitivity": "reported alongside primary for every endpoint",
+    "min_clusters_for_inference": 24
+  },
+  "flip_denominator": {
+    "available": true,
+    "excludes": [
+      "F5",
+      "F6"
+    ],
+    "recomputed_value": 398,
+    "source": "data/tasks/manifest.json::quality (stats_convention_v2.3.yaml 口径)",
+    "note": "PI 负责把 recomputed_value 回填到 configs/prereg/stats_convention_v2.3.yaml"
+  },
+  "runs": {
+    "runs/anchor_squad_affine_seed0": {
+      "run_id": "anchor_squad_affine_seed0",
+      "arms": {},
+      "protocol": "v1.0",
+      "stats_convention": "n/a (v1 scores)",
+      "bootstrap_seed": 0,
+      "bootstrap_seed_source": "run config (experiment_config.bootstrap_seed / seed)"
+    },
+    "runs/anchor_squad_kd_seed0": {
+      "run_id": "anchor_squad_kd_seed0",
+      "arms": {},
+      "protocol": "v1.0",
+      "stats_convention": "n/a (v1 scores)",
+      "bootstrap_seed": 0,
+      "bootstrap_seed_source": "run config (experiment_config.bootstrap_seed / seed)"
+    },
+    "runs/audit_2x2_A00_s0": {
+      "run_id": "audit_2x2_A00_s0",
+      "arms": {
+        "self": {
+          "n": 60,
+          "E_CF": "0.000 [0.000, 0.000]",
+          "E_CF_pair_level_sensitivity": "0.000 [0.000, 0.000]",
+          "cluster_unit": "cluster-fallback",
+          "n_clusters": 60,
+          "exploratory": false,
+          "protocol": "v2.0",
+          "stats_convention": "v2.3"
+        },
+        "identity": {
+          "n": 60,
+          "E_CF": "0.000 [0.000, 0.000]",
+          "E_CF_pair_level_sensitivity": "0.000 [0.000, 0.000]",
+          "cluster_unit": "cluster-fallback",
+          "n_clusters": 60,
+          "exploratory": false,
+          "protocol": "v2.0",
+          "stats_convention": "v2.3"
+        },
+        "joint": {
+          "n": 60,
+          "E_CF": "1.968 [1.614, 2.324]",
+          "E_CF_pair_level_sensitivity": "1.968 [1.615, 2.320]",
+          "cluster_unit": "cluster-fallback",
+          "n_clusters": 60,
+          "exploratory": false,
+          "protocol": "v2.0",
+          "stats_convention": "v2.3"
+        },
+        "k_only": {
+          "n": 60,
+          "E_CF": "0.630 [0.483, 0.781]",
+          "E_CF_pair_level_sensitivity": "0.630 [0.486, 0.782]",
+          "cluster_unit": "cluster-fallback",
+          "n_clusters": 60,
+          "exploratory": false,
+          "protocol": "v2.0",
+          "stats_convention": "v2.3"
+        },
+        "v_only": {
+          "n": 60,
+          "E_CF": "1.851 [1.547, 2.158]",
+          "E_CF_pair_level_sensitivity": "1.851 [1.542, 2.157]",
+          "cluster_unit": "cluster-fallback",
+          "n_clusters": 60,
+          "exploratory": false,
+          "protocol": "v2.0",
+          "stats_convention": "v2.3"
+        },
+        "control:random": {
+          "n": 60,
+          "E_CF": "4.218 [3.221, 5.262]",
+          "E_CF_pair_level_sensitivity": "4.218 [3.230, 5.236]",
+          "cluster_unit": "cluster-fallback",
+          "n_clusters": 60,
+          "exploratory": false,
+          "protocol": "v2.0",
+          "stats_convention": "v2.3"
+        },
+        "control:zero": {
+          "n": 60,
+          "E_CF": "6.159 [5.035, 7.255]",
+          "E_CF_pair_level_sensitivity": "6.159 [5.009, 7.277]",
+          "cluster_unit": "cluster-fallback",
+          "n_clusters": 60,
+          "exploratory": false,
+          "protocol": "v2.0",
+          "stats_convention": "v2.3"
+        },
+        "control:mismatch": {
+          "n": 60,
+          "E_CF": "6.170 [5.056, 7.269]",
+          "E_CF_pair_level_sensitivity": "6.170 [5.024, 7.288]",
+          "cluster_unit": "cluster-fallback",
+          "n_clusters": 60,
+          "exploratory": false,
+          "protocol": "v2.0",
+          "stats_convention": "v2.3"
+        }
+      },
+      "primary_endpoint": null,
+      "repair_vs_random": null,
+      "protocol": "v2.0",
+      "stats_convention": "v2.3",
+      "cluster_bootstrap_convention": {
+        "primary_cluster_unit": "template_family",
+        "pair_level_sensitivity_reported": true,
+        "min_clusters_for_inference": 24
+      },
+      "bootstrap_seed": 0,
+      "bootstrap_seed_source": "run config (experiment_config.bootstrap_seed / seed)"
+    },
+    "runs/audit_2x2_A00_s1": {
+      "run_id": "audit_2x2_A00_s1",
+      "arms": {
+        "self": {
+          "n": 60,
+          "E_CF": "0.000 [0.000, 0.000]",
+          "E_CF_pair_level_sensitivity": "0.000 [0.000, 0.000]",
+          "cluster_unit": "cluster-fallback",
+          "n_clusters": 60,
+          "exploratory": false,
+          "protocol": "v2.0",
+          "stats_convention": "v2.3"
+        },
+        "identity": {
+          "n": 60,
+          "E_CF": "0.000 [0.000, 0.000]",
+          "E_CF_pair_level_sensitivity": "0.000 [0.000, 0.000]",
+          "cluster_unit": "cluster-fallback",
+          "n_clusters": 60,
+          "exploratory": false,
+          "protocol": "v2.0",
+          "stats_convention": "v2.3"
+        },
+        "joint": {
+          "n": 60,
+          "E_CF": "1.934 [1.569, 2.311]",
+          "E_CF_pair_level_sensitivity": "1.934 [1.561, 2.314]",
+          "cluster_unit": "cluster-fallback",
+          "n_clusters": 60,
+          "exploratory": false,
+          "protocol": "v2.0",
+          "stats_convention": "v2.3"
+        },
+        "k_only": {
+          "n": 60,
+          "E_CF": "0.566 [0.429, 0.710]",
+          "E_CF_pair_level_sensitivity": "0.566 [0.429, 0.708]",
+          "cluster_unit": "cluster-fallback",
+          "n_clusters": 60,
+          "exploratory": false,
+          "protocol": "v2.0",
+          "stats_convention": "v2.3"
+        },
+        "v_only": {
+          "n": 60,
+          "E_CF": "1.660 [1.356, 1.973]",
+          "E_CF_pair_level_sensitivity": "1.660 [1.355, 1.980]",
+          "cluster_unit": "cluster-fallback",
+          "n_clusters": 60,
+          "exploratory": false,
+          "protocol": "v2.0",
+          "stats_convention": "v2.3"
+        },
+        "control:random": {
+          "n": 60,
+          "E_CF": "4.466 [3.615, 5.312]",
+          "E_CF_pair_level_sensitivity": "4.466 [3.616, 5.332]",
+          "cluster_unit": "cluster-fallback",
+          "n_clusters": 60,
+          "exploratory": false,
+          "protocol": "v2.0",
+          "stats_convention": "v2.3"
+        },
+        "control:zero": {
+          "n": 60,
+          "E_CF": "5.897 [4.846, 6.949]",
+          "E_CF_pair_level_sensitivity": "5.897 [4.868, 6.951]",
+          "cluster_unit": "cluster-fallback",
+          "n_clusters": 60,
+          "exploratory": false,
+          "protocol": "v2.0",
+          "stats_convention": "v2.3"
+        },
+        "control:mismatch": {
+          "n": 60,
+          "E_CF": "5.955 [4.885, 7.061]",
+          "E_CF_pair_level_sensitivity": "5.955 [4.900, 7.049]",
+          "cluster_unit": "cluster-fallback",
+          "n_clusters": 60,
+          "exploratory": false,
+          "protocol": "v2.0",
+          "stats_convention": "v2.3"
+        }
+      },
+      "primary_endpoint": null,
+      "repair_vs_random": null,
+      "protocol": "v2.0",
+      "stats_convention": "v2.3",
+      "cluster_bootstrap_convention": {
+        "primary_cluster_unit": "template_family",
+        "pair_level_sensitivity_reported": true,
+        "min_clusters_for_inference": 24
+      },
+      "bootstrap_seed": 1,
+      "bootstrap_seed_source": "run config (experiment_config.bootstrap_seed / seed)"
+    },
+    "runs/audit_2x2_A00_s2": {
+      "run_id": "audit_2x2_A00_s2",
+      "arms": {
+        "self": {
+          "n": 60,
+          "E_CF": "0.000 [0.000, 0.000]",
+          "E_CF_pair_level_sensitivity": "0.000 [0.000, 0.000]",
+          "cluster_unit": "cluster-fallback",
+          "n_clusters": 60,
+          "exploratory": false,
+          "protocol": "v2.0",
+          "stats_convention": "v2.3"
+        },
+        "identity": {
+          "n": 60,
+          "E_CF": "0.000 [0.000, 0.000]",
+          "E_CF_pair_level_sensitivity": "0.000 [0.000, 0.000]",
+          "cluster_unit": "cluster-fallback",
+          "n_clusters": 60,
+          "exploratory": false,
+          "protocol": "v2.0",
+          "stats_convention": "v2.3"
+        },
+        "joint": {
+          "n": 60,
+          "E_CF": "2.123 [1.695, 2.571]",
+          "E_CF_pair_level_sensitivity": "2.123 [1.702, 2.568]",
+          "cluster_unit": "cluster-fallback",
+          "n_clusters": 60,
+          "exploratory": false,
+          "protocol": "v2.0",
+          "stats_convention": "v2.3"
+        },
+        "k_only": {
+          "n": 60,
+          "E_CF": "0.555 [0.429, 0.685]",
+          "E_CF_pair_level_sensitivity": "0.555 [0.430, 0.687]",
+          "cluster_unit": "cluster-fallback",
+          "n_clusters": 60,
+          "exploratory": false,
+          "protocol": "v2.0",
+          "stats_convention": "v2.3"
+        },
+        "v_only": {
+          "n": 60,
+          "E_CF": "1.849 [1.504, 2.210]",
+          "E_CF_pair_level_sensitivity": "1.849 [1.501, 2.216]",
+          "cluster_unit": "cluster-fallback",
+          "n_clusters": 60,
+          "exploratory": false,
+          "protocol": "v2.0",
+          "stats_convention": "v2.3"
+        },
+        "control:random": {
+          "n": 60,
+          "E_CF": "5.164 [3.869, 6.581]",
+          "E_CF_pair_level_sensitivity": "5.164 [3.895, 6.605]",
+          "cluster_unit": "cluster-fallback",
+          "n_clusters": 60,
+          "exploratory": false,
+          "protocol": "v2.0",
+          "stats_convention": "v2.3"
+        },
+        "control:zero": {
+          "n": 60,
+          "E_CF": "6.643 [5.434, 7.845]",
+          "E_CF_pair_level_sensitivity": "6.643 [5.466, 7.847]",
+          "cluster_unit": "cluster-fallback",
+          "n_clusters": 60,
+          "exploratory": false,
+          "protocol": "v2.0",
+          "stats_convention": "v2.3"
+        },
+        "control:mismatch": {
+          "n": 60,
+          "E_CF": "6.710 [5.499, 7.901]",
+          "E_CF_pair_level_sensitivity": "6.710 [5.545, 7.912]",
+          "cluster_unit": "cluster-fallback",
+          "n_clusters": 60,
+          "exploratory": false,
+          "protocol": "v2.0",
+          "stats_convention": "v2.3"
+        }
+      },
+      "primary_endpoint": null,
+      "repair_vs_random": null,
+      "protocol": "v2.0",
+      "stats_convention": "v2.3",
+      "cluster_bootstrap_convention": {
+        "primary_cluster_unit": "template_family",
+        "pair_level_sensitivity_reported": true,
+        "min_clusters_for_inference": 24
+      },
+      "bootstrap_seed": 2,
+      "bootstrap_seed_source": "run config (experiment_config.bootstrap_seed / seed)"
+    },
+    "runs/audit_2x2_A01_s0": {
+      "run_id": "audit_2x2_A01_s0",
+      "arms": {
+        "self": {
+          "n": 60,
+          "E_CF": "0.000 [0.000, 0.000]",
+          "E_CF_pair_level_sensitivity": "0.000 [0.000, 0.000]",
+          "cluster_unit": "cluster-fallback",
+          "n_clusters": 60,
+          "exploratory": false,
+          "protocol": "v2.0",
+          "stats_convention": "v2.3"
+        },
+        "identity": {
+          "n": 60,
+          "E_CF": "0.000 [0.000, 0.000]",
+          "E_CF_pair_level_sensitivity": "0.000 [0.000, 0.000]",
+          "cluster_unit": "cluster-fallback",
+          "n_clusters": 60,
+          "exploratory": false,
+          "protocol": "v2.0",
+          "stats_convention": "v2.3"
+        },
+        "joint": {
+          "n": 60,
+          "E_CF": "5.330 [4.391, 6.299]",
+          "E_CF_pair_level_sensitivity": "5.330 [4.376, 6.302]",
+          "cluster_unit": "cluster-fallback",
+          "n_clusters": 60,
+          "exploratory": false,
+          "protocol": "v2.0",
+          "stats_convention": "v2.3"
+        },
+        "k_only": {
+          "n": 60,
+          "E_CF": "2.042 [1.596, 2.525]",
+          "E_CF_pair_level_sensitivity": "2.042 [1.598, 2.513]",
+          "cluster_unit": "cluster-fallback",
+          "n_clusters": 60,
+          "exploratory": false,
+          "protocol": "v2.0",
+          "stats_convention": "v2.3"
+        },
+        "v_only": {
+          "n": 60,
+          "E_CF": "4.311 [3.674, 4.956]",
+          "E_CF_pair_level_sensitivity": "4.311 [3.666, 4.954]",
+          "cluster_unit": "cluster-fallback",
+          "n_clusters": 60,
+          "exploratory": false,
+          "protocol": "v2.0",
+          "stats_convention": "v2.3"
+        },
+        "control:random": {
+          "n": 60,
+          "E_CF": "7.682 [6.251, 9.161]",
+          "E_CF_pair_level_sensitivity": "7.682 [6.246, 9.169]",
+          "cluster_unit": "cluster-fallback",
+          "n_clusters": 60,
+          "exploratory": false,
+          "protocol": "v2.0",
+          "stats_convention": "v2.3"
+        },
+        "control:zero": {
+          "n": 60,
+          "E_CF": "8.584 [7.120, 10.000]",
+          "E_CF_pair_level_sensitivity": "8.584 [7.101, 9.994]",
+          "cluster_unit": "cluster-fallback",
+          "n_clusters": 60,
+          "exploratory": false,
+          "protocol": "v2.0",
+          "stats_convention": "v2.3"
+        },
+        "control:mismatch": {
+          "n": 60,
+          "E_CF": "8.901 [7.360, 10.381]",
+          "E_CF_pair_level_sensitivity": "8.901 [7.378, 10.386]",
+          "cluster_unit": "cluster-fallback",
+          "n_clusters": 60,
+          "exploratory": false,
+          "protocol": "v2.0",
+          "stats_convention": "v2.3"
+        }
+      },
+      "primary_endpoint": null,
+      "repair_vs_random": null,
+      "protocol": "v2.0",
+      "stats_convention": "v2.3",
+      "cluster_bootstrap_convention": {
+        "primary_cluster_unit": "template_family",
+        "pair_level_sensitivity_reported": true,
+        "min_clusters_for_inference": 24
+      },
+      "bootstrap_seed": 0,
+      "bootstrap_seed_source": "run config (experiment_config.bootstrap_seed / seed)"
+    },
+    "runs/audit_2x2_A01_s1": {
+      "run_id": "audit_2x2_A01_s1",
+      "arms": {
+        "self": {
+          "n": 60,
+          "E_CF": "0.000 [0.000, 0.000]",
+          "E_CF_pair_level_sensitivity": "0.000 [0.000, 0.000]",
+          "cluster_unit": "cluster-fallback",
+          "n_clusters": 60,
+          "exploratory": false,
+          "protocol": "v2.0",
+          "stats_convention": "v2.3"
+        },
+        "identity": {
+          "n": 60,
+          "E_CF": "0.000 [0.000, 0.000]",
+          "E_CF_pair_level_sensitivity": "0.000 [0.000, 0.000]",
+          "cluster_unit": "cluster-fallback",
+          "n_clusters": 60,
+          "exploratory": false,
+          "protocol": "v2.0",
+          "stats_convention": "v2.3"
+        },
+        "joint": {
+          "n": 60,
+          "E_CF": "6.346 [5.282, 7.414]",
+          "E_CF_pair_level_sensitivity": "6.346 [5.270, 7.402]",
+          "cluster_unit": "cluster-fallback",
+          "n_clusters": 60,
+          "exploratory": false,
+          "protocol": "v2.0",
+          "stats_convention": "v2.3"
+        },
+        "k_only": {
+          "n": 60,
+          "E_CF": "2.584 [2.075, 3.115]",
+          "E_CF_pair_level_sensitivity": "2.584 [2.073, 3.131]",
+          "cluster_unit": "cluster-fallback",
+          "n_clusters": 60,
+          "exploratory": false,
+          "protocol": "v2.0",
+          "stats_convention": "v2.3"
+        },
+        "v_only": {
+          "n": 60,
+          "E_CF": "4.538 [3.814, 5.282]",
+          "E_CF_pair_level_sensitivity": "4.538 [3.794, 5.272]",
+          "cluster_unit": "cluster-fallback",
+          "n_clusters": 60,
+          "exploratory": false,
+          "protocol": "v2.0",
+          "stats_convention": "v2.3"
+        },
+        "control:random": {
+          "n": 60,
+          "E_CF": "8.585 [6.997, 10.179]",
+          "E_CF_pair_level_sensitivity": "8.585 [7.017, 10.194]",
+          "cluster_unit": "cluster-fallback",
+          "n_clusters": 60,
+          "exploratory": false,
+          "protocol": "v2.0",
+          "stats_convention": "v2.3"
+        },
+        "control:zero": {
+          "n": 60,
+          "E_CF": "9.065 [7.560, 10.563]",
+          "E_CF_pair_level_sensitivity": "9.065 [7.578, 10.549]",
+          "cluster_unit": "cluster-fallback",
+          "n_clusters": 60,
+          "exploratory": false,
+          "protocol": "v2.0",
+          "stats_convention": "v2.3"
+        },
+        "control:mismatch": {
+          "n": 60,
+          "E_CF": "9.214 [7.619, 10.846]",
+          "E_CF_pair_level_sensitivity": "9.214 [7.591, 10.811]",
+          "cluster_unit": "cluster-fallback",
+          "n_clusters": 60,
+          "exploratory": false,
+          "protocol": "v2.0",
+          "stats_convention": "v2.3"
+        }
+      },
+      "primary_endpoint": null,
+      "repair_vs_random": null,
+      "protocol": "v2.0",
+      "stats_convention": "v2.3",
+      "cluster_bootstrap_convention": {
+        "primary_cluster_unit": "template_family",
+        "pair_level_sensitivity_reported": true,
+        "min_clusters_for_inference": 24
+      },
+      "bootstrap_seed": 1,
+      "bootstrap_seed_source": "run config (experiment_config.bootstrap_seed / seed)"
+    },
+    "runs/audit_2x2_A01_s2": {
+      "run_id": "audit_2x2_A01_s2",
+      "arms": {
+        "self": {
+          "n": 60,
+          "E_CF": "0.000 [0.000, 0.000]",
+          "E_CF_pair_level_sensitivity": "0.000 [0.000, 0.000]",
+          "cluster_unit": "cluster-fallback",
+          "n_clusters": 60,
+          "exploratory": false,
+          "protocol": "v2.0",
+          "stats_convention": "v2.3"
+        },
+        "identity": {
+          "n": 60,
+          "E_CF": "0.000 [0.000, 0.000]",
+          "E_CF_pair_level_sensitivity": "0.000 [0.000, 0.000]",
+          "cluster_unit": "cluster-fallback",
+          "n_clusters": 60,
+          "exploratory": false,
+          "protocol": "v2.0",
+          "stats_convention": "v2.3"
+        },
+        "joint": {
+          "n": 60,
+          "E_CF": "6.269 [5.172, 7.350]",
+          "E_CF_pair_level_sensitivity": "6.269 [5.197, 7.352]",
+          "cluster_unit": "cluster-fallback",
+          "n_clusters": 60,
+          "exploratory": false,
+          "protocol": "v2.0",
+          "stats_convention": "v2.3"
+        },
+        "k_only": {
+          "n": 60,
+          "E_CF": "2.628 [2.059, 3.261]",
+          "E_CF_pair_level_sensitivity": "2.628 [2.061, 3.251]",
+          "cluster_unit": "cluster-fallback",
+          "n_clusters": 60,
+          "exploratory": false,
+          "protocol": "v2.0",
+          "stats_convention": "v2.3"
+        },
+        "v_only": {
+          "n": 60,
+          "E_CF": "4.825 [4.046, 5.594]",
+          "E_CF_pair_level_sensitivity": "4.825 [4.043, 5.602]",
+          "cluster_unit": "cluster-fallback",
+          "n_clusters": 60,
+          "exploratory": false,
+          "protocol": "v2.0",
+          "stats_convention": "v2.3"
+        },
+        "control:random": {
+          "n": 60,
+          "E_CF": "7.660 [6.232, 9.134]",
+          "E_CF_pair_level_sensitivity": "7.660 [6.259, 9.154]",
+          "cluster_unit": "cluster-fallback",
+          "n_clusters": 60,
+          "exploratory": false,
+          "protocol": "v2.0",
+          "stats_convention": "v2.3"
+        },
+        "control:zero": {
+          "n": 60,
+          "E_CF": "9.684 [8.156, 11.189]",
+          "E_CF_pair_level_sensitivity": "9.684 [8.154, 11.177]",
+          "cluster_unit": "cluster-fallback",
+          "n_clusters": 60,
+          "exploratory": false,
+          "protocol": "v2.0",
+          "stats_convention": "v2.3"
+        },
+        "control:mismatch": {
+          "n": 60,
+          "E_CF": "9.717 [8.125, 11.275]",
+          "E_CF_pair_level_sensitivity": "9.717 [8.128, 11.259]",
+          "cluster_unit": "cluster-fallback",
+          "n_clusters": 60,
+          "exploratory": false,
+          "protocol": "v2.0",
+          "stats_convention": "v2.3"
+        }
+      },
+      "primary_endpoint": null,
+      "repair_vs_random": null,
+      "protocol": "v2.0",
+      "stats_convention": "v2.3",
+      "cluster_bootstrap_convention": {
+        "primary_cluster_unit": "template_family",
+        "pair_level_sensitivity_reported": true,
+        "min_clusters_for_inference": 24
+      },
+      "bootstrap_seed": 2,
+      "bootstrap_seed_source": "run config (experiment_config.bootstrap_seed / seed)"
+    },
+    "runs/audit_2x2_A10_s0": {
+      "run_id": "audit_2x2_A10_s0",
+      "arms": {
+        "self": {
+          "n": 60,
+          "E_CF": "0.000 [0.000, 0.000]",
+          "E_CF_pair_level_sensitivity": "0.000 [0.000, 0.000]",
+          "cluster_unit": "cluster-fallback",
+          "n_clusters": 60,
+          "exploratory": false,
+          "protocol": "v2.0",
+          "stats_convention": "v2.3"
+        },
+        "identity": {
+          "n": 60,
+          "E_CF": "0.000 [0.000, 0.000]",
+          "E_CF_pair_level_sensitivity": "0.000 [0.000, 0.000]",
+          "cluster_unit": "cluster-fallback",
+          "n_clusters": 60,
+          "exploratory": false,
+          "protocol": "v2.0",
+          "stats_convention": "v2.3"
+        },
+        "joint": {
+          "n": 60,
+          "E_CF": "5.208 [4.224, 6.176]",
+          "E_CF_pair_level_sensitivity": "5.208 [4.215, 6.180]",
+          "cluster_unit": "cluster-fallback",
+          "n_clusters": 60,
+          "exploratory": false,
+          "protocol": "v2.0",
+          "stats_convention": "v2.3"
+        },
+        "k_only": {
+          "n": 60,
+          "E_CF": "1.157 [0.928, 1.400]",
+          "E_CF_pair_level_sensitivity": "1.157 [0.929, 1.400]",
+          "cluster_unit": "cluster-fallback",
+          "n_clusters": 60,
+          "exploratory": false,
+          "protocol": "v2.0",
+          "stats_convention": "v2.3"
+        },
+        "v_only": {
+          "n": 60,
+          "E_CF": "2.415 [2.029, 2.812]",
+          "E_CF_pair_level_sensitivity": "2.415 [2.019, 2.806]",
+          "cluster_unit": "cluster-fallback",
+          "n_clusters": 60,
+          "exploratory": false,
+          "protocol": "v2.0",
+          "stats_convention": "v2.3"
+        },
+        "control:random": {
+          "n": 60,
+          "E_CF": "4.951 [3.913, 6.052]",
+          "E_CF_pair_level_sensitivity": "4.951 [3.911, 6.035]",
+          "cluster_unit": "cluster-fallback",
+          "n_clusters": 60,
+          "exploratory": false,
+          "protocol": "v2.0",
+          "stats_convention": "v2.3"
+        },
+        "control:zero": {
+          "n": 60,
+          "E_CF": "6.159 [5.035, 7.255]",
+          "E_CF_pair_level_sensitivity": "6.159 [5.009, 7.277]",
+          "cluster_unit": "cluster-fallback",
+          "n_clusters": 60,
+          "exploratory": false,
+          "protocol": "v2.0",
+          "stats_convention": "v2.3"
+        },
+        "control:mismatch": {
+          "n": 60,
+          "E_CF": "5.946 [4.855, 7.034]",
+          "E_CF_pair_level_sensitivity": "5.946 [4.849, 7.030]",
+          "cluster_unit": "cluster-fallback",
+          "n_clusters": 60,
+          "exploratory": false,
+          "protocol": "v2.0",
+          "stats_convention": "v2.3"
+        }
+      },
+      "primary_endpoint": null,
+      "repair_vs_random": null,
+      "protocol": "v2.0",
+      "stats_convention": "v2.3",
+      "cluster_bootstrap_convention": {
+        "primary_cluster_unit": "template_family",
+        "pair_level_sensitivity_reported": true,
+        "min_clusters_for_inference": 24
+      },
+      "bootstrap_seed": 0,
+      "bootstrap_seed_source": "run config (experiment_config.bootstrap_seed / seed)"
+    },
+    "runs/audit_2x2_A10_s1": {
+      "run_id": "audit_2x2_A10_s1",
+      "arms": {
+        "self": {
+          "n": 60,
+          "E_CF": "0.000 [0.000, 0.000]",
+          "E_CF_pair_level_sensitivity": "0.000 [0.000, 0.000]",
+          "cluster_unit": "cluster-fallback",
+          "n_clusters": 60,
+          "exploratory": false,
+          "protocol": "v2.0",
+          "stats_convention": "v2.3"
+        },
+        "identity": {
+          "n": 60,
+          "E_CF": "0.000 [0.000, 0.000]",
+          "E_CF_pair_level_sensitivity": "0.000 [0.000, 0.000]",
+          "cluster_unit": "cluster-fallback",
+          "n_clusters": 60,
+          "exploratory": false,
+          "protocol": "v2.0",
+          "stats_convention": "v2.3"
+        },
+        "joint": {
+          "n": 60,
+          "E_CF": "4.899 [4.019, 5.798]",
+          "E_CF_pair_level_sensitivity": "4.899 [4.013, 5.793]",
+          "cluster_unit": "cluster-fallback",
+          "n_clusters": 60,
+          "exploratory": false,
+          "protocol": "v2.0",
+          "stats_convention": "v2.3"
+        },
+        "k_only": {
+          "n": 60,
+          "E_CF": "1.291 [1.039, 1.553]",
+          "E_CF_pair_level_sensitivity": "1.291 [1.035, 1.555]",
+          "cluster_unit": "cluster-fallback",
+          "n_clusters": 60,
+          "exploratory": false,
+          "protocol": "v2.0",
+          "stats_convention": "v2.3"
+        },
+        "v_only": {
+          "n": 60,
+          "E_CF": "2.503 [2.062, 2.951]",
+          "E_CF_pair_level_sensitivity": "2.503 [2.069, 2.948]",
+          "cluster_unit": "cluster-fallback",
+          "n_clusters": 60,
+          "exploratory": false,
+          "protocol": "v2.0",
+          "stats_convention": "v2.3"
+        },
+        "control:random": {
+          "n": 60,
+          "E_CF": "4.430 [3.483, 5.429]",
+          "E_CF_pair_level_sensitivity": "4.430 [3.454, 5.440]",
+          "cluster_unit": "cluster-fallback",
+          "n_clusters": 60,
+          "exploratory": false,
+          "protocol": "v2.0",
+          "stats_convention": "v2.3"
+        },
+        "control:zero": {
+          "n": 60,
+          "E_CF": "5.897 [4.846, 6.949]",
+          "E_CF_pair_level_sensitivity": "5.897 [4.868, 6.951]",
+          "cluster_unit": "cluster-fallback",
+          "n_clusters": 60,
+          "exploratory": false,
+          "protocol": "v2.0",
+          "stats_convention": "v2.3"
+        },
+        "control:mismatch": {
+          "n": 60,
+          "E_CF": "6.209 [5.034, 7.447]",
+          "E_CF_pair_level_sensitivity": "6.209 [5.033, 7.431]",
+          "cluster_unit": "cluster-fallback",
+          "n_clusters": 60,
+          "exploratory": false,
+          "protocol": "v2.0",
+          "stats_convention": "v2.3"
+        }
+      },
+      "primary_endpoint": null,
+      "repair_vs_random": null,
+      "protocol": "v2.0",
+      "stats_convention": "v2.3",
+      "cluster_bootstrap_convention": {
+        "primary_cluster_unit": "template_family",
+        "pair_level_sensitivity_reported": true,
+        "min_clusters_for_inference": 24
+      },
+      "bootstrap_seed": 1,
+      "bootstrap_seed_source": "run config (experiment_config.bootstrap_seed / seed)"
+    },
+    "runs/audit_2x2_A10_s2": {
+      "run_id": "audit_2x2_A10_s2",
+      "arms": {
+        "self": {
+          "n": 60,
+          "E_CF": "0.000 [0.000, 0.000]",
+          "E_CF_pair_level_sensitivity": "0.000 [0.000, 0.000]",
+          "cluster_unit": "cluster-fallback",
+          "n_clusters": 60,
+          "exploratory": false,
+          "protocol": "v2.0",
+          "stats_convention": "v2.3"
+        },
+        "identity": {
+          "n": 60,
+          "E_CF": "0.000 [0.000, 0.000]",
+          "E_CF_pair_level_sensitivity": "0.000 [0.000, 0.000]",
+          "cluster_unit": "cluster-fallback",
+          "n_clusters": 60,
+          "exploratory": false,
+          "protocol": "v2.0",
+          "stats_convention": "v2.3"
+        },
+        "joint": {
+          "n": 60,
+          "E_CF": "5.267 [4.261, 6.319]",
+          "E_CF_pair_level_sensitivity": "5.267 [4.262, 6.327]",
+          "cluster_unit": "cluster-fallback",
+          "n_clusters": 60,
+          "exploratory": false,
+          "protocol": "v2.0",
+          "stats_convention": "v2.3"
+        },
+        "k_only": {
+          "n": 60,
+          "E_CF": "1.332 [1.054, 1.630]",
+          "E_CF_pair_level_sensitivity": "1.332 [1.059, 1.629]",
+          "cluster_unit": "cluster-fallback",
+          "n_clusters": 60,
+          "exploratory": false,
+          "protocol": "v2.0",
+          "stats_convention": "v2.3"
+        },
+        "v_only": {
+          "n": 60,
+          "E_CF": "2.727 [2.260, 3.196]",
+          "E_CF_pair_level_sensitivity": "2.727 [2.254, 3.203]",
+          "cluster_unit": "cluster-fallback",
+          "n_clusters": 60,
+          "exploratory": false,
+          "protocol": "v2.0",
+          "stats_convention": "v2.3"
+        },
+        "control:random": {
+          "n": 60,
+          "E_CF": "5.632 [4.328, 6.983]",
+          "E_CF_pair_level_sensitivity": "5.632 [4.330, 6.975]",
+          "cluster_unit": "cluster-fallback",
+          "n_clusters": 60,
+          "exploratory": false,
+          "protocol": "v2.0",
+          "stats_convention": "v2.3"
+        },
+        "control:zero": {
+          "n": 60,
+          "E_CF": "6.643 [5.434, 7.845]",
+          "E_CF_pair_level_sensitivity": "6.643 [5.466, 7.847]",
+          "cluster_unit": "cluster-fallback",
+          "n_clusters": 60,
+          "exploratory": false,
+          "protocol": "v2.0",
+          "stats_convention": "v2.3"
+        },
+        "control:mismatch": {
+          "n": 60,
+          "E_CF": "6.621 [5.416, 7.846]",
+          "E_CF_pair_level_sensitivity": "6.621 [5.439, 7.838]",
+          "cluster_unit": "cluster-fallback",
+          "n_clusters": 60,
+          "exploratory": false,
+          "protocol": "v2.0",
+          "stats_convention": "v2.3"
+        }
+      },
+      "primary_endpoint": null,
+      "repair_vs_random": null,
+      "protocol": "v2.0",
+      "stats_convention": "v2.3",
+      "cluster_bootstrap_convention": {
+        "primary_cluster_unit": "template_family",
+        "pair_level_sensitivity_reported": true,
+        "min_clusters_for_inference": 24
+      },
+      "bootstrap_seed": 2,
+      "bootstrap_seed_source": "run config (experiment_config.bootstrap_seed / seed)"
+    },
+    "runs/audit_2x2_A11_s0": {
+      "run_id": "audit_2x2_A11_s0",
+      "arms": {
+        "self": {
+          "n": 60,
+          "E_CF": "0.000 [0.000, 0.000]",
+          "E_CF_pair_level_sensitivity": "0.000 [0.000, 0.000]",
+          "cluster_unit": "cluster-fallback",
+          "n_clusters": 60,
+          "exploratory": false,
+          "protocol": "v2.0",
+          "stats_convention": "v2.3"
+        },
+        "identity": {
+          "n": 60,
+          "E_CF": "0.000 [0.000, 0.000]",
+          "E_CF_pair_level_sensitivity": "0.000 [0.000, 0.000]",
+          "cluster_unit": "cluster-fallback",
+          "n_clusters": 60,
+          "exploratory": false,
+          "protocol": "v2.0",
+          "stats_convention": "v2.3"
+        },
+        "joint": {
+          "n": 60,
+          "E_CF": "6.900 [5.499, 8.313]",
+          "E_CF_pair_level_sensitivity": "6.900 [5.496, 8.321]",
+          "cluster_unit": "cluster-fallback",
+          "n_clusters": 60,
+          "exploratory": false,
+          "protocol": "v2.0",
+          "stats_convention": "v2.3"
+        },
+        "k_only": {
+          "n": 60,
+          "E_CF": "2.692 [2.121, 3.329]",
+          "E_CF_pair_level_sensitivity": "2.692 [2.128, 3.303]",
+          "cluster_unit": "cluster-fallback",
+          "n_clusters": 60,
+          "exploratory": false,
+          "protocol": "v2.0",
+          "stats_convention": "v2.3"
+        },
+        "v_only": {
+          "n": 60,
+          "E_CF": "3.690 [3.070, 4.344]",
+          "E_CF_pair_level_sensitivity": "3.690 [3.060, 4.330]",
+          "cluster_unit": "cluster-fallback",
+          "n_clusters": 60,
+          "exploratory": false,
+          "protocol": "v2.0",
+          "stats_convention": "v2.3"
+        },
+        "control:random": {
+          "n": 60,
+          "E_CF": "6.765 [5.402, 8.133]",
+          "E_CF_pair_level_sensitivity": "6.765 [5.432, 8.138]",
+          "cluster_unit": "cluster-fallback",
+          "n_clusters": 60,
+          "exploratory": false,
+          "protocol": "v2.0",
+          "stats_convention": "v2.3"
+        },
+        "control:zero": {
+          "n": 60,
+          "E_CF": "8.584 [7.120, 10.000]",
+          "E_CF_pair_level_sensitivity": "8.584 [7.101, 9.994]",
+          "cluster_unit": "cluster-fallback",
+          "n_clusters": 60,
+          "exploratory": false,
+          "protocol": "v2.0",
+          "stats_convention": "v2.3"
+        },
+        "control:mismatch": {
+          "n": 60,
+          "E_CF": "8.736 [7.258, 10.201]",
+          "E_CF_pair_level_sensitivity": "8.736 [7.253, 10.178]",
+          "cluster_unit": "cluster-fallback",
+          "n_clusters": 60,
+          "exploratory": false,
+          "protocol": "v2.0",
+          "stats_convention": "v2.3"
+        }
+      },
+      "primary_endpoint": null,
+      "repair_vs_random": null,
+      "protocol": "v2.0",
+      "stats_convention": "v2.3",
+      "cluster_bootstrap_convention": {
+        "primary_cluster_unit": "template_family",
+        "pair_level_sensitivity_reported": true,
+        "min_clusters_for_inference": 24
+      },
+      "bootstrap_seed": 0,
+      "bootstrap_seed_source": "run config (experiment_config.bootstrap_seed / seed)"
+    },
+    "runs/audit_2x2_A11_s1": {
+      "run_id": "audit_2x2_A11_s1",
+      "arms": {
+        "self": {
+          "n": 60,
+          "E_CF": "0.000 [0.000, 0.000]",
+          "E_CF_pair_level_sensitivity": "0.000 [0.000, 0.000]",
+          "cluster_unit": "cluster-fallback",
+          "n_clusters": 60,
+          "exploratory": false,
+          "protocol": "v2.0",
+          "stats_convention": "v2.3"
+        },
+        "identity": {
+          "n": 60,
+          "E_CF": "0.000 [0.000, 0.000]",
+          "E_CF_pair_level_sensitivity": "0.000 [0.000, 0.000]",
+          "cluster_unit": "cluster-fallback",
+          "n_clusters": 60,
+          "exploratory": false,
+          "protocol": "v2.0",
+          "stats_convention": "v2.3"
+        },
+        "joint": {
+          "n": 60,
+          "E_CF": "8.159 [6.647, 9.702]",
+          "E_CF_pair_level_sensitivity": "8.159 [6.648, 9.701]",
+          "cluster_unit": "cluster-fallback",
+          "n_clusters": 60,
+          "exploratory": false,
+          "protocol": "v2.0",
+          "stats_convention": "v2.3"
+        },
+        "k_only": {
+          "n": 60,
+          "E_CF": "3.009 [2.280, 3.812]",
+          "E_CF_pair_level_sensitivity": "3.009 [2.297, 3.806]",
+          "cluster_unit": "cluster-fallback",
+          "n_clusters": 60,
+          "exploratory": false,
+          "protocol": "v2.0",
+          "stats_convention": "v2.3"
+        },
+        "v_only": {
+          "n": 60,
+          "E_CF": "3.996 [3.278, 4.733]",
+          "E_CF_pair_level_sensitivity": "3.996 [3.279, 4.729]",
+          "cluster_unit": "cluster-fallback",
+          "n_clusters": 60,
+          "exploratory": false,
+          "protocol": "v2.0",
+          "stats_convention": "v2.3"
+        },
+        "control:random": {
+          "n": 60,
+          "E_CF": "7.448 [5.989, 8.956]",
+          "E_CF_pair_level_sensitivity": "7.448 [5.975, 8.928]",
+          "cluster_unit": "cluster-fallback",
+          "n_clusters": 60,
+          "exploratory": false,
+          "protocol": "v2.0",
+          "stats_convention": "v2.3"
+        },
+        "control:zero": {
+          "n": 60,
+          "E_CF": "9.065 [7.560, 10.563]",
+          "E_CF_pair_level_sensitivity": "9.065 [7.578, 10.549]",
+          "cluster_unit": "cluster-fallback",
+          "n_clusters": 60,
+          "exploratory": false,
+          "protocol": "v2.0",
+          "stats_convention": "v2.3"
+        },
+        "control:mismatch": {
+          "n": 60,
+          "E_CF": "9.115 [7.557, 10.686]",
+          "E_CF_pair_level_sensitivity": "9.115 [7.549, 10.676]",
+          "cluster_unit": "cluster-fallback",
+          "n_clusters": 60,
+          "exploratory": false,
+          "protocol": "v2.0",
+          "stats_convention": "v2.3"
+        }
+      },
+      "primary_endpoint": null,
+      "repair_vs_random": null,
+      "protocol": "v2.0",
+      "stats_convention": "v2.3",
+      "cluster_bootstrap_convention": {
+        "primary_cluster_unit": "template_family",
+        "pair_level_sensitivity_reported": true,
+        "min_clusters_for_inference": 24
+      },
+      "bootstrap_seed": 1,
+      "bootstrap_seed_source": "run config (experiment_config.bootstrap_seed / seed)"
+    },
+    "runs/audit_2x2_A11_s2": {
+      "run_id": "audit_2x2_A11_s2",
+      "arms": {
+        "self": {
+          "n": 60,
+          "E_CF": "0.000 [0.000, 0.000]",
+          "E_CF_pair_level_sensitivity": "0.000 [0.000, 0.000]",
+          "cluster_unit": "cluster-fallback",
+          "n_clusters": 60,
+          "exploratory": false,
+          "protocol": "v2.0",
+          "stats_convention": "v2.3"
+        },
+        "identity": {
+          "n": 60,
+          "E_CF": "0.000 [0.000, 0.000]",
+          "E_CF_pair_level_sensitivity": "0.000 [0.000, 0.000]",
+          "cluster_unit": "cluster-fallback",
+          "n_clusters": 60,
+          "exploratory": false,
+          "protocol": "v2.0",
+          "stats_convention": "v2.3"
+        },
+        "joint": {
+          "n": 60,
+          "E_CF": "8.540 [7.057, 10.062]",
+          "E_CF_pair_level_sensitivity": "8.540 [7.046, 10.051]",
+          "cluster_unit": "cluster-fallback",
+          "n_clusters": 60,
+          "exploratory": false,
+          "protocol": "v2.0",
+          "stats_convention": "v2.3"
+        },
+        "k_only": {
+          "n": 60,
+          "E_CF": "3.175 [2.439, 3.979]",
+          "E_CF_pair_level_sensitivity": "3.175 [2.433, 3.970]",
+          "cluster_unit": "cluster-fallback",
+          "n_clusters": 60,
+          "exploratory": false,
+          "protocol": "v2.0",
+          "stats_convention": "v2.3"
+        },
+        "v_only": {
+          "n": 60,
+          "E_CF": "4.412 [3.598, 5.194]",
+          "E_CF_pair_level_sensitivity": "4.412 [3.628, 5.209]",
+          "cluster_unit": "cluster-fallback",
+          "n_clusters": 60,
+          "exploratory": false,
+          "protocol": "v2.0",
+          "stats_convention": "v2.3"
+        },
+        "control:random": {
+          "n": 60,
+          "E_CF": "7.823 [6.342, 9.322]",
+          "E_CF_pair_level_sensitivity": "7.823 [6.335, 9.346]",
+          "cluster_unit": "cluster-fallback",
+          "n_clusters": 60,
+          "exploratory": false,
+          "protocol": "v2.0",
+          "stats_convention": "v2.3"
+        },
+        "control:zero": {
+          "n": 60,
+          "E_CF": "9.684 [8.156, 11.189]",
+          "E_CF_pair_level_sensitivity": "9.684 [8.154, 11.177]",
+          "cluster_unit": "cluster-fallback",
+          "n_clusters": 60,
+          "exploratory": false,
+          "protocol": "v2.0",
+          "stats_convention": "v2.3"
+        },
+        "control:mismatch": {
+          "n": 60,
+          "E_CF": "9.895 [8.276, 11.474]",
+          "E_CF_pair_level_sensitivity": "9.895 [8.253, 11.469]",
+          "cluster_unit": "cluster-fallback",
+          "n_clusters": 60,
+          "exploratory": false,
+          "protocol": "v2.0",
+          "stats_convention": "v2.3"
+        }
+      },
+      "primary_endpoint": null,
+      "repair_vs_random": null,
+      "protocol": "v2.0",
+      "stats_convention": "v2.3",
+      "cluster_bootstrap_convention": {
+        "primary_cluster_unit": "template_family",
+        "pair_level_sensitivity_reported": true,
+        "min_clusters_for_inference": 24
+      },
+      "bootstrap_seed": 2,
+      "bootstrap_seed_source": "run config (experiment_config.bootstrap_seed / seed)"
+    },
+    "runs/delta_lock_v2p1_0p5": {
+      "run_id": "delta_lock_v2p1_0p5",
+      "arms": {
+        "self": {
+          "n": 60,
+          "E_CF": "0.000 [0.000, 0.000]",
+          "E_CF_pair_level_sensitivity": "0.000 [0.000, 0.000]",
+          "cluster_unit": "template_family",
+          "n_clusters": 8,
+          "exploratory": true,
+          "protocol": "v2.0",
+          "stats_convention": "v2.3"
+        },
+        "identity": {
+          "n": 60,
+          "E_CF": "0.000 [0.000, 0.000]",
+          "E_CF_pair_level_sensitivity": "0.000 [0.000, 0.000]",
+          "cluster_unit": "template_family",
+          "n_clusters": 8,
+          "exploratory": true,
+          "protocol": "v2.0",
+          "stats_convention": "v2.3"
+        },
+        "joint": {
+          "n": 60,
+          "E_CF": "2.750 [1.544, 4.152]",
+          "E_CF_pair_level_sensitivity": "2.750 [2.061, 3.482]",
+          "cluster_unit": "template_family",
+          "n_clusters": 8,
+          "exploratory": true,
+          "protocol": "v2.0",
+          "stats_convention": "v2.3"
+        },
+        "k_only": {
+          "n": 60,
+          "E_CF": "3.215 [1.872, 4.558]",
+          "E_CF_pair_level_sensitivity": "3.215 [2.519, 3.947]",
+          "cluster_unit": "template_family",
+          "n_clusters": 8,
+          "exploratory": true,
+          "protocol": "v2.0",
+          "stats_convention": "v2.3"
+        },
+        "v_only": {
+          "n": 60,
+          "E_CF": "2.622 [1.555, 3.772]",
+          "E_CF_pair_level_sensitivity": "2.622 [2.058, 3.243]",
+          "cluster_unit": "template_family",
+          "n_clusters": 8,
+          "exploratory": true,
+          "protocol": "v2.0",
+          "stats_convention": "v2.3"
+        },
+        "control:mismatch": {
+          "n": 60,
+          "E_CF": "6.190 [3.496, 8.880]",
+          "E_CF_pair_level_sensitivity": "6.190 [4.904, 7.550]",
+          "cluster_unit": "template_family",
+          "n_clusters": 8,
+          "exploratory": true,
+          "protocol": "v2.0",
+          "stats_convention": "v2.3"
+        },
+        "control:random": {
+          "n": 60,
+          "E_CF": "4.827 [2.416, 7.289]",
+          "E_CF_pair_level_sensitivity": "4.827 [3.807, 5.850]",
+          "cluster_unit": "template_family",
+          "n_clusters": 8,
+          "exploratory": true,
+          "protocol": "v2.0",
+          "stats_convention": "v2.3"
+        },
+        "control:zero": {
+          "n": 60,
+          "E_CF": "6.159 [3.325, 8.809]",
+          "E_CF_pair_level_sensitivity": "6.159 [5.009, 7.277]",
+          "cluster_unit": "template_family",
+          "n_clusters": 8,
+          "exploratory": true,
+          "protocol": "v2.0",
+          "stats_convention": "v2.3"
+        },
+        "control:correct": {
+          "n": 60,
+          "E_CF": "2.750 [1.544, 4.152]",
+          "E_CF_pair_level_sensitivity": "2.750 [2.061, 3.482]",
+          "cluster_unit": "template_family",
+          "n_clusters": 8,
+          "exploratory": true,
+          "protocol": "v2.0",
+          "stats_convention": "v2.3"
+        },
+        "new_joint": {
+          "n": 60,
+          "E_CF": "2.750 [1.544, 4.152]",
+          "E_CF_pair_level_sensitivity": "2.750 [2.061, 3.482]",
+          "cluster_unit": "template_family",
+          "n_clusters": 8,
+          "exploratory": true,
+          "protocol": "v2.0",
+          "stats_convention": "v2.3"
+        }
+      },
+      "primary_endpoint": {
+        "point": 0.0,
+        "ci": [
+          0.0,
+          0.0
+        ],
+        "improved": false,
+        "cluster_unit": "template_family",
+        "n_clusters": 8,
+        "exploratory": true,
+        "pair_level_sensitivity": {
+          "point": 0.0,
+          "ci": [
+            0.0,
+            0.0
+          ]
+        },
+        "note": "paired E_CF difference (new - baseline); primary cluster = template_family"
+      },
+      "repair_vs_random": null,
+      "protocol": "v2.0",
+      "stats_convention": "v2.3",
+      "cluster_bootstrap_convention": {
+        "primary_cluster_unit": "template_family",
+        "pair_level_sensitivity_reported": true,
+        "min_clusters_for_inference": 24
+      },
+      "bootstrap_seed": 0,
+      "bootstrap_seed_source": "run config (experiment_config.bootstrap_seed / seed)"
+    },
+    "runs/delta_lock_v2p1_1p0_par": {
+      "run_id": "delta_lock_v2p1_1p0_par",
+      "arms": {
+        "self": {
+          "n": 60,
+          "E_CF": "0.000 [0.000, 0.000]",
+          "E_CF_pair_level_sensitivity": "0.000 [0.000, 0.000]",
+          "cluster_unit": "template_family",
+          "n_clusters": 8,
+          "exploratory": true,
+          "protocol": "v2.0",
+          "stats_convention": "v2.3"
+        },
+        "identity": {
+          "n": 60,
+          "E_CF": "0.000 [0.000, 0.000]",
+          "E_CF_pair_level_sensitivity": "0.000 [0.000, 0.000]",
+          "cluster_unit": "template_family",
+          "n_clusters": 8,
+          "exploratory": true,
+          "protocol": "v2.0",
+          "stats_convention": "v2.3"
+        },
+        "joint": {
+          "n": 60,
+          "E_CF": "1.597 [0.980, 2.174]",
+          "E_CF_pair_level_sensitivity": "1.597 [1.199, 2.031]",
+          "cluster_unit": "template_family",
+          "n_clusters": 8,
+          "exploratory": true,
+          "protocol": "v2.0",
+          "stats_convention": "v2.3"
+        },
+        "k_only": {
+          "n": 60,
+          "E_CF": "2.277 [1.211, 3.512]",
+          "E_CF_pair_level_sensitivity": "2.277 [1.737, 2.845]",
+          "cluster_unit": "template_family",
+          "n_clusters": 8,
+          "exploratory": true,
+          "protocol": "v2.0",
+          "stats_convention": "v2.3"
+        },
+        "v_only": {
+          "n": 60,
+          "E_CF": "2.052 [1.200, 2.895]",
+          "E_CF_pair_level_sensitivity": "2.052 [1.544, 2.598]",
+          "cluster_unit": "template_family",
+          "n_clusters": 8,
+          "exploratory": true,
+          "protocol": "v2.0",
+          "stats_convention": "v2.3"
+        },
+        "control:mismatch": {
+          "n": 60,
+          "E_CF": "6.094 [3.291, 8.984]",
+          "E_CF_pair_level_sensitivity": "6.094 [4.913, 7.303]",
+          "cluster_unit": "template_family",
+          "n_clusters": 8,
+          "exploratory": true,
+          "protocol": "v2.0",
+          "stats_convention": "v2.3"
+        },
+        "control:random": {
+          "n": 60,
+          "E_CF": "4.349 [2.121, 6.651]",
+          "E_CF_pair_level_sensitivity": "4.349 [3.409, 5.306]",
+          "cluster_unit": "template_family",
+          "n_clusters": 8,
+          "exploratory": true,
+          "protocol": "v2.0",
+          "stats_convention": "v2.3"
+        },
+        "control:zero": {
+          "n": 60,
+          "E_CF": "6.159 [3.325, 8.809]",
+          "E_CF_pair_level_sensitivity": "6.159 [5.009, 7.277]",
+          "cluster_unit": "template_family",
+          "n_clusters": 8,
+          "exploratory": true,
+          "protocol": "v2.0",
+          "stats_convention": "v2.3"
+        },
+        "control:correct": {
+          "n": 60,
+          "E_CF": "1.597 [0.980, 2.174]",
+          "E_CF_pair_level_sensitivity": "1.597 [1.199, 2.031]",
+          "cluster_unit": "template_family",
+          "n_clusters": 8,
+          "exploratory": true,
+          "protocol": "v2.0",
+          "stats_convention": "v2.3"
+        },
+        "new_joint": {
+          "n": 60,
+          "E_CF": "1.597 [0.980, 2.174]",
+          "E_CF_pair_level_sensitivity": "1.597 [1.199, 2.031]",
+          "cluster_unit": "template_family",
+          "n_clusters": 8,
+          "exploratory": true,
+          "protocol": "v2.0",
+          "stats_convention": "v2.3"
+        }
+      },
+      "primary_endpoint": {
+        "point": 0.0,
+        "ci": [
+          0.0,
+          0.0
+        ],
+        "improved": false,
+        "cluster_unit": "template_family",
+        "n_clusters": 8,
+        "exploratory": true,
+        "pair_level_sensitivity": {
+          "point": 0.0,
+          "ci": [
+            0.0,
+            0.0
+          ]
+        },
+        "note": "paired E_CF difference (new - baseline); primary cluster = template_family"
+      },
+      "repair_vs_random": null,
+      "protocol": "v2.0",
+      "stats_convention": "v2.3",
+      "cluster_bootstrap_convention": {
+        "primary_cluster_unit": "template_family",
+        "pair_level_sensitivity_reported": true,
+        "min_clusters_for_inference": 24
+      },
+      "bootstrap_seed": 0,
+      "bootstrap_seed_source": "run config (experiment_config.bootstrap_seed / seed)"
+    },
+    "runs/delta_lock_v2p1_2p0_par": {
+      "run_id": "delta_lock_v2p1_2p0_par",
+      "arms": {
+        "self": {
+          "n": 60,
+          "E_CF": "0.000 [0.000, 0.000]",
+          "E_CF_pair_level_sensitivity": "0.000 [0.000, 0.000]",
+          "cluster_unit": "template_family",
+          "n_clusters": 8,
+          "exploratory": true,
+          "protocol": "v2.0",
+          "stats_convention": "v2.3"
+        },
+        "identity": {
+          "n": 60,
+          "E_CF": "0.000 [0.000, 0.000]",
+          "E_CF_pair_level_sensitivity": "0.000 [0.000, 0.000]",
+          "cluster_unit": "template_family",
+          "n_clusters": 8,
+          "exploratory": true,
+          "protocol": "v2.0",
+          "stats_convention": "v2.3"
+        },
+        "joint": {
+          "n": 60,
+          "E_CF": "2.762 [1.571, 4.056]",
+          "E_CF_pair_level_sensitivity": "2.762 [2.012, 3.594]",
+          "cluster_unit": "template_family",
+          "n_clusters": 8,
+          "exploratory": true,
+          "protocol": "v2.0",
+          "stats_convention": "v2.3"
+        },
+        "k_only": {
+          "n": 60,
+          "E_CF": "2.135 [1.270, 3.110]",
+          "E_CF_pair_level_sensitivity": "2.135 [1.670, 2.620]",
+          "cluster_unit": "template_family",
+          "n_clusters": 8,
+          "exploratory": true,
+          "protocol": "v2.0",
+          "stats_convention": "v2.3"
+        },
+        "v_only": {
+          "n": 60,
+          "E_CF": "2.303 [1.416, 3.253]",
+          "E_CF_pair_level_sensitivity": "2.303 [1.733, 2.928]",
+          "cluster_unit": "template_family",
+          "n_clusters": 8,
+          "exploratory": true,
+          "protocol": "v2.0",
+          "stats_convention": "v2.3"
+        },
+        "control:mismatch": {
+          "n": 60,
+          "E_CF": "6.293 [3.746, 8.674]",
+          "E_CF_pair_level_sensitivity": "6.293 [4.899, 7.798]",
+          "cluster_unit": "template_family",
+          "n_clusters": 8,
+          "exploratory": true,
+          "protocol": "v2.0",
+          "stats_convention": "v2.3"
+        },
+        "control:random": {
+          "n": 60,
+          "E_CF": "4.315 [2.176, 6.505]",
+          "E_CF_pair_level_sensitivity": "4.315 [3.351, 5.291]",
+          "cluster_unit": "template_family",
+          "n_clusters": 8,
+          "exploratory": true,
+          "protocol": "v2.0",
+          "stats_convention": "v2.3"
+        },
+        "control:zero": {
+          "n": 60,
+          "E_CF": "6.159 [3.325, 8.809]",
+          "E_CF_pair_level_sensitivity": "6.159 [5.009, 7.277]",
+          "cluster_unit": "template_family",
+          "n_clusters": 8,
+          "exploratory": true,
+          "protocol": "v2.0",
+          "stats_convention": "v2.3"
+        },
+        "control:correct": {
+          "n": 60,
+          "E_CF": "2.762 [1.571, 4.056]",
+          "E_CF_pair_level_sensitivity": "2.762 [2.012, 3.594]",
+          "cluster_unit": "template_family",
+          "n_clusters": 8,
+          "exploratory": true,
+          "protocol": "v2.0",
+          "stats_convention": "v2.3"
+        },
+        "new_joint": {
+          "n": 60,
+          "E_CF": "2.762 [1.571, 4.056]",
+          "E_CF_pair_level_sensitivity": "2.762 [2.012, 3.594]",
+          "cluster_unit": "template_family",
+          "n_clusters": 8,
+          "exploratory": true,
+          "protocol": "v2.0",
+          "stats_convention": "v2.3"
+        }
+      },
+      "primary_endpoint": {
+        "point": 0.0,
+        "ci": [
+          0.0,
+          0.0
+        ],
+        "improved": false,
+        "cluster_unit": "template_family",
+        "n_clusters": 8,
+        "exploratory": true,
+        "pair_level_sensitivity": {
+          "point": 0.0,
+          "ci": [
+            0.0,
+            0.0
+          ]
+        },
+        "note": "paired E_CF difference (new - baseline); primary cluster = template_family"
+      },
+      "repair_vs_random": null,
+      "protocol": "v2.0",
+      "stats_convention": "v2.3",
+      "cluster_bootstrap_convention": {
+        "primary_cluster_unit": "template_family",
+        "pair_level_sensitivity_reported": true,
+        "min_clusters_for_inference": 24
+      },
+      "bootstrap_seed": 0,
+      "bootstrap_seed_source": "run config (experiment_config.bootstrap_seed / seed)"
+    },
+    "runs/e0_clean_mvp_seed0": {
+      "run_id": "e0_clean_mvp_seed0",
+      "arms": {},
+      "protocol": "v1.0",
+      "stats_convention": "n/a (v1 scores)",
+      "bootstrap_seed": 0,
+      "bootstrap_seed_source": "run config (experiment_config.bootstrap_seed / seed)"
+    },
+    "runs/e0_gpu_main_seed0": {
+      "run_id": "e0_gpu_main_seed0",
+      "arms": {},
+      "protocol": "v1.0",
+      "stats_convention": "n/a (v1 scores)",
+      "bootstrap_seed": 0,
+      "bootstrap_seed_source": "run config (experiment_config.bootstrap_seed / seed)"
+    },
+    "runs/e0_gpu_mvp_repro_seed0": {
+      "run_id": "e0_gpu_mvp_repro_seed0",
+      "arms": {},
+      "protocol": "v1.0",
+      "stats_convention": "n/a (v1 scores)",
+      "bootstrap_seed": 0,
+      "bootstrap_seed_source": "run config (experiment_config.bootstrap_seed / seed)"
+    },
+    "runs/e0_gpu_mvp_seed0": {
+      "run_id": "e0_gpu_mvp_seed0",
+      "arms": {},
+      "protocol": "v1.0",
+      "stats_convention": "n/a (v1 scores)",
+      "bootstrap_seed": 0,
+      "bootstrap_seed_source": "run config (experiment_config.bootstrap_seed / seed)"
+    },
+    "runs/p1_clean_mvp_seed0": {
+      "run_id": "p1_clean_mvp_seed0",
+      "arms": {
+        "self": {
+          "n": 60,
+          "E_CF": "0.000 [0.000, 0.000]",
+          "E_CF_pair_level_sensitivity": "0.000 [0.000, 0.000]",
+          "cluster_unit": "template_family",
+          "n_clusters": 8,
+          "exploratory": true,
+          "protocol": "v2.0",
+          "stats_convention": "v2.3"
+        },
+        "identity": {
+          "n": 60,
+          "E_CF": "0.000 [0.000, 0.000]",
+          "E_CF_pair_level_sensitivity": "0.000 [0.000, 0.000]",
+          "cluster_unit": "template_family",
+          "n_clusters": 8,
+          "exploratory": true,
+          "protocol": "v2.0",
+          "stats_convention": "v2.3"
+        },
+        "joint": {
+          "n": 60,
+          "E_CF": "6.900 [3.564, 10.100]",
+          "E_CF_pair_level_sensitivity": "6.900 [5.496, 8.321]",
+          "cluster_unit": "template_family",
+          "n_clusters": 8,
+          "exploratory": true,
+          "protocol": "v2.0",
+          "stats_convention": "v2.3"
+        },
+        "k_only": {
+          "n": 60,
+          "E_CF": "2.692 [1.734, 3.649]",
+          "E_CF_pair_level_sensitivity": "2.692 [2.128, 3.303]",
+          "cluster_unit": "template_family",
+          "n_clusters": 8,
+          "exploratory": true,
+          "protocol": "v2.0",
+          "stats_convention": "v2.3"
+        },
+        "v_only": {
+          "n": 60,
+          "E_CF": "3.690 [2.262, 4.991]",
+          "E_CF_pair_level_sensitivity": "3.690 [3.060, 4.330]",
+          "cluster_unit": "template_family",
+          "n_clusters": 8,
+          "exploratory": true,
+          "protocol": "v2.0",
+          "stats_convention": "v2.3"
+        },
+        "control:mismatch": {
+          "n": 60,
+          "E_CF": "8.383 [4.672, 11.918]",
+          "E_CF_pair_level_sensitivity": "8.383 [6.819, 9.922]",
+          "cluster_unit": "template_family",
+          "n_clusters": 8,
+          "exploratory": true,
+          "protocol": "v2.0",
+          "stats_convention": "v2.3"
+        },
+        "control:random": {
+          "n": 60,
+          "E_CF": "6.765 [3.901, 9.916]",
+          "E_CF_pair_level_sensitivity": "6.765 [5.432, 8.138]",
+          "cluster_unit": "template_family",
+          "n_clusters": 8,
+          "exploratory": true,
+          "protocol": "v2.0",
+          "stats_convention": "v2.3"
+        },
+        "control:zero": {
+          "n": 60,
+          "E_CF": "8.584 [4.620, 12.112]",
+          "E_CF_pair_level_sensitivity": "8.584 [7.101, 9.994]",
+          "cluster_unit": "template_family",
+          "n_clusters": 8,
+          "exploratory": true,
+          "protocol": "v2.0",
+          "stats_convention": "v2.3"
+        },
+        "control:correct": {
+          "n": 60,
+          "E_CF": "6.900 [3.564, 10.100]",
+          "E_CF_pair_level_sensitivity": "6.900 [5.496, 8.321]",
+          "cluster_unit": "template_family",
+          "n_clusters": 8,
+          "exploratory": true,
+          "protocol": "v2.0",
+          "stats_convention": "v2.3"
+        },
+        "new_joint": {
+          "n": 60,
+          "E_CF": "6.900 [3.564, 10.100]",
+          "E_CF_pair_level_sensitivity": "6.900 [5.496, 8.321]",
+          "cluster_unit": "template_family",
+          "n_clusters": 8,
+          "exploratory": true,
+          "protocol": "v2.0",
+          "stats_convention": "v2.3"
+        }
+      },
+      "primary_endpoint": {
+        "point": 0.0,
+        "ci": [
+          0.0,
+          0.0
+        ],
+        "improved": false,
+        "cluster_unit": "template_family",
+        "n_clusters": 8,
+        "exploratory": true,
+        "pair_level_sensitivity": {
+          "point": 0.0,
+          "ci": [
+            0.0,
+            0.0
+          ]
+        },
+        "note": "paired E_CF difference (new - baseline); primary cluster = template_family"
+      },
+      "repair_vs_random": null,
+      "protocol": "v2.0",
+      "stats_convention": "v2.3",
+      "cluster_bootstrap_convention": {
+        "primary_cluster_unit": "template_family",
+        "pair_level_sensitivity_reported": true,
+        "min_clusters_for_inference": 24
+      },
+      "bootstrap_seed": 0,
+      "bootstrap_seed_source": "run config (experiment_config.bootstrap_seed / seed)"
+    },
+    "runs/p1_clean_mvp_seed1": {
+      "run_id": "p1_clean_mvp_seed1",
+      "arms": {
+        "self": {
+          "n": 60,
+          "E_CF": "0.000 [0.000, 0.000]",
+          "E_CF_pair_level_sensitivity": "0.000 [0.000, 0.000]",
+          "cluster_unit": "template_family",
+          "n_clusters": 8,
+          "exploratory": true,
+          "protocol": "v2.0",
+          "stats_convention": "v2.3"
+        },
+        "identity": {
+          "n": 60,
+          "E_CF": "0.000 [0.000, 0.000]",
+          "E_CF_pair_level_sensitivity": "0.000 [0.000, 0.000]",
+          "cluster_unit": "template_family",
+          "n_clusters": 8,
+          "exploratory": true,
+          "protocol": "v2.0",
+          "stats_convention": "v2.3"
+        },
+        "joint": {
+          "n": 60,
+          "E_CF": "8.159 [4.357, 11.584]",
+          "E_CF_pair_level_sensitivity": "8.159 [6.648, 9.701]",
+          "cluster_unit": "template_family",
+          "n_clusters": 8,
+          "exploratory": true,
+          "protocol": "v2.0",
+          "stats_convention": "v2.3"
+        },
+        "k_only": {
+          "n": 60,
+          "E_CF": "3.009 [1.527, 4.479]",
+          "E_CF_pair_level_sensitivity": "3.009 [2.297, 3.806]",
+          "cluster_unit": "template_family",
+          "n_clusters": 8,
+          "exploratory": true,
+          "protocol": "v2.0",
+          "stats_convention": "v2.3"
+        },
+        "v_only": {
+          "n": 60,
+          "E_CF": "3.996 [2.255, 5.612]",
+          "E_CF_pair_level_sensitivity": "3.996 [3.279, 4.729]",
+          "cluster_unit": "template_family",
+          "n_clusters": 8,
+          "exploratory": true,
+          "protocol": "v2.0",
+          "stats_convention": "v2.3"
+        },
+        "control:mismatch": {
+          "n": 60,
+          "E_CF": "9.046 [5.195, 12.521]",
+          "E_CF_pair_level_sensitivity": "9.046 [7.442, 10.649]",
+          "cluster_unit": "template_family",
+          "n_clusters": 8,
+          "exploratory": true,
+          "protocol": "v2.0",
+          "stats_convention": "v2.3"
+        },
+        "control:random": {
+          "n": 60,
+          "E_CF": "8.270 [4.387, 12.031]",
+          "E_CF_pair_level_sensitivity": "8.270 [6.612, 10.001]",
+          "cluster_unit": "template_family",
+          "n_clusters": 8,
+          "exploratory": true,
+          "protocol": "v2.0",
+          "stats_convention": "v2.3"
+        },
+        "control:zero": {
+          "n": 60,
+          "E_CF": "9.065 [5.096, 12.642]",
+          "E_CF_pair_level_sensitivity": "9.065 [7.578, 10.549]",
+          "cluster_unit": "template_family",
+          "n_clusters": 8,
+          "exploratory": true,
+          "protocol": "v2.0",
+          "stats_convention": "v2.3"
+        },
+        "control:correct": {
+          "n": 60,
+          "E_CF": "8.159 [4.357, 11.584]",
+          "E_CF_pair_level_sensitivity": "8.159 [6.648, 9.701]",
+          "cluster_unit": "template_family",
+          "n_clusters": 8,
+          "exploratory": true,
+          "protocol": "v2.0",
+          "stats_convention": "v2.3"
+        },
+        "new_joint": {
+          "n": 60,
+          "E_CF": "8.159 [4.357, 11.584]",
+          "E_CF_pair_level_sensitivity": "8.159 [6.648, 9.701]",
+          "cluster_unit": "template_family",
+          "n_clusters": 8,
+          "exploratory": true,
+          "protocol": "v2.0",
+          "stats_convention": "v2.3"
+        }
+      },
+      "primary_endpoint": {
+        "point": 0.0,
+        "ci": [
+          0.0,
+          0.0
+        ],
+        "improved": false,
+        "cluster_unit": "template_family",
+        "n_clusters": 8,
+        "exploratory": true,
+        "pair_level_sensitivity": {
+          "point": 0.0,
+          "ci": [
+            0.0,
+            0.0
+          ]
+        },
+        "note": "paired E_CF difference (new - baseline); primary cluster = template_family"
+      },
+      "repair_vs_random": null,
+      "protocol": "v2.0",
+      "stats_convention": "v2.3",
+      "cluster_bootstrap_convention": {
+        "primary_cluster_unit": "template_family",
+        "pair_level_sensitivity_reported": true,
+        "min_clusters_for_inference": 24
+      },
+      "bootstrap_seed": 1,
+      "bootstrap_seed_source": "run config (experiment_config.bootstrap_seed / seed)"
+    },
+    "runs/p1_clean_mvp_seed2": {
+      "run_id": "p1_clean_mvp_seed2",
+      "arms": {
+        "self": {
+          "n": 60,
+          "E_CF": "0.000 [0.000, 0.000]",
+          "E_CF_pair_level_sensitivity": "0.000 [0.000, 0.000]",
+          "cluster_unit": "template_family",
+          "n_clusters": 8,
+          "exploratory": true,
+          "protocol": "v2.0",
+          "stats_convention": "v2.3"
+        },
+        "identity": {
+          "n": 60,
+          "E_CF": "0.000 [0.000, 0.000]",
+          "E_CF_pair_level_sensitivity": "0.000 [0.000, 0.000]",
+          "cluster_unit": "template_family",
+          "n_clusters": 8,
+          "exploratory": true,
+          "protocol": "v2.0",
+          "stats_convention": "v2.3"
+        },
+        "joint": {
+          "n": 60,
+          "E_CF": "8.540 [5.326, 11.610]",
+          "E_CF_pair_level_sensitivity": "8.540 [7.046, 10.051]",
+          "cluster_unit": "template_family",
+          "n_clusters": 8,
+          "exploratory": true,
+          "protocol": "v2.0",
+          "stats_convention": "v2.3"
+        },
+        "k_only": {
+          "n": 60,
+          "E_CF": "3.175 [1.785, 4.811]",
+          "E_CF_pair_level_sensitivity": "3.175 [2.433, 3.970]",
+          "cluster_unit": "template_family",
+          "n_clusters": 8,
+          "exploratory": true,
+          "protocol": "v2.0",
+          "stats_convention": "v2.3"
+        },
+        "v_only": {
+          "n": 60,
+          "E_CF": "4.412 [2.598, 6.153]",
+          "E_CF_pair_level_sensitivity": "4.412 [3.628, 5.209]",
+          "cluster_unit": "template_family",
+          "n_clusters": 8,
+          "exploratory": true,
+          "protocol": "v2.0",
+          "stats_convention": "v2.3"
+        },
+        "control:mismatch": {
+          "n": 60,
+          "E_CF": "9.432 [5.393, 13.242]",
+          "E_CF_pair_level_sensitivity": "9.432 [7.847, 10.998]",
+          "cluster_unit": "template_family",
+          "n_clusters": 8,
+          "exploratory": true,
+          "protocol": "v2.0",
+          "stats_convention": "v2.3"
+        },
+        "control:random": {
+          "n": 60,
+          "E_CF": "9.854 [6.307, 12.968]",
+          "E_CF_pair_level_sensitivity": "9.854 [8.339, 11.337]",
+          "cluster_unit": "template_family",
+          "n_clusters": 8,
+          "exploratory": true,
+          "protocol": "v2.0",
+          "stats_convention": "v2.3"
+        },
+        "control:zero": {
+          "n": 60,
+          "E_CF": "9.684 [5.640, 13.347]",
+          "E_CF_pair_level_sensitivity": "9.684 [8.154, 11.177]",
+          "cluster_unit": "template_family",
+          "n_clusters": 8,
+          "exploratory": true,
+          "protocol": "v2.0",
+          "stats_convention": "v2.3"
+        },
+        "control:correct": {
+          "n": 60,
+          "E_CF": "8.540 [5.326, 11.610]",
+          "E_CF_pair_level_sensitivity": "8.540 [7.046, 10.051]",
+          "cluster_unit": "template_family",
+          "n_clusters": 8,
+          "exploratory": true,
+          "protocol": "v2.0",
+          "stats_convention": "v2.3"
+        },
+        "new_joint": {
+          "n": 60,
+          "E_CF": "8.540 [5.326, 11.610]",
+          "E_CF_pair_level_sensitivity": "8.540 [7.046, 10.051]",
+          "cluster_unit": "template_family",
+          "n_clusters": 8,
+          "exploratory": true,
+          "protocol": "v2.0",
+          "stats_convention": "v2.3"
+        }
+      },
+      "primary_endpoint": {
+        "point": 0.0,
+        "ci": [
+          0.0,
+          0.0
+        ],
+        "improved": false,
+        "cluster_unit": "template_family",
+        "n_clusters": 8,
+        "exploratory": true,
+        "pair_level_sensitivity": {
+          "point": 0.0,
+          "ci": [
+            0.0,
+            0.0
+          ]
+        },
+        "note": "paired E_CF difference (new - baseline); primary cluster = template_family"
+      },
+      "repair_vs_random": null,
+      "protocol": "v2.0",
+      "stats_convention": "v2.3",
+      "cluster_bootstrap_convention": {
+        "primary_cluster_unit": "template_family",
+        "pair_level_sensitivity_reported": true,
+        "min_clusters_for_inference": 24
+      },
+      "bootstrap_seed": 2,
+      "bootstrap_seed_source": "run config (experiment_config.bootstrap_seed / seed)"
+    },
+    "runs/p1_gpu_kdonly_mvp_seed0": {
+      "run_id": "p1_gpu_kdonly_mvp_seed0",
+      "arms": {
+        "self": {
+          "n": 60,
+          "E_CF": "0.000 [0.000, 0.000]",
+          "E_CF_pair_level_sensitivity": "0.000 [0.000, 0.000]",
+          "cluster_unit": "template_family",
+          "n_clusters": 8,
+          "exploratory": true,
+          "protocol": "v2.0",
+          "stats_convention": "v2.3"
+        },
+        "identity": {
+          "n": 60,
+          "E_CF": "0.000 [0.000, 0.000]",
+          "E_CF_pair_level_sensitivity": "0.000 [0.000, 0.000]",
+          "cluster_unit": "template_family",
+          "n_clusters": 8,
+          "exploratory": true,
+          "protocol": "v2.0",
+          "stats_convention": "v2.3"
+        },
+        "joint": {
+          "n": 60,
+          "E_CF": "0.735 [0.416, 1.082]",
+          "E_CF_pair_level_sensitivity": "0.735 [0.551, 0.941]",
+          "cluster_unit": "template_family",
+          "n_clusters": 8,
+          "exploratory": true,
+          "protocol": "v2.0",
+          "stats_convention": "v2.3"
+        },
+        "k_only": {
+          "n": 60,
+          "E_CF": "1.809 [0.991, 2.858]",
+          "E_CF_pair_level_sensitivity": "1.809 [1.354, 2.301]",
+          "cluster_unit": "template_family",
+          "n_clusters": 8,
+          "exploratory": true,
+          "protocol": "v2.0",
+          "stats_convention": "v2.3"
+        },
+        "v_only": {
+          "n": 60,
+          "E_CF": "2.164 [1.368, 2.978]",
+          "E_CF_pair_level_sensitivity": "2.164 [1.705, 2.650]",
+          "cluster_unit": "template_family",
+          "n_clusters": 8,
+          "exploratory": true,
+          "protocol": "v2.0",
+          "stats_convention": "v2.3"
+        },
+        "control:mismatch": {
+          "n": 60,
+          "E_CF": "6.263 [3.523, 8.939]",
+          "E_CF_pair_level_sensitivity": "6.263 [5.100, 7.459]",
+          "cluster_unit": "template_family",
+          "n_clusters": 8,
+          "exploratory": true,
+          "protocol": "v2.0",
+          "stats_convention": "v2.3"
+        },
+        "control:random": {
+          "n": 60,
+          "E_CF": "5.486 [2.965, 7.888]",
+          "E_CF_pair_level_sensitivity": "5.486 [4.445, 6.515]",
+          "cluster_unit": "template_family",
+          "n_clusters": 8,
+          "exploratory": true,
+          "protocol": "v2.0",
+          "stats_convention": "v2.3"
+        },
+        "control:zero": {
+          "n": 60,
+          "E_CF": "6.159 [3.325, 8.809]",
+          "E_CF_pair_level_sensitivity": "6.159 [5.009, 7.277]",
+          "cluster_unit": "template_family",
+          "n_clusters": 8,
+          "exploratory": true,
+          "protocol": "v2.0",
+          "stats_convention": "v2.3"
+        },
+        "control:correct": {
+          "n": 60,
+          "E_CF": "0.735 [0.416, 1.082]",
+          "E_CF_pair_level_sensitivity": "0.735 [0.551, 0.941]",
+          "cluster_unit": "template_family",
+          "n_clusters": 8,
+          "exploratory": true,
+          "protocol": "v2.0",
+          "stats_convention": "v2.3"
+        },
+        "new_joint": {
+          "n": 60,
+          "E_CF": "0.735 [0.416, 1.082]",
+          "E_CF_pair_level_sensitivity": "0.735 [0.551, 0.941]",
+          "cluster_unit": "template_family",
+          "n_clusters": 8,
+          "exploratory": true,
+          "protocol": "v2.0",
+          "stats_convention": "v2.3"
+        }
+      },
+      "primary_endpoint": {
+        "point": 0.0,
+        "ci": [
+          0.0,
+          0.0
+        ],
+        "improved": false,
+        "cluster_unit": "template_family",
+        "n_clusters": 8,
+        "exploratory": true,
+        "pair_level_sensitivity": {
+          "point": 0.0,
+          "ci": [
+            0.0,
+            0.0
+          ]
+        },
+        "note": "paired E_CF difference (new - baseline); primary cluster = template_family"
+      },
+      "repair_vs_random": null,
+      "protocol": "v2.0",
+      "stats_convention": "v2.3",
+      "cluster_bootstrap_convention": {
+        "primary_cluster_unit": "template_family",
+        "pair_level_sensitivity_reported": true,
+        "min_clusters_for_inference": 24
+      },
+      "bootstrap_seed": 0,
+      "bootstrap_seed_source": "run config (experiment_config.bootstrap_seed / seed)"
+    },
+    "runs/p1_gpu_kdonly_mvp_seed1_par": {
+      "run_id": "p1_gpu_kdonly_mvp_seed1_par",
+      "arms": {
+        "self": {
+          "n": 60,
+          "E_CF": "0.000 [0.000, 0.000]",
+          "E_CF_pair_level_sensitivity": "0.000 [0.000, 0.000]",
+          "cluster_unit": "template_family",
+          "n_clusters": 8,
+          "exploratory": true,
+          "protocol": "v2.0",
+          "stats_convention": "v2.3"
+        },
+        "identity": {
+          "n": 60,
+          "E_CF": "0.000 [0.000, 0.000]",
+          "E_CF_pair_level_sensitivity": "0.000 [0.000, 0.000]",
+          "cluster_unit": "template_family",
+          "n_clusters": 8,
+          "exploratory": true,
+          "protocol": "v2.0",
+          "stats_convention": "v2.3"
+        },
+        "joint": {
+          "n": 60,
+          "E_CF": "1.034 [0.610, 1.434]",
+          "E_CF_pair_level_sensitivity": "1.034 [0.761, 1.323]",
+          "cluster_unit": "template_family",
+          "n_clusters": 8,
+          "exploratory": true,
+          "protocol": "v2.0",
+          "stats_convention": "v2.3"
+        },
+        "k_only": {
+          "n": 60,
+          "E_CF": "3.398 [1.535, 5.455]",
+          "E_CF_pair_level_sensitivity": "3.398 [2.604, 4.265]",
+          "cluster_unit": "template_family",
+          "n_clusters": 8,
+          "exploratory": true,
+          "protocol": "v2.0",
+          "stats_convention": "v2.3"
+        },
+        "v_only": {
+          "n": 60,
+          "E_CF": "1.978 [1.209, 2.685]",
+          "E_CF_pair_level_sensitivity": "1.978 [1.557, 2.433]",
+          "cluster_unit": "template_family",
+          "n_clusters": 8,
+          "exploratory": true,
+          "protocol": "v2.0",
+          "stats_convention": "v2.3"
+        },
+        "control:mismatch": {
+          "n": 60,
+          "E_CF": "6.157 [3.908, 8.324]",
+          "E_CF_pair_level_sensitivity": "6.157 [4.970, 7.430]",
+          "cluster_unit": "template_family",
+          "n_clusters": 8,
+          "exploratory": true,
+          "protocol": "v2.0",
+          "stats_convention": "v2.3"
+        },
+        "control:random": {
+          "n": 60,
+          "E_CF": "5.136 [2.898, 7.494]",
+          "E_CF_pair_level_sensitivity": "5.136 [4.159, 6.133]",
+          "cluster_unit": "template_family",
+          "n_clusters": 8,
+          "exploratory": true,
+          "protocol": "v2.0",
+          "stats_convention": "v2.3"
+        },
+        "control:zero": {
+          "n": 60,
+          "E_CF": "5.897 [3.505, 8.284]",
+          "E_CF_pair_level_sensitivity": "5.897 [4.868, 6.951]",
+          "cluster_unit": "template_family",
+          "n_clusters": 8,
+          "exploratory": true,
+          "protocol": "v2.0",
+          "stats_convention": "v2.3"
+        },
+        "control:correct": {
+          "n": 60,
+          "E_CF": "1.034 [0.610, 1.434]",
+          "E_CF_pair_level_sensitivity": "1.034 [0.761, 1.323]",
+          "cluster_unit": "template_family",
+          "n_clusters": 8,
+          "exploratory": true,
+          "protocol": "v2.0",
+          "stats_convention": "v2.3"
+        },
+        "new_joint": {
+          "n": 60,
+          "E_CF": "1.034 [0.610, 1.434]",
+          "E_CF_pair_level_sensitivity": "1.034 [0.761, 1.323]",
+          "cluster_unit": "template_family",
+          "n_clusters": 8,
+          "exploratory": true,
+          "protocol": "v2.0",
+          "stats_convention": "v2.3"
+        }
+      },
+      "primary_endpoint": {
+        "point": 0.0,
+        "ci": [
+          0.0,
+          0.0
+        ],
+        "improved": false,
+        "cluster_unit": "template_family",
+        "n_clusters": 8,
+        "exploratory": true,
+        "pair_level_sensitivity": {
+          "point": 0.0,
+          "ci": [
+            0.0,
+            0.0
+          ]
+        },
+        "note": "paired E_CF difference (new - baseline); primary cluster = template_family"
+      },
+      "repair_vs_random": null,
+      "protocol": "v2.0",
+      "stats_convention": "v2.3",
+      "cluster_bootstrap_convention": {
+        "primary_cluster_unit": "template_family",
+        "pair_level_sensitivity_reported": true,
+        "min_clusters_for_inference": 24
+      },
+      "bootstrap_seed": 1,
+      "bootstrap_seed_source": "run config (experiment_config.bootstrap_seed / seed)"
+    },
+    "runs/p1_gpu_kdonly_mvp_seed2_fast": {
+      "run_id": "p1_gpu_kdonly_mvp_seed2_fast",
+      "arms": {
+        "self": {
+          "n": 60,
+          "E_CF": "0.000 [0.000, 0.000]",
+          "E_CF_pair_level_sensitivity": "0.000 [0.000, 0.000]",
+          "cluster_unit": "template_family",
+          "n_clusters": 8,
+          "exploratory": true,
+          "protocol": "v2.0",
+          "stats_convention": "v2.3"
+        },
+        "identity": {
+          "n": 60,
+          "E_CF": "0.000 [0.000, 0.000]",
+          "E_CF_pair_level_sensitivity": "0.000 [0.000, 0.000]",
+          "cluster_unit": "template_family",
+          "n_clusters": 8,
+          "exploratory": true,
+          "protocol": "v2.0",
+          "stats_convention": "v2.3"
+        },
+        "joint": {
+          "n": 60,
+          "E_CF": "1.539 [0.864, 2.251]",
+          "E_CF_pair_level_sensitivity": "1.539 [1.153, 1.953]",
+          "cluster_unit": "template_family",
+          "n_clusters": 8,
+          "exploratory": true,
+          "protocol": "v2.0",
+          "stats_convention": "v2.3"
+        },
+        "k_only": {
+          "n": 60,
+          "E_CF": "1.901 [1.018, 2.793]",
+          "E_CF_pair_level_sensitivity": "1.901 [1.454, 2.380]",
+          "cluster_unit": "template_family",
+          "n_clusters": 8,
+          "exploratory": true,
+          "protocol": "v2.0",
+          "stats_convention": "v2.3"
+        },
+        "v_only": {
+          "n": 60,
+          "E_CF": "2.629 [1.630, 3.634]",
+          "E_CF_pair_level_sensitivity": "2.629 [2.097, 3.176]",
+          "cluster_unit": "template_family",
+          "n_clusters": 8,
+          "exploratory": true,
+          "protocol": "v2.0",
+          "stats_convention": "v2.3"
+        },
+        "control:mismatch": {
+          "n": 60,
+          "E_CF": "6.220 [3.404, 9.106]",
+          "E_CF_pair_level_sensitivity": "6.220 [4.952, 7.577]",
+          "cluster_unit": "template_family",
+          "n_clusters": 8,
+          "exploratory": true,
+          "protocol": "v2.0",
+          "stats_convention": "v2.3"
+        },
+        "control:random": {
+          "n": 60,
+          "E_CF": "5.395 [2.873, 7.954]",
+          "E_CF_pair_level_sensitivity": "5.395 [4.298, 6.545]",
+          "cluster_unit": "template_family",
+          "n_clusters": 8,
+          "exploratory": true,
+          "protocol": "v2.0",
+          "stats_convention": "v2.3"
+        },
+        "control:zero": {
+          "n": 60,
+          "E_CF": "6.643 [3.875, 9.328]",
+          "E_CF_pair_level_sensitivity": "6.643 [5.466, 7.847]",
+          "cluster_unit": "template_family",
+          "n_clusters": 8,
+          "exploratory": true,
+          "protocol": "v2.0",
+          "stats_convention": "v2.3"
+        },
+        "control:correct": {
+          "n": 60,
+          "E_CF": "1.539 [0.864, 2.251]",
+          "E_CF_pair_level_sensitivity": "1.539 [1.153, 1.953]",
+          "cluster_unit": "template_family",
+          "n_clusters": 8,
+          "exploratory": true,
+          "protocol": "v2.0",
+          "stats_convention": "v2.3"
+        },
+        "new_joint": {
+          "n": 60,
+          "E_CF": "1.539 [0.864, 2.251]",
+          "E_CF_pair_level_sensitivity": "1.539 [1.153, 1.953]",
+          "cluster_unit": "template_family",
+          "n_clusters": 8,
+          "exploratory": true,
+          "protocol": "v2.0",
+          "stats_convention": "v2.3"
+        }
+      },
+      "primary_endpoint": {
+        "point": 0.0,
+        "ci": [
+          0.0,
+          0.0
+        ],
+        "improved": false,
+        "cluster_unit": "template_family",
+        "n_clusters": 8,
+        "exploratory": true,
+        "pair_level_sensitivity": {
+          "point": 0.0,
+          "ci": [
+            0.0,
+            0.0
+          ]
+        },
+        "note": "paired E_CF difference (new - baseline); primary cluster = template_family"
+      },
+      "repair_vs_random": null,
+      "protocol": "v2.0",
+      "stats_convention": "v2.3",
+      "cluster_bootstrap_convention": {
+        "primary_cluster_unit": "template_family",
+        "pair_level_sensitivity_reported": true,
+        "min_clusters_for_inference": 24
+      },
+      "bootstrap_seed": 2,
+      "bootstrap_seed_source": "run config (experiment_config.bootstrap_seed / seed)"
+    },
+    "runs/p1_gpu_main_seed0": {
+      "run_id": "p1_gpu_main_seed0",
+      "arms": {
+        "self": {
+          "n": 60,
+          "E_CF": "0.000 [0.000, 0.000]",
+          "E_CF_pair_level_sensitivity": "0.000 [0.000, 0.000]",
+          "cluster_unit": "template_family",
+          "n_clusters": 8,
+          "exploratory": true,
+          "protocol": "v2.0",
+          "stats_convention": "v2.3"
+        },
+        "identity": {
+          "n": 60,
+          "E_CF": "0.000 [0.000, 0.000]",
+          "E_CF_pair_level_sensitivity": "0.000 [0.000, 0.000]",
+          "cluster_unit": "template_family",
+          "n_clusters": 8,
+          "exploratory": true,
+          "protocol": "v2.0",
+          "stats_convention": "v2.3"
+        },
+        "joint": {
+          "n": 60,
+          "E_CF": "6.044 [3.613, 8.358]",
+          "E_CF_pair_level_sensitivity": "6.044 [4.737, 7.385]",
+          "cluster_unit": "template_family",
+          "n_clusters": 8,
+          "exploratory": true,
+          "protocol": "v2.0",
+          "stats_convention": "v2.3"
+        },
+        "k_only": {
+          "n": 60,
+          "E_CF": "1.247 [0.690, 1.907]",
+          "E_CF_pair_level_sensitivity": "1.247 [0.947, 1.562]",
+          "cluster_unit": "template_family",
+          "n_clusters": 8,
+          "exploratory": true,
+          "protocol": "v2.0",
+          "stats_convention": "v2.3"
+        },
+        "v_only": {
+          "n": 60,
+          "E_CF": "2.914 [1.662, 4.326]",
+          "E_CF_pair_level_sensitivity": "2.914 [2.335, 3.500]",
+          "cluster_unit": "template_family",
+          "n_clusters": 8,
+          "exploratory": true,
+          "protocol": "v2.0",
+          "stats_convention": "v2.3"
+        },
+        "control:mismatch": {
+          "n": 60,
+          "E_CF": "5.556 [3.505, 7.475]",
+          "E_CF_pair_level_sensitivity": "5.556 [4.354, 6.808]",
+          "cluster_unit": "template_family",
+          "n_clusters": 8,
+          "exploratory": true,
+          "protocol": "v2.0",
+          "stats_convention": "v2.3"
+        },
+        "control:random": {
+          "n": 60,
+          "E_CF": "6.273 [3.904, 8.431]",
+          "E_CF_pair_level_sensitivity": "6.273 [4.998, 7.598]",
+          "cluster_unit": "template_family",
+          "n_clusters": 8,
+          "exploratory": true,
+          "protocol": "v2.0",
+          "stats_convention": "v2.3"
+        },
+        "control:zero": {
+          "n": 60,
+          "E_CF": "5.597 [3.115, 8.085]",
+          "E_CF_pair_level_sensitivity": "5.597 [4.583, 6.599]",
+          "cluster_unit": "template_family",
+          "n_clusters": 8,
+          "exploratory": true,
+          "protocol": "v2.0",
+          "stats_convention": "v2.3"
+        },
+        "control:correct": {
+          "n": 60,
+          "E_CF": "6.044 [3.613, 8.358]",
+          "E_CF_pair_level_sensitivity": "6.044 [4.737, 7.385]",
+          "cluster_unit": "template_family",
+          "n_clusters": 8,
+          "exploratory": true,
+          "protocol": "v2.0",
+          "stats_convention": "v2.3"
+        },
+        "new_joint": {
+          "n": 60,
+          "E_CF": "6.044 [3.613, 8.358]",
+          "E_CF_pair_level_sensitivity": "6.044 [4.737, 7.385]",
+          "cluster_unit": "template_family",
+          "n_clusters": 8,
+          "exploratory": true,
+          "protocol": "v2.0",
+          "stats_convention": "v2.3"
+        }
+      },
+      "primary_endpoint": {
+        "point": 0.0,
+        "ci": [
+          0.0,
+          0.0
+        ],
+        "improved": false,
+        "cluster_unit": "template_family",
+        "n_clusters": 8,
+        "exploratory": true,
+        "pair_level_sensitivity": {
+          "point": 0.0,
+          "ci": [
+            0.0,
+            0.0
+          ]
+        },
+        "note": "paired E_CF difference (new - baseline); primary cluster = template_family"
+      },
+      "repair_vs_random": null,
+      "protocol": "v2.0",
+      "stats_convention": "v2.3",
+      "cluster_bootstrap_convention": {
+        "primary_cluster_unit": "template_family",
+        "pair_level_sensitivity_reported": true,
+        "min_clusters_for_inference": 24
+      },
+      "bootstrap_seed": 0,
+      "bootstrap_seed_source": "run config (experiment_config.bootstrap_seed / seed)"
+    },
+    "runs/p1_gpu_main_seed1": {
+      "run_id": "p1_gpu_main_seed1",
+      "arms": {
+        "self": {
+          "n": 60,
+          "E_CF": "0.000 [0.000, 0.000]",
+          "E_CF_pair_level_sensitivity": "0.000 [0.000, 0.000]",
+          "cluster_unit": "template_family",
+          "n_clusters": 8,
+          "exploratory": true,
+          "protocol": "v2.0",
+          "stats_convention": "v2.3"
+        },
+        "identity": {
+          "n": 60,
+          "E_CF": "0.000 [0.000, 0.000]",
+          "E_CF_pair_level_sensitivity": "0.000 [0.000, 0.000]",
+          "cluster_unit": "template_family",
+          "n_clusters": 8,
+          "exploratory": true,
+          "protocol": "v2.0",
+          "stats_convention": "v2.3"
+        },
+        "joint": {
+          "n": 60,
+          "E_CF": "5.365 [3.241, 7.391]",
+          "E_CF_pair_level_sensitivity": "5.365 [4.161, 6.641]",
+          "cluster_unit": "template_family",
+          "n_clusters": 8,
+          "exploratory": true,
+          "protocol": "v2.0",
+          "stats_convention": "v2.3"
+        },
+        "k_only": {
+          "n": 60,
+          "E_CF": "1.553 [0.853, 2.365]",
+          "E_CF_pair_level_sensitivity": "1.553 [1.191, 1.933]",
+          "cluster_unit": "template_family",
+          "n_clusters": 8,
+          "exploratory": true,
+          "protocol": "v2.0",
+          "stats_convention": "v2.3"
+        },
+        "v_only": {
+          "n": 60,
+          "E_CF": "2.815 [1.544, 4.161]",
+          "E_CF_pair_level_sensitivity": "2.815 [2.275, 3.381]",
+          "cluster_unit": "template_family",
+          "n_clusters": 8,
+          "exploratory": true,
+          "protocol": "v2.0",
+          "stats_convention": "v2.3"
+        },
+        "control:mismatch": {
+          "n": 60,
+          "E_CF": "6.780 [3.980, 9.580]",
+          "E_CF_pair_level_sensitivity": "6.780 [5.408, 8.163]",
+          "cluster_unit": "template_family",
+          "n_clusters": 8,
+          "exploratory": true,
+          "protocol": "v2.0",
+          "stats_convention": "v2.3"
+        },
+        "control:random": {
+          "n": 60,
+          "E_CF": "5.806 [3.437, 8.470]",
+          "E_CF_pair_level_sensitivity": "5.806 [4.431, 7.325]",
+          "cluster_unit": "template_family",
+          "n_clusters": 8,
+          "exploratory": true,
+          "protocol": "v2.0",
+          "stats_convention": "v2.3"
+        },
+        "control:zero": {
+          "n": 60,
+          "E_CF": "5.325 [2.957, 7.755]",
+          "E_CF_pair_level_sensitivity": "5.325 [4.359, 6.319]",
+          "cluster_unit": "template_family",
+          "n_clusters": 8,
+          "exploratory": true,
+          "protocol": "v2.0",
+          "stats_convention": "v2.3"
+        },
+        "control:correct": {
+          "n": 60,
+          "E_CF": "5.365 [3.241, 7.391]",
+          "E_CF_pair_level_sensitivity": "5.365 [4.161, 6.641]",
+          "cluster_unit": "template_family",
+          "n_clusters": 8,
+          "exploratory": true,
+          "protocol": "v2.0",
+          "stats_convention": "v2.3"
+        },
+        "new_joint": {
+          "n": 60,
+          "E_CF": "5.365 [3.241, 7.391]",
+          "E_CF_pair_level_sensitivity": "5.365 [4.161, 6.641]",
+          "cluster_unit": "template_family",
+          "n_clusters": 8,
+          "exploratory": true,
+          "protocol": "v2.0",
+          "stats_convention": "v2.3"
+        }
+      },
+      "primary_endpoint": {
+        "point": 0.0,
+        "ci": [
+          0.0,
+          0.0
+        ],
+        "improved": false,
+        "cluster_unit": "template_family",
+        "n_clusters": 8,
+        "exploratory": true,
+        "pair_level_sensitivity": {
+          "point": 0.0,
+          "ci": [
+            0.0,
+            0.0
+          ]
+        },
+        "note": "paired E_CF difference (new - baseline); primary cluster = template_family"
+      },
+      "repair_vs_random": null,
+      "protocol": "v2.0",
+      "stats_convention": "v2.3",
+      "cluster_bootstrap_convention": {
+        "primary_cluster_unit": "template_family",
+        "pair_level_sensitivity_reported": true,
+        "min_clusters_for_inference": 24
+      },
+      "bootstrap_seed": 1,
+      "bootstrap_seed_source": "run config (experiment_config.bootstrap_seed / seed)"
+    },
+    "runs/p1_gpu_main_seed2": {
+      "run_id": "p1_gpu_main_seed2",
+      "arms": {
+        "self": {
+          "n": 60,
+          "E_CF": "0.000 [0.000, 0.000]",
+          "E_CF_pair_level_sensitivity": "0.000 [0.000, 0.000]",
+          "cluster_unit": "template_family",
+          "n_clusters": 8,
+          "exploratory": true,
+          "protocol": "v2.0",
+          "stats_convention": "v2.3"
+        },
+        "identity": {
+          "n": 60,
+          "E_CF": "0.000 [0.000, 0.000]",
+          "E_CF_pair_level_sensitivity": "0.000 [0.000, 0.000]",
+          "cluster_unit": "template_family",
+          "n_clusters": 8,
+          "exploratory": true,
+          "protocol": "v2.0",
+          "stats_convention": "v2.3"
+        },
+        "joint": {
+          "n": 60,
+          "E_CF": "6.080 [3.951, 7.913]",
+          "E_CF_pair_level_sensitivity": "6.080 [4.832, 7.428]",
+          "cluster_unit": "template_family",
+          "n_clusters": 8,
+          "exploratory": true,
+          "protocol": "v2.0",
+          "stats_convention": "v2.3"
+        },
+        "k_only": {
+          "n": 60,
+          "E_CF": "1.615 [0.990, 2.288]",
+          "E_CF_pair_level_sensitivity": "1.615 [1.242, 2.006]",
+          "cluster_unit": "template_family",
+          "n_clusters": 8,
+          "exploratory": true,
+          "protocol": "v2.0",
+          "stats_convention": "v2.3"
+        },
+        "v_only": {
+          "n": 60,
+          "E_CF": "3.198 [1.923, 4.492]",
+          "E_CF_pair_level_sensitivity": "3.198 [2.628, 3.780]",
+          "cluster_unit": "template_family",
+          "n_clusters": 8,
+          "exploratory": true,
+          "protocol": "v2.0",
+          "stats_convention": "v2.3"
+        },
+        "control:mismatch": {
+          "n": 60,
+          "E_CF": "5.833 [3.463, 8.419]",
+          "E_CF_pair_level_sensitivity": "5.833 [4.538, 7.170]",
+          "cluster_unit": "template_family",
+          "n_clusters": 8,
+          "exploratory": true,
+          "protocol": "v2.0",
+          "stats_convention": "v2.3"
+        },
+        "control:random": {
+          "n": 60,
+          "E_CF": "5.818 [3.775, 7.816]",
+          "E_CF_pair_level_sensitivity": "5.818 [4.661, 7.048]",
+          "cluster_unit": "template_family",
+          "n_clusters": 8,
+          "exploratory": true,
+          "protocol": "v2.0",
+          "stats_convention": "v2.3"
+        },
+        "control:zero": {
+          "n": 60,
+          "E_CF": "5.464 [3.175, 7.826]",
+          "E_CF_pair_level_sensitivity": "5.464 [4.500, 6.432]",
+          "cluster_unit": "template_family",
+          "n_clusters": 8,
+          "exploratory": true,
+          "protocol": "v2.0",
+          "stats_convention": "v2.3"
+        },
+        "control:correct": {
+          "n": 60,
+          "E_CF": "6.080 [3.951, 7.913]",
+          "E_CF_pair_level_sensitivity": "6.080 [4.832, 7.428]",
+          "cluster_unit": "template_family",
+          "n_clusters": 8,
+          "exploratory": true,
+          "protocol": "v2.0",
+          "stats_convention": "v2.3"
+        },
+        "new_joint": {
+          "n": 60,
+          "E_CF": "6.080 [3.951, 7.913]",
+          "E_CF_pair_level_sensitivity": "6.080 [4.832, 7.428]",
+          "cluster_unit": "template_family",
+          "n_clusters": 8,
+          "exploratory": true,
+          "protocol": "v2.0",
+          "stats_convention": "v2.3"
+        }
+      },
+      "primary_endpoint": {
+        "point": 0.0,
+        "ci": [
+          0.0,
+          0.0
+        ],
+        "improved": false,
+        "cluster_unit": "template_family",
+        "n_clusters": 8,
+        "exploratory": true,
+        "pair_level_sensitivity": {
+          "point": 0.0,
+          "ci": [
+            0.0,
+            0.0
+          ]
+        },
+        "note": "paired E_CF difference (new - baseline); primary cluster = template_family"
+      },
+      "repair_vs_random": null,
+      "protocol": "v2.0",
+      "stats_convention": "v2.3",
+      "cluster_bootstrap_convention": {
+        "primary_cluster_unit": "template_family",
+        "pair_level_sensitivity_reported": true,
+        "min_clusters_for_inference": 24
+      },
+      "bootstrap_seed": 2,
+      "bootstrap_seed_source": "run config (experiment_config.bootstrap_seed / seed)"
+    },
+    "runs/p1_gpu_mvp_repro_seed0": {
+      "run_id": "p1_gpu_mvp_repro_seed0",
+      "arms": {
+        "self": {
+          "n": 60,
+          "E_CF": "0.000 [0.000, 0.000]",
+          "E_CF_pair_level_sensitivity": "0.000 [0.000, 0.000]",
+          "cluster_unit": "template_family",
+          "n_clusters": 8,
+          "exploratory": true,
+          "protocol": "v2.0",
+          "stats_convention": "v2.3"
+        },
+        "identity": {
+          "n": 60,
+          "E_CF": "0.000 [0.000, 0.000]",
+          "E_CF_pair_level_sensitivity": "0.000 [0.000, 0.000]",
+          "cluster_unit": "template_family",
+          "n_clusters": 8,
+          "exploratory": true,
+          "protocol": "v2.0",
+          "stats_convention": "v2.3"
+        },
+        "joint": {
+          "n": 60,
+          "E_CF": "1.968 [1.373, 2.427]",
+          "E_CF_pair_level_sensitivity": "1.968 [1.615, 2.320]",
+          "cluster_unit": "template_family",
+          "n_clusters": 8,
+          "exploratory": true,
+          "protocol": "v2.0",
+          "stats_convention": "v2.3"
+        },
+        "k_only": {
+          "n": 60,
+          "E_CF": "0.630 [0.397, 0.883]",
+          "E_CF_pair_level_sensitivity": "0.630 [0.486, 0.782]",
+          "cluster_unit": "template_family",
+          "n_clusters": 8,
+          "exploratory": true,
+          "protocol": "v2.0",
+          "stats_convention": "v2.3"
+        },
+        "v_only": {
+          "n": 60,
+          "E_CF": "1.851 [1.297, 2.238]",
+          "E_CF_pair_level_sensitivity": "1.851 [1.542, 2.157]",
+          "cluster_unit": "template_family",
+          "n_clusters": 8,
+          "exploratory": true,
+          "protocol": "v2.0",
+          "stats_convention": "v2.3"
+        },
+        "control:mismatch": {
+          "n": 60,
+          "E_CF": "6.103 [3.354, 8.755]",
+          "E_CF_pair_level_sensitivity": "6.103 [4.963, 7.257]",
+          "cluster_unit": "template_family",
+          "n_clusters": 8,
+          "exploratory": true,
+          "protocol": "v2.0",
+          "stats_convention": "v2.3"
+        },
+        "control:random": {
+          "n": 60,
+          "E_CF": "4.218 [2.372, 6.042]",
+          "E_CF_pair_level_sensitivity": "4.218 [3.230, 5.236]",
+          "cluster_unit": "template_family",
+          "n_clusters": 8,
+          "exploratory": true,
+          "protocol": "v2.0",
+          "stats_convention": "v2.3"
+        },
+        "control:zero": {
+          "n": 60,
+          "E_CF": "6.159 [3.325, 8.809]",
+          "E_CF_pair_level_sensitivity": "6.159 [5.009, 7.277]",
+          "cluster_unit": "template_family",
+          "n_clusters": 8,
+          "exploratory": true,
+          "protocol": "v2.0",
+          "stats_convention": "v2.3"
+        },
+        "control:correct": {
+          "n": 60,
+          "E_CF": "1.968 [1.373, 2.427]",
+          "E_CF_pair_level_sensitivity": "1.968 [1.615, 2.320]",
+          "cluster_unit": "template_family",
+          "n_clusters": 8,
+          "exploratory": true,
+          "protocol": "v2.0",
+          "stats_convention": "v2.3"
+        },
+        "new_joint": {
+          "n": 60,
+          "E_CF": "1.968 [1.373, 2.427]",
+          "E_CF_pair_level_sensitivity": "1.968 [1.615, 2.320]",
+          "cluster_unit": "template_family",
+          "n_clusters": 8,
+          "exploratory": true,
+          "protocol": "v2.0",
+          "stats_convention": "v2.3"
+        }
+      },
+      "primary_endpoint": {
+        "point": 0.0,
+        "ci": [
+          0.0,
+          0.0
+        ],
+        "improved": false,
+        "cluster_unit": "template_family",
+        "n_clusters": 8,
+        "exploratory": true,
+        "pair_level_sensitivity": {
+          "point": 0.0,
+          "ci": [
+            0.0,
+            0.0
+          ]
+        },
+        "note": "paired E_CF difference (new - baseline); primary cluster = template_family"
+      },
+      "repair_vs_random": null,
+      "protocol": "v2.0",
+      "stats_convention": "v2.3",
+      "cluster_bootstrap_convention": {
+        "primary_cluster_unit": "template_family",
+        "pair_level_sensitivity_reported": true,
+        "min_clusters_for_inference": 24
+      },
+      "bootstrap_seed": 0,
+      "bootstrap_seed_source": "run config (experiment_config.bootstrap_seed / seed)"
+    },
+    "runs/p1_gpu_mvp_repro_seed1": {
+      "run_id": "p1_gpu_mvp_repro_seed1",
+      "arms": {
+        "self": {
+          "n": 60,
+          "E_CF": "0.000 [0.000, 0.000]",
+          "E_CF_pair_level_sensitivity": "0.000 [0.000, 0.000]",
+          "cluster_unit": "template_family",
+          "n_clusters": 8,
+          "exploratory": true,
+          "protocol": "v2.0",
+          "stats_convention": "v2.3"
+        },
+        "identity": {
+          "n": 60,
+          "E_CF": "0.000 [0.000, 0.000]",
+          "E_CF_pair_level_sensitivity": "0.000 [0.000, 0.000]",
+          "cluster_unit": "template_family",
+          "n_clusters": 8,
+          "exploratory": true,
+          "protocol": "v2.0",
+          "stats_convention": "v2.3"
+        },
+        "joint": {
+          "n": 60,
+          "E_CF": "1.934 [1.187, 2.616]",
+          "E_CF_pair_level_sensitivity": "1.934 [1.561, 2.314]",
+          "cluster_unit": "template_family",
+          "n_clusters": 8,
+          "exploratory": true,
+          "protocol": "v2.0",
+          "stats_convention": "v2.3"
+        },
+        "k_only": {
+          "n": 60,
+          "E_CF": "0.566 [0.357, 0.760]",
+          "E_CF_pair_level_sensitivity": "0.566 [0.429, 0.708]",
+          "cluster_unit": "template_family",
+          "n_clusters": 8,
+          "exploratory": true,
+          "protocol": "v2.0",
+          "stats_convention": "v2.3"
+        },
+        "v_only": {
+          "n": 60,
+          "E_CF": "1.660 [1.043, 2.262]",
+          "E_CF_pair_level_sensitivity": "1.660 [1.355, 1.980]",
+          "cluster_unit": "template_family",
+          "n_clusters": 8,
+          "exploratory": true,
+          "protocol": "v2.0",
+          "stats_convention": "v2.3"
+        },
+        "control:mismatch": {
+          "n": 60,
+          "E_CF": "5.950 [3.677, 8.188]",
+          "E_CF_pair_level_sensitivity": "5.950 [4.858, 7.093]",
+          "cluster_unit": "template_family",
+          "n_clusters": 8,
+          "exploratory": true,
+          "protocol": "v2.0",
+          "stats_convention": "v2.3"
+        },
+        "control:random": {
+          "n": 60,
+          "E_CF": "4.375 [2.443, 6.502]",
+          "E_CF_pair_level_sensitivity": "4.375 [3.395, 5.437]",
+          "cluster_unit": "template_family",
+          "n_clusters": 8,
+          "exploratory": true,
+          "protocol": "v2.0",
+          "stats_convention": "v2.3"
+        },
+        "control:zero": {
+          "n": 60,
+          "E_CF": "5.897 [3.505, 8.284]",
+          "E_CF_pair_level_sensitivity": "5.897 [4.868, 6.951]",
+          "cluster_unit": "template_family",
+          "n_clusters": 8,
+          "exploratory": true,
+          "protocol": "v2.0",
+          "stats_convention": "v2.3"
+        },
+        "control:correct": {
+          "n": 60,
+          "E_CF": "1.934 [1.187, 2.616]",
+          "E_CF_pair_level_sensitivity": "1.934 [1.561, 2.314]",
+          "cluster_unit": "template_family",
+          "n_clusters": 8,
+          "exploratory": true,
+          "protocol": "v2.0",
+          "stats_convention": "v2.3"
+        },
+        "new_joint": {
+          "n": 60,
+          "E_CF": "1.934 [1.187, 2.616]",
+          "E_CF_pair_level_sensitivity": "1.934 [1.561, 2.314]",
+          "cluster_unit": "template_family",
+          "n_clusters": 8,
+          "exploratory": true,
+          "protocol": "v2.0",
+          "stats_convention": "v2.3"
+        }
+      },
+      "primary_endpoint": {
+        "point": 0.0,
+        "ci": [
+          0.0,
+          0.0
+        ],
+        "improved": false,
+        "cluster_unit": "template_family",
+        "n_clusters": 8,
+        "exploratory": true,
+        "pair_level_sensitivity": {
+          "point": 0.0,
+          "ci": [
+            0.0,
+            0.0
+          ]
+        },
+        "note": "paired E_CF difference (new - baseline); primary cluster = template_family"
+      },
+      "repair_vs_random": null,
+      "protocol": "v2.0",
+      "stats_convention": "v2.3",
+      "cluster_bootstrap_convention": {
+        "primary_cluster_unit": "template_family",
+        "pair_level_sensitivity_reported": true,
+        "min_clusters_for_inference": 24
+      },
+      "bootstrap_seed": 1,
+      "bootstrap_seed_source": "run config (experiment_config.bootstrap_seed / seed)"
+    },
+    "runs/p1_gpu_mvp_repro_seed2": {
+      "run_id": "p1_gpu_mvp_repro_seed2",
+      "arms": {
+        "self": {
+          "n": 60,
+          "E_CF": "0.000 [0.000, 0.000]",
+          "E_CF_pair_level_sensitivity": "0.000 [0.000, 0.000]",
+          "cluster_unit": "template_family",
+          "n_clusters": 8,
+          "exploratory": true,
+          "protocol": "v2.0",
+          "stats_convention": "v2.3"
+        },
+        "identity": {
+          "n": 60,
+          "E_CF": "0.000 [0.000, 0.000]",
+          "E_CF_pair_level_sensitivity": "0.000 [0.000, 0.000]",
+          "cluster_unit": "template_family",
+          "n_clusters": 8,
+          "exploratory": true,
+          "protocol": "v2.0",
+          "stats_convention": "v2.3"
+        },
+        "joint": {
+          "n": 60,
+          "E_CF": "2.123 [1.396, 2.746]",
+          "E_CF_pair_level_sensitivity": "2.123 [1.702, 2.568]",
+          "cluster_unit": "template_family",
+          "n_clusters": 8,
+          "exploratory": true,
+          "protocol": "v2.0",
+          "stats_convention": "v2.3"
+        },
+        "k_only": {
+          "n": 60,
+          "E_CF": "0.555 [0.332, 0.827]",
+          "E_CF_pair_level_sensitivity": "0.555 [0.430, 0.687]",
+          "cluster_unit": "template_family",
+          "n_clusters": 8,
+          "exploratory": true,
+          "protocol": "v2.0",
+          "stats_convention": "v2.3"
+        },
+        "v_only": {
+          "n": 60,
+          "E_CF": "1.849 [1.228, 2.362]",
+          "E_CF_pair_level_sensitivity": "1.849 [1.501, 2.216]",
+          "cluster_unit": "template_family",
+          "n_clusters": 8,
+          "exploratory": true,
+          "protocol": "v2.0",
+          "stats_convention": "v2.3"
+        },
+        "control:mismatch": {
+          "n": 60,
+          "E_CF": "6.247 [3.275, 9.304]",
+          "E_CF_pair_level_sensitivity": "6.247 [4.920, 7.684]",
+          "cluster_unit": "template_family",
+          "n_clusters": 8,
+          "exploratory": true,
+          "protocol": "v2.0",
+          "stats_convention": "v2.3"
+        },
+        "control:random": {
+          "n": 60,
+          "E_CF": "4.504 [2.703, 6.176]",
+          "E_CF_pair_level_sensitivity": "4.504 [3.527, 5.549]",
+          "cluster_unit": "template_family",
+          "n_clusters": 8,
+          "exploratory": true,
+          "protocol": "v2.0",
+          "stats_convention": "v2.3"
+        },
+        "control:zero": {
+          "n": 60,
+          "E_CF": "6.643 [3.875, 9.328]",
+          "E_CF_pair_level_sensitivity": "6.643 [5.466, 7.847]",
+          "cluster_unit": "template_family",
+          "n_clusters": 8,
+          "exploratory": true,
+          "protocol": "v2.0",
+          "stats_convention": "v2.3"
+        },
+        "control:correct": {
+          "n": 60,
+          "E_CF": "2.123 [1.396, 2.746]",
+          "E_CF_pair_level_sensitivity": "2.123 [1.702, 2.568]",
+          "cluster_unit": "template_family",
+          "n_clusters": 8,
+          "exploratory": true,
+          "protocol": "v2.0",
+          "stats_convention": "v2.3"
+        },
+        "new_joint": {
+          "n": 60,
+          "E_CF": "2.123 [1.396, 2.746]",
+          "E_CF_pair_level_sensitivity": "2.123 [1.702, 2.568]",
+          "cluster_unit": "template_family",
+          "n_clusters": 8,
+          "exploratory": true,
+          "protocol": "v2.0",
+          "stats_convention": "v2.3"
+        }
+      },
+      "primary_endpoint": {
+        "point": 0.0,
+        "ci": [
+          0.0,
+          0.0
+        ],
+        "improved": false,
+        "cluster_unit": "template_family",
+        "n_clusters": 8,
+        "exploratory": true,
+        "pair_level_sensitivity": {
+          "point": 0.0,
+          "ci": [
+            0.0,
+            0.0
+          ]
+        },
+        "note": "paired E_CF difference (new - baseline); primary cluster = template_family"
+      },
+      "repair_vs_random": null,
+      "protocol": "v2.0",
+      "stats_convention": "v2.3",
+      "cluster_bootstrap_convention": {
+        "primary_cluster_unit": "template_family",
+        "pair_level_sensitivity_reported": true,
+        "min_clusters_for_inference": 24
+      },
+      "bootstrap_seed": 2,
+      "bootstrap_seed_source": "run config (experiment_config.bootstrap_seed / seed)"
+    },
+    "runs/p1_gpu_mvp_seed0": {
+      "run_id": "p1_gpu_mvp_seed0",
+      "arms": {
+        "self": {
+          "n": 60,
+          "E_CF": "0.000 [0.000, 0.000]",
+          "E_CF_pair_level_sensitivity": "0.000 [0.000, 0.000]",
+          "cluster_unit": "template_family",
+          "n_clusters": 8,
+          "exploratory": true,
+          "protocol": "v2.0",
+          "stats_convention": "v2.3"
+        },
+        "identity": {
+          "n": 60,
+          "E_CF": "0.000 [0.000, 0.000]",
+          "E_CF_pair_level_sensitivity": "0.000 [0.000, 0.000]",
+          "cluster_unit": "template_family",
+          "n_clusters": 8,
+          "exploratory": true,
+          "protocol": "v2.0",
+          "stats_convention": "v2.3"
+        },
+        "joint": {
+          "n": 60,
+          "E_CF": "1.968 [1.373, 2.427]",
+          "E_CF_pair_level_sensitivity": "1.968 [1.615, 2.320]",
+          "cluster_unit": "template_family",
+          "n_clusters": 8,
+          "exploratory": true,
+          "protocol": "v2.0",
+          "stats_convention": "v2.3"
+        },
+        "k_only": {
+          "n": 60,
+          "E_CF": "0.630 [0.397, 0.883]",
+          "E_CF_pair_level_sensitivity": "0.630 [0.486, 0.782]",
+          "cluster_unit": "template_family",
+          "n_clusters": 8,
+          "exploratory": true,
+          "protocol": "v2.0",
+          "stats_convention": "v2.3"
+        },
+        "v_only": {
+          "n": 60,
+          "E_CF": "1.851 [1.297, 2.238]",
+          "E_CF_pair_level_sensitivity": "1.851 [1.542, 2.157]",
+          "cluster_unit": "template_family",
+          "n_clusters": 8,
+          "exploratory": true,
+          "protocol": "v2.0",
+          "stats_convention": "v2.3"
+        },
+        "control:mismatch": {
+          "n": 60,
+          "E_CF": "6.103 [3.354, 8.755]",
+          "E_CF_pair_level_sensitivity": "6.103 [4.963, 7.257]",
+          "cluster_unit": "template_family",
+          "n_clusters": 8,
+          "exploratory": true,
+          "protocol": "v2.0",
+          "stats_convention": "v2.3"
+        },
+        "control:random": {
+          "n": 60,
+          "E_CF": "4.218 [2.372, 6.042]",
+          "E_CF_pair_level_sensitivity": "4.218 [3.230, 5.236]",
+          "cluster_unit": "template_family",
+          "n_clusters": 8,
+          "exploratory": true,
+          "protocol": "v2.0",
+          "stats_convention": "v2.3"
+        },
+        "control:zero": {
+          "n": 60,
+          "E_CF": "6.159 [3.325, 8.809]",
+          "E_CF_pair_level_sensitivity": "6.159 [5.009, 7.277]",
+          "cluster_unit": "template_family",
+          "n_clusters": 8,
+          "exploratory": true,
+          "protocol": "v2.0",
+          "stats_convention": "v2.3"
+        },
+        "control:correct": {
+          "n": 60,
+          "E_CF": "1.968 [1.373, 2.427]",
+          "E_CF_pair_level_sensitivity": "1.968 [1.615, 2.320]",
+          "cluster_unit": "template_family",
+          "n_clusters": 8,
+          "exploratory": true,
+          "protocol": "v2.0",
+          "stats_convention": "v2.3"
+        },
+        "new_joint": {
+          "n": 60,
+          "E_CF": "1.968 [1.373, 2.427]",
+          "E_CF_pair_level_sensitivity": "1.968 [1.615, 2.320]",
+          "cluster_unit": "template_family",
+          "n_clusters": 8,
+          "exploratory": true,
+          "protocol": "v2.0",
+          "stats_convention": "v2.3"
+        }
+      },
+      "primary_endpoint": {
+        "point": 0.0,
+        "ci": [
+          0.0,
+          0.0
+        ],
+        "improved": false,
+        "cluster_unit": "template_family",
+        "n_clusters": 8,
+        "exploratory": true,
+        "pair_level_sensitivity": {
+          "point": 0.0,
+          "ci": [
+            0.0,
+            0.0
+          ]
+        },
+        "note": "paired E_CF difference (new - baseline); primary cluster = template_family"
+      },
+      "repair_vs_random": null,
+      "protocol": "v2.0",
+      "stats_convention": "v2.3",
+      "cluster_bootstrap_convention": {
+        "primary_cluster_unit": "template_family",
+        "pair_level_sensitivity_reported": true,
+        "min_clusters_for_inference": 24
+      },
+      "bootstrap_seed": 0,
+      "bootstrap_seed_source": "run config (experiment_config.bootstrap_seed / seed)"
+    },
+    "runs/p1_gpu_mvp_seed1": {
+      "run_id": "p1_gpu_mvp_seed1",
+      "arms": {
+        "self": {
+          "n": 60,
+          "E_CF": "0.000 [0.000, 0.000]",
+          "E_CF_pair_level_sensitivity": "0.000 [0.000, 0.000]",
+          "cluster_unit": "template_family",
+          "n_clusters": 8,
+          "exploratory": true,
+          "protocol": "v2.0",
+          "stats_convention": "v2.3"
+        },
+        "identity": {
+          "n": 60,
+          "E_CF": "0.000 [0.000, 0.000]",
+          "E_CF_pair_level_sensitivity": "0.000 [0.000, 0.000]",
+          "cluster_unit": "template_family",
+          "n_clusters": 8,
+          "exploratory": true,
+          "protocol": "v2.0",
+          "stats_convention": "v2.3"
+        },
+        "joint": {
+          "n": 60,
+          "E_CF": "1.934 [1.187, 2.616]",
+          "E_CF_pair_level_sensitivity": "1.934 [1.561, 2.314]",
+          "cluster_unit": "template_family",
+          "n_clusters": 8,
+          "exploratory": true,
+          "protocol": "v2.0",
+          "stats_convention": "v2.3"
+        },
+        "k_only": {
+          "n": 60,
+          "E_CF": "0.566 [0.357, 0.760]",
+          "E_CF_pair_level_sensitivity": "0.566 [0.429, 0.708]",
+          "cluster_unit": "template_family",
+          "n_clusters": 8,
+          "exploratory": true,
+          "protocol": "v2.0",
+          "stats_convention": "v2.3"
+        },
+        "v_only": {
+          "n": 60,
+          "E_CF": "1.660 [1.043, 2.262]",
+          "E_CF_pair_level_sensitivity": "1.660 [1.355, 1.980]",
+          "cluster_unit": "template_family",
+          "n_clusters": 8,
+          "exploratory": true,
+          "protocol": "v2.0",
+          "stats_convention": "v2.3"
+        },
+        "control:mismatch": {
+          "n": 60,
+          "E_CF": "5.950 [3.677, 8.188]",
+          "E_CF_pair_level_sensitivity": "5.950 [4.858, 7.093]",
+          "cluster_unit": "template_family",
+          "n_clusters": 8,
+          "exploratory": true,
+          "protocol": "v2.0",
+          "stats_convention": "v2.3"
+        },
+        "control:random": {
+          "n": 60,
+          "E_CF": "4.375 [2.443, 6.502]",
+          "E_CF_pair_level_sensitivity": "4.375 [3.395, 5.437]",
+          "cluster_unit": "template_family",
+          "n_clusters": 8,
+          "exploratory": true,
+          "protocol": "v2.0",
+          "stats_convention": "v2.3"
+        },
+        "control:zero": {
+          "n": 60,
+          "E_CF": "5.897 [3.505, 8.284]",
+          "E_CF_pair_level_sensitivity": "5.897 [4.868, 6.951]",
+          "cluster_unit": "template_family",
+          "n_clusters": 8,
+          "exploratory": true,
+          "protocol": "v2.0",
+          "stats_convention": "v2.3"
+        },
+        "control:correct": {
+          "n": 60,
+          "E_CF": "1.934 [1.187, 2.616]",
+          "E_CF_pair_level_sensitivity": "1.934 [1.561, 2.314]",
+          "cluster_unit": "template_family",
+          "n_clusters": 8,
+          "exploratory": true,
+          "protocol": "v2.0",
+          "stats_convention": "v2.3"
+        },
+        "new_joint": {
+          "n": 60,
+          "E_CF": "1.934 [1.187, 2.616]",
+          "E_CF_pair_level_sensitivity": "1.934 [1.561, 2.314]",
+          "cluster_unit": "template_family",
+          "n_clusters": 8,
+          "exploratory": true,
+          "protocol": "v2.0",
+          "stats_convention": "v2.3"
+        }
+      },
+      "primary_endpoint": {
+        "point": 0.0,
+        "ci": [
+          0.0,
+          0.0
+        ],
+        "improved": false,
+        "cluster_unit": "template_family",
+        "n_clusters": 8,
+        "exploratory": true,
+        "pair_level_sensitivity": {
+          "point": 0.0,
+          "ci": [
+            0.0,
+            0.0
+          ]
+        },
+        "note": "paired E_CF difference (new - baseline); primary cluster = template_family"
+      },
+      "repair_vs_random": null,
+      "protocol": "v2.0",
+      "stats_convention": "v2.3",
+      "cluster_bootstrap_convention": {
+        "primary_cluster_unit": "template_family",
+        "pair_level_sensitivity_reported": true,
+        "min_clusters_for_inference": 24
+      },
+      "bootstrap_seed": 1,
+      "bootstrap_seed_source": "run config (experiment_config.bootstrap_seed / seed)"
+    },
+    "runs/p1_gpu_mvp_seed2": {
+      "run_id": "p1_gpu_mvp_seed2",
+      "arms": {
+        "self": {
+          "n": 60,
+          "E_CF": "0.000 [0.000, 0.000]",
+          "E_CF_pair_level_sensitivity": "0.000 [0.000, 0.000]",
+          "cluster_unit": "template_family",
+          "n_clusters": 8,
+          "exploratory": true,
+          "protocol": "v2.0",
+          "stats_convention": "v2.3"
+        },
+        "identity": {
+          "n": 60,
+          "E_CF": "0.000 [0.000, 0.000]",
+          "E_CF_pair_level_sensitivity": "0.000 [0.000, 0.000]",
+          "cluster_unit": "template_family",
+          "n_clusters": 8,
+          "exploratory": true,
+          "protocol": "v2.0",
+          "stats_convention": "v2.3"
+        },
+        "joint": {
+          "n": 60,
+          "E_CF": "2.123 [1.396, 2.746]",
+          "E_CF_pair_level_sensitivity": "2.123 [1.702, 2.568]",
+          "cluster_unit": "template_family",
+          "n_clusters": 8,
+          "exploratory": true,
+          "protocol": "v2.0",
+          "stats_convention": "v2.3"
+        },
+        "k_only": {
+          "n": 60,
+          "E_CF": "0.555 [0.332, 0.827]",
+          "E_CF_pair_level_sensitivity": "0.555 [0.430, 0.687]",
+          "cluster_unit": "template_family",
+          "n_clusters": 8,
+          "exploratory": true,
+          "protocol": "v2.0",
+          "stats_convention": "v2.3"
+        },
+        "v_only": {
+          "n": 60,
+          "E_CF": "1.849 [1.228, 2.362]",
+          "E_CF_pair_level_sensitivity": "1.849 [1.501, 2.216]",
+          "cluster_unit": "template_family",
+          "n_clusters": 8,
+          "exploratory": true,
+          "protocol": "v2.0",
+          "stats_convention": "v2.3"
+        },
+        "control:mismatch": {
+          "n": 60,
+          "E_CF": "6.247 [3.275, 9.304]",
+          "E_CF_pair_level_sensitivity": "6.247 [4.920, 7.684]",
+          "cluster_unit": "template_family",
+          "n_clusters": 8,
+          "exploratory": true,
+          "protocol": "v2.0",
+          "stats_convention": "v2.3"
+        },
+        "control:random": {
+          "n": 60,
+          "E_CF": "4.504 [2.703, 6.176]",
+          "E_CF_pair_level_sensitivity": "4.504 [3.527, 5.549]",
+          "cluster_unit": "template_family",
+          "n_clusters": 8,
+          "exploratory": true,
+          "protocol": "v2.0",
+          "stats_convention": "v2.3"
+        },
+        "control:zero": {
+          "n": 60,
+          "E_CF": "6.643 [3.875, 9.328]",
+          "E_CF_pair_level_sensitivity": "6.643 [5.466, 7.847]",
+          "cluster_unit": "template_family",
+          "n_clusters": 8,
+          "exploratory": true,
+          "protocol": "v2.0",
+          "stats_convention": "v2.3"
+        },
+        "control:correct": {
+          "n": 60,
+          "E_CF": "2.123 [1.396, 2.746]",
+          "E_CF_pair_level_sensitivity": "2.123 [1.702, 2.568]",
+          "cluster_unit": "template_family",
+          "n_clusters": 8,
+          "exploratory": true,
+          "protocol": "v2.0",
+          "stats_convention": "v2.3"
+        },
+        "new_joint": {
+          "n": 60,
+          "E_CF": "2.123 [1.396, 2.746]",
+          "E_CF_pair_level_sensitivity": "2.123 [1.702, 2.568]",
+          "cluster_unit": "template_family",
+          "n_clusters": 8,
+          "exploratory": true,
+          "protocol": "v2.0",
+          "stats_convention": "v2.3"
+        }
+      },
+      "primary_endpoint": {
+        "point": 0.0,
+        "ci": [
+          0.0,
+          0.0
+        ],
+        "improved": false,
+        "cluster_unit": "template_family",
+        "n_clusters": 8,
+        "exploratory": true,
+        "pair_level_sensitivity": {
+          "point": 0.0,
+          "ci": [
+            0.0,
+            0.0
+          ]
+        },
+        "note": "paired E_CF difference (new - baseline); primary cluster = template_family"
+      },
+      "repair_vs_random": null,
+      "protocol": "v2.0",
+      "stats_convention": "v2.3",
+      "cluster_bootstrap_convention": {
+        "primary_cluster_unit": "template_family",
+        "pair_level_sensitivity_reported": true,
+        "min_clusters_for_inference": 24
+      },
+      "bootstrap_seed": 2,
+      "bootstrap_seed_source": "run config (experiment_config.bootstrap_seed / seed)"
+    },
+    "runs/p1_kd_clean_mvp_seed0": {
+      "run_id": "p1_kd_clean_mvp_seed0",
+      "arms": {
+        "self": {
+          "n": 60,
+          "E_CF": "0.000 [0.000, 0.000]",
+          "E_CF_pair_level_sensitivity": "0.000 [0.000, 0.000]",
+          "cluster_unit": "template_family",
+          "n_clusters": 8,
+          "exploratory": true,
+          "protocol": "v2.0",
+          "stats_convention": "v2.3"
+        },
+        "identity": {
+          "n": 60,
+          "E_CF": "0.000 [0.000, 0.000]",
+          "E_CF_pair_level_sensitivity": "0.000 [0.000, 0.000]",
+          "cluster_unit": "template_family",
+          "n_clusters": 8,
+          "exploratory": true,
+          "protocol": "v2.0",
+          "stats_convention": "v2.3"
+        },
+        "joint": {
+          "n": 60,
+          "E_CF": "6.388 [3.653, 8.814]",
+          "E_CF_pair_level_sensitivity": "6.388 [5.340, 7.400]",
+          "cluster_unit": "template_family",
+          "n_clusters": 8,
+          "exploratory": true,
+          "protocol": "v2.0",
+          "stats_convention": "v2.3"
+        },
+        "k_only": {
+          "n": 60,
+          "E_CF": "2.641 [1.803, 3.278]",
+          "E_CF_pair_level_sensitivity": "2.641 [2.143, 3.151]",
+          "cluster_unit": "template_family",
+          "n_clusters": 8,
+          "exploratory": true,
+          "protocol": "v2.0",
+          "stats_convention": "v2.3"
+        },
+        "v_only": {
+          "n": 60,
+          "E_CF": "5.856 [3.197, 8.341]",
+          "E_CF_pair_level_sensitivity": "5.856 [4.829, 6.869]",
+          "cluster_unit": "template_family",
+          "n_clusters": 8,
+          "exploratory": true,
+          "protocol": "v2.0",
+          "stats_convention": "v2.3"
+        },
+        "control:mismatch": {
+          "n": 60,
+          "E_CF": "8.785 [4.793, 12.404]",
+          "E_CF_pair_level_sensitivity": "8.785 [7.303, 10.244]",
+          "cluster_unit": "template_family",
+          "n_clusters": 8,
+          "exploratory": true,
+          "protocol": "v2.0",
+          "stats_convention": "v2.3"
+        },
+        "control:random": {
+          "n": 60,
+          "E_CF": "8.199 [4.374, 11.614]",
+          "E_CF_pair_level_sensitivity": "8.199 [6.755, 9.600]",
+          "cluster_unit": "template_family",
+          "n_clusters": 8,
+          "exploratory": true,
+          "protocol": "v2.0",
+          "stats_convention": "v2.3"
+        },
+        "control:zero": {
+          "n": 60,
+          "E_CF": "8.584 [4.620, 12.112]",
+          "E_CF_pair_level_sensitivity": "8.584 [7.101, 9.994]",
+          "cluster_unit": "template_family",
+          "n_clusters": 8,
+          "exploratory": true,
+          "protocol": "v2.0",
+          "stats_convention": "v2.3"
+        },
+        "control:correct": {
+          "n": 60,
+          "E_CF": "6.388 [3.653, 8.814]",
+          "E_CF_pair_level_sensitivity": "6.388 [5.340, 7.400]",
+          "cluster_unit": "template_family",
+          "n_clusters": 8,
+          "exploratory": true,
+          "protocol": "v2.0",
+          "stats_convention": "v2.3"
+        },
+        "new_joint": {
+          "n": 60,
+          "E_CF": "6.388 [3.653, 8.814]",
+          "E_CF_pair_level_sensitivity": "6.388 [5.340, 7.400]",
+          "cluster_unit": "template_family",
+          "n_clusters": 8,
+          "exploratory": true,
+          "protocol": "v2.0",
+          "stats_convention": "v2.3"
+        }
+      },
+      "primary_endpoint": {
+        "point": 0.0,
+        "ci": [
+          0.0,
+          0.0
+        ],
+        "improved": false,
+        "cluster_unit": "template_family",
+        "n_clusters": 8,
+        "exploratory": true,
+        "pair_level_sensitivity": {
+          "point": 0.0,
+          "ci": [
+            0.0,
+            0.0
+          ]
+        },
+        "note": "paired E_CF difference (new - baseline); primary cluster = template_family"
+      },
+      "repair_vs_random": null,
+      "protocol": "v2.0",
+      "stats_convention": "v2.3",
+      "cluster_bootstrap_convention": {
+        "primary_cluster_unit": "template_family",
+        "pair_level_sensitivity_reported": true,
+        "min_clusters_for_inference": 24
+      },
+      "bootstrap_seed": 0,
+      "bootstrap_seed_source": "run config (experiment_config.bootstrap_seed / seed)"
+    },
+    "runs/p1_kd_clean_mvp_seed1": {
+      "run_id": "p1_kd_clean_mvp_seed1",
+      "arms": {
+        "self": {
+          "n": 60,
+          "E_CF": "0.000 [0.000, 0.000]",
+          "E_CF_pair_level_sensitivity": "0.000 [0.000, 0.000]",
+          "cluster_unit": "template_family",
+          "n_clusters": 8,
+          "exploratory": true,
+          "protocol": "v2.0",
+          "stats_convention": "v2.3"
+        },
+        "identity": {
+          "n": 60,
+          "E_CF": "0.000 [0.000, 0.000]",
+          "E_CF_pair_level_sensitivity": "0.000 [0.000, 0.000]",
+          "cluster_unit": "template_family",
+          "n_clusters": 8,
+          "exploratory": true,
+          "protocol": "v2.0",
+          "stats_convention": "v2.3"
+        },
+        "joint": {
+          "n": 60,
+          "E_CF": "6.479 [3.899, 8.798]",
+          "E_CF_pair_level_sensitivity": "6.479 [5.431, 7.529]",
+          "cluster_unit": "template_family",
+          "n_clusters": 8,
+          "exploratory": true,
+          "protocol": "v2.0",
+          "stats_convention": "v2.3"
+        },
+        "k_only": {
+          "n": 60,
+          "E_CF": "4.027 [2.428, 5.508]",
+          "E_CF_pair_level_sensitivity": "4.027 [3.287, 4.798]",
+          "cluster_unit": "template_family",
+          "n_clusters": 8,
+          "exploratory": true,
+          "protocol": "v2.0",
+          "stats_convention": "v2.3"
+        },
+        "v_only": {
+          "n": 60,
+          "E_CF": "4.868 [3.029, 6.600]",
+          "E_CF_pair_level_sensitivity": "4.868 [4.055, 5.688]",
+          "cluster_unit": "template_family",
+          "n_clusters": 8,
+          "exploratory": true,
+          "protocol": "v2.0",
+          "stats_convention": "v2.3"
+        },
+        "control:mismatch": {
+          "n": 60,
+          "E_CF": "8.948 [4.971, 12.543]",
+          "E_CF_pair_level_sensitivity": "8.948 [7.429, 10.478]",
+          "cluster_unit": "template_family",
+          "n_clusters": 8,
+          "exploratory": true,
+          "protocol": "v2.0",
+          "stats_convention": "v2.3"
+        },
+        "control:random": {
+          "n": 60,
+          "E_CF": "8.794 [4.968, 12.196]",
+          "E_CF_pair_level_sensitivity": "8.794 [7.343, 10.227]",
+          "cluster_unit": "template_family",
+          "n_clusters": 8,
+          "exploratory": true,
+          "protocol": "v2.0",
+          "stats_convention": "v2.3"
+        },
+        "control:zero": {
+          "n": 60,
+          "E_CF": "9.065 [5.096, 12.642]",
+          "E_CF_pair_level_sensitivity": "9.065 [7.578, 10.549]",
+          "cluster_unit": "template_family",
+          "n_clusters": 8,
+          "exploratory": true,
+          "protocol": "v2.0",
+          "stats_convention": "v2.3"
+        },
+        "control:correct": {
+          "n": 60,
+          "E_CF": "6.479 [3.899, 8.798]",
+          "E_CF_pair_level_sensitivity": "6.479 [5.431, 7.529]",
+          "cluster_unit": "template_family",
+          "n_clusters": 8,
+          "exploratory": true,
+          "protocol": "v2.0",
+          "stats_convention": "v2.3"
+        },
+        "new_joint": {
+          "n": 60,
+          "E_CF": "6.479 [3.899, 8.798]",
+          "E_CF_pair_level_sensitivity": "6.479 [5.431, 7.529]",
+          "cluster_unit": "template_family",
+          "n_clusters": 8,
+          "exploratory": true,
+          "protocol": "v2.0",
+          "stats_convention": "v2.3"
+        }
+      },
+      "primary_endpoint": {
+        "point": 0.0,
+        "ci": [
+          0.0,
+          0.0
+        ],
+        "improved": false,
+        "cluster_unit": "template_family",
+        "n_clusters": 8,
+        "exploratory": true,
+        "pair_level_sensitivity": {
+          "point": 0.0,
+          "ci": [
+            0.0,
+            0.0
+          ]
+        },
+        "note": "paired E_CF difference (new - baseline); primary cluster = template_family"
+      },
+      "repair_vs_random": null,
+      "protocol": "v2.0",
+      "stats_convention": "v2.3",
+      "cluster_bootstrap_convention": {
+        "primary_cluster_unit": "template_family",
+        "pair_level_sensitivity_reported": true,
+        "min_clusters_for_inference": 24
+      },
+      "bootstrap_seed": 1,
+      "bootstrap_seed_source": "run config (experiment_config.bootstrap_seed / seed)"
+    },
+    "runs/p1_kd_clean_mvp_seed2": {
+      "run_id": "p1_kd_clean_mvp_seed2",
+      "arms": {
+        "self": {
+          "n": 60,
+          "E_CF": "0.000 [0.000, 0.000]",
+          "E_CF_pair_level_sensitivity": "0.000 [0.000, 0.000]",
+          "cluster_unit": "template_family",
+          "n_clusters": 8,
+          "exploratory": true,
+          "protocol": "v2.0",
+          "stats_convention": "v2.3"
+        },
+        "identity": {
+          "n": 60,
+          "E_CF": "0.000 [0.000, 0.000]",
+          "E_CF_pair_level_sensitivity": "0.000 [0.000, 0.000]",
+          "cluster_unit": "template_family",
+          "n_clusters": 8,
+          "exploratory": true,
+          "protocol": "v2.0",
+          "stats_convention": "v2.3"
+        },
+        "joint": {
+          "n": 60,
+          "E_CF": "7.210 [4.417, 9.799]",
+          "E_CF_pair_level_sensitivity": "7.210 [6.074, 8.331]",
+          "cluster_unit": "template_family",
+          "n_clusters": 8,
+          "exploratory": true,
+          "protocol": "v2.0",
+          "stats_convention": "v2.3"
+        },
+        "k_only": {
+          "n": 60,
+          "E_CF": "2.960 [1.898, 3.987]",
+          "E_CF_pair_level_sensitivity": "2.960 [2.403, 3.570]",
+          "cluster_unit": "template_family",
+          "n_clusters": 8,
+          "exploratory": true,
+          "protocol": "v2.0",
+          "stats_convention": "v2.3"
+        },
+        "v_only": {
+          "n": 60,
+          "E_CF": "6.129 [3.687, 8.483]",
+          "E_CF_pair_level_sensitivity": "6.129 [5.096, 7.144]",
+          "cluster_unit": "template_family",
+          "n_clusters": 8,
+          "exploratory": true,
+          "protocol": "v2.0",
+          "stats_convention": "v2.3"
+        },
+        "control:mismatch": {
+          "n": 60,
+          "E_CF": "9.554 [5.517, 13.343]",
+          "E_CF_pair_level_sensitivity": "9.554 [7.972, 11.124]",
+          "cluster_unit": "template_family",
+          "n_clusters": 8,
+          "exploratory": true,
+          "protocol": "v2.0",
+          "stats_convention": "v2.3"
+        },
+        "control:random": {
+          "n": 60,
+          "E_CF": "9.441 [5.567, 12.924]",
+          "E_CF_pair_level_sensitivity": "9.441 [7.943, 10.907]",
+          "cluster_unit": "template_family",
+          "n_clusters": 8,
+          "exploratory": true,
+          "protocol": "v2.0",
+          "stats_convention": "v2.3"
+        },
+        "control:zero": {
+          "n": 60,
+          "E_CF": "9.684 [5.640, 13.347]",
+          "E_CF_pair_level_sensitivity": "9.684 [8.154, 11.177]",
+          "cluster_unit": "template_family",
+          "n_clusters": 8,
+          "exploratory": true,
+          "protocol": "v2.0",
+          "stats_convention": "v2.3"
+        },
+        "control:correct": {
+          "n": 60,
+          "E_CF": "7.210 [4.417, 9.799]",
+          "E_CF_pair_level_sensitivity": "7.210 [6.074, 8.331]",
+          "cluster_unit": "template_family",
+          "n_clusters": 8,
+          "exploratory": true,
+          "protocol": "v2.0",
+          "stats_convention": "v2.3"
+        },
+        "new_joint": {
+          "n": 60,
+          "E_CF": "7.210 [4.417, 9.799]",
+          "E_CF_pair_level_sensitivity": "7.210 [6.074, 8.331]",
+          "cluster_unit": "template_family",
+          "n_clusters": 8,
+          "exploratory": true,
+          "protocol": "v2.0",
+          "stats_convention": "v2.3"
+        }
+      },
+      "primary_endpoint": {
+        "point": 0.0,
+        "ci": [
+          0.0,
+          0.0
+        ],
+        "improved": false,
+        "cluster_unit": "template_family",
+        "n_clusters": 8,
+        "exploratory": true,
+        "pair_level_sensitivity": {
+          "point": 0.0,
+          "ci": [
+            0.0,
+            0.0
+          ]
+        },
+        "note": "paired E_CF difference (new - baseline); primary cluster = template_family"
+      },
+      "repair_vs_random": null,
+      "protocol": "v2.0",
+      "stats_convention": "v2.3",
+      "cluster_bootstrap_convention": {
+        "primary_cluster_unit": "template_family",
+        "pair_level_sensitivity_reported": true,
+        "min_clusters_for_inference": 24
+      },
+      "bootstrap_seed": 2,
+      "bootstrap_seed_source": "run config (experiment_config.bootstrap_seed / seed)"
+    },
+    "runs/p2_gpu_mvp_seed0": {
+      "run_id": "p2_gpu_mvp_seed0",
+      "arms": {
+        "self": {
+          "n": 40,
+          "E_CF": "0.000 [0.000, 0.000]",
+          "E_CF_pair_level_sensitivity": "0.000 [0.000, 0.000]",
+          "cluster_unit": "cluster-fallback",
+          "n_clusters": 40,
+          "exploratory": false,
+          "protocol": "v2.0",
+          "stats_convention": "v2.3"
+        },
+        "k_only": {
+          "n": 40,
+          "E_CF": "0.582 [0.422, 0.748]",
+          "E_CF_pair_level_sensitivity": "0.582 [0.423, 0.748]",
+          "cluster_unit": "cluster-fallback",
+          "n_clusters": 40,
+          "exploratory": false,
+          "protocol": "v2.0",
+          "stats_convention": "v2.3"
+        },
+        "v_only": {
+          "n": 40,
+          "E_CF": "1.626 [1.286, 1.954]",
+          "E_CF_pair_level_sensitivity": "1.626 [1.289, 1.955]",
+          "cluster_unit": "cluster-fallback",
+          "n_clusters": 40,
+          "exploratory": false,
+          "protocol": "v2.0",
+          "stats_convention": "v2.3"
+        },
+        "joint": {
+          "n": 40,
+          "E_CF": "1.777 [1.366, 2.167]",
+          "E_CF_pair_level_sensitivity": "1.777 [1.373, 2.180]",
+          "cluster_unit": "cluster-fallback",
+          "n_clusters": 40,
+          "exploratory": false,
+          "protocol": "v2.0",
+          "stats_convention": "v2.3"
+        }
+      },
+      "primary_endpoint": null,
+      "repair_vs_random": null,
+      "protocol": "v2.0",
+      "stats_convention": "v2.3",
+      "cluster_bootstrap_convention": {
+        "primary_cluster_unit": "template_family",
+        "pair_level_sensitivity_reported": true,
+        "min_clusters_for_inference": 24
+      },
+      "bootstrap_seed": 0,
+      "bootstrap_seed_source": "run config (experiment_config.bootstrap_seed / seed)"
+    },
+    "runs/p2_gpu_mvp_seed0_delta_rand_audit": {
+      "run_id": "p2_gpu_mvp_seed0_delta_rand_audit",
+      "arms": {
+        "self": {
+          "n": 40,
+          "E_CF": "0.000 [0.000, 0.000]",
+          "E_CF_pair_level_sensitivity": "0.000 [0.000, 0.000]",
+          "cluster_unit": "cluster-fallback",
+          "n_clusters": 40,
+          "exploratory": false,
+          "protocol": "v2.0",
+          "stats_convention": "v2.3"
+        },
+        "k_only": {
+          "n": 40,
+          "E_CF": "0.582 [0.422, 0.748]",
+          "E_CF_pair_level_sensitivity": "0.582 [0.423, 0.748]",
+          "cluster_unit": "cluster-fallback",
+          "n_clusters": 40,
+          "exploratory": false,
+          "protocol": "v2.0",
+          "stats_convention": "v2.3"
+        },
+        "v_only": {
+          "n": 40,
+          "E_CF": "1.626 [1.286, 1.954]",
+          "E_CF_pair_level_sensitivity": "1.626 [1.289, 1.955]",
+          "cluster_unit": "cluster-fallback",
+          "n_clusters": 40,
+          "exploratory": false,
+          "protocol": "v2.0",
+          "stats_convention": "v2.3"
+        },
+        "joint": {
+          "n": 40,
+          "E_CF": "1.777 [1.366, 2.167]",
+          "E_CF_pair_level_sensitivity": "1.777 [1.373, 2.180]",
+          "cluster_unit": "cluster-fallback",
+          "n_clusters": 40,
+          "exploratory": false,
+          "protocol": "v2.0",
+          "stats_convention": "v2.3"
+        }
+      },
+      "primary_endpoint": null,
+      "repair_vs_random": {
+        "point": 0.275,
+        "ci": [
+          0.15,
+          0.425
+        ],
+        "n_pairs": 40,
+        "ci_lower_gt_0": true,
+        "cluster_unit": "cluster-fallback",
+        "n_clusters": 40,
+        "exploratory": false,
+        "pair_level_sensitivity": {
+          "point": 0.275,
+          "ci": [
+            0.15,
+            0.425
+          ]
+        },
+        "source": "per-pair scores.jsonl oracle_U arm (delta_ecf / delta_rand)",
+        "note": "repair hit(U) - hit(random); primary cluster = template_family"
+      },
+      "protocol": "v2.0",
+      "stats_convention": "v2.3",
+      "cluster_bootstrap_convention": {
+        "primary_cluster_unit": "template_family",
+        "pair_level_sensitivity_reported": true,
+        "min_clusters_for_inference": 24
+      },
+      "bootstrap_seed": 0,
+      "bootstrap_seed_source": "run config (experiment_config.bootstrap_seed / seed)"
+    },
+    "runs/p2_gpu_mvp_seed1": {
+      "run_id": "p2_gpu_mvp_seed1",
+      "arms": {
+        "self": {
+          "n": 40,
+          "E_CF": "0.000 [0.000, 0.000]",
+          "E_CF_pair_level_sensitivity": "0.000 [0.000, 0.000]",
+          "cluster_unit": "cluster-fallback",
+          "n_clusters": 40,
+          "exploratory": false,
+          "protocol": "v2.0",
+          "stats_convention": "v2.3"
+        },
+        "k_only": {
+          "n": 40,
+          "E_CF": "0.536 [0.374, 0.707]",
+          "E_CF_pair_level_sensitivity": "0.536 [0.372, 0.703]",
+          "cluster_unit": "cluster-fallback",
+          "n_clusters": 40,
+          "exploratory": false,
+          "protocol": "v2.0",
+          "stats_convention": "v2.3"
+        },
+        "v_only": {
+          "n": 40,
+          "E_CF": "1.655 [1.269, 2.058]",
+          "E_CF_pair_level_sensitivity": "1.655 [1.268, 2.072]",
+          "cluster_unit": "cluster-fallback",
+          "n_clusters": 40,
+          "exploratory": false,
+          "protocol": "v2.0",
+          "stats_convention": "v2.3"
+        },
+        "joint": {
+          "n": 40,
+          "E_CF": "1.943 [1.486, 2.437]",
+          "E_CF_pair_level_sensitivity": "1.943 [1.492, 2.443]",
+          "cluster_unit": "cluster-fallback",
+          "n_clusters": 40,
+          "exploratory": false,
+          "protocol": "v2.0",
+          "stats_convention": "v2.3"
+        }
+      },
+      "primary_endpoint": null,
+      "repair_vs_random": {
+        "point": 0.275,
+        "ci": [
+          0.125,
+          0.425
+        ],
+        "n_pairs": 40,
+        "ci_lower_gt_0": true,
+        "cluster_unit": "cluster-fallback",
+        "n_clusters": 40,
+        "exploratory": false,
+        "pair_level_sensitivity": {
+          "point": 0.275,
+          "ci": [
+            0.125,
+            0.425
+          ]
+        },
+        "source": "per-pair scores.jsonl oracle_U arm (delta_ecf / delta_rand)",
+        "note": "repair hit(U) - hit(random); primary cluster = template_family"
+      },
+      "protocol": "v2.0",
+      "stats_convention": "v2.3",
+      "cluster_bootstrap_convention": {
+        "primary_cluster_unit": "template_family",
+        "pair_level_sensitivity_reported": true,
+        "min_clusters_for_inference": 24
+      },
+      "bootstrap_seed": 1,
+      "bootstrap_seed_source": "run config (experiment_config.bootstrap_seed / seed)"
+    },
+    "runs/p2_gpu_mvp_seed2": {
+      "run_id": "p2_gpu_mvp_seed2",
+      "arms": {
+        "self": {
+          "n": 40,
+          "E_CF": "0.000 [0.000, 0.000]",
+          "E_CF_pair_level_sensitivity": "0.000 [0.000, 0.000]",
+          "cluster_unit": "cluster-fallback",
+          "n_clusters": 40,
+          "exploratory": false,
+          "protocol": "v2.0",
+          "stats_convention": "v2.3"
+        },
+        "k_only": {
+          "n": 40,
+          "E_CF": "0.606 [0.459, 0.763]",
+          "E_CF_pair_level_sensitivity": "0.606 [0.463, 0.763]",
+          "cluster_unit": "cluster-fallback",
+          "n_clusters": 40,
+          "exploratory": false,
+          "protocol": "v2.0",
+          "stats_convention": "v2.3"
+        },
+        "v_only": {
+          "n": 40,
+          "E_CF": "1.864 [1.423, 2.328]",
+          "E_CF_pair_level_sensitivity": "1.864 [1.420, 2.337]",
+          "cluster_unit": "cluster-fallback",
+          "n_clusters": 40,
+          "exploratory": false,
+          "protocol": "v2.0",
+          "stats_convention": "v2.3"
+        },
+        "joint": {
+          "n": 40,
+          "E_CF": "2.119 [1.575, 2.698]",
+          "E_CF_pair_level_sensitivity": "2.119 [1.580, 2.709]",
+          "cluster_unit": "cluster-fallback",
+          "n_clusters": 40,
+          "exploratory": false,
+          "protocol": "v2.0",
+          "stats_convention": "v2.3"
+        }
+      },
+      "primary_endpoint": null,
+      "repair_vs_random": {
+        "point": 0.35,
+        "ci": [
+          0.2,
+          0.5
+        ],
+        "n_pairs": 40,
+        "ci_lower_gt_0": true,
+        "cluster_unit": "cluster-fallback",
+        "n_clusters": 40,
+        "exploratory": false,
+        "pair_level_sensitivity": {
+          "point": 0.35,
+          "ci": [
+            0.2,
+            0.5
+          ]
+        },
+        "source": "per-pair scores.jsonl oracle_U arm (delta_ecf / delta_rand)",
+        "note": "repair hit(U) - hit(random); primary cluster = template_family"
+      },
+      "protocol": "v2.0",
+      "stats_convention": "v2.3",
+      "cluster_bootstrap_convention": {
+        "primary_cluster_unit": "template_family",
+        "pair_level_sensitivity_reported": true,
+        "min_clusters_for_inference": 24
+      },
+      "bootstrap_seed": 2,
+      "bootstrap_seed_source": "run config (experiment_config.bootstrap_seed / seed)"
+    }
+  }
+}
