@@ -52,8 +52,24 @@ def summarize_run(path: Path, *, n_resamples: int, epsilon: float, seed: int = 0
                 point, low, high = cluster_bootstrap(deltas, clusters, n_resamples=n_resamples, seed=seed)
                 endpoint = {"point": point, "ci": [low, high], "improved": high < 0,
                             "note": "paired E_CF difference (new - baseline)"}
+        # F1：从逐对 oracle_U 的 delta_ecf / delta_rand 重算 repair-vs-random 成对 CI
+        repair = None
+        u_rows = [r for r in rows if r.get("arm") == "oracle_U"
+                  and "delta_ecf" in r and "delta_rand" in r]
+        if u_rows:
+            diffs = [float(r["hit_u"]) - float(r["hit_rand"]) if ("hit_u" in r and "hit_rand" in r)
+                     else float(float(r["delta_ecf"]) > 0) - float(float(r["delta_rand"]) > 0)
+                     for r in u_rows]
+            clusters = [str(r.get("cluster", r.get("pair_id", "default"))) for r in u_rows]
+            rc, rl, rh = cluster_bootstrap(diffs, clusters, n_resamples=n_resamples, seed=seed)
+            repair = {
+                "point": rc, "ci": [rl, rh], "n_pairs": len(u_rows),
+                "ci_lower_gt_0": bool(rl > 0),
+                "source": "per-pair scores.jsonl oracle_U arm (delta_ecf / delta_rand)",
+                "note": "repair hit(U) - hit(random), cluster paired bootstrap",
+            }
         return {"run_id": path.parent.name, "arms": out, "primary_endpoint": endpoint,
-                "protocol": "v2.0"}
+                "repair_vs_random": repair, "protocol": "v2.0"}
 
     # V1 兼容
     arms: dict[str, tuple[list[float], list[str]]] = defaultdict(lambda: ([], []))

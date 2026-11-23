@@ -314,8 +314,20 @@ def main() -> None:
         ridx = rng.choice(len(units), size=len(U), replace=False)
         dr = transplant_units_delta(pair, [units[int(i)] for i in ridx])
         delta_u.append(du); delta_rand.append(dr)
-        four_arm_rows.append({"pair_id": pair["pair_id"], "cluster": pair["cluster"],
-                              "arm": "oracle_U", "delta_ecf": du, "hit": bool(du > 0)})
+        hu, hr = float(du > 0), float(dr > 0)
+        # F1：逐对持久化 U 与随机基线的 delta/hit，供 bootstrap 从冻结产物独立重算
+        four_arm_rows.append({
+            "pair_id": pair["pair_id"], "cluster": pair["cluster"], "split": "val",
+            "slice_id": pair["slice_id"], "arm": "oracle_U",
+            "delta_ecf": du, "delta_rand": dr,
+            "hit_u": hu, "hit_rand": hr, "delta_hit": hu - hr,
+            "hit": bool(du > 0),
+        })
+        four_arm_rows.append({
+            "pair_id": pair["pair_id"], "cluster": pair["cluster"], "split": "val",
+            "slice_id": pair["slice_id"], "arm": "oracle_random",
+            "delta_ecf": dr, "hit": bool(dr > 0),
+        })
     hit_u = [1.0 if x > 0 else 0.0 for x in delta_u]
     hit_rand = [1.0 if x > 0 else 0.0 for x in delta_rand]
     clusters = [p["cluster"] for p in held_d]
@@ -334,6 +346,7 @@ def main() -> None:
         "direction_ratio_gt_half": bool(direction_ratio > 0.5),
         "delta_positive_ratio": delta_positive_ratio,
         "U_topk": U,
+        "delta_rand_persisted": True,
     }
 
     # ---------------- E2 三项判据总判定 ----------------
