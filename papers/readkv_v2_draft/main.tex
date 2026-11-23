@@ -15,10 +15,13 @@
 % This is an honest first draft built ONLY from frozen GPU results in
 % reports/runs/. No statistic has been recomputed; every number below is
 % transcribed from config.json / metrics.json / runs_index.json /
-% engineer_status.md. Stages P2--P5 have NOT run. Per docs/protocol.md S10,
-% only contribution (1) is claimed; contributions (2) and (3) are explicitly
-% WITHHELD. Per the decision tree (protocol S8) this manuscript must be
-% reframed as a boundary / empirical study, NOT a high-level method paper.
+% engineer_status.md. R1 closed: main tables use *_repro_* runs at commit
+% 458de18 (review round 2). kd_only has all 3 seeds; delta=0.5 locked and
+% formally registered in configs/prereg/phase3_loss_config_v2.2.yaml.
+% Stages P2--P5 have NOT run. Per docs/protocol.md S10, only contribution (1)
+% is claimed; contributions (2) and (3) are explicitly WITHHELD. Per the
+% decision tree (protocol S8) this manuscript is a boundary / empirical study,
+% NOT a high-level method paper.
 % Figure placeholders are textual descriptions (no figure files exist yet).
 % All citations marked [PLACEHOLDER] must be verified per protocol S9.
 % ---------------------------------------------------------------------------
@@ -42,9 +45,9 @@ utility while distorting the model's \emph{counterfactual response}---the
 change in its answer when a single fact in the document is edited. We define
 an evaluation layer for this property, centered on the counterfactual error
 $E_{\mathrm{CF}}$, and report a preregistered benchmark on Qwen3 model pairs
-using real GPU runs (bf16, sdpa, strict zero re-prefill); we report the
-implementation and configuration used, and note that source provenance is
-under remediation (Section~\ref{sec:models}). A measurement gate
+using real GPU runs (bf16, sdpa, strict zero re-prefill); the scoring code is
+frozen at commit \texttt{458de18}, so this benchmark is reproducible from that
+commit (Section~\ref{sec:models}). A measurement gate
 (E0) shows implementation residuals at machine precision (logit cosine
 $1.0$, KL $0$, measurement-error ceiling $2.2\times10^{-16}$), far below the
 effect under study. On the equal-depth MVP pair (1.7B$\to$0.6B, three seeds),
@@ -56,15 +59,18 @@ three seeds), the gap is much larger ($E_{\mathrm{CF}}\approx5.37$--$6.08$)
 but is accompanied by a severe collapse of transferred dual-side correctness
 (from $0.65$--$0.78$ natively to $0.28$--$0.30$), and information controls are
 mostly non-positive; we treat this pair as a broken-transfer failure boundary
-and \emph{not} as positive evidence of counterfactual distortion. With only
-evaluation-layer evidence in hand, and no mechanism or method evidence, we
-present a \emph{boundary/empirical study} (a real-GPU benchmark on an as-run
-working tree, provenance under remediation): we identify a gap for the
-affine/ridge mapper tested here, and we document the conditions under which
-the current transfer fails. Whether stronger behavioral baselines
-(\texttt{kd_only}, \texttt{consumer}, \texttt{score}, ridge) retain this gap is
-left to future work. We make \emph{no} claim of having pinpointed a mechanism
-or of having developed a method that closes the gap.
+and \emph{not} as positive evidence of counterfactual distortion. A matched
+\texttt{kd\_only} baseline on the MVP pair (three seeds) narrows but does not
+eliminate the affine gap: $E_{\mathrm{CF}}$ $0.735\;[0.552,0.934]$,
+$1.034\;[0.766,1.328]$, and $1.539\;[1.148,1.959]$ versus affine
+$1.968$/$1.934$/$2.123$, with all CI lower bounds above zero. Matched-budget
+confirmation remains a caveat. With only evaluation-layer evidence in hand, and
+no mechanism or method evidence, we present a \emph{boundary/empirical study}:
+we identify a gap for the affine/ridge mapper tested here, and we document the
+conditions under which the current transfer fails. Whether other strong
+behavioral baselines (\texttt{consumer}, \texttt{score}, ridge) retain this gap
+is left to future work. We make \emph{no} claim of having pinpointed a
+mechanism or of having developed a method that closes the gap.
 \end{abstract}
 
 % ===========================================================================
@@ -102,13 +108,22 @@ claim exactly \emph{one} evidence-backed contribution:
 \item \textbf{Evaluation layer (claimed, scope-limited).} For the
       affine/ridge mapper tested here, we identify a gap between standard
       transfer utility and counterfactual response fidelity in cross-model KV
-      handoff, together with a preregistered paired counterfactual benchmark,
+      handoff, together with a preregistered \emph{reproducible} paired
+      counterfactual benchmark (scoring code frozen at commit \texttt{458de18}),
       a machine-precision measurement gate, and a joint reporting discipline
       ($E_{\mathrm{CF}}$ reported with dual-side correctness, direction
-      consistency, coverage, and information-control gaps). This claim is
-      explicitly limited to the mapper studied: whether stronger behavioral
-      baselines (\texttt{kd_only}, \texttt{consumer}, \texttt{score}, ridge)
-      retain the gap is not evaluated here and is left to future work.
+      consistency, coverage, and information-control gaps). A matched
+      \texttt{kd\_only} baseline (three seeds) narrows this gap without
+      eliminating it ($E_{\mathrm{CF}}=0.735\;[0.552,0.934]$,
+      $1.034\;[0.766,1.328]$, and $1.539\;[1.148,1.959]$ versus affine
+      $1.968$/$1.934$/$2.123$; all CI lower bounds above zero). This claim is
+      explicitly limited to
+      the mapper studied: the other strong behavioral baselines
+      (\texttt{consumer}, \texttt{score}, ridge) are not evaluated here and are
+      left to future work. The three-seed \texttt{kd\_only} evidence shows a
+      persistent gap, but its unequal training budget
+      (Section~\ref{sec:pending}) and the absence of a trained CF-RCT method
+      preclude any claim of a method-level gain at this stage.
 \end{enumerate}
 
 We explicitly do \emph{not} claim the following two contributions at this
@@ -312,11 +327,17 @@ clues only}.
 The Huber threshold $\delta$ (nominal $1.0$, logit units), label balance
 (A/B $1{:}1$, candidate order 50/50, F5 negative control fixed, $L_{\mathrm{CF}}$
 mask on Self-valid subset) and loss-weight selection rules are frozen by a
-dedicated preregistration file (protocol-v2.1). Crucially, only the \emph{rule}
-is frozen; the \emph{final} $\delta$ must still be selected on the validation
-grid $\{0.5,1.0,2.0\}$ and locked before the sealed test. This has \emph{not}
-been done: no \texttt{CF-RCT} model was trained and the sealed test was never
-run. We therefore report no method result and no final $\delta$.
+dedicated preregistration file (protocol-v2.1). The validation grid
+$\delta\in\{0.5,1.0,2.0\}$ has now been completed, and the PI locked the final
+value at $\delta=0.5$ under the hard-guardrail reading of ``not worse than
+\texttt{kd\_only}'' (Section~\ref{sec:adverse}); $\delta=1.0$ and $\delta=2.0$
+were rejected for violating the dual/flip guardrail. The lock is on validation
+data only, formally registered in \texttt{configs/prereg/phase3\_loss\_config\_v2.2.yaml}
+(protocol-v2.2), and the value must not be adjusted during the sealed test.
+Still, no
+\texttt{CF-RCT} model was trained and the sealed test was never run, so we
+report no method result; the grid evidence in fact warns that no $\delta$
+beat \texttt{kd\_only} on the validation $E_{\mathrm{CF}}$.
 
 % ===========================================================================
 \section{Experimental Setup}
@@ -383,20 +404,22 @@ corrected label \texttt{qwen3-4b-to-1.7b}. The metadata erratum is recorded in
 \texttt{reports/runs\_index\_errata.json} (\texttt{model\_pair\_corrected});
 the frozen \texttt{scores.jsonl} were not modified, and no computed metric is
 affected.}}
-\paragraph{Provenance note.} The results reported in this draft were produced
-on an as-run working tree whose recorded \texttt{git\_hash=53e9bc5} does not
-contain the scoring code; those runs are marked \texttt{superseded /
-provenance-unverified} in \texttt{reports/runs\_index\_errata.json}. We report
-the implementation and configuration used; we make \emph{no} claim that the
-numbers can be independently regenerated from the recorded commit. A new
-commit (\texttt{458de18}) containing the
-scoring code was created and the P0/E0 and P1 runs re-executed under new
-run ids; the corresponding numbers are still being aggregated.
-\textbf{TO BE FILLED from \texttt{p1\_gpu\_mvp\_repro\_seed\{0,1,2\}} and
-\texttt{e0\_gpu\_mvp\_repro\_seed0} once the engineer's aggregation is
-available.} Until that aggregation and the closed-loop audit are complete,
-all numeric results below are provisional and the provenance of their source
-runs is under remediation.
+\paragraph{Provenance note.} Every run used for the main numeric tables was
+produced from commit \texttt{458de18}, which contains all scoring and
+implementation code; the benchmark is therefore reproducible from that commit.
+The authoritative runs are \texttt{e0\_gpu\_mvp\_repro\_seed0} and
+\texttt{p1\_gpu\_mvp\_repro\_seed\{0,1,2\}} (plus the \texttt{kd\_only} run
+described in Section~\ref{sec:pending}); each records
+\texttt{git\_hash=458de18}, \texttt{bootstrap\_seed=seed},
+\texttt{zero\_re\_prefill=true}, \texttt{dtype=bfloat16}, \texttt{kernel=sdpa},
+and \texttt{protocol\_version=2.0}. The earlier eight runs carry
+\texttt{git\_hash=53e9bc5} (a tree without the scoring code) and are marked
+\texttt{superseded / provenance-unverified} in
+\texttt{reports/runs\_index\_errata.json}; their frozen artifacts were not
+modified, and they are not used for any main-table number. The
+non-equal-depth pair has no \texttt{458de18} rerun, so its results
+(Section~\ref{sec:main}) are retained only as a provenance-limited
+broken-transfer record, not as authoritative numeric evidence.
 
 \subsection{Metrics: $E_{\mathrm{CF}}$ and mandatory joint reporting}
 \label{sec:metrics}
@@ -462,12 +485,13 @@ full matched-baseline comparison belongs to the unrun method stage.
 We report only real GPU results from \texttt{reports/runs/}. No mock number is
 used. All values are transcribed from frozen \texttt{config.json}/\texttt{metrics.json}
 and the engineering status report; no statistic was recomputed for this draft.
-The values below come from the runs currently marked
-\texttt{superseded / provenance-unverified}; they are provisional pending the
-provenance-remediation reruns noted in Section~\ref{sec:models}.%
+The main numeric tables use the \texttt{458de18} authoritative runs listed in
+Section~\ref{sec:models}; the superseded runs appear only in the provenance
+footnotes.%
 \footnote{Bootstrap CI endpoints depend on the bootstrap seed; point estimates
-are exact. The bootstrap seed used by the scoring pipeline and by the audit
-script is to be harmonized and recorded in each run config (reviewer item R5).}
+are exact. The scoring pipeline and the audit script now both read
+\texttt{bootstrap\_seed} from each run config, and the endpoint differences
+between the two were resolved by reviewer item R5 (closed in review round 2).}
 
 \subsection{E0: implementation gate (P0)}
 \label{sec:e0}
@@ -476,24 +500,29 @@ E0 isolates pure implementation residual by using one model as both capture and
 inject (identity mapper) on 40 probe pairs. Both model pairs pass:
 \begin{table}[t]
 \centering
-\caption{E0 implementation gate (frozen results, real GPU). All thresholds met;
-the measurement-error ceiling is orders of magnitude below the effect under
-study. ``cosine'' refers to first-token logit cosine on the candidate pair.}
+\caption{E0 implementation gate, authoritative run \texttt{e0\_gpu\_mvp\_repro\_seed0}
+(commit \texttt{458de18}, real GPU). All thresholds met; the measurement-error
+ceiling is orders of magnitude below the effect under study. ``cosine'' refers
+to first-token logit cosine on the candidate pair.}
 \label{tab:e0}
-\begin{tabular}{lccc}
+\begin{tabular}{lcc}
 \toprule
-Check (threshold) & MVP 1.7B$\to$0.6B & Main 1.7B self-inject & Pass \\
+Check (threshold) & MVP 1.7B$\to$0.6B (repro) & Pass \\
 \midrule
-Self/Identity cosine ($\ge0.9998$) & $1.000000$ & $\approx1.0$ & yes \\
-First-token KL ($\le0.001$) & $0.000000$ & $0$ & yes \\
-Argmax/EM agreement ($\ge0.929$) & $1.000$ (80/80) & $1.0$ & yes \\
-Round-trip bit-identical & True (80/80) & True & yes \\
-zero\_re\_prefill assert & 80/80 True & 80/80 True & yes \\
-Measurement-error ceiling & $2.2\times10^{-16}$ & $2.2\times10^{-16}$ & yes \\
-Effect estimate / tolerance (ceiling $<$ effect/3) & $20.86$ / $6.95$ & $20.86$ / $6.66$ & yes \\
+Self/Identity cosine ($\ge0.9998$) & $1.000000$ & yes \\
+First-token KL ($\le0.001$) & $0.000000$ & yes \\
+Argmax/EM agreement ($\ge0.929$) & $1.000$ (80/80) & yes \\
+Round-trip bit-identical & True (80/80) & yes \\
+zero\_re\_prefill assert & 80/80 True & yes \\
+Measurement-error ceiling & $2.2\times10^{-16}$ & yes \\
+Effect estimate / tolerance (ceiling $<$ effect/3) & $20.86$ / $6.95$ & yes \\
 \bottomrule
 \end{tabular}
 \end{table}
+A parallel E0 check on the 1.7B student for the non-equal-depth pair was
+performed in an earlier run (\texttt{e0\_gpu\_main\_seed0}) that is now
+superseded and has no \texttt{458de18} equivalent; its values are not used as
+evidence here.
 A supplementary diagnostic measures the full-vocabulary residual of a one-shot
 whole-document prefill against the cached-plus-query two-step path
 (min cosine $0.9993$, 47/80 below $0.9998$); this comes from the sdpa kernel
@@ -506,10 +535,12 @@ is bit-identical to the native two-step path, cosine $1.0$).
 
 \begin{table}[t]
 \centering
-\caption{P1 MVP pair, three seeds, validation split (60 pairs). Joint
+\caption{P1 MVP pair, authoritative runs \texttt{p1\_gpu\_mvp\_repro\_seed\{0,1,2\}}
+(commit \texttt{458de18}), three seeds, validation split (60 pairs). Joint
 $E_{\mathrm{CF}}$ with 95\% cluster-paired bootstrap CI; joint dual correctness,
 flip consistency, coverage, and normalized $E_{\mathrm{CF}}$ reported jointly.
-Self/Identity have $E_{\mathrm{CF}}=0$ by construction.}
+Self/Identity have $E_{\mathrm{CF}}=0$ by construction. The superseded
+non-repro runs give identical values but are not cited here.}
 \label{tab:mvp}
 \begin{tabular}{cccccc}
 \toprule
@@ -541,10 +572,15 @@ side, \emph{not} a mechanism finding (P2 was not run).
 
 \begin{table}[t]
 \centering
-\caption{P1 main pair, three seeds, validation split (60 pairs). Joint
-$E_{\mathrm{CF}}$ [95\% CI] reported jointly with Self and Joint dual
-correctness, flip consistency, coverage, normalized $E_{\mathrm{CF}}$.
-See also the adverse-results discussion in Section~\ref{sec:adverse}.}
+\caption{P1 main pair (non-equal depth), three seeds, validation split (60
+pairs). \textbf{Provenance-limited record}: no \texttt{458de18} rerun of this
+pair exists; these values come from the superseded runs
+\texttt{p1\_gpu\_main\_seed\{0,1,2\}} and are shown only to document the
+broken-transfer failure boundary, not as authoritative numeric evidence. Model
+pair corrected to \texttt{qwen3-4b-to-1.7b} per
+\texttt{reports/runs\_index\_errata.json}. Joint $E_{\mathrm{CF}}$ [95\% CI]
+reported jointly with Self and Joint dual correctness, flip consistency,
+coverage, and normalized $E_{\mathrm{CF}}$.}
 \label{tab:main}
 \begin{tabular}{ccccccc}
 \toprule
@@ -565,7 +601,11 @@ consistency (Section~\ref{sec:adverse}). Information attributions are mostly
 negative or near zero (seed 0: mismatch $-0.488$, random $+0.229$, zero
 $-0.447$; seed 1: $+1.414$, $+0.441$, $-0.040$; seed 2: $-0.248$, $-0.262$,
 $-0.617$): unlike the MVP pair, the correct cache is not clearly separated
-from mismatched/zero controls on this pair.
+from mismatched/zero controls on this pair. No \texttt{kd\_only} baseline was
+run for this pair, so we cannot distinguish ``strong baseline still distorted''
+from ``transfer failed outright'' on the basis of a behavior-matched control;
+the broken-transfer annotation is the basis for the failure-boundary
+classification.
 
 \subsection{Adverse results and boundaries}
 \label{sec:adverse}
@@ -584,9 +624,10 @@ protocol:
       ruling (P1 Go/No-Go, \S4), this pair is recorded as a
       \textbf{transfer-failure boundary} and is \emph{not} counted as positive
       evidence for H1 (``counterfactual distortion exists''); the only current
-      distortion candidate is the MVP pair, and even that candidate remains
-      conditional on the not-yet-completed \texttt{kd\_only} baseline
-      (Section~\ref{sec:pending}).
+      distortion candidate is the MVP pair, and even that candidate rests on
+      three \texttt{kd\_only} seeds with an unequal training budget
+      (Section~\ref{sec:pending}); it is a persistent gap across seeds, not a
+      method-level improvement.
 \item \textbf{Meaning of \texttt{quality\_pass} vs.\ the machine-readable
       verdict.} In this pipeline \texttt{quality\_pass=true} denotes only the
       \emph{data-quality gate} (split isolation, empty train/eval template
@@ -610,12 +651,24 @@ protocol:
       is genuine model behavior not masked by any mock bias, and it would
       trigger a \texttt{tradeoff} review if carried into a method comparison.
 \item \textbf{P2--P5 not run.} No mechanism diagnostics, no \texttt{CF-RCT}
-      training, no final $\delta$ locked, no sealed test, no generalization or
-      cost measurement. These stages produced no artifacts and support no
+      training (though $\delta=0.5$ is now locked on validation data), no
+      sealed test, no generalization or cost measurement. These stages produced
+      no artifacts and support no
       scientific conclusion.
-\item \textbf{Huber $\delta$ only rule-frozen.} Only the grid and selection
-      rule are frozen (protocol-v2.1); the final value was never selected on
-      validation data, so no method-stage number is reported.
+\item \textbf{Huber $\delta$ locked, but no positive method direction.} The
+      validation grid is complete and the PI locked $\delta=0.5$ under the
+      hard-guardrail reading of ``not worse than \texttt{kd\_only}'':
+      $\delta=0.5$ has dual 0.700 and flip 1.000 with ordinary QA unchanged;
+      $\delta=1.0$ attains the smallest val $E_{\mathrm{CF}}$ (1.5968) but
+      violates the guardrail (dual 0.650 < 0.700); $\delta=2.0$ violates it
+      twice (dual 0.533, flip 0.958). All three candidate $E_{\mathrm{CF}}$
+      values (2.7496 / 1.5968 / 2.7625) are above \texttt{kd\_only} (0.735):
+      no $\delta$ in this grid makes CF-RCT-lite beat \texttt{kd\_only}, a real
+      adverse signal for P3. The grid used 60 pairs / 3 epochs versus 120 pairs
+      / 8 epochs for the \texttt{kd\_only} reference (unequal budget), and
+      $\delta=0.5$ meets the guardrail exactly (``on the line''); these caveats
+      are disclosed and do not justify relaxing the guardrail. P3/P5 remain
+      unrun, so no method-stage conclusion is drawn.
 \item \textbf{Confound caveats.} The E0 effect estimate uses multi-token
       sequence log-probabilities (scale $\sim20$) while the main endpoint uses
       2-dimensional candidate logits; because the measurement-error ceiling is
@@ -629,33 +682,54 @@ CI upper $<0$) has not been evaluated, we make \emph{no} claim of an endpoint
 gain anywhere in this paper, and $P>0.05$ is nowhere interpreted as
 equivalence.
 
-\subsection{Pending baseline and provenance results (to be filled)}
+\subsection{Strong baseline, $\delta$ lock, and endpoint status}
 \label{sec:pending}
 
-The following items are \emph{not yet available} and are deliberately left as
-placeholders; no number has been fabricated for them.
+We summarize the available strong-baseline evidence and state explicitly which
+quantities remain unevaluated.
 
 \begin{itemize}
-\item \textbf{Strong behavioral baseline (\texttt{kd\_only}).} The mapping arm
-      in the P1 runs is an affine mapper with zero trainable parameters, so it
-      does not establish that a strong behavioral mapper retains the gap. A
-      \texttt{kd\_only} baseline run on train/val is required before H1 can be
-      treated as tested. \textbf{TO BE FILLED (paired gap of \texttt{kd\_only}
-      vs.\ Self, verdict under the frozen \texttt{phase1\_benchmark\_decision})
-      from \texttt{p1\_gpu\_kdonly\_mvp\_seed\{0,1,2\}}.}
-\item \textbf{Provenance-remediation reruns.} Numeric tables in this draft are
-      drawn from runs marked superseded / provenance-unverified. Updated values
-      are pending. \textbf{TO BE FILLED (E0 gate and P1 MVP joint arm)
-      from \texttt{e0\_gpu\_mvp\_repro\_seed0} and
-      \texttt{p1\_gpu\_mvp\_repro\_seed\{0,1,2\}}.}
-\item \textbf{Primary endpoint.} \textbf{TO BE FILLED: paired $E_{\mathrm{CF}}$
-      difference against \texttt{kd\_only} with cluster-paired 95\% CI; an
-      improvement may be declared only if the CI upper bound is $<0$ and the
-      joint metrics do not degrade.} Until these results are aggregated and
-      audited, no conclusion about the primary endpoint is drawn. Depending on
-      the \texttt{kd\_only} result, the decision tree either cancels the
-      mechanism/method main line (baseline near Self) or permits P2 to be
-      considered, subject to all other closed-loop conditions.
+\item \textbf{Strong behavioral baseline (\texttt{kd\_only}): three seeds.}
+      The P1 mapping arm is an affine mapper with zero trainable parameters, so
+      by itself it cannot test whether a strong behavioral mapper retains the
+      gap. On the MVP pair, \texttt{kd\_only} gives joint
+      $E_{\mathrm{CF}}=0.735\;[0.552,0.934]$ (dual 0.700, flip 1.000, coverage
+      0.800) for seed 0, $1.034\;[0.766,1.328]$ (dual 0.633, flip 1.000,
+      coverage 0.817) for seed 1, and $1.539\;[1.148,1.959]$ (dual 0.683, flip
+      0.979, coverage 0.800) for seed 2. All three have
+      \texttt{distortion\_present=true} and \texttt{transfer\_broken=false}.
+      Across the three seeds \texttt{kd\_only} narrows but does \emph{not}
+      eliminate the affine gap: $E_{\mathrm{CF}}$ ranges $0.735$--$1.539$ and
+      dual $0.633$--$0.700$, with every CI lower bound ($0.552$, $0.766$,
+      $1.148$) above zero. Seed 0 used 120 pairs/8 epochs at commit
+      \texttt{458de18}; seeds 1 and 2 used 120 pairs/8 epochs at commit
+      \texttt{a04990d}, an ancestry descendant of \texttt{458de18} with
+      identical run code under the round-2 audit. The unequal budget relative
+      to the $\delta$ grid (60 pairs/3 epochs) remains and is disclosed, but
+      the multi-seed evidence is complete. The gap being nonzero in all three
+      seeds is not a finding that the strong baseline is ``close to Self'';
+      equally, it does not establish a gain for CF-RCT, whose primary endpoint
+      is unevaluated. No \texttt{kd\_only} run exists for the non-equal-depth
+      pair.
+\item \textbf{Provenance-remediation reruns (complete).} The E0 gate and the
+      P1 MVP joint arm are now taken from \texttt{e0\_gpu\_mvp\_repro\_seed0}
+      and \texttt{p1\_gpu\_mvp\_repro\_seed\{0,1,2\}} (all
+      \texttt{git\_hash=458de18}); their values match the earlier
+      \texttt{53e9bc5} runs, which are now superseded and used only as a
+      cross-check. The non-equal-depth pair has no \texttt{458de18} rerun, so
+      it remains a provenance-limited record.
+\item \textbf{Primary endpoint: not evaluated.} The primary endpoint is the
+      paired $E_{\mathrm{CF}}$ difference between a new method and
+      \texttt{kd\_only} on the sealed test, with a cluster-paired 95\% CI; a
+      gain may be declared only if the CI upper bound is $<0$ and the jointly
+      reported metrics do not degrade. No CF-RCT model was trained, the sealed
+      test was never run, and no such paired CI exists. We therefore draw
+      \emph{no} conclusion about the primary endpoint, and $P>0.05$ is nowhere
+      read as equivalence. The three-seed \texttt{kd\_only} evidence shows a
+      persistent gap (all CI lower bounds $>0$, range $0.735$--$1.539$), so
+      ``strong baseline near Self'' is not supported; however, its unequal
+      budget and the absence of any CF-RCT endpoint mean no decision-tree
+      branch is confirmed by this evidence alone, and P2--P5 remain unrun.
 \end{itemize}
 
 % ===========================================================================
@@ -672,18 +746,24 @@ large but accompanied by a severe loss of answer correctness, delimiting a
 failure boundary for the current affine transfer.
 
 The evidence supports only the first of the three contribution levels in the
-project protocol, and only for the affine/ridge mapper tested here; whether
-stronger behavioral baselines retain the gap is not evaluated. There is
+project protocol, and only for the affine/ridge mapper tested here. The
+three-seed \texttt{kd\_only} evidence narrows that gap without eliminating it;
+      the
+other strong baselines (\texttt{consumer}, \texttt{score}, ridge) are not
+evaluated. There is
 \emph{no} held-out-validated mechanism finding and \emph{no} trained method
 evaluated on the paired endpoint; the CF-RCT design is presented strictly as
 pending validation. The non-equal-depth results are a transfer-failure
 boundary and are not counted as positive evidence for H1. All experiments use
 synthetic templates, so the applicability of these observations to other
-domains or model families is not established. Source provenance for the
-reported runs is under remediation and the numeric tables are provisional
-pending the reruns described in Section~\ref{sec:pending}; we therefore report
-the implementation and configuration used, and we make no claim about
-independent regeneration of the numbers. Following the decision tree
+domains or model families is not established. The main numeric tables come
+from the reproducible \texttt{458de18} runs described in
+Section~\ref{sec:models}; the non-equal-depth pair has no such rerun and is
+retained only as a provenance-limited failure-boundary record. Across three
+seeds \texttt{kd\_only} narrows the affine gap without eliminating it (all CI
+lower bounds above zero); the unequal budget remains a caveat and the locked
+$\delta=0.5$ grid gives no positive method direction. Following the
+decision tree
 (protocol~\S8), this work should
 be written and positioned as a \emph{boundary / empirical study}, not as a
 high-level method paper. Future work would need to (i)~execute E2 with

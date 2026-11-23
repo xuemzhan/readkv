@@ -1,0 +1,30 @@
+{
+  "run_id": "delta_lock_v2p1_2p0_par",
+  "files": [
+    {
+      "name": "config.json",
+      "sha256": "8daf1531a06624049b6951b8f44279520505943b264efcde11f95028da81c780",
+      "size": 1538
+    },
+    {
+      "name": "ecf_ledger.jsonl",
+      "sha256": "a60a24678f6c83b86b4bb491fe112928b1f394e59e24cfacd8fa042aac27850f",
+      "size": 393359
+    },
+    {
+      "name": "manifest.json",
+      "sha256": "7184531d71c809e8ef122ce432d2ecfe2fac17c8d84f5591f27e3a0bdcd9ce92",
+      "size": 649
+    },
+    {
+      "name": "metrics.json",
+      "sha256": "4f412a4aad9fb8c24b7ae4b7a7442b31b715a0d4fd16444259f184e59af40e5d",
+      "size": 8539
+    },
+    {
+      "name": "scores.jsonl",
+      "sha256": "a60a24678f6c83b86b4bb491fe112928b1f394e59e24cfacd8fa042aac27850f",
+      "size": 393359
+    }
+  ]
+}

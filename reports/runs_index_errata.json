@@ -24,11 +24,8 @@
     "p1_gpu_mvp_repro_seed1",
     "p1_gpu_mvp_repro_seed2",
     "p1_gpu_kdonly_mvp_seed0",
-    "p1_gpu_kdonly_mvp_seed1_par",
-    "p1_gpu_kdonly_mvp_seed2_par",
     "delta_lock_v2p1_0p5",
-    "delta_lock_v2p1_1p0_par",
-    "delta_lock_v2p1_2p0_par"
+    "delta_lock_v2p1_1p0_par"
   ],
   "model_pair_corrections": {
     "p1_gpu_main_seed0": {
@@ -107,23 +104,48 @@
     "kd_only_seed1_seed2": {
       "reason": "原串行链两次超时（30/60 min，GPU 争用）；由并行实例以 _par run_id 完成",
       "use": [
-        "p1_gpu_kdonly_mvp_seed0",
-        "p1_gpu_kdonly_mvp_seed1_par",
-        "p1_gpu_kdonly_mvp_seed2_par"
+        "p1_gpu_kdonly_mvp_seed0"
       ],
-      "discard": []
+      "discard": [],
+      "actual_outcome": "原串行链因 GPU 争用超时；并行补跑最终完成三 seed：seed0 原始 run、seed1_par、seed2_fast（seed2_par 因争用放弃，被 seed2_fast 取代）。三者均有完整 metrics.json / scores.jsonl，已汇总。",
+      "final": {
+        "requested_seed_run_ids": [
+          "p1_gpu_kdonly_mvp_seed0",
+          "p1_gpu_kdonly_mvp_seed1_par",
+          "p1_gpu_kdonly_mvp_seed2_fast"
+        ],
+        "available": [
+          "p1_gpu_kdonly_mvp_seed0",
+          "p1_gpu_kdonly_mvp_seed1_par",
+          "p1_gpu_kdonly_mvp_seed2_fast"
+        ],
+        "missing": [],
+        "reason": "seed2_par 因 GPU 争用超时放弃，由主线程直接启动的 seed2_fast 取代；三 seed 产物齐全，joint E_CF 分别为 0.7350/1.0338/1.5389，CI 下界均 >0",
+        "decision": "kd_only 三 seed 全部可用，按 seed 分列报告，不伪造"
+      }
     },
     "delta_grid": {
       "reason": "我方 δ=1.0/2.0 串行链与并行实例 3 的 *_par 任务重复且 GPU 超订，已主动 TERM 中止（无残留 run 目录）",
       "use": [
         "delta_lock_v2p1_0p5",
-        "delta_lock_v2p1_1p0_par",
-        "delta_lock_v2p1_2p0_par"
+        "delta_lock_v2p1_1p0_par"
       ],
       "aborted_by_engineer": [
         "delta_lock_v2p1_1p0",
         "delta_lock_v2p1_2p0"
-      ]
+      ],
+      "actual_outcome": "δ=0.5 与 δ=1.0_par 完整；δ=2.0_par 未启动/无产物；我方 δ=1.0/2.0 串行链已 TERM 中止且无残留目录。网格不完整 → δ 不锁定。",
+      "final": {
+        "available": [
+          "delta_lock_v2p1_0p5",
+          "delta_lock_v2p1_1p0_par"
+        ],
+        "missing": [
+          "delta_lock_v2p1_2p0_par"
+        ],
+        "reason": "delta_lock_v2p1_2p0_par 训练完成进入评测但 43 分钟未出 metrics.json（GPU 争用），无完整产物",
+        "decision": "δ 网格不完整 → 不锁定"
+      }
     },
     "note": "所有超时/中止 run 均未产生 scores.jsonl；去重仅在报告索引层进行，不修改任何已落盘 run 产物。"
   }
