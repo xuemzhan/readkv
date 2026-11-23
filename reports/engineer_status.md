@@ -349,3 +349,15 @@ F1/F2 已技术闭环；贡献(2) 措辞升格（限定→强形式）、投递�
 - **审计**：`bootstrap_ci_report` 43 runs 正常（报告层 `reports/audit_2x2_bootstrap.json`）；`consistency_check` 对 12 格报 ok=false，唯一原因为审计脚本要求 `model_pair` 字段而审计入口 config 未写该字段（其被显式 `calibration_version/validation_version` + teacher/student 路径替代）——属字段对接假阳性，非数据/指标错误；12 格 traceable（git 在历史、跑分代码一致、code_tracked=true）全部为真。`pytest` 保持通过。
 - **总耗时**：12 格 GPU 合计约 23.7 分钟（单卡串行），加每格 commit/push 开销；远低于 1–2 GPU 小时预算。
 - **产物**：`reports/runs/audit_2x2_A{00,01,10,11}_s{0,1,2}/`（12 格各 config/manifest/metrics/scores）、`reports/audit_2x2_formal_summary.json`、`reports/audit_2x2_bootstrap.json`、`reports/consistency_report.json`。贡献状态不变（(1)(2) 撤回、(3) withheld），主终点未触碰。
+
+
+---
+
+## 17. 2×2 统计口径补算修复（v2.7 合规缺口，2026-11-23）
+
+- **缺口**（科学家 `docs/audit_2x2_statistical_interpretation.md` §1.1/§5.1）：原 `audit_2x2_bootstrap.json` 12 格仅 E_CF 区间且用 `cluster-fallback`/60 逐对簇（exploratory=false），无 L CI、无预固定对比 CI，违反 v2.7 template_family 主口径。
+- **修复**：新脚本 `scripts/audit_2x2_ci.py`（纯 CPU，从冻结 scores + val JSONL 重算，不改任何 run 产物），按 `version_tag+sample_hash` 关联（规避跨版本 pair_id 碰撞，unknown_family=0）。产出 `reports/audit_2x2_l_ci.json`：每格 L 主 CI（template_family 簇级 bootstrap 10000）+ pair-level 敏感性 + `n_clusters=8` + `exploratory=true`（12/12）+ E_CF 主口径补正；两项预固定对比 ×3 seed 配对 CI。
+- **关键 L 主 CI（pp）**：A11 +40.0/+61.7/+40.0、A01 +26.7/+28.3/+33.3、A10 +38.3/+23.3/+25.0 主 CI 下界多 >0；A00 +1.7/−5.0/+3.3 围绕 0。固定 val 换校准 legacy A10−A00 CI [15.5,54.8]/[13.8,42.4]/[0.0,41.3]；换 val 对比按跨版本非配对独立簇重采样（v2.7 cross_version_note），部分 CI 跨 0。
+- **失败/重试**：attempt1 统计问题（换 val 对比按 sample_id 配对且跨版本 ID 不同→n=0），修复为独立簇重采样（commit `6c6b7d3`）；attempt2 成功。日志 `/tmp/opencode/audit_ci_attempt{1,2}.log`。
+- **commit+push**：脚本 `e9f5773` → 修复 `6c6b7d3` → 产物+报告 `857ea56`（本地=远程）；原 `audit_2x2_bootstrap.json`、12 格 `reports/runs/`、prereg、数据、论文均未改。
+- **产物路径**：`reports/audit_2x2_l_ci.json`、`reports/audit_2x2_ci_fix_report.md`、`scripts/audit_2x2_ci.py`。全 12 格 exploratory（8 族<24），不得作强显著性主张；whole_version_only 归因边界与贡献状态不变。
