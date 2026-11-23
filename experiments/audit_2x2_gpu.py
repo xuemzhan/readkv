@@ -151,8 +151,14 @@ def main() -> None:
         "train-fixed": args.train_fixed, "val-fixed": args.val_fixed,
     }
     sha = {k: sha256_file(v) for k, v in paths.items()}
-    train_path = paths[f"train-{args.cal_version if args.cal_version else cal_v}"]
-    val_path = paths[f"val-{args.val_version if args.val_version else val_v}"]
+    # 版本名 -> paths 键（legacy=旧生成器对应 old 文件；fixed 同名）
+    def path_key(which: str, ver: str) -> str:
+        tag = "old" if ver == "legacy" else "fixed"
+        return f"{which}-{tag}"
+    cal_ver = args.cal_version or cal_v
+    val_ver = args.val_version or val_v
+    train_path = paths[path_key("train", cal_ver)]
+    val_path = paths[path_key("val", val_ver)]
 
     trains = load_pairs(train_path)
     val_limit = args.smoke_n_val if args.smoke else None
