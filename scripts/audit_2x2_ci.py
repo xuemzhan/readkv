@@ -120,25 +120,50 @@ def main() -> None:
                 "family_source": f"data/audit_2x2/{CELL_VAL[c]}/val_seed{s}.jsonl (version_tag+sample_hash join)",
             }
 
-    def contrast(c_hi: str, c_lo: str, label: str, val_or_cal: str, s: int) -> dict:
-        ids_hi, hi, _ = cache[(c_hi, s)]
+    def contrast(c_hi: str, c_lo: str, label: str, val_or_cal: str, s: int, *, paired: bool) -> dict:
+        ids_hi, hi, meta_hi = cache[(c_hi, s)]
         ids_lo, lo, meta_lo = cache[(c_lo, s)]
-        common = sorted(set(ids_hi) & set(ids_lo))
-        deltas = [(hi[i]["self"] - hi[i]["joint"]) * 100.0 - (lo[i]["self"] - lo[i]["joint"]) * 100.0 for i in common]
-        fams = [meta_lo[i]["family"] for i in common]
-        if not deltas:
-            return {"point": None, "ci": None, "n_pairs": 0}
-        ci = cluster_bootstrap(deltas, fams, n_resamples=args.n_resamples, seed=s)
-        return {"point": round(ci[0], 6), "ci": [round(ci[1], 6), round(ci[2], 6)],
-                "n_pairs": len(common), "n_clusters": len(set(fams)),
-                "exploratory": bool(len(set(fams)) < 24), "label": label, "scope": val_or_cal}
+        if paired:
+            # 同一 val 换校准：样本相同，按 sample_id 配对
+            common = sorted(set(ids_hi) & set(ids_lo))
+            deltas = [(hi[i]["self"] - hi[i]["joint"]) * 100.0 - (lo[i]["self"] - lo[i]["joint"]) * 100.0 for i in common]
+            fams = [meta_lo[i]["family"] for i in common]
+            if not deltas:
+                return {"point": None, "ci": None, "n_pairs": 0, "method": "paired-by-sample_id"}
+            ci = cluster_bootstrap(deltas, fams, n_resamples=args.n_resamples, seed=s)
+            return {"point": round(ci[0], 6), "ci": [round(ci[1], 6), round(ci[2], 6)],
+                    "n_pairs": len(common), "n_clusters": len(set(fams)),
+                    "exploratory": bool(len(set(fams)) < 24), "label": label, "scope": val_or_cal,
+                    "method": "paired-by-sample_id (same val, swap calibration)"}
+        # 换 val：跨版本 val 是不同样本集（v2.7 cross_version_note），按各自 template_family 独立簇重采样均值差
+        import numpy as np
+        rng = np.random.default_rng(s)
+        L_hi = [(hi[i]["self"] - hi[i]["joint"]) * 100.0 for i in ids_hi]
+        L_lo = [(lo[i]["self"] - lo[i]["joint"]) * 100.0 for i in ids_lo]
+        fam_hi = np.array([meta_hi[i]["family"] for i in ids_hi])
+        fam_lo = np.array([meta_lo[i]["family"] for i in ids_lo])
+        u_hi, u_lo = np.unique(fam_hi), np.unique(fam_lo)
+        reps = []
+        for _ in range(args.n_resamples):
+            pick_hi = rng.choice(u_hi, size=len(u_hi), replace=True)
+            pick_lo = rng.choice(u_lo, size=len(u_lo), replace=True)
+            mh = np.mean([np.mean(np.array(L_hi)[fam_hi == f]) for f in pick_hi])
+            ml = np.mean([np.mean(np.array(L_lo)[fam_lo == f]) for f in pick_lo])
+            reps.append(mh - ml)
+        point = float(np.mean(L_hi) - np.mean(L_lo))
+        lo_ci, hi_ci = float(np.percentile(reps, 2.5)), float(np.percentile(reps, 97.5))
+        n_clusters = len(set(u_hi) | set(u_lo))
+        return {"point": round(point, 6), "ci": [round(lo_ci, 6), round(hi_ci, 6)],
+                "n_pairs": len(ids_hi) + len(ids_lo), "n_clusters": n_clusters,
+                "exploratory": bool(n_clusters < 24), "label": label, "scope": val_or_cal,
+                "method": "unpaired independent template_family cluster bootstrap of mean(L) difference (cross-version vals are distinct sample sets)"}
 
     for s in SEEDS:
         result["predeclared_contrasts"][f"s{s}"] = {
-            "calibration_legacy_val_A10_minus_A00": contrast("A10", "A00", "固定旧 val 换校准", "legacy val", s),
-            "calibration_fixed_val_A11_minus_A01": contrast("A11", "A01", "固定修复 val 换校准", "fixed val", s),
-            "eval_legacy_cal_A01_minus_A00": contrast("A01", "A00", "固定旧校准换 val", "legacy cal", s),
-            "eval_fixed_cal_A11_minus_A10": contrast("A11", "A10", "固定修复校准换 val", "fixed cal", s),
+            "calibration_legacy_val_A10_minus_A00": contrast("A10", "A00", "固定旧 val 换校准", "legacy val", s, paired=True),
+            "calibration_fixed_val_A11_minus_A01": contrast("A11", "A01", "固定修复 val 换校准", "fixed val", s, paired=True),
+            "eval_legacy_cal_A01_minus_A00": contrast("A01", "A00", "固定旧校准换 val", "legacy cal", s, paired=False),
+            "eval_fixed_cal_A11_minus_A10": contrast("A11", "A10", "固定修复校准换 val", "fixed cal", s, paired=False),
         }
 
     result["note"] = ("L 主口径=template_family 簇级 bootstrap；pair-level 仅敏感性；8 族<24 全标 exploratory=true。"
