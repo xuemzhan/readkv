@@ -5,8 +5,7 @@ __pycache__/
 build/
 dist/
 .reports/
-reports/*
-!reports/.gitkeep
+reports/runs/*/cache/
 data/cache/**
 !data/cache/.gitkeep
 *.npz

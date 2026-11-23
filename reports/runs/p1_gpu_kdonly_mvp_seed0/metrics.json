@@ -1,0 +1,328 @@
+{
+  "run_id": "p1_gpu_kdonly_mvp_seed0",
+  "backend": "gpu",
+  "protocol_version": "2.0",
+  "method": "kd",
+  "n_calibration": 120,
+  "n_eval": 60,
+  "tau": 1.0,
+  "data_quality": {
+    "total": 520,
+    "by_slice": {
+      "F1": 130,
+      "F2": 67,
+      "F3": 130,
+      "F4": 67,
+      "F5": 63,
+      "F6": 63
+    },
+    "by_split": {
+      "probe": 40,
+      "train": 120,
+      "val": 60,
+      "test": 300
+    },
+    "length_mismatch": 39,
+    "f5_negative_controls": 63,
+    "flip_denominator": 394,
+    "template_overlap_train_eval": [],
+    "quality_gate": "pass",
+    "note": "length_mismatch 需分层报告；F5 不计入必须翻转分母；template_overlap_train_eval 必须为空（否则违反训练/评估隔离）"
+  },
+  "arms": {
+    "self": {
+      "n_total": 60,
+      "n_evaluable": 48,
+      "E_CF": {
+        "mean": 0.0,
+        "ci": [
+          0.0,
+          0.0
+        ]
+      },
+      "normalized_E_CF": 0.0,
+      "flip_consistency": 1.0,
+      "dual_correct": 0.6833333333333333,
+      "coverage": 0.8,
+      "info_gap": null,
+      "self_gap": 0.0,
+      "detail": {
+        "tau": 1.0,
+        "evaluable_threshold": 0.001,
+        "n_flip_evaluable": 48
+      }
+    },
+    "identity": {
+      "n_total": 60,
+      "n_evaluable": 48,
+      "E_CF": {
+        "mean": 0.0,
+        "ci": [
+          0.0,
+          0.0
+        ]
+      },
+      "normalized_E_CF": 0.0,
+      "flip_consistency": 1.0,
+      "dual_correct": 0.6833333333333333,
+      "coverage": 0.8,
+      "info_gap": null,
+      "self_gap": 0.0,
+      "detail": {
+        "tau": 1.0,
+        "evaluable_threshold": 0.001,
+        "n_flip_evaluable": 48
+      }
+    },
+    "joint": {
+      "n_total": 60,
+      "n_evaluable": 48,
+      "E_CF": {
+        "mean": 0.7349589029947917,
+        "ci": [
+          0.5517160034179688,
+          0.9344413248697917
+        ]
+      },
+      "normalized_E_CF": 0.11370815954883785,
+      "flip_consistency": 1.0,
+      "dual_correct": 0.7,
+      "coverage": 0.8,
+      "info_gap": null,
+      "self_gap": 0.7349589029947917,
+      "detail": {
+        "tau": 1.0,
+        "evaluable_threshold": 0.001,
+        "n_flip_evaluable": 48
+      }
+    },
+    "k_only": {
+      "n_total": 60,
+      "n_evaluable": 48,
+      "E_CF": {
+        "mean": 1.80859375,
+        "ci": [
+          1.3645833333333333,
+          2.2927278645833327
+        ]
+      },
+      "normalized_E_CF": 0.2999460990410263,
+      "flip_consistency": 1.0,
+      "dual_correct": 0.8166666666666667,
+      "coverage": 0.8,
+      "info_gap": null,
+      "self_gap": 1.80859375,
+      "detail": {
+        "tau": 1.0,
+        "evaluable_threshold": 0.001,
+        "n_flip_evaluable": 48
+      }
+    },
+    "v_only": {
+      "n_total": 60,
+      "n_evaluable": 48,
+      "E_CF": {
+        "mean": 2.1638997395833335,
+        "ci": [
+          1.7171232096354168,
+          2.644344889322917
+        ]
+      },
+      "normalized_E_CF": 0.4335321089401857,
+      "flip_consistency": 1.0,
+      "dual_correct": 0.7,
+      "coverage": 0.8,
+      "info_gap": null,
+      "self_gap": 2.1638997395833335,
+      "detail": {
+        "tau": 1.0,
+        "evaluable_threshold": 0.001,
+        "n_flip_evaluable": 48
+      }
+    },
+    "control:mismatch": {
+      "n_total": 60,
+      "n_evaluable": 48,
+      "E_CF": {
+        "mean": 6.2625732421875,
+        "ci": [
+          5.0949912516276035,
+          7.471632080078125
+        ]
+      },
+      "normalized_E_CF": 0.7665524074257277,
+      "flip_consistency": 0.5208333333333334,
+      "dual_correct": 0.13333333333333333,
+      "coverage": 0.8,
+      "info_gap": null,
+      "self_gap": 6.2625732421875,
+      "detail": {
+        "tau": 1.0,
+        "evaluable_threshold": 0.001,
+        "n_flip_evaluable": 48
+      }
+    },
+    "control:random": {
+      "n_total": 60,
+      "n_evaluable": 48,
+      "E_CF": {
+        "mean": 5.486116536458334,
+        "ci": [
+          4.456622314453125,
+          6.485371907552083
+        ]
+      },
+      "normalized_E_CF": 0.6175875763364547,
+      "flip_consistency": 0.8541666666666666,
+      "dual_correct": 0.3,
+      "coverage": 0.8,
+      "info_gap": null,
+      "self_gap": 5.486116536458334,
+      "detail": {
+        "tau": 1.0,
+        "evaluable_threshold": 0.001,
+        "n_flip_evaluable": 48
+      }
+    },
+    "control:zero": {
+      "n_total": 60,
+      "n_evaluable": 48,
+      "E_CF": {
+        "mean": 6.158854166666667,
+        "ci": [
+          5.0348828125,
+          7.255221354166666
+        ]
+      },
+      "normalized_E_CF": 0.6808151854284276,
+      "flip_consistency": 0.0,
+      "dual_correct": 0.11666666666666667,
+      "coverage": 0.8,
+      "info_gap": null,
+      "self_gap": 6.158854166666667,
+      "detail": {
+        "tau": 1.0,
+        "evaluable_threshold": 0.001,
+        "n_flip_evaluable": 48
+      }
+    },
+    "control:correct": {
+      "n_total": 60,
+      "n_evaluable": 48,
+      "E_CF": {
+        "mean": 0.7349589029947917,
+        "ci": [
+          0.5517160034179688,
+          0.9344413248697917
+        ]
+      },
+      "normalized_E_CF": 0.11370815954883785,
+      "flip_consistency": 1.0,
+      "dual_correct": 0.7,
+      "coverage": 0.8,
+      "info_gap": null,
+      "self_gap": 0.7349589029947917,
+      "detail": {
+        "tau": 1.0,
+        "evaluable_threshold": 0.001,
+        "n_flip_evaluable": 48
+      }
+    },
+    "new_joint": {
+      "n_total": 60,
+      "n_evaluable": 48,
+      "E_CF": {
+        "mean": 0.7349589029947917,
+        "ci": [
+          0.5517160034179688,
+          0.9344413248697917
+        ]
+      },
+      "normalized_E_CF": 0.11370815954883785,
+      "flip_consistency": 1.0,
+      "dual_correct": 0.7,
+      "coverage": 0.8,
+      "info_gap": null,
+      "self_gap": 0.7349589029947917,
+      "detail": {
+        "tau": 1.0,
+        "evaluable_threshold": 0.001,
+        "n_flip_evaluable": 48
+      }
+    }
+  },
+  "primary_endpoint": {
+    "point": 0.0,
+    "ci": [
+      0.0,
+      0.0
+    ],
+    "improved": false,
+    "n": 60,
+    "note": "paired E_CF difference (new - baseline); negative means new method is better"
+  },
+  "info_attribution": {
+    "control:mismatch": 5.527614339192708,
+    "control:random": 4.751157633463542,
+    "control:zero": 5.423895263671875
+  },
+  "transfer_health": {
+    "transfer_broken": false,
+    "verdict_note": "quality_pass = data-quality gate only (split isolation / template non-overlap / annotation consistency); it does NOT assert transfer utility. transfer_broken=false: no objective sign of transfer failure. frozen verdict=None is unchanged; this field is an orthogonal annotation.",
+    "quality_pass_scope": "data_quality_gate_only",
+    "signals": {
+      "joint_dual_drop_vs_self": -0.0167,
+      "dual_drop_ge_0_2": false,
+      "joint_ecf_vs_controls": {
+        "control:mismatch": 6.2626,
+        "control:zero": 6.1589
+      },
+      "joint_ecf_ge_control": {
+        "control:mismatch": false,
+        "control:zero": false
+      },
+      "info_attribution": {
+        "control:mismatch": 5.527614339192708,
+        "control:random": 4.751157633463542,
+        "control:zero": 5.423895263671875
+      },
+      "info_mostly_negative": false
+    }
+  },
+  "transfer_broken": false,
+  "verdict_note": "quality_pass = data-quality gate only (split isolation / template non-overlap / annotation consistency); it does NOT assert transfer utility. transfer_broken=false: no objective sign of transfer failure. frozen verdict=None is unchanged; this field is an orthogonal annotation.",
+  "quality_pass_scope": "data_quality_gate_only",
+  "bootstrap_seed": 0,
+  "decision": {
+    "when": "distortion_present",
+    "verdict": "distortion_exists",
+    "conditions": {
+      "distortion_present": true,
+      "quality_pass": true
+    },
+    "action": "继续 P2 机制诊断与 P3 方法；报告 E_CF 与基线差距"
+  },
+  "decision_facts": {
+    "ecf_improved": false,
+    "ecf_point": 0.0,
+    "ci_upper": 0.0,
+    "distortion_present": true,
+    "joint_ecf_mean": 0.7349589029947917,
+    "identity_ecf_mean": 0.0,
+    "flip_consistency": 1.0,
+    "coverage": 0.8,
+    "dual_correct": 0.7,
+    "quality_pass": true,
+    "transfer_broken": false
+  },
+  "training": {
+    "method": "kd",
+    "epochs": 8,
+    "lr": 0.001,
+    "huber_delta": null,
+    "n_train_pairs": 120,
+    "trainable_params": 7340032,
+    "train_sec": 1043.2
+  },
+  "elapsed_sec": 1174.0
+}

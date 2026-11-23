@@ -1,0 +1,66 @@
+{
+  "run_id": "delta_lock_v2p1_1p0_par",
+  "protocol_version": "2.0",
+  "git_hash": "ff578b5",
+  "created_at": "2026-11-23T03:36:53+00:00",
+  "seed": 0,
+  "device": "cuda",
+  "dtype": "bfloat16",
+  "kernel": "sdpa",
+  "zero_re_prefill": true,
+  "experiment_config": {
+    "stage": "P1",
+    "gate": "counterfactual_benchmark",
+    "backend": "gpu",
+    "teacher": "/root/.cache/modelscope/models/Qwen--Qwen3-1.7B/snapshots/master",
+    "student": "/root/.cache/modelscope/models/Qwen--Qwen3-0.6B/snapshots/master",
+    "model_pair": "qwen3-1.7b-to-0.6b",
+    "mapper": "cf_lite",
+    "layer_map": {
+      "kind": "identity",
+      "n_student_layers": 28,
+      "n_teacher_layers": 28,
+      "offset": 0,
+      "permutation": null
+    },
+    "primary_baseline": "kd_only",
+    "seeds": [
+      0,
+      1,
+      2
+    ],
+    "seed": 0,
+    "bootstrap_seed": 0,
+    "dtype": "bfloat16",
+    "kernel": "sdpa",
+    "n_resamples": 2000,
+    "tau": 1.0,
+    "self_threshold": 0.1,
+    "sizes": {
+      "probe": 40,
+      "train": 60,
+      "val": 60,
+      "test": 300,
+      "real": 0
+    },
+    "eval_splits": [
+      "val"
+    ],
+    "training": {
+      "method": "cf_lite",
+      "epochs": 3,
+      "lr": 0.001,
+      "huber_delta": 1.0,
+      "n_train_pairs": 60,
+      "trainable_params": 7340032,
+      "train_sec": 3535.2
+    },
+    "prereg": "configs/prereg/phase1_benchmark_decision.yaml (frozen protocol-v2.0)"
+  },
+  "metadata": {
+    "stage": "P1",
+    "backend": "gpu",
+    "method": "cf_lite",
+    "protocol_version": "2.0"
+  }
+}

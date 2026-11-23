@@ -1,0 +1,130 @@
+{
+  "file": "reports/runs_index_errata.json",
+  "generated": "2026-11-23",
+  "authority": "PI p1_go_no_go.md §2(R1)/§4(R4)/§5(R6)",
+  "notes": [
+    "本勘误只写 reports/ 层的 metadata，绝不修改任何 reports/runs/** 的 scores.jsonl / config.json / metrics.json。",
+    "旧 run 的 git_hash=53e9bc5 不含跑分代码，已标注 superseded；可复现主证据改为 *_repro_* / *_kdonly_* run（git_hash=458de18）。",
+    "model_pair 勘误依据：teacher 路径含 Qwen3-4B、student 路径含 Qwen3-1.7B，layer_map=36→28 proportional；不影响任何指标。",
+    "transfer_broken 为 R4 正交注释，不改写冻结 verdict distortion_exists；下游须联合读取。"
+  ],
+  "superseded_runs": [
+    "e0_gpu_mvp_seed0",
+    "p1_gpu_mvp_seed0",
+    "p1_gpu_mvp_seed1",
+    "p1_gpu_mvp_seed2",
+    "e0_gpu_main_seed0",
+    "p1_gpu_main_seed0",
+    "p1_gpu_main_seed1",
+    "p1_gpu_main_seed2"
+  ],
+  "authoritative_runs": [
+    "e0_gpu_mvp_repro_seed0",
+    "p1_gpu_mvp_repro_seed0",
+    "p1_gpu_mvp_repro_seed1",
+    "p1_gpu_mvp_repro_seed2",
+    "p1_gpu_kdonly_mvp_seed0",
+    "p1_gpu_kdonly_mvp_seed1_par",
+    "p1_gpu_kdonly_mvp_seed2_par",
+    "delta_lock_v2p1_0p5",
+    "delta_lock_v2p1_1p0_par",
+    "delta_lock_v2p1_2p0_par"
+  ],
+  "model_pair_corrections": {
+    "p1_gpu_main_seed0": {
+      "recorded": "qwen3-1.7b-to-0.6b",
+      "model_pair_corrected": "qwen3-4b-to-1.7b",
+      "basis": [
+        "teacher=/root/.cache/modelscope/models/Qwen--Qwen3-4B/snapshots/master",
+        "student=/root/.cache/modelscope/models/Qwen--Qwen3-1.7B/snapshots/master",
+        "layer_map n_teacher_layers=36 / n_student_layers=28"
+      ],
+      "metrics_affected": false
+    },
+    "p1_gpu_main_seed1": {
+      "recorded": "qwen3-1.7b-to-0.6b",
+      "model_pair_corrected": "qwen3-4b-to-1.7b",
+      "basis": [
+        "teacher=/root/.cache/modelscope/models/Qwen--Qwen3-4B/snapshots/master",
+        "student=/root/.cache/modelscope/models/Qwen--Qwen3-1.7B/snapshots/master",
+        "layer_map n_teacher_layers=36 / n_student_layers=28"
+      ],
+      "metrics_affected": false
+    },
+    "p1_gpu_main_seed2": {
+      "recorded": "qwen3-1.7b-to-0.6b",
+      "model_pair_corrected": "qwen3-4b-to-1.7b",
+      "basis": [
+        "teacher=/root/.cache/modelscope/models/Qwen--Qwen3-4B/snapshots/master",
+        "student=/root/.cache/modelscope/models/Qwen--Qwen3-1.7B/snapshots/master",
+        "layer_map n_teacher_layers=36 / n_student_layers=28"
+      ],
+      "metrics_affected": false
+    }
+  },
+  "transfer_broken_annotations": {
+    "p1_gpu_main_seed0": {
+      "transfer_broken": true,
+      "basis": "joint dual 0.28-0.30 vs self 0.65-0.78 (drop>=0.2); joint E_CF ~= or > mismatch/zero controls; info_attribution mostly negative",
+      "verdict_unchanged": "distortion_exists",
+      "interpretation": "broken-transfer failure boundary; NOT positive evidence of utility-preserving distortion",
+      "note": "quality_pass = data-quality gate only (split isolation / template non-overlap / annotation consistency), NOT transfer utility"
+    },
+    "p1_gpu_main_seed1": {
+      "transfer_broken": true,
+      "basis": "joint dual 0.28-0.30 vs self 0.65-0.78 (drop>=0.2); joint E_CF ~= or > mismatch/zero controls; info_attribution mostly negative",
+      "verdict_unchanged": "distortion_exists",
+      "interpretation": "broken-transfer failure boundary; NOT positive evidence of utility-preserving distortion",
+      "note": "quality_pass = data-quality gate only (split isolation / template non-overlap / annotation consistency), NOT transfer utility"
+    },
+    "p1_gpu_main_seed2": {
+      "transfer_broken": true,
+      "basis": "joint dual 0.28-0.30 vs self 0.65-0.78 (drop>=0.2); joint E_CF ~= or > mismatch/zero controls; info_attribution mostly negative",
+      "verdict_unchanged": "distortion_exists",
+      "interpretation": "broken-transfer failure boundary; NOT positive evidence of utility-preserving distortion",
+      "note": "quality_pass = data-quality gate only (split isolation / template non-overlap / annotation consistency), NOT transfer utility"
+    },
+    "p1_gpu_mvp_seed0": {
+      "transfer_broken": false,
+      "basis": "joint E_CF 1.93-2.12 << mismatch/zero controls ~4-6; info_attribution positive; dual stable vs self",
+      "verdict_unchanged": "distortion_exists",
+      "note": "quality_pass = data-quality gate only; gap candidate still subject to kd_only condition (PI §3)"
+    },
+    "p1_gpu_mvp_seed1": {
+      "transfer_broken": false,
+      "basis": "joint E_CF 1.93-2.12 << mismatch/zero controls ~4-6; info_attribution positive; dual stable vs self",
+      "verdict_unchanged": "distortion_exists",
+      "note": "quality_pass = data-quality gate only; gap candidate still subject to kd_only condition (PI §3)"
+    },
+    "p1_gpu_mvp_seed2": {
+      "transfer_broken": false,
+      "basis": "joint E_CF 1.93-2.12 << mismatch/zero controls ~4-6; info_attribution positive; dual stable vs self",
+      "verdict_unchanged": "distortion_exists",
+      "note": "quality_pass = data-quality gate only; gap candidate still subject to kd_only condition (PI §3)"
+    }
+  },
+  "deduplication": {
+    "kd_only_seed1_seed2": {
+      "reason": "原串行链两次超时（30/60 min，GPU 争用）；由并行实例以 _par run_id 完成",
+      "use": [
+        "p1_gpu_kdonly_mvp_seed0",
+        "p1_gpu_kdonly_mvp_seed1_par",
+        "p1_gpu_kdonly_mvp_seed2_par"
+      ],
+      "discard": []
+    },
+    "delta_grid": {
+      "reason": "我方 δ=1.0/2.0 串行链与并行实例 3 的 *_par 任务重复且 GPU 超订，已主动 TERM 中止（无残留 run 目录）",
+      "use": [
+        "delta_lock_v2p1_0p5",
+        "delta_lock_v2p1_1p0_par",
+        "delta_lock_v2p1_2p0_par"
+      ],
+      "aborted_by_engineer": [
+        "delta_lock_v2p1_1p0",
+        "delta_lock_v2p1_2p0"
+      ]
+    },
+    "note": "所有超时/中止 run 均未产生 scores.jsonl；去重仅在报告索引层进行，不修改任何已落盘 run 产物。"
+  }
+}

@@ -1,0 +1,516 @@
+[
+  {
+    "run_id": "review",
+    "ok": false,
+    "problems": [
+      "missing config.json",
+      "missing manifest.json",
+      "missing scores.jsonl",
+      "git_hash='' != HEAD='458de18'",
+      "commit tree lacks run code: experiments/P0_gpu.py,experiments/P1_gpu.py,experiments/P1_kd_gpu.py,src/readkv/models/gpu_backend.py",
+      "protocol_version '' incompatible with frozen V2 prereg"
+    ],
+    "superseded": false,
+    "git_hash": "",
+    "head_hash": "458de18",
+    "git_hash_matches_head": false,
+    "code_tracked": false,
+    "missing_code_paths": [
+      "experiments/P0_gpu.py",
+      "experiments/P1_gpu.py",
+      "experiments/P1_kd_gpu.py",
+      "src/readkv/models/gpu_backend.py",
+      "src/readkv/models/hooks.py",
+      "src/readkv/evaluate/cf_pipeline.py",
+      "scripts/gen_teacher_cache.py",
+      "scripts/consistency_check.py",
+      "src/readkv/train/kd_gpu.py",
+      "src/readkv/models/cf_rct.py",
+      "src/readkv/train/cf_rct.py",
+      "src/readkv/models/layer_map.py",
+      "src/readkv/models/loader.py"
+    ],
+    "dirty_run_paths": [],
+    "model_pair_check": {
+      "ok": false,
+      "reason": "unknown model_pair ''"
+    },
+    "protocol_compat": {
+      "ok": false,
+      "protocol_version": "",
+      "problems": [
+        "protocol_version '' incompatible with frozen V2 prereg"
+      ]
+    }
+  },
+  {
+    "run_id": "e0_gpu_main_seed0",
+    "ok": false,
+    "problems": [
+      "git_hash='53e9bc5' != HEAD='458de18'",
+      "commit tree lacks run code: experiments/P0_gpu.py,experiments/P1_gpu.py,experiments/P1_kd_gpu.py,src/readkv/models/gpu_backend.py"
+    ],
+    "superseded": false,
+    "git_hash": "53e9bc5",
+    "head_hash": "458de18",
+    "git_hash_matches_head": false,
+    "code_tracked": false,
+    "missing_code_paths": [
+      "experiments/P0_gpu.py",
+      "experiments/P1_gpu.py",
+      "experiments/P1_kd_gpu.py",
+      "src/readkv/models/gpu_backend.py",
+      "src/readkv/train/kd_gpu.py"
+    ],
+    "dirty_run_paths": [],
+    "model_pair_check": {
+      "ok": true,
+      "model_pair": "qwen3-4b-to-1.7b",
+      "expected": {
+        "teacher": "Qwen3-4B",
+        "student": "Qwen3-1.7B",
+        "n_teacher_layers": 36,
+        "n_student_layers": 28
+      },
+      "problems": [],
+      "errata_hint": null
+    },
+    "protocol_compat": {
+      "ok": true,
+      "protocol_version": "2.0",
+      "problems": []
+    }
+  },
+  {
+    "run_id": "e0_gpu_mvp_repro_seed0",
+    "ok": true,
+    "problems": [],
+    "superseded": false,
+    "git_hash": "458de18",
+    "head_hash": "458de18",
+    "git_hash_matches_head": true,
+    "code_tracked": true,
+    "missing_code_paths": [],
+    "dirty_run_paths": [],
+    "model_pair_check": {
+      "ok": true,
+      "model_pair": "qwen3-1.7b-to-0.6b",
+      "expected": {
+        "teacher": "Qwen3-1.7B",
+        "student": "Qwen3-0.6B",
+        "n_teacher_layers": 28,
+        "n_student_layers": 28
+      },
+      "problems": [],
+      "errata_hint": null
+    },
+    "protocol_compat": {
+      "ok": true,
+      "protocol_version": "2.0",
+      "problems": []
+    }
+  },
+  {
+    "run_id": "e0_gpu_mvp_seed0",
+    "ok": false,
+    "problems": [
+      "git_hash='53e9bc5' != HEAD='458de18'",
+      "commit tree lacks run code: experiments/P0_gpu.py,experiments/P1_gpu.py,experiments/P1_kd_gpu.py,src/readkv/models/gpu_backend.py"
+    ],
+    "superseded": false,
+    "git_hash": "53e9bc5",
+    "head_hash": "458de18",
+    "git_hash_matches_head": false,
+    "code_tracked": false,
+    "missing_code_paths": [
+      "experiments/P0_gpu.py",
+      "experiments/P1_gpu.py",
+      "experiments/P1_kd_gpu.py",
+      "src/readkv/models/gpu_backend.py",
+      "src/readkv/train/kd_gpu.py"
+    ],
+    "dirty_run_paths": [],
+    "model_pair_check": {
+      "ok": true,
+      "model_pair": "qwen3-1.7b-to-0.6b",
+      "expected": {
+        "teacher": "Qwen3-1.7B",
+        "student": "Qwen3-0.6B",
+        "n_teacher_layers": 28,
+        "n_student_layers": 28
+      },
+      "problems": [],
+      "errata_hint": null
+    },
+    "protocol_compat": {
+      "ok": true,
+      "protocol_version": "2.0",
+      "problems": []
+    }
+  },
+  {
+    "run_id": "p1_gpu_kdonly_mvp_seed0",
+    "ok": true,
+    "problems": [],
+    "superseded": false,
+    "git_hash": "458de18",
+    "head_hash": "458de18",
+    "git_hash_matches_head": true,
+    "code_tracked": true,
+    "missing_code_paths": [],
+    "dirty_run_paths": [],
+    "model_pair_check": {
+      "ok": true,
+      "model_pair": "qwen3-1.7b-to-0.6b",
+      "expected": {
+        "teacher": "Qwen3-1.7B",
+        "student": "Qwen3-0.6B",
+        "n_teacher_layers": 28,
+        "n_student_layers": 28
+      },
+      "problems": [],
+      "errata_hint": null
+    },
+    "protocol_compat": {
+      "ok": true,
+      "protocol_version": "2.0",
+      "problems": []
+    }
+  },
+  {
+    "run_id": "p1_gpu_main_seed0",
+    "ok": false,
+    "problems": [
+      "git_hash='53e9bc5' != HEAD='458de18'",
+      "commit tree lacks run code: experiments/P0_gpu.py,experiments/P1_gpu.py,experiments/P1_kd_gpu.py,src/readkv/models/gpu_backend.py",
+      "teacher path '/root/.cache/modelscope/models/Qwen--Qwen3-4B/snapshots/master' does not match qwen3-1.7b-to-0.6b (Qwen3-1.7B)",
+      "student path '/root/.cache/modelscope/models/Qwen--Qwen3-1.7B/snapshots/master' does not match qwen3-1.7b-to-0.6b (Qwen3-0.6B)",
+      "layer_map 28/36 != expected student/teacher 28/28"
+    ],
+    "superseded": false,
+    "git_hash": "53e9bc5",
+    "head_hash": "458de18",
+    "git_hash_matches_head": false,
+    "code_tracked": false,
+    "missing_code_paths": [
+      "experiments/P0_gpu.py",
+      "experiments/P1_gpu.py",
+      "experiments/P1_kd_gpu.py",
+      "src/readkv/models/gpu_backend.py",
+      "src/readkv/train/kd_gpu.py"
+    ],
+    "dirty_run_paths": [],
+    "model_pair_check": {
+      "ok": false,
+      "model_pair": "qwen3-1.7b-to-0.6b",
+      "expected": {
+        "teacher": "Qwen3-1.7B",
+        "student": "Qwen3-0.6B",
+        "n_teacher_layers": 28,
+        "n_student_layers": 28
+      },
+      "problems": [
+        "teacher path '/root/.cache/modelscope/models/Qwen--Qwen3-4B/snapshots/master' does not match qwen3-1.7b-to-0.6b (Qwen3-1.7B)",
+        "student path '/root/.cache/modelscope/models/Qwen--Qwen3-1.7B/snapshots/master' does not match qwen3-1.7b-to-0.6b (Qwen3-0.6B)",
+        "layer_map 28/36 != expected student/teacher 28/28"
+      ],
+      "errata_hint": "model_pair_corrected='qwen3-4b-to-1.7b' (teacher path + 36→28 layer_map)"
+    },
+    "protocol_compat": {
+      "ok": true,
+      "protocol_version": "2.0",
+      "problems": []
+    }
+  },
+  {
+    "run_id": "p1_gpu_main_seed1",
+    "ok": false,
+    "problems": [
+      "git_hash='53e9bc5' != HEAD='458de18'",
+      "commit tree lacks run code: experiments/P0_gpu.py,experiments/P1_gpu.py,experiments/P1_kd_gpu.py,src/readkv/models/gpu_backend.py",
+      "teacher path '/root/.cache/modelscope/models/Qwen--Qwen3-4B/snapshots/master' does not match qwen3-1.7b-to-0.6b (Qwen3-1.7B)",
+      "student path '/root/.cache/modelscope/models/Qwen--Qwen3-1.7B/snapshots/master' does not match qwen3-1.7b-to-0.6b (Qwen3-0.6B)",
+      "layer_map 28/36 != expected student/teacher 28/28"
+    ],
+    "superseded": false,
+    "git_hash": "53e9bc5",
+    "head_hash": "458de18",
+    "git_hash_matches_head": false,
+    "code_tracked": false,
+    "missing_code_paths": [
+      "experiments/P0_gpu.py",
+      "experiments/P1_gpu.py",
+      "experiments/P1_kd_gpu.py",
+      "src/readkv/models/gpu_backend.py",
+      "src/readkv/train/kd_gpu.py"
+    ],
+    "dirty_run_paths": [],
+    "model_pair_check": {
+      "ok": false,
+      "model_pair": "qwen3-1.7b-to-0.6b",
+      "expected": {
+        "teacher": "Qwen3-1.7B",
+        "student": "Qwen3-0.6B",
+        "n_teacher_layers": 28,
+        "n_student_layers": 28
+      },
+      "problems": [
+        "teacher path '/root/.cache/modelscope/models/Qwen--Qwen3-4B/snapshots/master' does not match qwen3-1.7b-to-0.6b (Qwen3-1.7B)",
+        "student path '/root/.cache/modelscope/models/Qwen--Qwen3-1.7B/snapshots/master' does not match qwen3-1.7b-to-0.6b (Qwen3-0.6B)",
+        "layer_map 28/36 != expected student/teacher 28/28"
+      ],
+      "errata_hint": "model_pair_corrected='qwen3-4b-to-1.7b' (teacher path + 36→28 layer_map)"
+    },
+    "protocol_compat": {
+      "ok": true,
+      "protocol_version": "2.0",
+      "problems": []
+    }
+  },
+  {
+    "run_id": "p1_gpu_main_seed2",
+    "ok": false,
+    "problems": [
+      "git_hash='53e9bc5' != HEAD='458de18'",
+      "commit tree lacks run code: experiments/P0_gpu.py,experiments/P1_gpu.py,experiments/P1_kd_gpu.py,src/readkv/models/gpu_backend.py",
+      "teacher path '/root/.cache/modelscope/models/Qwen--Qwen3-4B/snapshots/master' does not match qwen3-1.7b-to-0.6b (Qwen3-1.7B)",
+      "student path '/root/.cache/modelscope/models/Qwen--Qwen3-1.7B/snapshots/master' does not match qwen3-1.7b-to-0.6b (Qwen3-0.6B)",
+      "layer_map 28/36 != expected student/teacher 28/28"
+    ],
+    "superseded": false,
+    "git_hash": "53e9bc5",
+    "head_hash": "458de18",
+    "git_hash_matches_head": false,
+    "code_tracked": false,
+    "missing_code_paths": [
+      "experiments/P0_gpu.py",
+      "experiments/P1_gpu.py",
+      "experiments/P1_kd_gpu.py",
+      "src/readkv/models/gpu_backend.py",
+      "src/readkv/train/kd_gpu.py"
+    ],
+    "dirty_run_paths": [],
+    "model_pair_check": {
+      "ok": false,
+      "model_pair": "qwen3-1.7b-to-0.6b",
+      "expected": {
+        "teacher": "Qwen3-1.7B",
+        "student": "Qwen3-0.6B",
+        "n_teacher_layers": 28,
+        "n_student_layers": 28
+      },
+      "problems": [
+        "teacher path '/root/.cache/modelscope/models/Qwen--Qwen3-4B/snapshots/master' does not match qwen3-1.7b-to-0.6b (Qwen3-1.7B)",
+        "student path '/root/.cache/modelscope/models/Qwen--Qwen3-1.7B/snapshots/master' does not match qwen3-1.7b-to-0.6b (Qwen3-0.6B)",
+        "layer_map 28/36 != expected student/teacher 28/28"
+      ],
+      "errata_hint": "model_pair_corrected='qwen3-4b-to-1.7b' (teacher path + 36→28 layer_map)"
+    },
+    "protocol_compat": {
+      "ok": true,
+      "protocol_version": "2.0",
+      "problems": []
+    }
+  },
+  {
+    "run_id": "p1_gpu_mvp_repro_seed0",
+    "ok": true,
+    "problems": [],
+    "superseded": false,
+    "git_hash": "458de18",
+    "head_hash": "458de18",
+    "git_hash_matches_head": true,
+    "code_tracked": true,
+    "missing_code_paths": [],
+    "dirty_run_paths": [],
+    "model_pair_check": {
+      "ok": true,
+      "model_pair": "qwen3-1.7b-to-0.6b",
+      "expected": {
+        "teacher": "Qwen3-1.7B",
+        "student": "Qwen3-0.6B",
+        "n_teacher_layers": 28,
+        "n_student_layers": 28
+      },
+      "problems": [],
+      "errata_hint": null
+    },
+    "protocol_compat": {
+      "ok": true,
+      "protocol_version": "2.0",
+      "problems": []
+    }
+  },
+  {
+    "run_id": "p1_gpu_mvp_repro_seed1",
+    "ok": true,
+    "problems": [],
+    "superseded": false,
+    "git_hash": "458de18",
+    "head_hash": "458de18",
+    "git_hash_matches_head": true,
+    "code_tracked": true,
+    "missing_code_paths": [],
+    "dirty_run_paths": [],
+    "model_pair_check": {
+      "ok": true,
+      "model_pair": "qwen3-1.7b-to-0.6b",
+      "expected": {
+        "teacher": "Qwen3-1.7B",
+        "student": "Qwen3-0.6B",
+        "n_teacher_layers": 28,
+        "n_student_layers": 28
+      },
+      "problems": [],
+      "errata_hint": null
+    },
+    "protocol_compat": {
+      "ok": true,
+      "protocol_version": "2.0",
+      "problems": []
+    }
+  },
+  {
+    "run_id": "p1_gpu_mvp_repro_seed2",
+    "ok": true,
+    "problems": [],
+    "superseded": false,
+    "git_hash": "458de18",
+    "head_hash": "458de18",
+    "git_hash_matches_head": true,
+    "code_tracked": true,
+    "missing_code_paths": [],
+    "dirty_run_paths": [],
+    "model_pair_check": {
+      "ok": true,
+      "model_pair": "qwen3-1.7b-to-0.6b",
+      "expected": {
+        "teacher": "Qwen3-1.7B",
+        "student": "Qwen3-0.6B",
+        "n_teacher_layers": 28,
+        "n_student_layers": 28
+      },
+      "problems": [],
+      "errata_hint": null
+    },
+    "protocol_compat": {
+      "ok": true,
+      "protocol_version": "2.0",
+      "problems": []
+    }
+  },
+  {
+    "run_id": "p1_gpu_mvp_seed0",
+    "ok": false,
+    "problems": [
+      "git_hash='53e9bc5' != HEAD='458de18'",
+      "commit tree lacks run code: experiments/P0_gpu.py,experiments/P1_gpu.py,experiments/P1_kd_gpu.py,src/readkv/models/gpu_backend.py"
+    ],
+    "superseded": false,
+    "git_hash": "53e9bc5",
+    "head_hash": "458de18",
+    "git_hash_matches_head": false,
+    "code_tracked": false,
+    "missing_code_paths": [
+      "experiments/P0_gpu.py",
+      "experiments/P1_gpu.py",
+      "experiments/P1_kd_gpu.py",
+      "src/readkv/models/gpu_backend.py",
+      "src/readkv/train/kd_gpu.py"
+    ],
+    "dirty_run_paths": [],
+    "model_pair_check": {
+      "ok": true,
+      "model_pair": "qwen3-1.7b-to-0.6b",
+      "expected": {
+        "teacher": "Qwen3-1.7B",
+        "student": "Qwen3-0.6B",
+        "n_teacher_layers": 28,
+        "n_student_layers": 28
+      },
+      "problems": [],
+      "errata_hint": null
+    },
+    "protocol_compat": {
+      "ok": true,
+      "protocol_version": "2.0",
+      "problems": []
+    }
+  },
+  {
+    "run_id": "p1_gpu_mvp_seed1",
+    "ok": false,
+    "problems": [
+      "git_hash='53e9bc5' != HEAD='458de18'",
+      "commit tree lacks run code: experiments/P0_gpu.py,experiments/P1_gpu.py,experiments/P1_kd_gpu.py,src/readkv/models/gpu_backend.py"
+    ],
+    "superseded": false,
+    "git_hash": "53e9bc5",
+    "head_hash": "458de18",
+    "git_hash_matches_head": false,
+    "code_tracked": false,
+    "missing_code_paths": [
+      "experiments/P0_gpu.py",
+      "experiments/P1_gpu.py",
+      "experiments/P1_kd_gpu.py",
+      "src/readkv/models/gpu_backend.py",
+      "src/readkv/train/kd_gpu.py"
+    ],
+    "dirty_run_paths": [],
+    "model_pair_check": {
+      "ok": true,
+      "model_pair": "qwen3-1.7b-to-0.6b",
+      "expected": {
+        "teacher": "Qwen3-1.7B",
+        "student": "Qwen3-0.6B",
+        "n_teacher_layers": 28,
+        "n_student_layers": 28
+      },
+      "problems": [],
+      "errata_hint": null
+    },
+    "protocol_compat": {
+      "ok": true,
+      "protocol_version": "2.0",
+      "problems": []
+    }
+  },
+  {
+    "run_id": "p1_gpu_mvp_seed2",
+    "ok": false,
+    "problems": [
+      "git_hash='53e9bc5' != HEAD='458de18'",
+      "commit tree lacks run code: experiments/P0_gpu.py,experiments/P1_gpu.py,experiments/P1_kd_gpu.py,src/readkv/models/gpu_backend.py"
+    ],
+    "superseded": false,
+    "git_hash": "53e9bc5",
+    "head_hash": "458de18",
+    "git_hash_matches_head": false,
+    "code_tracked": false,
+    "missing_code_paths": [
+      "experiments/P0_gpu.py",
+      "experiments/P1_gpu.py",
+      "experiments/P1_kd_gpu.py",
+      "src/readkv/models/gpu_backend.py",
+      "src/readkv/train/kd_gpu.py"
+    ],
+    "dirty_run_paths": [],
+    "model_pair_check": {
+      "ok": true,
+      "model_pair": "qwen3-1.7b-to-0.6b",
+      "expected": {
+        "teacher": "Qwen3-1.7B",
+        "student": "Qwen3-0.6B",
+        "n_teacher_layers": 28,
+        "n_student_layers": 28
+      },
+      "problems": [],
+      "errata_hint": null
+    },
+    "protocol_compat": {
+      "ok": true,
+      "protocol_version": "2.0",
+      "problems": []
+    }
+  }
+]

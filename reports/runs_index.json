@@ -1,0 +1,166 @@
+[
+  {
+    "run_id": "e0_gpu_main_seed0",
+    "stage": "P0",
+    "gate": "E0",
+    "backend": "gpu",
+    "model_pair": "qwen3-4b-to-1.7b",
+    "seed": 0,
+    "dtype": "bfloat16",
+    "kernel": "sdpa",
+    "zero_re_prefill": true,
+    "protocol_version": "2.0",
+    "git_hash": "53e9bc5",
+    "n_scores": 80,
+    "result": true,
+    "joint_E_CF": null
+  },
+  {
+    "run_id": "e0_gpu_mvp_seed0",
+    "stage": "P0",
+    "gate": "E0",
+    "backend": "gpu",
+    "model_pair": "qwen3-1.7b-to-0.6b",
+    "seed": 0,
+    "dtype": "bfloat16",
+    "kernel": "sdpa",
+    "zero_re_prefill": true,
+    "protocol_version": "2.0",
+    "git_hash": "53e9bc5",
+    "n_scores": 80,
+    "result": true,
+    "joint_E_CF": null
+  },
+  {
+    "run_id": "p1_gpu_main_seed0",
+    "stage": "P1",
+    "gate": "counterfactual_benchmark",
+    "backend": "gpu",
+    "model_pair": "qwen3-1.7b-to-0.6b",
+    "seed": 0,
+    "dtype": "bfloat16",
+    "kernel": "sdpa",
+    "zero_re_prefill": true,
+    "protocol_version": "2.0",
+    "git_hash": "53e9bc5",
+    "n_scores": 600,
+    "result": "distortion_exists",
+    "joint_E_CF": {
+      "mean": 6.044034830729166,
+      "ci": [
+        4.740956827799479,
+        7.364807535807291
+      ]
+    }
+  },
+  {
+    "run_id": "p1_gpu_main_seed1",
+    "stage": "P1",
+    "gate": "counterfactual_benchmark",
+    "backend": "gpu",
+    "model_pair": "qwen3-1.7b-to-0.6b",
+    "seed": 1,
+    "dtype": "bfloat16",
+    "kernel": "sdpa",
+    "zero_re_prefill": true,
+    "protocol_version": "2.0",
+    "git_hash": "53e9bc5",
+    "n_scores": 600,
+    "result": "distortion_exists",
+    "joint_E_CF": {
+      "mean": 5.365311686197916,
+      "ci": [
+        4.155730794270833,
+        6.662692260742187
+      ]
+    }
+  },
+  {
+    "run_id": "p1_gpu_main_seed2",
+    "stage": "P1",
+    "gate": "counterfactual_benchmark",
+    "backend": "gpu",
+    "model_pair": "qwen3-1.7b-to-0.6b",
+    "seed": 2,
+    "dtype": "bfloat16",
+    "kernel": "sdpa",
+    "zero_re_prefill": true,
+    "protocol_version": "2.0",
+    "git_hash": "53e9bc5",
+    "n_scores": 600,
+    "result": "distortion_exists",
+    "joint_E_CF": {
+      "mean": 6.080367024739584,
+      "ci": [
+        4.847182312011719,
+        7.395089721679687
+      ]
+    }
+  },
+  {
+    "run_id": "p1_gpu_mvp_seed0",
+    "stage": "P1",
+    "gate": "counterfactual_benchmark",
+    "backend": "gpu",
+    "model_pair": "qwen3-1.7b-to-0.6b",
+    "seed": 0,
+    "dtype": "bfloat16",
+    "kernel": "sdpa",
+    "zero_re_prefill": true,
+    "protocol_version": "2.0",
+    "git_hash": "53e9bc5",
+    "n_scores": 600,
+    "result": "distortion_exists",
+    "joint_E_CF": {
+      "mean": 1.9682291666666667,
+      "ci": [
+        1.6140494791666666,
+        2.323958333333333
+      ]
+    }
+  },
+  {
+    "run_id": "p1_gpu_mvp_seed1",
+    "stage": "P1",
+    "gate": "counterfactual_benchmark",
+    "backend": "gpu",
+    "model_pair": "qwen3-1.7b-to-0.6b",
+    "seed": 1,
+    "dtype": "bfloat16",
+    "kernel": "sdpa",
+    "zero_re_prefill": true,
+    "protocol_version": "2.0",
+    "git_hash": "53e9bc5",
+    "n_scores": 600,
+    "result": "distortion_exists",
+    "joint_E_CF": {
+      "mean": 1.9341145833333333,
+      "ci": [
+        1.568717447916667,
+        2.3109570312499996
+      ]
+    }
+  },
+  {
+    "run_id": "p1_gpu_mvp_seed2",
+    "stage": "P1",
+    "gate": "counterfactual_benchmark",
+    "backend": "gpu",
+    "model_pair": "qwen3-1.7b-to-0.6b",
+    "seed": 2,
+    "dtype": "bfloat16",
+    "kernel": "sdpa",
+    "zero_re_prefill": true,
+    "protocol_version": "2.0",
+    "git_hash": "53e9bc5",
+    "n_scores": 600,
+    "result": "distortion_exists",
+    "joint_E_CF": {
+      "mean": 2.1234375,
+      "ci": [
+        1.6953125,
+        2.5713541666666666
+      ]
+    }
+  }
+]

@@ -1,0 +1,402 @@
+{
+  "runs/e0_gpu_main_seed0": {
+    "run_id": "e0_gpu_main_seed0",
+    "arms": {},
+    "protocol": "v1.0"
+  },
+  "runs/e0_gpu_mvp_seed0": {
+    "run_id": "e0_gpu_mvp_seed0",
+    "arms": {},
+    "protocol": "v1.0"
+  },
+  "runs/p1_gpu_main_seed0": {
+    "run_id": "p1_gpu_main_seed0",
+    "arms": {
+      "self": {
+        "n": 60,
+        "E_CF": "0.000 [0.000, 0.000]",
+        "protocol": "v2.0"
+      },
+      "identity": {
+        "n": 60,
+        "E_CF": "0.000 [0.000, 0.000]",
+        "protocol": "v2.0"
+      },
+      "joint": {
+        "n": 60,
+        "E_CF": "6.044 [4.741, 7.365]",
+        "protocol": "v2.0"
+      },
+      "k_only": {
+        "n": 60,
+        "E_CF": "1.247 [0.955, 1.561]",
+        "protocol": "v2.0"
+      },
+      "v_only": {
+        "n": 60,
+        "E_CF": "2.914 [2.344, 3.495]",
+        "protocol": "v2.0"
+      },
+      "control:mismatch": {
+        "n": 60,
+        "E_CF": "5.556 [4.353, 6.810]",
+        "protocol": "v2.0"
+      },
+      "control:random": {
+        "n": 60,
+        "E_CF": "6.273 [4.977, 7.582]",
+        "protocol": "v2.0"
+      },
+      "control:zero": {
+        "n": 60,
+        "E_CF": "5.597 [4.607, 6.578]",
+        "protocol": "v2.0"
+      },
+      "control:correct": {
+        "n": 60,
+        "E_CF": "6.044 [4.741, 7.365]",
+        "protocol": "v2.0"
+      },
+      "new_joint": {
+        "n": 60,
+        "E_CF": "6.044 [4.741, 7.365]",
+        "protocol": "v2.0"
+      }
+    },
+    "primary_endpoint": {
+      "point": 0.0,
+      "ci": [
+        0.0,
+        0.0
+      ],
+      "improved": false,
+      "note": "paired E_CF difference (new - baseline)"
+    },
+    "protocol": "v2.0"
+  },
+  "runs/p1_gpu_main_seed1": {
+    "run_id": "p1_gpu_main_seed1",
+    "arms": {
+      "self": {
+        "n": 60,
+        "E_CF": "0.000 [0.000, 0.000]",
+        "protocol": "v2.0"
+      },
+      "identity": {
+        "n": 60,
+        "E_CF": "0.000 [0.000, 0.000]",
+        "protocol": "v2.0"
+      },
+      "joint": {
+        "n": 60,
+        "E_CF": "5.365 [4.131, 6.611]",
+        "protocol": "v2.0"
+      },
+      "k_only": {
+        "n": 60,
+        "E_CF": "1.553 [1.200, 1.931]",
+        "protocol": "v2.0"
+      },
+      "v_only": {
+        "n": 60,
+        "E_CF": "2.815 [2.257, 3.378]",
+        "protocol": "v2.0"
+      },
+      "control:mismatch": {
+        "n": 60,
+        "E_CF": "6.780 [5.392, 8.211]",
+        "protocol": "v2.0"
+      },
+      "control:random": {
+        "n": 60,
+        "E_CF": "5.806 [4.330, 7.304]",
+        "protocol": "v2.0"
+      },
+      "control:zero": {
+        "n": 60,
+        "E_CF": "5.325 [4.319, 6.304]",
+        "protocol": "v2.0"
+      },
+      "control:correct": {
+        "n": 60,
+        "E_CF": "5.365 [4.131, 6.611]",
+        "protocol": "v2.0"
+      },
+      "new_joint": {
+        "n": 60,
+        "E_CF": "5.365 [4.131, 6.611]",
+        "protocol": "v2.0"
+      }
+    },
+    "primary_endpoint": {
+      "point": 0.0,
+      "ci": [
+        0.0,
+        0.0
+      ],
+      "improved": false,
+      "note": "paired E_CF difference (new - baseline)"
+    },
+    "protocol": "v2.0"
+  },
+  "runs/p1_gpu_main_seed2": {
+    "run_id": "p1_gpu_main_seed2",
+    "arms": {
+      "self": {
+        "n": 60,
+        "E_CF": "0.000 [0.000, 0.000]",
+        "protocol": "v2.0"
+      },
+      "identity": {
+        "n": 60,
+        "E_CF": "0.000 [0.000, 0.000]",
+        "protocol": "v2.0"
+      },
+      "joint": {
+        "n": 60,
+        "E_CF": "6.080 [4.794, 7.408]",
+        "protocol": "v2.0"
+      },
+      "k_only": {
+        "n": 60,
+        "E_CF": "1.615 [1.245, 2.016]",
+        "protocol": "v2.0"
+      },
+      "v_only": {
+        "n": 60,
+        "E_CF": "3.198 [2.634, 3.772]",
+        "protocol": "v2.0"
+      },
+      "control:mismatch": {
+        "n": 60,
+        "E_CF": "5.833 [4.526, 7.152]",
+        "protocol": "v2.0"
+      },
+      "control:random": {
+        "n": 60,
+        "E_CF": "5.818 [4.641, 6.997]",
+        "protocol": "v2.0"
+      },
+      "control:zero": {
+        "n": 60,
+        "E_CF": "5.464 [4.512, 6.406]",
+        "protocol": "v2.0"
+      },
+      "control:correct": {
+        "n": 60,
+        "E_CF": "6.080 [4.794, 7.408]",
+        "protocol": "v2.0"
+      },
+      "new_joint": {
+        "n": 60,
+        "E_CF": "6.080 [4.794, 7.408]",
+        "protocol": "v2.0"
+      }
+    },
+    "primary_endpoint": {
+      "point": 0.0,
+      "ci": [
+        0.0,
+        0.0
+      ],
+      "improved": false,
+      "note": "paired E_CF difference (new - baseline)"
+    },
+    "protocol": "v2.0"
+  },
+  "runs/p1_gpu_mvp_seed0": {
+    "run_id": "p1_gpu_mvp_seed0",
+    "arms": {
+      "self": {
+        "n": 60,
+        "E_CF": "0.000 [0.000, 0.000]",
+        "protocol": "v2.0"
+      },
+      "identity": {
+        "n": 60,
+        "E_CF": "0.000 [0.000, 0.000]",
+        "protocol": "v2.0"
+      },
+      "joint": {
+        "n": 60,
+        "E_CF": "1.968 [1.614, 2.324]",
+        "protocol": "v2.0"
+      },
+      "k_only": {
+        "n": 60,
+        "E_CF": "0.630 [0.483, 0.781]",
+        "protocol": "v2.0"
+      },
+      "v_only": {
+        "n": 60,
+        "E_CF": "1.851 [1.547, 2.158]",
+        "protocol": "v2.0"
+      },
+      "control:mismatch": {
+        "n": 60,
+        "E_CF": "6.103 [4.979, 7.255]",
+        "protocol": "v2.0"
+      },
+      "control:random": {
+        "n": 60,
+        "E_CF": "4.218 [3.221, 5.262]",
+        "protocol": "v2.0"
+      },
+      "control:zero": {
+        "n": 60,
+        "E_CF": "6.159 [5.035, 7.255]",
+        "protocol": "v2.0"
+      },
+      "control:correct": {
+        "n": 60,
+        "E_CF": "1.968 [1.614, 2.324]",
+        "protocol": "v2.0"
+      },
+      "new_joint": {
+        "n": 60,
+        "E_CF": "1.968 [1.614, 2.324]",
+        "protocol": "v2.0"
+      }
+    },
+    "primary_endpoint": {
+      "point": 0.0,
+      "ci": [
+        0.0,
+        0.0
+      ],
+      "improved": false,
+      "note": "paired E_CF difference (new - baseline)"
+    },
+    "protocol": "v2.0"
+  },
+  "runs/p1_gpu_mvp_seed1": {
+    "run_id": "p1_gpu_mvp_seed1",
+    "arms": {
+      "self": {
+        "n": 60,
+        "E_CF": "0.000 [0.000, 0.000]",
+        "protocol": "v2.0"
+      },
+      "identity": {
+        "n": 60,
+        "E_CF": "0.000 [0.000, 0.000]",
+        "protocol": "v2.0"
+      },
+      "joint": {
+        "n": 60,
+        "E_CF": "1.934 [1.562, 2.324]",
+        "protocol": "v2.0"
+      },
+      "k_only": {
+        "n": 60,
+        "E_CF": "0.566 [0.430, 0.710]",
+        "protocol": "v2.0"
+      },
+      "v_only": {
+        "n": 60,
+        "E_CF": "1.660 [1.349, 1.982]",
+        "protocol": "v2.0"
+      },
+      "control:mismatch": {
+        "n": 60,
+        "E_CF": "5.950 [4.837, 7.079]",
+        "protocol": "v2.0"
+      },
+      "control:random": {
+        "n": 60,
+        "E_CF": "4.375 [3.379, 5.429]",
+        "protocol": "v2.0"
+      },
+      "control:zero": {
+        "n": 60,
+        "E_CF": "5.897 [4.839, 6.932]",
+        "protocol": "v2.0"
+      },
+      "control:correct": {
+        "n": 60,
+        "E_CF": "1.934 [1.562, 2.324]",
+        "protocol": "v2.0"
+      },
+      "new_joint": {
+        "n": 60,
+        "E_CF": "1.934 [1.562, 2.324]",
+        "protocol": "v2.0"
+      }
+    },
+    "primary_endpoint": {
+      "point": 0.0,
+      "ci": [
+        0.0,
+        0.0
+      ],
+      "improved": false,
+      "note": "paired E_CF difference (new - baseline)"
+    },
+    "protocol": "v2.0"
+  },
+  "runs/p1_gpu_mvp_seed2": {
+    "run_id": "p1_gpu_mvp_seed2",
+    "arms": {
+      "self": {
+        "n": 60,
+        "E_CF": "0.000 [0.000, 0.000]",
+        "protocol": "v2.0"
+      },
+      "identity": {
+        "n": 60,
+        "E_CF": "0.000 [0.000, 0.000]",
+        "protocol": "v2.0"
+      },
+      "joint": {
+        "n": 60,
+        "E_CF": "2.123 [1.703, 2.574]",
+        "protocol": "v2.0"
+      },
+      "k_only": {
+        "n": 60,
+        "E_CF": "0.555 [0.429, 0.685]",
+        "protocol": "v2.0"
+      },
+      "v_only": {
+        "n": 60,
+        "E_CF": "1.849 [1.510, 2.213]",
+        "protocol": "v2.0"
+      },
+      "control:mismatch": {
+        "n": 60,
+        "E_CF": "6.247 [4.888, 7.648]",
+        "protocol": "v2.0"
+      },
+      "control:random": {
+        "n": 60,
+        "E_CF": "4.504 [3.506, 5.513]",
+        "protocol": "v2.0"
+      },
+      "control:zero": {
+        "n": 60,
+        "E_CF": "6.643 [5.441, 7.858]",
+        "protocol": "v2.0"
+      },
+      "control:correct": {
+        "n": 60,
+        "E_CF": "2.123 [1.703, 2.574]",
+        "protocol": "v2.0"
+      },
+      "new_joint": {
+        "n": 60,
+        "E_CF": "2.123 [1.703, 2.574]",
+        "protocol": "v2.0"
+      }
+    },
+    "primary_endpoint": {
+      "point": 0.0,
+      "ci": [
+        0.0,
+        0.0
+      ],
+      "improved": false,
+      "note": "paired E_CF difference (new - baseline)"
+    },
+    "protocol": "v2.0"
+  }
+}

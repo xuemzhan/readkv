@@ -1,0 +1,77 @@
+{
+  "gate": {
+    "passed": true,
+    "min_logit_cosine": 1.0,
+    "max_first_token_kl": 0.0,
+    "round_trip_ok": true,
+    "identity_self_gap": 0.0,
+    "n_samples": 0,
+    "measurement_error_ceiling": 2.220446049250313e-16,
+    "effect_size_floor": 6.95453234247962,
+    "n_cosines_below_reference": 0,
+    "cosine_reference": 0.9998,
+    "note": "E0 主判据为测量误差上限显著低于待研究效应；cosine≥0.9998 仅为 V1 继承参考",
+    "n_sides": 80,
+    "em_agreement": 1.0,
+    "zero_re_prefill_all": true,
+    "effect_estimate": 20.86359702743886,
+    "effect_method": "mean(|D_self|) on |D_self|>=0.1 subset (else median)",
+    "tolerance_effect_over_3": 6.95453234247962,
+    "min_cosine": 0.9999999999999998,
+    "max_kl": 0.0,
+    "n_valid_self": 33
+  },
+  "passed": true,
+  "data_quality": {
+    "total": 40,
+    "by_slice": {
+      "F1": 10,
+      "F2": 5,
+      "F3": 10,
+      "F4": 5,
+      "F5": 5,
+      "F6": 5
+    },
+    "by_split": {
+      "probe": 40
+    },
+    "length_mismatch": 2,
+    "f5_negative_controls": 5,
+    "flip_denominator": 30,
+    "template_overlap_train_eval": [],
+    "quality_gate": "pass",
+    "note": "length_mismatch 需分层报告；F5 不计入必须翻转分母；template_overlap_train_eval 必须为空（否则违反训练/评估隔离）"
+  },
+  "model": {
+    "path": "/root/.cache/modelscope/models/Qwen--Qwen3-0.6B/snapshots/master",
+    "dtype": "bfloat16",
+    "kernel": "sdpa",
+    "n_layers": 28,
+    "n_kv_heads": 8,
+    "head_dim": 128,
+    "config_fingerprint": "c9ef657d38f5b8e7"
+  },
+  "residuals": {
+    "min_logit_cosine": 0.9999999999999998,
+    "max_first_token_kl": 0.0,
+    "self_anchor_min_logit_cosine": 0.9999999999999998,
+    "one_shot_min_logit_cosine": 0.9993019987047884,
+    "one_shot_em_agreement": 1.0,
+    "kernel_path_note": "Self 锚点=学生原生缓存两步路径；one_shot=整段一次 prefill，二者残差来自 sdpa kernel 路径（非实现误差）；注入与原生两步路径 cosine=1.0",
+    "em_agreement": 1.0,
+    "measurement_error_ceiling": 2.220446049250313e-16,
+    "round_trip_bit_identical": true,
+    "zero_re_prefill_all": true
+  },
+  "effect": {
+    "estimate": 20.86359702743886,
+    "tolerance_effect_over_3": 6.95453234247962,
+    "n_valid_self": 33,
+    "n_pairs": 40
+  },
+  "elapsed_sec": 87.9,
+  "backend": "gpu",
+  "protocol_version": "2.0",
+  "release_to_P1": true,
+  "note": "E0 通过是 P0 放行的唯一门；未通过不得进入 P1。Mock 数字不构成证据。"
+}
