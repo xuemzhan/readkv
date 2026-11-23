@@ -287,24 +287,42 @@ def main() -> None:
          for r in ranked[:args.top_k]]
 
     # ---------------- held-out 独立验证（val，与选择集不重叠） ----------------
+    def transplant_units_delta(pair, unit_set):
+        """整组单元一次性移植到映射缓存，返回该文档的 ΔE_CF = E_CF_before − E_CF_after。"""
+        caches = make_pair_caches(backend, pair)
+        ma = mapper.transform(caches["teacher"]["A"]); mb = mapper.transform(caches["teacher"]["B"])
+        before = pair_ecf(backend, pair, ma, mb,
+                          caches["student"]["A"], caches["student"]["B"])["E_CF"]
+        fa, fb = ma.clone(), mb.clone()
+        for u in unit_set:
+            fa, _ = oracle_transplant(student=caches["student"]["A"], mapped=fa,
+                                      layer=u["layer"], head=u["head"],
+                                      token=u.get("token"), channel=u["channel"])
+            fb, _ = oracle_transplant(student=caches["student"]["B"], mapped=fb,
+                                      layer=u["layer"], head=u["head"],
+                                      token=u.get("token"), channel=u["channel"])
+        after = pair_ecf(backend, pair, fa, fb,
+                         caches["student"]["A"], caches["student"]["B"])["E_CF"]
+        return float(before - after)
+
     rng = np.random.default_rng(args.seed)
     held_d = [p.as_record() for p in held_pairs]
-    hit_u, hit_rand = [], []
+    delta_u, delta_rand = [], []
     for pair in held_d:
-        du = [repair_delta(pair, u) for u in U]
+        du = transplant_units_delta(pair, U)
         # 随机单元集基线：同数量随机抽（不重复）
         ridx = rng.choice(len(units), size=len(U), replace=False)
-        dr = [repair_delta(pair, units[int(i)]) for i in ridx]
-        hit_u.append(float(np.mean([x > 0 for x in du])))
-        hit_rand.append(float(np.mean([x > 0 for x in dr])))
+        dr = transplant_units_delta(pair, [units[int(i)] for i in ridx])
+        delta_u.append(du); delta_rand.append(dr)
         four_arm_rows.append({"pair_id": pair["pair_id"], "cluster": pair["cluster"],
-                              "arm": "oracle_U", "delta_ecf": float(np.mean(du)),
-                              "hit": hit_u[-1]})
+                              "arm": "oracle_U", "delta_ecf": du, "hit": bool(du > 0)})
+    hit_u = [1.0 if x > 0 else 0.0 for x in delta_u]
+    hit_rand = [1.0 if x > 0 else 0.0 for x in delta_rand]
     clusters = [p["cluster"] for p in held_d]
     diffs = [a - b for a, b in zip(hit_u, hit_rand)]
     point, low, high = cluster_bootstrap(diffs, clusters, n_resamples=args.n_resamples, seed=args.seed)
-    direction_ratio = float(np.mean([h > 0.5 for h in hit_u]))
-    delta_positive_ratio = float(np.mean([d > 0 for d in diffs]))
+    direction_ratio = float(np.mean(hit_u))  # 独立文档上 ΔE_CF>0 的占比（冻结判据）
+    delta_positive_ratio = direction_ratio
     heldout = {
         "n_heldout_pairs": len(held_d),
         "hit_u_mean": float(np.mean(hit_u)),
