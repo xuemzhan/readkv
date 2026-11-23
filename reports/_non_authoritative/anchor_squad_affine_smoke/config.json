@@ -1,0 +1,48 @@
+{
+  "run_id": "anchor_squad_affine_smoke",
+  "protocol_version": "2.0",
+  "git_hash": "938f3a0",
+  "created_at": "2026-11-23T13:02:34+00:00",
+  "seed": 0,
+  "device": "cuda",
+  "dtype": "bfloat16",
+  "kernel": "sdpa",
+  "zero_re_prefill": true,
+  "experiment_config": {
+    "stage": "external_anchor",
+    "gate": "SQuAD_v2.0_dev",
+    "backend": "gpu",
+    "anchor_protocol_version": "2.4",
+    "protocol_version": "2.4",
+    "anchor_benchmark": "SQuAD v2.0 dev",
+    "anchor_license": "CC BY-SA 4.0",
+    "anchor_usage": "evaluation_only (no rewriting, no derived corpus release)",
+    "anchor_file": "/root/readkv/data/anchors/squad/dev-v2.0.json",
+    "anchor_file_sha256": "80a5225e94905956a6446d296ca1093975c4d3b3260f1d6c8f68bc2ab77182d8",
+    "data_sha256": "80a5225e94905956a6446d296ca1093975c4d3b3260f1d6c8f68bc2ab77182d8",
+    "method": "affine",
+    "mapper_kind": "affine",
+    "teacher": "/root/.cache/modelscope/models/Qwen--Qwen3-1.7B/snapshots/master",
+    "student": "/root/.cache/modelscope/models/Qwen--Qwen3-0.6B/snapshots/master",
+    "seed": 0,
+    "dtype": "bfloat16",
+    "kernel": "sdpa",
+    "zero_re_prefill": true,
+    "n_examples": 8,
+    "max_new_tokens": 16,
+    "synthetic_test_used": false,
+    "training": {
+      "method": "affine",
+      "epochs": 0,
+      "seed": 0,
+      "trainable_params": 0
+    },
+    "criteria_source": "configs/prereg/external_validity_v2.4.yaml (predeclared 3 scenarios)"
+  },
+  "metadata": {
+    "stage": "external_anchor",
+    "backend": "gpu",
+    "protocol_version": "2.4",
+    "non_authoritative": true
+  }
+}

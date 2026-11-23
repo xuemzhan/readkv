@@ -1,0 +1,35 @@
+{
+  "run_id": "anchor_squad_affine_smoke",
+  "backend": "gpu",
+  "protocol_version": "2.4",
+  "anchor": "SQuAD v2.0 dev",
+  "license": "CC BY-SA 4.0 (evaluation only)",
+  "anchor_file_sha256": "80a5225e94905956a6446d296ca1093975c4d3b3260f1d6c8f68bc2ab77182d8",
+  "data_sha256": "80a5225e94905956a6446d296ca1093975c4d3b3260f1d6c8f68bc2ab77182d8",
+  "method": "affine",
+  "seed": 0,
+  "dtype": "bfloat16",
+  "kernel": "sdpa",
+  "zero_re_prefill": true,
+  "n_examples": 8,
+  "arms": {
+    "self": {
+      "n": 8,
+      "EM": 0.0,
+      "F1": 0.15963203463203463
+    },
+    "joint": {
+      "n": 8,
+      "EM": 0.0,
+      "F1": 0.041666666666666664
+    }
+  },
+  "training": {
+    "method": "affine",
+    "epochs": 0,
+    "seed": 0,
+    "trainable_params": 0
+  },
+  "note": "锚点仅外部效度观察；不与合成 test 混算、不重算冻结 CI、不恢复任何贡献。",
+  "elapsed_sec": 93.7
+}

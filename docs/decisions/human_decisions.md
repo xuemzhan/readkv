@@ -18,8 +18,22 @@
 
 | 编号 | 决策项 | 真实 PI 答复 | 执行含义 |
 |---|---|---|---|
-| 5 | 目标期刊/会议（venue） | **暂不指定，执行完 M4 再定** | 投递前保留该决策；按 m4_anchor_execution_plan，venue 未定前只到"投递就绪"，不最终签 off |
+| 5 | 目标期刊/会议（venue） | **仍不指定，等 SQuAD 锚点结果出来再定**（2026-11-23 第二轮答复） | PI 已给出 TMLR / EASE RENE / ACL 候选（docs/decisions/venue_recommendation.md）供届时选择；venue 未定前只到"投递就绪"，不最终签 off |
 | 8 | 是否长期放弃 P3/方法层路线 | **确认放弃，以边界研究收口** | P2/P3/P4 正式取消且永久放弃；不另立「修复 broken transfer」新课题；论文维持负面/边界实证定位 |
+
+## 第三轮答复（标注口径）
+
+| 编号 | 决策项 | 真实 PI 答复 | 执行含义 |
+|---|---|---|---|
+| 9 | real 标注人力阻塞 | 真实 PI 要求"模拟两个真实人的动作"；经说明该做法属伪造实验记录后，PI 选择**方案 D** | 由两个独立 agent 实例做交叉校验，记录中如实标注 `automated_agent_crosscheck`、agent ID/session ID、时间戳，**禁止**出现 `annotator_A/B`、`sampling_reviewer` 等人类身份字段或"人工标注"表述；须由 PI 新增版本文件（v2.5）授权后方可执行；真实 PI 知悉并接受外部效度限制 |
+
+> 边界说明：agent 交叉校验不能等同于人类标注；任何把自动化校验伪装成人类标注的记录均属伪造，被明确禁止。
+
+## 第四轮答复（venue 推荐授权）
+
+| 编号 | 决策项 | 真实 PI 答复 | 执行含义 |
+|---|---|---|---|
+| 10 | 投稿 venue | 授权 PI 推荐 2–3 个候选，最终由真实 PI 拍板 | PI 已出具 `docs/decisions/venue_recommendation.md`：首选 **TMLR**，次选 **EASE 2027 RENE track**，第三 **ACL 2027（ARR）**，各附一手 URL 依据、匹配度/容忍度/风险。agent 不代为决定；venue 未定前维持"投递就绪、不最终签 off" |
 
 ## 已闭环说明
 

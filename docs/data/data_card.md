@@ -86,3 +86,11 @@ length_mismatch 共 **61** 对，**全部落在 F5**（表层同义改写替换�
 ## 8. 质量门
 
 `manifest.json::quality.quality_gate = "pass"`。门禁条件：总数>0、train/eval 模板族无重叠、train/test 模板与 query 骨架无重叠、退化对=0、跨 split 逐字重叠=0、实体池重叠=0。
+
+## 9. M4 真实文档状态（2026-11-23，阻塞中）
+
+- 本数据卡当前**仅描述合成 `cf_pairs_v2.1`**。`real` split **尚未生成、不可用**（PI 二次签off前不得标记可用）。
+- PI 已签署第一阶段合规签off（来源 A/B/C 授权抓取核验、D 不入库、E/F/G 仅评测）；锚点许可核验见 `reports/data/anchor_license_check.md`（SQuAD/ARC=CC BY-SA 4.0，HellaSwag=MIT，评测用途合规）。
+- 抓取阶段阻塞：授权文档源（census/bls/wikidata/wikipedia）在本环境返回 403/超时，未取得任何原始文件字节，故无法完成五项登记中的「原始文件 sha256」；人工双人校验/第三人抽检资源未落实。**不伪造来源/哈希/人工抽检记录**，因此未生成 `cf_pairs_real.jsonl`、未更新 manifest 的 real 条目。
+- 详见 `reports/data/m4_fetch_attempt_log.md` 与 `reports/data/m4_acceptance_checklist.md`（0/7 通过，未申请二次签off）。待 PI 解决出网通道与人工标注资源后再继续。
+

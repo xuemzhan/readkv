@@ -349,12 +349,48 @@ flip denominator is recomputed to $398$ under excludes $=[\mathrm{F5},\mathrm{F6
 A new manifest, its SHA-256 sidecar, and a data card
 \texttt{docs/data/data\_card.md} accompany the rebuild.
 
+\paragraph{Real documents: M4 blocked, \texttt{real=0}.} The attempt to collect
+real (non-synthetic) counterfactual documents (task M4) was formally recorded
+as \emph{blocked} (not failed, not skipped): source screening, licence
+pre-assessment, fetch attempts, and a semantic-suitability assessment were
+carried out and three blocking factors were documented.
+\begin{enumerate}
+\item \textbf{Licence / network.} High-suitability text sources were excluded:
+US Census endpoints returned HTTP~403 and were permanently removed for Terms-
+of-Service conflict; Wikidata endpoints timed out; Chinese \texttt{.gov.cn}
+sources were unreachable from this environment; Wikipedia body text was
+excluded because of CC BY-SA copyleft obligations. No source that was both
+licence-clean and semantically suitable was found.
+\item \textbf{Semantic suitability.} The only licence-clean, downloadable
+candidate (SciTSR-pd, CC0) is a scientific-table structure-recognition dataset
+of short cell strings, not continuous factual sentences. It cannot construct
+the F2 reasoning-chain or F3 relation-direction/negation slices, supports
+F1/F4/F5/F6 only partially (F6 suffers a position--fact binding defect), and
+its original-file SHA-256 was never computed. Clean licensing is not semantic
+suitability, so it was not adopted.
+\item \textbf{Human / registration.} The v2.5 agent cross-check protocol is
+frozen but has no applicable object while \texttt{real=0}; the two-annotator
+plus one-reviewer human trail and source registration were not secured. A
+source that is semantically unsuitable is not admitted merely to make v2.5
+usable.
+\end{enumerate}
+Consequently the real split remains empty: no \texttt{cf\_pairs\_real.jsonl}
+was generated, no real entries were written to the manifest, and no real run
+was started. We report real-document external validity as
+\textbf{unverified}; any future external anchor evidence comes only from
+standard-QA observations on synthetic-derived inputs, not from verified real
+counterfactual documents.
+
 \paragraph{Residual limitations (disclosed, not fixed).} (i)~All data are
 synthetic templates from a finite entity pool; even with 24 base structures the
-corpus does not represent real-world distributions. (ii)~\texttt{real=0}: no
-real documents and no external benchmark anchors; M4 produced only an
-acquisition plan and awaits a human/PI decision on sources and licensing.
-(iii)~The only clean-data evidence is the equal-depth MVP pair
+corpus does not represent real-world distributions. (ii)~\texttt{real=0} with
+M4 blocked as detailed above: \emph{external validity on real documents remains
+unverified}; we make no claim of verified real-document performance,
+external-validity confirmation, or generalization across real text. Standard-QA
+anchor observations, where available, provide only a limited external anchor in
+the standard-QA domain; they do \emph{not} replace real counterfactual
+documents and do not restore any withdrawn contribution. (iii)~The only
+clean-data evidence is the equal-depth MVP pair
 (1.7B$\to$0.6B); cross-pair generalization is unevaluated. (iv)~61
 length-mismatch pairs all fall in F5 (non-flip control) and are reported as a
 separate stratum. (v)~The original ``unseen-template'' slices were suffix-only;
@@ -610,8 +646,9 @@ seed & Joint $E_{\mathrm{CF}}$ [95\% CI] & joint dual (drop) & flip & cov.\ & \t
 \item \textbf{Prior positive signals were data artifacts.} The reversal in
       Section~\ref{sec:reversal} means the previously reported gap and
       mechanism are not reproducible once the data are correct.
-\item \textbf{Unretrieved limitations.} Synthetic-only data, \texttt{real=0},
-      no external anchors, a single equal-depth pair, and F5-concentrated
+\item \textbf{Unretrieved limitations.} Synthetic-only data, \texttt{real=0}
+      with M4 blocked (real-document external validity unverified), at most a
+      limited standard-QA anchor, a single equal-depth pair, and F5-concentrated
       length mismatch all bound the conclusion (Section~\ref{sec:datafix}).
 \item \textbf{Statistical caveat.} Old pairwise CIs were computed on 8 template
       families and are exploratory under v2.3; clean-data CIs use
@@ -659,8 +696,9 @@ from a single synthetic equal-depth pair, and rest on the single dual-drop
 signal for the broken-transfer label; no cross-pair, real-world, or strong-
 significance claim is made. Accordingly, \textbf{submission is deferred} pending
 closure of the data-provenance and wording items, the adversarial review of the
-broken-transfer judgement, and PI sign-off. All data are synthetic, there are no real
-documents or external anchors, and the only clean-data evidence is a single
+broken-transfer judgement, and PI sign-off. All data are synthetic; real
+documents are absent (\texttt{real=0}, M4 blocked) and real-document external
+validity is unverified, and the only clean-data evidence is a single
 equal-depth model pair; these limits bound every conclusion above.
 
 % ===========================================================================
