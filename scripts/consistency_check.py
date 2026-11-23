@@ -215,11 +215,14 @@ def main() -> None:
     parser.add_argument("--output", default=None)
     args = parser.parse_args()
     root = Path(args.reports_root)
-    run_dirs = [p for p in sorted(root.iterdir()) if p.is_dir()]
+    # 只把含 run 产物的目录当 run；排除 review/ 等非 run 目录（PI signoff §5.2）
+    run_dirs = [p for p in sorted(root.iterdir())
+                if p.is_dir() and p.name != "review" and ((p / "config.json").exists() or (p / "scores.jsonl").exists())]
     v2_root = root / "runs"
     if v2_root.is_dir():
         run_dirs = [p for p in run_dirs if p != v2_root]
-        run_dirs += [p for p in sorted(v2_root.iterdir()) if p.is_dir()]
+        run_dirs += [p for p in sorted(v2_root.iterdir())
+                     if p.is_dir() and ((p / "config.json").exists() or (p / "scores.jsonl").exists())]
 
     head = _head_hash()
     dirty = _dirty_run_paths()
