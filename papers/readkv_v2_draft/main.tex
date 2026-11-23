@@ -742,10 +742,11 @@ legacy diagonal A00 has CIs around zero. The nine (calibration/validation)
 contrast point estimates are all positive across seeds---the only defensible
 sense in which the direction is ``stable'' is that \emph{point estimates share
 a sign across seeds}; we do \emph{not} claim that CIs confirm a stable
-positive direction. The direction is not uniform across contrasts: for the fixed-validation calibration
-contrast (A10$-$A00) all three seed CIs have lower bound $\geq0$ (seed 2 is
-exactly $0.0$, on the boundary), but for A11$-$A01 (fixed validation) only seed
-1 has a lower bound $>0$ (seeds 0 and 2 cross zero); the two cross-version
+positive direction. The direction is not uniform across contrasts: for the legacy-validation calibration
+contrast (A10$-$A00; both cells use the legacy validation set) all three seed CIs
+have lower bound $\geq0$ (seed 2 is exactly $0.0$, on the boundary), whereas for
+A11$-$A01 (fixed validation) only seed 1 has a lower bound $>0$ (seeds 0 and 2
+cross zero); the two cross-version
 validation contrasts have CIs crossing zero in most seeds. All of this is
 exploratory (8 clusters $<24$), so none of these intervals is a strong-
 significance claim. Under the preregistered v2.7 rule this is
