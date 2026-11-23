@@ -150,6 +150,34 @@ def _check_model_pair(cfg: dict) -> dict[str, Any]:
                 ),
                 "problems": [],
             }
+        # C3 (protocol-v2.7, option B): 2×2 审计入口用 calibration_version/validation_version
+        # 代替 model_pair 字段。按入口硬编码默认推断 MVP 等深对 (Qwen3-1.7B→0.6B)，
+        # 以 layer_map 28→28 等深断言确认；泛化到任何带这两字段的 2×2 类 run，不硬编码 run_id。
+        # 不改变任何既有 model_pair / 锚点 / 历史 run 的判定（仅在本 exp is None 分支生效）。
+        if ec.get("calibration_version") and ec.get("validation_version"):
+            mvp = "qwen3-1.7b-to-0.6b"
+            t_marker, s_marker, nt, ns = PAIR_EXPECT[mvp]
+            ns_lm = int((lm.get("n_student_layers", -1)) if lm else -1)
+            nt_lm = int((lm.get("n_teacher_layers", -1)) if lm else -1)
+            equal_depth = (ns_lm == ns and nt_lm == nt)
+            inference_note = (
+                "2×2 audit run: model determined by hardcoded 1.7B→0.6B entrypoint default "
+                "+ equal-depth assertion (v2.7 §1); model_pair field replaced by "
+                "calibration_version/validation_version + input_sha256 (no run_id hardcoded)"
+            )
+            problems_2x2 = [] if equal_depth else [
+                f"2×2 equal-depth assertion failed: layer_map {nt_lm}/{ns_lm} != {nt}/{ns}"
+            ]
+            return {
+                "ok": not problems_2x2,
+                "model_pair": pair,
+                "inferred_model_pair": mvp,
+                "exempt": True,
+                "infer_2x2": True,
+                "inference_note": inference_note,
+                "equal_depth_asserted": equal_depth,
+                "problems": problems_2x2,
+            }
         problem = f"unknown model_pair {pair!r}: no PAIR_EXPECT entry"
         if not inferred:
             problem += " and teacher/student paths do not identify a known pair"
