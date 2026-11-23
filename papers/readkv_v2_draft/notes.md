@@ -18,7 +18,7 @@
 
 - **科学方向翻转（最高优先，PI 紧急裁决 `clean_data_reversal_ruling.md`）**：干净数据 P1 MVP 三 seed（`p1_clean_mvp_seed{0,1,2}`，git `efc3ba3`）显示 **broken transfer**：joint E_CF 6.900 / 8.159 / 8.540，dual 0.417 / 0.283 / 0.383，全部 `transfer_broken=true`。原贡献(1) 的「utility-preserving gap」与贡献(2) 的机制信号源于数据缺陷，**修复后翻转为迁移失败**。
 - **贡献(1) 冻结降级、贡献(2) 撤回 withheld**：不再以任何正向形式声称 gap 或 V 消费机制定位；旧 P1/P2 正向数值彻底移出结论，仅作为 Table 2（前后对照）的历史侧出现。
-- **主表换干净数据**：Table 1（`tab:cleanmvp`）填 P1 干净三 seed；Table 2（`tab:reversal`）为修复前后方向对照。**kd_only 干净数据位置写 "PENDING clean-data kd_only rerun"**，不得沿用旧 kd 值。
+- **主表换干净数据**：Table 1（`tab:cleanmvp`）填 P1 干净三 seed；Table 2（`tab:reversal`）为修复前后方向对照。**kd_only 干净数据三 seed 已补入**：E_CF 6.388/6.479/7.211、joint dual 0.700/0.733/0.767、flip 0.91–0.94、transfer_broken=false；按情形 C 仅作探索性观察，不恢复为正式贡献。
 - **kd_only 干净三 seed 仍在跑**；结果决定择支（都 broken→纯失败边界；kd 不 broken 且接近 Self→数据缺陷制造虚假发现的方法学负面结果）。
 - **δ 复核暂停、P2 不启动（取消）、P3 维持暂停/实质取消**；P2/P3/P4 均未在干净数据上运行。
 - **E0 干净复验已通过**（`e0_clean_mvp_seed0`，cosine 1.0、KL 0、EM 0.975、round-trip、2.2e-16 ≪ 效应、zero_re_prefill），翻转不是 cache round-trip 实现残差。
@@ -65,7 +65,7 @@
 | 表 1（`tab:datafix`） | 数据缺陷前后对照 | `reports/data/data_fix_report.md`、`acceptance_checks.json`、`docs/data/data_card.md` | 正文已呈现 |
 | Table 1（`tab:cleanmvp`） | 干净 P1 MVP 三 seed | `p1_clean_mvp_seed{0,1,2}/metrics.json`（`efc3ba3`） | 正文已填新值 |
 | Table 2（`tab:reversal`） | 修复前后方向翻转对照 | 旧 repro run + 干净 clean run | 正文已呈现 |
-| — | kd_only 干净三 seed | **PENDING clean-data kd_only rerun** | 待补，不沿用旧 kd 值 |
+| — | kd_only 干净三 seed | 已补入（6.388/6.479/7.211；探索性） | p1_kd_clean_mvp_seed{0,1,2}/metrics.json |
 
 注：正文数值表（数据修复表、干净 P1 表、翻转对照表）均从冻结产物转抄。旧 P1/P2 数值只出现在翻转对照的历史侧；不得用 mock 或旧 run 作最终结论。
 
@@ -94,7 +94,7 @@
 
 ## 6. 下一步（触发条件）
 
-- **最高优先**：kd_only 干净三 seed 跑完后补入正文 PENDING 位置，并按 §3.3 三情形判读（都 broken→纯失败边界；kd 不 broken 且近 Self→数据缺陷制造虚假发现）；随后 PI 择支。
+- **最高优先**：kd_only 干净三 seed 已补入正文并按 §3.3 判读为情形 C（kd 不 broken、不接近 Self、稳定非零 gap → 边界研究）；PI 已最终收口，贡献(1)(2) 撤回、贡献(3) withheld、P2/P3/P4 取消、投稿暂缓。
 - **审稿紧急复核**：确认 broken transfer 可信度（排除实现 bug）；若为实现 bug 则冻结结论、工程修复重跑；若可信则维持紧急裁决。
 - **数据修复重跑**：E0 已复验、P1 干净已产出；P2 不启动、P3 暂停；按 v2.3 主报 template_family CI + pair-level 敏感性。
 - **引用核验**：`[PLACEHOLDER]` 引用按 `protocol.md §9` 投递前完成。
