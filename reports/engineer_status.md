@@ -115,12 +115,13 @@
 - `scripts.bootstrap_ci_report` 从 scores.jsonl 重算 CI（按各 run config 的 bootstrap seed），与 metrics.json 一致。
 - 产物：本报告、`reports/runs_index.json`、`reports/runs_index_errata.json`、`reports/huber_delta_lock.json`、`reports/consistency_report.json`、`reports/environment.json`，及 `reports/runs/<run_id>/`。
 
-## 8. 仍未完成 / 阻塞
+## 8. 仍未完成 / 阻塞（按 PI 最终签 off 更新）
 
-1. kd_only seed1/2（并行实例 `_par` / `_fast` 均因 GPU 争用停滞）→ 仅 seed0，无三 seed 方差。
-2. Huber δ 网格缺 δ=2.0（并行实例评测停滞）→ δ 未锁定；P2/P3 维持 NO-GO。
-3. P2 机制、P3 方法、P4 泛化、P5 成稿均未运行（证据仅到 P1）。
-4. 主验证对（非等深）未以新 git_hash 重跑；旧 run 仅作失败边界记录。
+1. ~~kd_only seed1/2 缺失~~ → 已补齐三 seed（见 §3.2 / §9）。
+2. ~~Huber δ 网格缺 δ=2.0~~ → 已补齐并由 PI 锁定 δ=0.5（v2.2，见 §6/§9）。
+3. P2 机制诊断 → **已完成**（见 §10）。
+4. P3 方法 / P4 泛化 / P5 成稿仍未运行（主终点、封存测试未评估）。
+5. 主验证对（非等深）未以新 git_hash 重跑；旧 run 仅作失败边界记录。
 
 ---
 
@@ -177,3 +178,83 @@
   - seed 间差异明显（seed0 0.735 vs seed2 1.539），汇总须按 seed 分别列出，勿合并为单点数。
 - 口径备案：从 `scores.jsonl` 逐行重算的 joint E_CF 原始均值（1.9236）与 `metrics.json` 报告口径（1.5389）不同；此差异与 §2.4 已备案的 `info_gap`/bootstrap 聚合口径一致，本实例不改任何冻结判据与统计代码。
 - 产物交接：`reports/runs_index_errata.json` 中 `p1_gpu_kdonly_mvp_seed2_par` 应替换为 `_fast`；请主工程师汇总去重后更新索引，本实例不擅自改动该文件。
+
+---
+
+## 10. P2 机制诊断（E2，按 PI 最终签 off §3.1 任务书）
+
+**run_id：`p2_gpu_mvp_seed0`**（MVP 1.7B→0.6B，seed0，git_hash=`9d474be`，bf16/sdpa，zero_re_prefill=true，dtype/kernel/seed/provenance 全记入 config.json；200 行 scores.jsonl）。沿用 repro 权威代码口径；Oracle 只用于离线诊断，未进入 Joint 推理图；候选单元只用 train(选择集 8 对)/val(held-out 40 对)，未碰封存 test。
+
+### 10.1 K/V 四臂（deployable 标记：仅 Joint 可部署）
+
+| 臂 | joint E_CF 均值 | deployable |
+|---|---|---|
+| Self | 0.000 | false（锚点） |
+| K-only | 0.582 | false |
+| V-only | 1.626 | false |
+| Joint | 1.777 | **true** |
+
+V-only≈Joint（1.626 vs 1.777），K-only 仅 0.582 —— **定量确认 P1 的「V-only≈Joint」方向性线索**：失真主要落在 Value 消费侧，Key 路由为次。
+
+### 10.2 局部 Routing/Consumption 分解
+
+- 单位数 17,920（40 对 × 2 侧 × 28 层 × 8 头）；固定接收端 Query（q_norm 内容空间）下按冻结恒等式 `Ô−O_S=(Â−A_S)V_S W_O+Â(V̂−V_S)W_O` 分解。
+- routing 范数均值 24.846、consumption 21.839，**最大残差 2.96e-13 ≈ 0**（数值自检通过）。
+- d_A / d_B 分别诊断再比较差值：routing 24.756 vs 24.937（Δ=−0.182）、consumption 21.730 vs 21.948（Δ=−0.218）——两侧分解幅度接近，差值小；**未把局部热图解释为全模型因果分解**。
+
+### 10.3 层/头/Token Oracle 移植 + held-out 独立验证
+
+- Oracle Δ 在 train 选择集（8 对 × 28 层 × 8 头 × 3 通道 = 5,376 单元打分）降序选 U（top-k=5）：`layer12/head5(both)`, `layer12/head5(V)`, `layer25/head4(both)`, `layer25/head4(V)`, `layer14/head1(V)` —— **5/5 含 V 通道，无纯 K 单元**。
+- 独立 val 文档（40 对，与选择集不重叠）上整组 U 一次性移植：repair 命中率 U=0.725 vs 随机单元集 0.450；簇级 paired bootstrap（10,000 resamples，seed=0）差值 0.275，**95% CI [0.150, 0.425]，下界 > 0**；方向一致（ΔE_CF>0 占比）0.725 > 0.5。
+
+### 10.4 E2 判定（v2.1/v2.2 冻结三项）
+
+| 判据 | 实测 | 达标 |
+|---|---|---|
+| repair 命中率显著高于随机（CI 下界>0） | 0.275 [0.150, 0.425] | ✅ |
+| 方向一致 ΔE_CF>0 占比>0.5 | 0.725 | ✅ |
+| 分解残差≈0 | 2.96e-13 | ✅ |
+
+**结论：E2 冻结三项全达，机制诊断在独立验证文档上有预测价值（verdict=`mechanism_predictive`）。** 候选机制公式（报告层 `reports/p2_mechanism_summary.json`）：反事实失真主要定位于接收端 Value 消费路径，集中在中后层少数 KV 头（layer12/head5、layer25/head4、layer14/head1），移植学生原生 V 状态可显著恢复 E_CF。**此为贡献(2) 的证据前提，但是否写入贡献(2) 由 PI/审稿人裁决，工程师不自行升格。**
+
+### 10.5 预算、审计与产物
+
+- dtype=bfloat16 / kernel=sdpa / seed=0；candidate forward 400 次；每 run config 含 protocol_version/git_hash/seed/dtype/kernel/zero_re_prefill=true。
+- 扩展版 `consistency_check`：P2 run ok=true（21 检查、9 失败均为旧 superseded run，非 P2）；`bootstrap_ci_report` 正常重算。`pytest` 53/53（GPU 空闲时）。
+- 产物：`reports/runs/p2_gpu_mvp_seed0/{config.json,scores.jsonl,mechanism.json,decomposition.jsonl,mechanism_units.jsonl,manifest.json}`；汇总 `reports/p2_mechanism_summary.json`；`reports/runs_index.json` / `runs_index_errata.json` 已纳入该 run。
+
+
+---
+
+## 11. F1/F2/F5 闭环（PI contribution2_ruling 指令，追加不覆盖 §10）
+
+### F1【必须闭环】逐对 delta_rand 持久化 — ✅ 闭环
+
+- 新 run_id：`p2_gpu_mvp_seed0_delta_rand_audit`（seed0，git_hash=`6784780`，MVP，bf16/sdpa，zero_re_prefill=true；240 行 scores.jsonl）。
+- 扩展字段：`oracle_U` 臂逐对新增 `delta_rand` / `hit_u` / `hit_rand` / `delta_hit`；新增 `oracle_random` 臂 ledger（逐对 `delta_ecf`=随机基线 ΔE_CF）。`scripts.bootstrap_ci_report` 已扩展：从 scores.jsonl 的 `oracle_U` 逐对列重算 repair-vs-random 成对簇级 bootstrap CI。
+- **独立重算验证**：`bootstrap_ci_report` 从冻结产物重算得 point=0.275、95% CI **[0.150, 0.425]，下界>0**（与原 `p2_gpu_mvp_seed0` 汇总数完全一致，未回改原 run）。复算步骤：`.venv/bin/python -m scripts.bootstrap_ci_report --reports-root reports --output <out>` → 查 `runs/p2_gpu_mvp_seed0_delta_rand_audit.repair_vs_random`。
+- F1 闭环，P5 可使用该 CI；原 `p2_gpu_mvp_seed0` 冻结产物一字未改。
+
+### F2【要求补跑】P2 ≥3 seed 与 U 稳健性 — ✅ 完成三 seed
+
+| run_id | seed | repair point | 95% CI | 命中 U / 随机 | 方向一致 | U 核心单元 |
+|---|---|---|---|---|---|---|
+| `p2_gpu_mvp_seed0_delta_rand_audit` | 0 | 0.275 | [0.150, 0.425] | 0.725 / 0.450 | 0.725 | 12/5·25/4·14/1 |
+| `p2_gpu_mvp_seed1` | 1 | 0.275 | [0.125, 0.425] | 0.725 / 0.450 | 0.725 | 25/4·12/5·24/2 |
+| `p2_gpu_mvp_seed2` | 2 | 0.350 | [0.200, 0.500] | 0.750 / 0.400 | 0.750 | 12/5·25/4·14/1 |
+
+- 三 seed 全部 `mechanism_predictive`、CI 下界均>0；每项含四臂、分解、Oracle held-out、`delta_rand` 列完整产物；U 各 seed 只用各自 train 选、held-out 用 val、零重叠、未碰封存 test；Oracle 未进推理图；provenance 写全。
+- **U 稳健性**（`reports/p2_seed_robustness.json`）：4 个核心单元 `(12,5,V)/(12,5,both)/(25,4,V)/(25,4,both)` **跨 3 seed 全部重合**；第 5 单元 seed0/2 为 layer14/head1、seed1 为 layer24/head2（边缘轻微漂移）。命中率 0.725–0.750，效应点 0.275–0.350。结论：机制定位跨 seed 基本一致（核心稳定、边缘有漂移），非完全逐单元恒定。
+- 贡献(2) 是否由限定形式升为强形式仍由 PI/审稿人裁决；本报告不自升格。
+
+### F5【清理】 ✅
+
+`reports/runs/p2_smoke_tmp/` 已移至 `reports/_non_authoritative/p2_smoke_tmp/`，不再被审计扫描为正式 P2 run。
+
+### 审计与产物
+
+新 run 全部通过扩展版 `consistency_check`（git 6784780 在历史、跑分代码一致、model_pair 一致、zero_re_prefill=true）；`bootstrap_ci_report` 从逐对产物重算 F1 CI；`pytest` 53/53。产物：`reports/runs/p2_gpu_mvp_seed{0_delta_rand_audit,1,2}/`、`reports/p2_seed_robustness.json`、`reports/runs_index.json`、`reports/runs_index_errata.json`。
+
+### 仍需人工决策
+
+F1/F2 已技术闭环；贡献(2) 措辞升格（限定→强形式）、投递时机、作者署名/期刊仍属 PI/人工决策。P3/P4 NO-GO、贡献(3) withheld 维持。

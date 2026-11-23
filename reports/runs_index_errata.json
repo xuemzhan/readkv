@@ -25,7 +25,11 @@
     "p1_gpu_mvp_repro_seed2",
     "p1_gpu_kdonly_mvp_seed0",
     "delta_lock_v2p1_0p5",
-    "delta_lock_v2p1_1p0_par"
+    "delta_lock_v2p1_1p0_par",
+    "p2_gpu_mvp_seed0",
+    "p2_gpu_mvp_seed0_delta_rand_audit",
+    "p2_gpu_mvp_seed1",
+    "p2_gpu_mvp_seed2"
   ],
   "model_pair_corrections": {
     "p1_gpu_main_seed0": {
@@ -148,5 +152,11 @@
       }
     },
     "note": "所有超时/中止 run 均未产生 scores.jsonl；去重仅在报告索引层进行，不修改任何已落盘 run 产物。"
+  },
+  "f1_audit": {
+    "run_id": "p2_gpu_mvp_seed0_delta_rand_audit",
+    "replaces_for_recompute": "p2_gpu_mvp_seed0 (frozen, unmodified)",
+    "recompute": "scripts.bootstrap_ci_report reads per-pair delta_ecf/delta_rand from scores.jsonl oracle_U arm -> point 0.275 CI [0.150,0.425]",
+    "smoke_cleanup": "p2_smoke_tmp moved to reports/_non_authoritative/p2_smoke_tmp"
   }
 }

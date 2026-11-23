@@ -1,0 +1,64 @@
+{
+  "run_id": "p2_gpu_mvp_seed0",
+  "criteria_all_met": true,
+  "candidate_mechanism_formula": {
+    "statement": "反事实失真主要定位于接收端 Value 消费路径：held-out 选出的高修复单元以 V / both 通道为主，集中在中后层少数 KV 头；移植学生原生 V 状态可显著恢复 E_CF。",
+    "selected_units_U": [
+      {
+        "layer": 12,
+        "head": 5,
+        "channel": "both",
+        "token": null
+      },
+      {
+        "layer": 12,
+        "head": 5,
+        "channel": "V",
+        "token": null
+      },
+      {
+        "layer": 25,
+        "head": 4,
+        "channel": "both",
+        "token": null
+      },
+      {
+        "layer": 25,
+        "head": 4,
+        "channel": "V",
+        "token": null
+      },
+      {
+        "layer": 14,
+        "head": 1,
+        "channel": "V",
+        "token": null
+      }
+    ],
+    "channel_profile": "5/5 单元含 V（both×3 + V×2），无纯 K 单元",
+    "layer_head_profile": [
+      "layer12/head5",
+      "layer25/head4",
+      "layer14/head1"
+    ],
+    "four_arm_evidence": {
+      "k_only_E_CF": 0.58203125,
+      "v_only_E_CF": 1.626171875,
+      "joint_E_CF": 1.77734375,
+      "note": "V-only≈Joint 定量确认 P1 方向性线索；K-only 修复有限"
+    },
+    "decomposition": {
+      "routing_norm_mean": 24.846432997983488,
+      "consumption_norm_mean": 21.83910051274976,
+      "max_residual": 2.9560284346338096e-13,
+      "scope": "局部固定 Q 代数恒等式，非全模型因果分解"
+    }
+  },
+  "claim_boundary": "E2 冻结三项判据全达，构成贡献(2) 的机制证据前提；是否写入贡献(2) 由 PI/审稿人裁决，工程师不自行升格。",
+  "artifacts": [
+    "reports/runs/p2_gpu_mvp_seed0/mechanism.json",
+    "scores.jsonl",
+    "decomposition.jsonl",
+    "mechanism_units.jsonl"
+  ]
+}

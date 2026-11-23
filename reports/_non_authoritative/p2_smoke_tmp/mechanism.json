@@ -1,0 +1,162 @@
+{
+  "run_id": "p2_smoke_tmp",
+  "backend": "gpu",
+  "protocol_version": "2.0",
+  "four_arms": {
+    "self": {
+      "E_CF_mean": 0.0,
+      "n": 4
+    },
+    "k_only": {
+      "E_CF_mean": 0.625,
+      "n": 4
+    },
+    "v_only": {
+      "E_CF_mean": 0.6484375,
+      "n": 4
+    },
+    "joint": {
+      "E_CF_mean": 1.234375,
+      "n": 4
+    }
+  },
+  "decomposition": {
+    "n_units": 1792,
+    "routing_norm_mean": 33.976220314259734,
+    "consumption_norm_mean": 41.53408030301318,
+    "max_residual_norm": 6.224517560942878e-13,
+    "d_A_routing_mean": 33.81676410495375,
+    "d_B_routing_mean": 34.13567652356572,
+    "d_A_consumption_mean": 40.8049831287013,
+    "d_B_consumption_mean": 42.26317747732505,
+    "delta_routing_A_minus_B": -0.3189124186119727,
+    "delta_consumption_A_minus_B": -1.4581943486237492,
+    "constraint": "局部固定 Q 代数恒等式，非全模型因果分解；d_A/d_B 分别诊断再比较差值"
+  },
+  "oracle_ranking": {
+    "top_units": [
+      {
+        "layer": 12,
+        "head": 5,
+        "channel": "V",
+        "mean_improvement": 0.4375
+      },
+      {
+        "layer": 25,
+        "head": 4,
+        "channel": "both",
+        "mean_improvement": 0.421875
+      },
+      {
+        "layer": 25,
+        "head": 4,
+        "channel": "V",
+        "mean_improvement": 0.40625
+      },
+      {
+        "layer": 12,
+        "head": 5,
+        "channel": "both",
+        "mean_improvement": 0.359375
+      },
+      {
+        "layer": 24,
+        "head": 2,
+        "channel": "K",
+        "mean_improvement": 0.328125
+      },
+      {
+        "layer": 24,
+        "head": 2,
+        "channel": "both",
+        "mean_improvement": 0.3125
+      },
+      {
+        "layer": 24,
+        "head": 3,
+        "channel": "both",
+        "mean_improvement": 0.3125
+      },
+      {
+        "layer": 24,
+        "head": 3,
+        "channel": "K",
+        "mean_improvement": 0.28125
+      },
+      {
+        "layer": 14,
+        "head": 1,
+        "channel": "V",
+        "mean_improvement": 0.203125
+      },
+      {
+        "layer": 25,
+        "head": 2,
+        "channel": "both",
+        "mean_improvement": 0.203125
+      }
+    ],
+    "n_units_scored": 1344
+  },
+  "heldout": {
+    "n_heldout_pairs": 4,
+    "hit_u_mean": 0.45000000000000007,
+    "hit_random_mean": 0.1,
+    "repair_vs_random_point": 0.35,
+    "repair_vs_random_ci": [
+      0.12375000000000011,
+      0.55
+    ],
+    "repair_vs_random_ci_lower_gt_0": true,
+    "direction_consistency_ratio": 0.5,
+    "direction_ratio_gt_half": false,
+    "delta_positive_ratio": 0.75,
+    "U_topk": [
+      {
+        "layer": 12,
+        "head": 5,
+        "channel": "V",
+        "token": null
+      },
+      {
+        "layer": 25,
+        "head": 4,
+        "channel": "both",
+        "token": null
+      },
+      {
+        "layer": 25,
+        "head": 4,
+        "channel": "V",
+        "token": null
+      },
+      {
+        "layer": 12,
+        "head": 5,
+        "channel": "both",
+        "token": null
+      },
+      {
+        "layer": 24,
+        "head": 2,
+        "channel": "K",
+        "token": null
+      }
+    ]
+  },
+  "judgment": {
+    "repair_vs_random_ci_lower_gt_0": true,
+    "direction_consistency_gt_0_5": false,
+    "decomposition_residual_ok": true,
+    "has_predictive_value": false,
+    "verdict": "no_predictive_value__phenomenon_report",
+    "note": "三项全达方可支撑贡献(2)；未达按 protocol §8 降级现象报告，不硬升格"
+  },
+  "zero_re_prefill": true,
+  "forward_counts": {
+    "capture": 0,
+    "candidate": 40,
+    "oracle": 0
+  },
+  "elapsed_sec": 273.9
+}

@@ -377,5 +377,99 @@
     "complete": true,
     "superseded": true,
     "superseded_by": "git_hash=53e9bc5 lacks run code; see runs_index_errata.json"
+  },
+  {
+    "run_id": "p2_gpu_mvp_seed0",
+    "stage": "P2",
+    "gate": "E2_mechanism",
+    "backend": "gpu",
+    "model_pair": "qwen3-1.7b-to-0.6b",
+    "seed": 0,
+    "dtype": "bfloat16",
+    "kernel": "sdpa",
+    "zero_re_prefill": true,
+    "protocol_version": "2.0",
+    "git_hash": "9d474be",
+    "n_scores": 200,
+    "complete": true,
+    "role": "P2 mechanism diagnosis (E2)",
+    "mechanism_verdict": "mechanism_predictive",
+    "has_predictive_value": true,
+    "heldout_hit_u": 0.725,
+    "heldout_hit_random": 0.45,
+    "repair_ci": [
+      0.15,
+      0.425
+    ],
+    "max_decomp_residual": 2.9560284346338096e-13
+  },
+  {
+    "run_id": "p2_gpu_mvp_seed0_delta_rand_audit",
+    "stage": "P2",
+    "gate": "E2_mechanism",
+    "backend": "gpu",
+    "model_pair": "qwen3-1.7b-to-0.6b",
+    "seed": 0,
+    "dtype": "bfloat16",
+    "kernel": "sdpa",
+    "zero_re_prefill": true,
+    "protocol_version": "2.0",
+    "git_hash": "6784780",
+    "n_scores": 240,
+    "complete": true,
+    "role": "P2 F1 audit",
+    "mechanism_verdict": "mechanism_predictive",
+    "has_predictive_value": true,
+    "repair_vs_random_ci": [
+      0.15,
+      0.425
+    ],
+    "delta_rand_persisted": true
+  },
+  {
+    "run_id": "p2_gpu_mvp_seed1",
+    "stage": "P2",
+    "gate": "E2_mechanism",
+    "backend": "gpu",
+    "model_pair": "qwen3-1.7b-to-0.6b",
+    "seed": 1,
+    "dtype": "bfloat16",
+    "kernel": "sdpa",
+    "zero_re_prefill": true,
+    "protocol_version": "2.0",
+    "git_hash": "6784780",
+    "n_scores": 240,
+    "complete": true,
+    "role": "P2 F2 seed",
+    "mechanism_verdict": "mechanism_predictive",
+    "has_predictive_value": true,
+    "repair_vs_random_ci": [
+      0.125,
+      0.425
+    ],
+    "delta_rand_persisted": true
+  },
+  {
+    "run_id": "p2_gpu_mvp_seed2",
+    "stage": "P2",
+    "gate": "E2_mechanism",
+    "backend": "gpu",
+    "model_pair": "qwen3-1.7b-to-0.6b",
+    "seed": 2,
+    "dtype": "bfloat16",
+    "kernel": "sdpa",
+    "zero_re_prefill": true,
+    "protocol_version": "2.0",
+    "git_hash": "6784780",
+    "n_scores": 240,
+    "complete": true,
+    "role": "P2 F2 seed",
+    "mechanism_verdict": "mechanism_predictive",
+    "has_predictive_value": true,
+    "repair_vs_random_ci": [
+      0.2,
+      0.5
+    ],
+    "delta_rand_persisted": true
   }
 ]

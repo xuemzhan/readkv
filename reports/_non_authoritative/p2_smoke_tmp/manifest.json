@@ -1,0 +1,30 @@
+{
+  "run_id": "p2_smoke_tmp",
+  "files": [
+    {
+      "name": "config.json",
+      "sha256": "ec12a836993882b3d035bcdaa72efd4efcc596e82903494ac68f71c54ab8b3ea",
+      "size": 1553
+    },
+    {
+      "name": "decomposition.jsonl",
+      "sha256": "3dd5fba3837c63225af9aa2b0e6bd068c32bd9f291bf80d6efda0e8accdc48ec",
+      "size": 520205
+    },
+    {
+      "name": "mechanism.json",
+      "sha256": "960db9eec2727e95a9155f78df1cc73ca3e3fef5d132794b7183ae225c982ea0",
+      "size": 3607
+    },
+    {
+      "name": "mechanism_units.jsonl",
+      "sha256": "5e8120370a503be55e3027b858caa58969c8d414aed8a7ed49315e101450a1c4",
+      "size": 221311
+    },
+    {
+      "name": "scores.jsonl",
+      "sha256": "a87a1fbea77f460fd53d13ad9021cc8ee034c1d0ec5a0a1950f3d9a3dd8de20d",
+      "size": 3060
+    }
+  ]
+}

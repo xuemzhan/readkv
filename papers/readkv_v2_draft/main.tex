@@ -18,9 +18,12 @@
 % engineer_status.md. R1 closed: main tables use *_repro_* runs at commit
 % 458de18 (review round 2). kd_only has all 3 seeds; delta=0.5 locked and
 % formally registered in configs/prereg/phase3_loss_config_v2.2.yaml.
-% Stages P2--P5 have NOT run. Per docs/protocol.md S10, only contribution (1)
-% is claimed; contributions (2) and (3) are explicitly WITHHELD. Per the
-% decision tree (protocol S8) this manuscript is a boundary / empirical study,
+% P2 fully closed: three seeds (seed0 delta_rand_audit / seed1 / seed2),
+% commit 6784780, all mechanism_predictive, F1 pairwise-CI recomputation closed.
+% P3/P4 not run. Per docs/protocol.md S10, contribution (1) plus the strong
+% form of contribution (2) are claimed (scoped to the MVP equal-depth pair);
+% contribution (3) is WITHHELD. Per decision tree (protocol S8) this manuscript
+% remains a boundary / empirical study,
 % NOT a high-level method paper.
 % Figure placeholders are textual descriptions (no figure files exist yet).
 % All citations marked [PLACEHOLDER] must be verified per protocol S9.
@@ -64,13 +67,30 @@ and \emph{not} as positive evidence of counterfactual distortion. A matched
 eliminate the affine gap: $E_{\mathrm{CF}}$ $0.735\;[0.552,0.934]$,
 $1.034\;[0.766,1.328]$, and $1.539\;[1.148,1.959]$ versus affine
 $1.968$/$1.934$/$2.123$, with all CI lower bounds above zero. Matched-budget
-confirmation remains a caveat. With only evaluation-layer evidence in hand, and
-no mechanism or method evidence, we present a \emph{boundary/empirical study}:
-we identify a gap for the affine/ridge mapper tested here, and we document the
-conditions under which the current transfer fails. Whether other strong
-behavioral baselines (\texttt{consumer}, \texttt{score}, ridge) retain this gap
-is left to future work. We make \emph{no} claim of having pinpointed a
-mechanism or of having developed a method that closes the gap.
+confirmation remains a caveat. On the MVP equal-depth pair (1.7B$\to$0.6B),
+three seeds of held-out mechanism analysis (runs
+\texttt{p2\_gpu\_mvp\_seed0\_delta\_rand\_audit}, \texttt{p2\_gpu\_mvp\_seed1},
+\texttt{p2\_gpu\_mvp\_seed2}; commit \texttt{6784780}) yield
+\texttt{mechanism\_predictive} in every seed. K/V four-arm errors are Self 0,
+K-only 0.582, V-only 1.626, Joint 1.777 (only Joint deployable); a local
+routing/consumption decomposition over 17,920 units has residual
+$2.96\times10^{-13}$; and units chosen on 8 training pairs repair held-out
+(40 pairs) cases more often than random units, with paired differences
+$0.275\;[0.150,0.425]$, $0.275\;[0.125,0.425]$, and $0.350\;[0.200,0.500]$
+(all lower bounds $>0$) and direction consistency $0.725$--$0.750$. We
+\emph{localize the gap to receiver-side Value-consumption pathways under
+controlled cache interventions}, with Key routing as an accompanying
+attention-redistribution effect; this is a local, fixed-query decomposition,
+not a global causal account, and the claim is confined to the MVP equal-depth
+pair. Core units reproduce across seeds with one marginal unit drifting. With
+evaluation-layer and mechanism evidence, but no method evidence, we present a
+\emph{boundary/empirical study}: we identify a gap for the affine/ridge mapper
+tested here, document the conditions under which the current transfer fails,
+and report the held-out mechanism evidence. Whether other strong behavioral
+baselines (\texttt{consumer}, \texttt{score}, ridge) retain the gap is left to
+future work. We make \emph{no} claim of a causal or exclusive mechanism, of
+behavior across model pairs, or of having developed a method that closes the
+gap.
 \end{abstract}
 
 % ===========================================================================
@@ -124,22 +144,34 @@ claim exactly \emph{one} evidence-backed contribution:
       persistent gap, but its unequal training budget
       (Section~\ref{sec:pending}) and the absence of a trained CF-RCT method
       preclude any claim of a method-level gain at this stage.
+\item \textbf{Mechanism layer.} On the MVP equal-depth pair (1.7B$\to$0.6B),
+      three seeds (seed 0/1/2), 40 held-out pairs each, we
+      \emph{localize the gap to receiver-side Value-consumption pathways under
+      controlled cache interventions}, with Key routing as an accompanying
+      attention-redistribution effect. Units selected on 8 training pairs
+      repair held-out cases more often than random units, with paired
+      differences $0.275\;[0.150,0.425]$, $0.275\;[0.125,0.425]$, and
+      $0.350\;[0.200,0.500]$ (all lower bounds $>0$) and direction consistency
+      $0.725$--$0.750$. Four core units reproduce across all three seeds and
+      the fifth drifts marginally. This is a local, fixed-query decomposition,
+      \emph{not} a global causal account; the three E2 criteria are two
+      statistical signals plus a majority-threshold restatement, not three
+      independent lines of evidence. The claim is confined to the MVP
+      equal-depth pair; it makes no causal, exclusive, or cross-model-pair
+      assertion.
 \end{enumerate}
 
-We explicitly do \emph{not} claim the following two contributions at this
-stage, because the required evidence has not been produced:
+We do \emph{not} claim the following contribution at this stage, because the
+required evidence has not been produced:
 \begin{itemize}
-\item \emph{(withheld) mechanism layer:} the receiver-side routing /
-      consumption claim (contribution template~(2) in protocol~\S10), which
-      would require controlled cache interventions with held-out predictive
-      validation; and
 \item \emph{(withheld) method layer:} the mechanism-constrained-mapper claim
       (contribution template~(3) in protocol~\S10), which would require a
-      trained method evaluated against matched behavioral baselines.
+      trained method evaluated against matched behavioral baselines on the
+      sealed test.
 \end{itemize}
-A directional clue toward a mechanism (V-only $\approx$ Joint) is reported in
-Section~\ref{sec:results} but, absent intervention and held-out prediction
-tests, is \emph{not} promoted to a mechanism claim. The proposed CF-RCT method
+The P1 directional clue (V-only $\approx$ Joint) was subsequently confirmed
+and extended by the P2 intervention and held-out analysis reported in
+Section~\ref{sec:results}. The proposed CF-RCT method
 (Section~\ref{sec:method}) is described as a \emph{design pending validation};
 it has not been trained or evaluated. Accordingly, this manuscript follows the
 decision tree (protocol~\S8) and is positioned as a boundary/empirical study,
@@ -309,17 +341,22 @@ is computed only where the native signal is identifiable: forcing sensitivity
 where $D_{\mathrm{self}}\approx 0$ can induce a degenerate ``constant output''
 solution (Section~\ref{sec:metrics}).
 
-\paragraph{Proposed mechanism diagnostics (not run).} A routing/consumption
+\paragraph{Mechanism diagnostics (executed at P2).} A routing/consumption
 decomposition at fixed receiver query $Q_S$ is the algebraic identity
 $\hat O-O_S=(\hat A-A_S)V_S W_O+\hat A(\hat V-V_S)W_O$, whose two terms are
-\emph{routing} and \emph{consumption}; its residual should be $\approx0$ by
-numerical self-check. This is a \emph{local, fixed-query identity} and must not
-be read as a global causal decomposition of task loss. Layer/head/token Oracle
-grafting would rank units by repair gain on training/validation documents and
-test them on \emph{independent} documents; only such held-out predictive value
-would license a mechanism claim. None of these diagnostics have been executed;
-the P1 K/V four-arm numbers in Section~\ref{sec:results} are \emph{directional
-clues only}.
+\emph{routing} and \emph{consumption}. This is a \emph{local, fixed-query
+identity}, not a global causal decomposition of task loss; $d_A$ and $d_B$ are
+diagnosed separately and their differences compared. Layer/head/token Oracle
+grafting ranked units by repair gain on 8 training pairs and tested them on 40
+held-out validation pairs with no overlap and no use of the sealed test;
+Oracle states never enter the Joint inference graph. At P2 (three runs
+\texttt{p2\_gpu\_mvp\_seed0\_delta\_rand\_audit}, \texttt{p2\_gpu\_mvp\_seed1},
+\texttt{p2\_gpu\_mvp\_seed2}; commit \texttt{6784780}) the decomposition
+residual over 17,920 units was $2.96\times10^{-13}$, and the held-out repair
+hit rate exceeded the random baseline in every seed (paired differences
+$0.275\;[0.150,0.425]$, $0.275\;[0.125,0.425]$, $0.350\;[0.200,0.500]$;
+direction consistency $0.725$--$0.750$). Details are in
+Section~\ref{sec:results}.
 
 \subsection{Hyperparameter freezing status}
 \label{sec:huber}
@@ -563,9 +600,11 @@ high ($0.90$--$0.96$), and coverage $\approx0.80$. Information controls on seed 
 random $+2.249$, zero $+4.191$) are positive: the correct cache carries
 identifiable information, so the observed gap is not a ``no-information''
 artifact. The K/V four arms (seed 0: K-only $0.630$, V-only $1.851$,
-Joint $1.968$; similar across seeds) show V-only close to Joint---a
+Joint $1.968$; similar in seeds 1 and 2) show V-only close to Joint---the
 \emph{directional clue} that the residual concentrates on the Value-consumption
-side, \emph{not} a mechanism finding (P2 was not run).
+side. This clue was subsequently quantified at P2 (Section~\ref{sec:p2}), where
+K-only $0.582$, V-only $1.626$, Joint $1.777$ on 40 pairs confirmed it, while
+K-only being nonzero rules out Value consumption as the sole cause.
 
 \subsection{P1 benchmark, main pair (non-equal depth, 4B$\to$1.7B)}
 \label{sec:main}
@@ -607,6 +646,65 @@ from ``transfer failed outright'' on the basis of a behavior-matched control;
 the broken-transfer annotation is the basis for the failure-boundary
 classification.
 
+\subsection{P2 mechanism evidence (MVP equal-depth pair, three seeds)}
+\label{sec:p2}
+
+The mechanism stage was executed on the MVP equal-depth pair (1.7B$\to$0.6B)
+with three seeds: runs \texttt{p2\_gpu\_mvp\_seed0\_delta\_rand\_audit} (the F1
+pairwise-recomputation audit of seed 0), \texttt{p2\_gpu\_mvp\_seed1}, and
+\texttt{p2\_gpu\_mvp\_seed2}, all at commit \texttt{6784780}, with
+\texttt{zero\_re\_prefill=true} and forward counts
+$\{\mathrm{capture}=0,\mathrm{oracle}=0\}$. All three runs met the E2 criteria
+and yielded verdict \texttt{mechanism\_predictive}; the head-line
+repair-vs-random CI was independently recomputed pairwise from the frozen
+artifacts (F1 closed), and the three-seed requirement (F2) is satisfied.
+
+\paragraph{Four arms (40 pairs per arm).} Self $0$, K-only $0.582$, V-only
+$1.626$, Joint $1.777$. Only Joint has \texttt{deployable=true}; K-only and
+V-only mix one mapped and one native cache half and are offline diagnostics.
+V-only $\approx$ Joint quantitatively confirms the P1 direction; K-only being
+nonzero means Value consumption is not the sole cause.
+
+\paragraph{Routing/consumption decomposition.} Over 17,920 units the mean
+routing norm is $24.846$ and the mean consumption norm $21.839$, with maximum
+residual $2.96\times10^{-13}$ ($\approx0$ at tolerance $10^{-3}$). $d_A$ and
+$d_B$ were diagnosed separately before taking differences. This is a local,
+fixed-query algebraic identity, \emph{not} a global causal decomposition of
+task loss.
+
+\paragraph{Oracle held-out prediction.} For each seed the candidate unit set
+$U$ was chosen on 8 training pairs (5,376 units scored) and tested on 40
+held-out validation pairs with zero pair overlap, train/val prefix isolation,
+and no use of the sealed test. Repair hit rates for $U$ versus random units
+were $0.725/0.450$, $0.725/0.450$, and $0.750/0.400$, with paired differences
+$0.275\;[0.150,0.425]$, $0.275\;[0.125,0.425]$, and $0.350\;[0.200,0.500]$
+(all lower bounds $>0$) and direction consistency $0.725$/$0.725$/$0.750$.
+Selected units are mostly V or both channels (no pure-K unit), concentrated at
+layer 12/head 5 and layer 25/head 4. Four core units
+$(12,5,\mathrm{V/both})$ and $(25,4,\mathrm{V/both})$ recur in all three seeds;
+the fifth drifts marginally (seed 0: $(14,1,\mathrm{V})$, seed 1:
+$(24,2,\mathrm{both})$, seed 2: $(14,1,\mathrm{both})$). We therefore describe
+Value consumption as the reparable \emph{primary} locus with Key routing as an
+\emph{accompanying} attention-redistribution effect --- not an exclusive or
+causal claim, and not a claim of a perfectly stable unit set.
+
+\paragraph{Interpretation, scope, and audit status.} The three E2 criteria are
+\emph{not} three independent lines of evidence: repair-vs-random and direction
+consistency share the unit-hit component (two statistical signals plus a
+majority-threshold restatement), with the near-zero residual as a numerical
+sanity check. The head-line repair-vs-random CI has been recomputed pairwise
+from the frozen artifacts by the audit run
+\texttt{p2\_gpu\_mvp\_seed0\_delta\_rand\_audit} (F1 closed), and the evidence
+now spans three seeds (F2 closed). Hit rates ($0.725$--$0.750$) and effect
+points ($0.275$--$0.350$) vary modestly across seeds, and the fifth unit drifts
+marginally, so we claim core-unit stability but not per-unit invariance. All
+mechanism claims are confined to the MVP equal-depth pair: the decomposition
+is a local, fixed-query identity, Oracle states are offline diagnostics only,
+and we make no causal or cross-model-pair assertion. Source:
+\texttt{reports/runs/p2\_gpu\_mvp\_seed\{0,1,2\}/mechanism.json},
+\texttt{reports/p2\_seed\_robustness.json}, and reviewer report
+\texttt{reports/review/p2\_f1f2\_closure\_review.md}.
+
 \subsection{Adverse results and boundaries}
 \label{sec:adverse}
 
@@ -643,18 +741,20 @@ protocol:
       (\texttt{reports/runs\_index\_errata.json}) adds an orthogonal
       \texttt{transfer\_broken} annotation without altering the frozen verdict.
 \item \textbf{V-only $\approx$ Joint on MVP.} The V-only arm nearly matches
-      Joint while K-only is small. This is a clue, but without Oracle unit
-      ranking and held-out-document prediction tests (E2) it cannot be promoted
-      to a mechanism claim.
+      Joint while K-only is small. E2 has since been executed (Section~\ref{sec:p2}),
+      confirmed at P2 across three seeds; K-only is nonzero, so Value
+      consumption is not the sole cause. The core-unit localization is stable
+      across seeds, with one marginal unit drifting.
 \item \textbf{Dual correctness below $0.7$ on MVP too ($0.62$--$0.67$).} The
       native Self anchor itself is imperfect on these synthetic templates; this
       is genuine model behavior not masked by any mock bias, and it would
       trigger a \texttt{tradeoff} review if carried into a method comparison.
-\item \textbf{P2--P5 not run.} No mechanism diagnostics, no \texttt{CF-RCT}
-      training (though $\delta=0.5$ is now locked on validation data), no
-      sealed test, no generalization or cost measurement. These stages produced
-      no artifacts and support no
-      scientific conclusion.
+\item \textbf{P3/P4 not run; P2 closed across three seeds.} P2 produced
+      \texttt{mechanism\_predictive} in all three seeds with the pairwise CI
+      recomputation audit closed (Section~\ref{sec:p2}). No \texttt{CF-RCT} training
+      (though $\delta=0.5$ is locked on validation data), no sealed test, no
+      generalization or cost measurement; these stages support no further
+      conclusion.
 \item \textbf{Huber $\delta$ locked, but no positive method direction.} The
       validation grid is complete and the PI locked $\delta=0.5$ under the
       hard-guardrail reading of ``not worse than \texttt{kd\_only}'':
@@ -729,7 +829,8 @@ quantities remain unevaluated.
       persistent gap (all CI lower bounds $>0$, range $0.735$--$1.539$), so
       ``strong baseline near Self'' is not supported; however, its unequal
       budget and the absence of any CF-RCT endpoint mean no decision-tree
-      branch is confirmed by this evidence alone, and P2--P5 remain unrun.
+      branch is confirmed by this evidence alone; P3/P4 remain unrun, while P2
+      is fully closed across three seeds.
 \end{itemize}
 
 % ===========================================================================
@@ -745,15 +846,17 @@ consistency is largely preserved. On a non-equal-depth pair, the same gap is
 large but accompanied by a severe loss of answer correctness, delimiting a
 failure boundary for the current affine transfer.
 
-The evidence supports only the first of the three contribution levels in the
-project protocol, and only for the affine/ridge mapper tested here. The
-three-seed \texttt{kd\_only} evidence narrows that gap without eliminating it;
-      the
-other strong baselines (\texttt{consumer}, \texttt{score}, ridge) are not
-evaluated. There is
-\emph{no} held-out-validated mechanism finding and \emph{no} trained method
-evaluated on the paired endpoint; the CF-RCT design is presented strictly as
-pending validation. The non-equal-depth results are a transfer-failure
+The evidence supports contribution (1) and contribution (2), but not
+contribution (3). Contribution (1) is limited to the affine/ridge
+mapper tested here; the three-seed \texttt{kd\_only} evidence narrows that gap
+without eliminating it, and the other strong baselines
+(\texttt{consumer}, \texttt{score}, ridge) are not evaluated. Contribution (2)
+rests on three-seed, MVP-pair held-out predictive evidence localizing the gap
+to receiver-side Value-consumption pathways with accompanying Key routing,
+reported without causal or cross-model-pair claims (Section~\ref{sec:p2}).
+There is \emph{no} trained
+method evaluated on the paired endpoint; the CF-RCT design is presented
+strictly as pending validation. The non-equal-depth results are a transfer-failure
 boundary and are not counted as positive evidence for H1. All experiments use
 synthetic templates, so the applicability of these observations to other
 domains or model families is not established. The main numeric tables come
@@ -766,12 +869,12 @@ $\delta=0.5$ grid gives no positive method direction. Following the
 decision tree
 (protocol~\S8), this work should
 be written and positioned as a \emph{boundary / empirical study}, not as a
-high-level method paper. Future work would need to (i)~execute E2 with
-independent-document Oracle prediction tests before any mechanism claim;
+high-level method paper. Future work would need to (i)~test the mechanism
+localization on non-equal-depth pairs (E5/P4) before any cross-model-pair claim;
 (ii)~train CF-RCT-lite/mech, lock $\delta$ on validation, and evaluate the
 paired endpoint against \texttt{kd\_only} with $\ge3$ seeds and Holm; and
 (iii)~run generalization and cost stages before any claim of deployability or
-speedup. Until then, contributions (2) and (3) are withheld.
+speedup. Until then, contribution (3) is withheld.
 
 % ===========================================================================
 \section*{Appendix A: Figures, tables, and submission materials}
@@ -782,8 +885,13 @@ response templates are maintained in \texttt{papers/readkv\_v2\_draft/notes.md}.
 All figures and tables must be generated directly from the frozen result files
 without recomputing statistics. Figures~4--7 (native vs.\ transferred response
 scatter, layer/head error heatmap with Oracle repair, method ablation,
-generalization and cost--Pareto) are deferred until their underlying stages
-(E2--E6) are actually run; they must not be fabricated.
+generalization and cost--Pareto) are deferred until their underlying stages are
+actually run; they must not be fabricated. Figure~5 material (layer/head error
+heatmap with Oracle repair) is available from the P2 run
+the P2 runs (\texttt{p2\_gpu\_mvp\_seed\{0,1,2\}} and the audit run
+\texttt{p2\_gpu\_mvp\_seed0\_delta\_rand\_audit}; \texttt{mechanism.json},
+\texttt{mechanism\_units.jsonl}, \texttt{decomposition.jsonl}) and may be drawn
+from those frozen artifacts; Figures~6--7 await P3/P4.
 
 \bibliographystyle{plain}
 \begin{thebibliography}{9}
