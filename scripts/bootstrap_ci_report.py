@@ -24,6 +24,43 @@ from readkv.stats.reporting import direction_from_ci, format_ci, replacement_fro
 
 MIN_CLUSTERS_FOR_INFERENCE = 24
 STATS_CONVENTION_VERSION = "2.3"
+STATS_CONVENTION_VERSION_SEQUENCE = "2.8"
+V28_READINGS = ("first", "full", "length_normalized")
+
+
+def _sequence_readings(rows: list[dict]) -> list[str]:
+    """v2.8 序列评分行的 E_CF 是 {first,full,length_normalized} dict。
+
+    返回本次产物实际出现的 reading 列表（固定顺序优先，额外 reading 追加），
+    供逐 reading 重算；空列表表示普通 float E_CF 产物。
+    """
+    found: set[str] = set()
+    for r in rows:
+        v = r.get("E_CF")
+        if isinstance(v, dict):
+            found.update(str(k) for k in v)
+    return [r for r in V28_READINGS if r in found] + sorted(found - set(V28_READINGS))
+
+
+def _ecf_value(row: dict, reading: str | None = None) -> float | None:
+    """安全取 E_CF：普通 run 取 float；序列评分 run 按 reading 取，绝不 float(dict)。"""
+    v = row.get("E_CF")
+    if reading is None:
+        if isinstance(v, dict):
+            return None
+        try:
+            return None if v is None else float(v)
+        except (TypeError, ValueError):  # pragma: no cover - 防御性
+            return None
+    if not isinstance(v, dict):
+        return None
+    x = v.get(reading)
+    if x is None:
+        return None
+    try:
+        return float(x)
+    except (TypeError, ValueError):  # pragma: no cover - 防御性
+        return None
 
 
 def _fill_template_family(rows: list[dict]) -> list[dict]:
@@ -87,11 +124,53 @@ def summarize_run(path: Path, *, n_resamples: int, epsilon: float, seed: int = 0
         for row in rows:
             if "E_CF" in row:
                 arms[str(row.get("arm", "unknown"))].append(row)
+        readings = _sequence_readings(rows)
+        sequence_scoring = bool(readings)  # dict 型 E_CF = v2.8 三读数结构
         out: dict[str, dict] = {}
+
         for arm, arm_rows in arms.items():
-            vals = [float(r["E_CF"]) for r in arm_rows]
+            if sequence_scoring:
+                # v2.8：逐 reading 分别算 template_family 主 CI + pair 敏感性；
+                # 不把 dict 当 float，不混算口径，不静默丢数（排除数显式记录）。
+                readings_out: dict[str, dict] = {}
+                excluded_by_reading: dict[str, int] = {}
+                for reading in readings:
+                    usable = [(r, _ecf_value(r, reading)) for r in arm_rows]
+                    usable = [(r, v) for r, v in usable if v is not None]
+                    excluded_by_reading[reading] = len(arm_rows) - len(usable)
+                    if not usable:
+                        continue
+                    vals = [v for _, v in usable]
+                    rrows = [r for r, _ in usable]
+                    ids = [str(r.get("pair_id", f"row{i}")) for i, r in enumerate(rrows)]
+                    dual = _dual_ci(vals, rrows, ids, n_resamples=n_resamples, seed=seed)
+                    readings_out[reading] = {
+                        "n": len(vals),
+                        "E_CF": format_ci(dual["point"], dual["ci"][0], dual["ci"][1]),
+                        "E_CF_pair_level_sensitivity": format_ci(
+                            dual["pair_level_sensitivity"]["point"],
+                            dual["pair_level_sensitivity"]["ci"][0],
+                            dual["pair_level_sensitivity"]["ci"][1]),
+                        "cluster_unit": dual["cluster_unit"],
+                        "n_clusters": dual["n_clusters"],
+                        "exploratory": dual["exploratory"],
+                    }
+                out[arm] = {
+                    "n": len(arm_rows),
+                    "sequence_scoring": True,
+                    "readings": readings_out,
+                    "n_excluded_non_numeric_per_reading": excluded_by_reading,
+                    "n_excluded_non_numeric_total": sum(excluded_by_reading.values()),
+                    "protocol": f"v{STATS_CONVENTION_VERSION_SEQUENCE}",
+                    "stats_convention": f"v{STATS_CONVENTION_VERSION_SEQUENCE}",
+                }
+                continue
+            vals = [_ecf_value(r) for r in arm_rows]
             ids = [str(r.get("pair_id", f"row{i}")) for i, r in enumerate(arm_rows)]
-            dual = _dual_ci(vals, arm_rows, ids, n_resamples=n_resamples, seed=seed)
+            dual = _dual_ci([v for v in vals if v is not None],
+                            [r for r, v in zip(arm_rows, vals) if v is not None],
+                            [pid for pid, v in zip(ids, vals) if v is not None],
+                            n_resamples=n_resamples, seed=seed)
             out[arm] = {
                 "n": len(vals),
                 "E_CF": format_ci(dual["point"], dual["ci"][0], dual["ci"][1]),
@@ -106,33 +185,44 @@ def summarize_run(path: Path, *, n_resamples: int, epsilon: float, seed: int = 0
                 "stats_convention": f"v{STATS_CONVENTION_VERSION}",
             }
 
-        # 主终点：new_joint vs joint 的成对差异
-        endpoint = None
-        if "new_joint" in out and "joint" in out:
-            new_rows = arms["new_joint"]
-            base_map = {str(r["pair_id"]): float(r["E_CF"]) for r in arms["joint"]
-                        if r.get("pair_id") is not None}
-            paired = [(r, float(r["E_CF"]) - base_map[str(r["pair_id"])])
-                      for r in new_rows
-                      if r.get("pair_id") is not None and str(r["pair_id"]) in base_map]
-            if paired:
-                paired_rows, deltas = zip(*paired)
-                ids = [str(r["pair_id"]) for r in paired_rows]
-                dual = _dual_ci(list(deltas), list(paired_rows), ids,
-                                n_resamples=n_resamples, seed=seed)
-                endpoint = {
-                    "point": dual["point"],
-                    "ci": dual["ci"],
-                    "improved": dual["ci"][1] < 0,
-                    "cluster_unit": dual["cluster_unit"],
-                    "n_clusters": dual["n_clusters"],
-                    "exploratory": dual["exploratory"],
-                    "pair_level_sensitivity": {
-                        "point": dual["pair_level_sensitivity"]["point"],
-                        "ci": dual["pair_level_sensitivity"]["ci"],
-                    },
-                    "note": "paired E_CF difference (new - baseline); primary cluster = template_family",
-                }
+        # 主终点：new_joint vs joint 的成对差异（v2.8 序列评分按 reading 分别重算）
+        def paired_endpoint(reading: str | None) -> dict | None:
+            if "new_joint" not in arms or "joint" not in arms:
+                return None
+            base_map = {}
+            for r in arms["joint"]:
+                v = _ecf_value(r, reading)
+                if r.get("pair_id") is not None and v is not None:
+                    base_map[str(r["pair_id"])] = v
+            paired = []
+            for r in arms["new_joint"]:
+                v = _ecf_value(r, reading)
+                pid = str(r.get("pair_id", ""))
+                if pid in base_map and v is not None:
+                    paired.append((r, v - base_map[pid]))
+            if not paired:
+                return None
+            paired_rows, deltas = zip(*paired)
+            ids = [str(r["pair_id"]) for r in paired_rows]
+            dual = _dual_ci(list(deltas), list(paired_rows), ids,
+                            n_resamples=n_resamples, seed=seed)
+            return {
+                "point": dual["point"], "ci": dual["ci"],
+                "improved": dual["ci"][1] < 0,
+                "cluster_unit": dual["cluster_unit"],
+                "n_clusters": dual["n_clusters"],
+                "exploratory": dual["exploratory"],
+                "pair_level_sensitivity": {
+                    "point": dual["pair_level_sensitivity"]["point"],
+                    "ci": dual["pair_level_sensitivity"]["ci"],
+                },
+                "note": "paired E_CF difference (new - baseline); primary cluster = template_family",
+            }
+
+        if sequence_scoring:
+            endpoint = {rd: ep for rd in readings if (ep := paired_endpoint(rd)) is not None} or None
+        else:
+            endpoint = paired_endpoint(None)
 
         # F1：oracle_U 的 repair-vs-random 成对 CI
         repair = None
@@ -162,8 +252,15 @@ def summarize_run(path: Path, *, n_resamples: int, epsilon: float, seed: int = 0
             "arms": out,
             "primary_endpoint": endpoint,
             "repair_vs_random": repair,
-            "protocol": "v2.0",
-            "stats_convention": f"v{STATS_CONVENTION_VERSION}",
+            "protocol": f"v{STATS_CONVENTION_VERSION_SEQUENCE}" if sequence_scoring else "v2.0",
+            "stats_convention": (f"v{STATS_CONVENTION_VERSION_SEQUENCE}" if sequence_scoring
+                                 else f"v{STATS_CONVENTION_VERSION}"),
+            "sequence_scoring": sequence_scoring,
+            "sequence_readings": list(readings) if sequence_scoring else [],
+            "sequence_scoring_note": (
+                "sequence-scoring runs handled separately by reading "
+                "(first/full/length_normalized); no cross-reading E_CF comparison"
+            ) if sequence_scoring else None,
             "cluster_bootstrap_convention": {
                 "primary_cluster_unit": "template_family",
                 "pair_level_sensitivity_reported": True,

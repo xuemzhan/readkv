@@ -1,0 +1,25 @@
+{
+  "run_id": "audit_seq_smoke_A11_s0",
+  "files": [
+    {
+      "name": "config.json",
+      "sha256": "dabd66d10db45ea36e32cfba4558d69dc88d71dd00819a2219afb8cd5e97f661",
+      "size": 2487
+    },
+    {
+      "name": "forward_audit.jsonl",
+      "sha256": "fab6bb21e8b1a89fa0c98da69f35ec6cdfd90aef78d72996ce1d967030131a02",
+      "size": 140499
+    },
+    {
+      "name": "metrics.json",
+      "sha256": "acd6b726d8af9ee99bfc03a5b8e4d3d155aa8caf8986011df5a97fbe264834da",
+      "size": 4551
+    },
+    {
+      "name": "scores.jsonl",
+      "sha256": "715987d0d9fb455f1ebe8b014903005741536fd81347e0d3de6f1bfdecc9c915",
+      "size": 37352
+    }
+  ]
+}

@@ -1,0 +1,99 @@
+{
+  "per_arm": {
+    "self": {
+      "n": 60,
+      "first": {
+        "dual_correct": 0.7833333333333333,
+        "D_mean": 0.9997395773728689,
+        "E_CF_mean": 8.159016940991084,
+        "coverage": 0.8833333333333333,
+        "n_flip_evaluable": 53,
+        "flip_consistency": 0.7358490566037735
+      },
+      "full": {
+        "dual_correct": 0.6833333333333333,
+        "D_mean": 2.0304793417958233,
+        "E_CF_mean": 17.304649060813244,
+        "coverage": 0.8666666666666667,
+        "n_flip_evaluable": 52,
+        "flip_consistency": 0.6730769230769231
+      },
+      "length_normalized": {
+        "dual_correct": 0.75,
+        "D_mean": 0.8965935697410411,
+        "E_CF_mean": 8.768878760858206,
+        "coverage": 0.8666666666666667,
+        "n_flip_evaluable": 52,
+        "flip_consistency": 0.6730769230769231
+      }
+    },
+    "joint": {
+      "n": 60,
+      "first": {
+        "dual_correct": 0.16666666666666666,
+        "D_mean": -0.17724609375,
+        "E_CF_mean": 8.159016940991084,
+        "coverage": 0.8833333333333333,
+        "n_flip_evaluable": 53,
+        "flip_consistency": 0.7358490566037735
+      },
+      "full": {
+        "dual_correct": 0.2833333333333333,
+        "D_mean": -0.4009921153386434,
+        "E_CF_mean": 17.304649060813244,
+        "coverage": 0.8666666666666667,
+        "n_flip_evaluable": 52,
+        "flip_consistency": 0.6730769230769231
+      },
+      "length_normalized": {
+        "dual_correct": 0.3,
+        "D_mean": -0.31872268915176394,
+        "E_CF_mean": 8.768878760858206,
+        "coverage": 0.8666666666666667,
+        "n_flip_evaluable": 52,
+        "flip_consistency": 0.6730769230769231
+      }
+    }
+  },
+  "L_self_minus_joint": {
+    "first": 0.6166666666666667,
+    "full": 0.4,
+    "length_normalized": 0.45
+  },
+  "reading_diff_L_full_minus_L_first": {
+    "point": -0.21666666666666667,
+    "ci": [
+      -0.3333333333333333,
+      -0.11666666666666667
+    ],
+    "n": 60
+  },
+  "n_template_families": 8,
+  "exploratory": true,
+  "n_resamples": 10000,
+  "run_id": "audit_seq_A11_s1",
+  "backend": "gpu",
+  "protocol_version": "2.8",
+  "cell": "A11",
+  "calibration_version": "fixed",
+  "validation_version": "fixed",
+  "seed": 1,
+  "dtype": "bfloat16",
+  "kernel": "sdpa",
+  "zero_re_prefill": true,
+  "sealed_test_read": false,
+  "input_sha256": {
+    "train": "024a69e9f35c777ad1030227eed37ef8f3dd43a82fb0a905a569e9150a37633f",
+    "val": "b4f9587fc7e28a780b923c7e4a3e1aec96ddf6cde3c63a50fd0cc4b8423e7921"
+  },
+  "version_tag": "fixed_efc3ba3",
+  "n_train": 120,
+  "n_val": 60,
+  "n_audit_forwards": 480,
+  "token_boundary_inconsistent": {
+    "A": 0,
+    "B": 0
+  },
+  "elapsed_sec": 92.5,
+  "note": "v2.8 读数稳健性补充；首/整串/长度归一并列；不重算主终点、不碰封存 test、不恢复贡献。"
+}

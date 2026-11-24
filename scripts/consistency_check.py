@@ -210,13 +210,88 @@ def _check_model_pair(cfg: dict) -> dict[str, Any]:
     }
 
 
+# V2 冻结协议白名单：2.7（2×2 审计）/2.8（完整候选评分）为后加的**新增版本**，
+# 不回写旧文件；consistency_check 只需识别其 protocol_version，不改判据。
+PROTOCOL_WHITELIST = ("2.0", "2.1", "2.7", "2.8")
+V28_PROTOCOL = "2.8"
+_V28_READINGS = ("first", "full", "length_normalized")
+
+
+def _is_sha256(value: Any) -> bool:
+    s = str(value or "")
+    return len(s) == 64 and all(c in "0123456789abcdefABCDEF" for c in s)
+
+
+def _check_v28_fields(cfg: dict) -> dict[str, Any]:
+    """v2.8 序列评分 run 的 config 字段校验（只读，不改产物）。
+
+    校验 protocol_version=2.8、version_tag、seed、train/val SHA-256、
+    zero_re_prefill=true、sealed_test_read=false、tokenizer 指纹可用。
+    """
+    ec = cfg.get("experiment_config", {}) or {}
+    problems: list[str] = []
+    pv = str(cfg.get("protocol_version", ""))
+    if pv != V28_PROTOCOL:
+        problems.append(f"v2.8 run declares protocol_version {pv!r}")
+
+    tag = str(ec.get("version_tag", "")).strip()
+    cal = str(ec.get("calibration_version", "")).strip()
+    val = str(ec.get("validation_version", "")).strip()
+    if not tag:
+        problems.append("v2.8 config missing experiment_config.version_tag")
+    elif cal and not tag.startswith(cal):
+        problems.append(f"version_tag {tag!r} does not match calibration_version {cal!r}")
+    if not cal or not val:
+        problems.append("v2.8 config missing calibration_version/validation_version")
+    if cal and cal != val:
+        problems.append(f"v2.8 diagonal cell expected calibration==validation, got {cal!r}/{val!r}")
+
+    seed = cfg.get("seed")
+    if seed is None:
+        problems.append("v2.8 config missing seed")
+    elif ec.get("seed") is not None and int(ec["seed"]) != int(seed):
+        problems.append(f"v2.8 seed mismatch: top-level {seed} vs experiment_config {ec['seed']}")
+
+    sha = ec.get("input_sha256", {}) or {}
+    for split in ("train", "val"):
+        if not _is_sha256(sha.get(split)):
+            problems.append(f"v2.8 config missing/invalid input_sha256.{split}")
+
+    if cfg.get("zero_re_prefill") is not True:
+        problems.append("v2.8 config zero_re_prefill is not true")
+    if ec.get("sealed_test_read") is not False:
+        problems.append("v2.8 config sealed_test_read is not false")
+    if ec.get("zero_re_prefill") is not True:
+        problems.append("v2.8 experiment_config.zero_re_prefill is not true")
+
+    tok = ec.get("tokenizer_fingerprint", {}) or {}
+    tok_sha = str(tok.get("sha256", ""))
+    if not _is_sha256(tok_sha) or tok_sha.startswith("unavailable"):
+        problems.append(f"v2.8 tokenizer fingerprint unavailable/invalid: {tok_sha[:32]!r}")
+    if not tok.get("path") or not ec.get("teacher") or not ec.get("student"):
+        problems.append("v2.8 config missing tokenizer/model paths")
+
+    declared = str(ec.get("scoring", ""))
+    if declared and not all(r in str(declared) for r in _V28_READINGS):
+        problems.append("v2.8 config scoring does not declare all three readings")
+
+    return {
+        "ok": not problems, "problems": problems,
+        "version_tag": tag, "seed": seed,
+        "input_sha256_present": {k: _is_sha256(sha.get(k)) for k in ("train", "val")},
+        "zero_re_prefill": cfg.get("zero_re_prefill") is True,
+        "sealed_test_read": ec.get("sealed_test_read"),
+        "tokenizer_fingerprint": tok_sha[:16],
+    }
+
+
 def _check_protocol_compat(cfg: dict) -> dict[str, Any]:
     pv = str(cfg.get("protocol_version", ""))
     problems = []
-    if pv not in ("2.0", "2.1"):
+    if pv not in PROTOCOL_WHITELIST:
         problems.append(f"protocol_version {pv!r} incompatible with frozen V2 prereg")
     prereg_dir = ROOT / "configs" / "prereg"
-    ec = cfg.get("experiment_config", {})
+    ec = cfg.get("experiment_config", {}) or {}
     declared = str(ec.get("prereg", ""))
     if declared:
         candidate = prereg_dir / declared.split()[0].split("/")[-1]
@@ -224,7 +299,13 @@ def _check_protocol_compat(cfg: dict) -> dict[str, Any]:
             problems.append(f"declared prereg file not found: {declared}")
     if not (prereg_dir / "phase1_benchmark_decision.yaml").exists():
         problems.append("missing frozen phase1_benchmark_decision.yaml")
-    return {"ok": not problems, "protocol_version": pv, "problems": problems}
+    out: dict[str, Any] = {"ok": not problems, "protocol_version": pv, "problems": problems}
+    if pv == V28_PROTOCOL:
+        v28 = _check_v28_fields(cfg)
+        out["v28_fields"] = v28
+        out["problems"].extend(v28["problems"])
+        out["ok"] = not out["problems"]
+    return out
 
 
 def check_run(run_dir: Path, head: str, dirty: list[str], superseded: bool = False) -> dict:
