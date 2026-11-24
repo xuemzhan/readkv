@@ -1,0 +1,755 @@
+% ============================================================================
+% Anonymous TMLR submission — self-contained LaTeX source.
+%
+% Double-blind conventions: the author line is anonymous; there is NO
+% acknowledgments section, NO author email, and NO self-identifying citation.
+% Prior work by other groups (KV-Lingo, CacheLink, Heo et al., ... ) is cited
+% normally; the paper's own earlier release is described anonymously as "an
+% earlier release of this benchmark".
+%
+% This file is self-contained so it compiles with a standard LaTeX installation
+% (article class, booktabs, amsmath, hyperref) with no external .sty. For the
+% final camera-ready, the author may replace the preamble with the official TMLR
+% style (\usepackage{tmlr}) and restore author/acknowledgment information.
+%
+% All numeric values are transcribed verbatim from the frozen artifacts in
+% reports/ (metrics.json, bootstrap_summary.json, anchor_eval_summary.json,
+% audit_2x2_l_ci.json, audit_2x2_formal_summary.json) and the frozen data-fix
+% reports. NO statistic was recomputed for this manuscript and NO result is
+% fabricated. Paths below are repository-relative, not absolute.
+% ============================================================================
+\documentclass[11pt,a4paper]{article}
+
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{amsmath,amssymb}
+\usepackage{booktabs}
+\usepackage{graphicx}
+\usepackage{geometry}
+\geometry{margin=2.2cm}
+\usepackage{hyperref}
+\hypersetup{colorlinks=true,linkcolor=blue,citecolor=blue,urlcolor=blue}
+
+\title{A Finding Reversed After Corpus Reconstruction: A Controlled
+Version-Contrast Study of Cross-Model KV Handoff}
+
+\author{Anonymous Author(s)}
+\date{}
+
+\begin{document}
+\maketitle
+
+\begin{abstract}
+Cross-model key--value (KV) cache transfer promises zero re-prefill of a
+source document. We studied a paired synthetic benchmark where an earlier
+release reported an apparent counterfactual gap and a receiver-side mechanism.
+A data audit found 18 degenerate pairs, verbatim cross-split leakage, template
+overlap, and a pair-level i.i.d.\ bootstrap. In a controlled version contrast
+the finding did not survive corpus reconstruction: on one synthetic equal-depth
+pair (1.7B$\to$0.6B) the affine Joint arm's dual correctness falls from
+$\approx0.82$ to $0.28$--$0.42$, with $E_{\mathrm{CF}}$ $6.90$--$8.54$
+approaching but \emph{not} exceeding mismatched ($8.38$) and zero-cache
+($8.58$) controls; a preregistered 2$\times$2 contrast (12 cells) shows the
+Self-minus-Joint gap rising in all nine reconstruction cells at the
+point-estimate level. \texttt{transfer\_broken} follows a single dual-drop
+signal. A \texttt{kd\_only} baseline on the same pairs/config shows a smaller
+aggregate dual drop ($11.7$/$16.7$/$1.7$ points), sensitive to slice
+definition, reported only as exploratory. All clean CIs are exploratory
+(8 \texttt{template\_family} clusters, $<24$); the sealed test was never
+evaluated. We withdraw contributions~(1) and~(2) and withhold~(3): the old
+mechanism evidence is withdrawn, but whether a mechanism exists on clean data
+is undecided (no clean P2). No method was trained or improvement claimed.
+\end{abstract}
+
+\section{Introduction}
+\label{sec:intro}
+
+Cross-model KV handoff maps a teacher's document cache into a receiver
+student's cache format so the student can answer queries about a document
+without re-processing it (\emph{strict zero re-prefill}). An earlier version of
+this study asked whether the student's \emph{functional dependence on the
+document} survives transfer, formalized as counterfactual functional fidelity
+and measured by the counterfactual error $E_{\mathrm{CF}}$
+(Section~\ref{sec:metrics}). It reported two positive findings on a synthetic
+corpus: an apparent gap between ordinary transfer utility and counterfactual
+fidelity, and a receiver-side Value-consumption mechanism. \textbf{Both are
+withdrawn here.}
+
+The paper is therefore not a method or mechanism paper. Its subject is the
+\emph{audit trail} around those findings and the boundary condition observed
+once the data were repaired. An independent data-quality audit found that the
+original corpus contained degenerate pairs (identical candidates marked
+must-flip), cross-split verbatim document leakage, and train/test
+template-skeleton overlap, and that its cluster bootstrap had degenerated to
+pair-level i.i.d. In a controlled contrast between corpus versions (degenerate-
+pair removal, split de-duplication, and structural template changes applied
+together), the reported gap did not survive: on the reconstructed corpus the
+previously ``utility-preserving gap'' became a \emph{transfer failure}
+(Section~\ref{sec:reversal}). This version contrast identifies only the whole
+corpus-version switch, not any single defect (Section~\ref{sec:audit2x2}). The
+old mechanism \emph{evidence} is withdrawn; whether a mechanism exists on clean
+data is \emph{undecided}, because no clean-data mechanism experiment was run.
+This is consistent with the general reproducibility warning of Kapoor \&
+Narayanan~\cite{kapoor2023}, but our contribution is the concrete,
+preregistered version contrast and the paired counterfactual $E_{\mathrm{CF}}$
+audit trail in this specific benchmark, not the general lesson itself.
+
+\paragraph{Findings reported here (negative / empirical results, not
+protocol~\S10 positive contributions).}
+\begin{enumerate}
+\item \textbf{Failure boundary.} On clean data the tested affine/ridge mapper
+      fails to transfer usefully on the single equal-depth MVP pair: dual-side
+      correctness collapses to $0.28$--$0.42$ from a native $\approx0.78$--$0.90$,
+      and $E_{\mathrm{CF}}$ rises towards but does not reach the
+      mismatched/zero-cache controls (Section~\ref{sec:mvp}).
+\item \textbf{Exploratory gap on the strong baseline.} The \texttt{kd\_only}
+      baseline has a smaller aggregate dual-accuracy drop from Self
+      ($\approx11.7$/$16.7$/$1.7$ points), sensitive to slice definition
+      (F1--F4 seed 1 reaches $21.7$ points), with a stable nonzero
+      $E_{\mathrm{CF}}$ of $6.39$--$7.21$; reported only as exploratory and not
+      as established utility preservation (Section~\ref{sec:kdbase}).
+\item \textbf{Methodological negative result.} A controlled contrast between
+      two corpus versions (changes applied together) shows that the reported
+      finding did not survive corpus reconstruction; the contrast identifies
+      only the whole version switch, not any single defect
+      (Sections~\ref{sec:reversal},~\ref{sec:audit2x2}).
+\item \textbf{Limited external anchor.} On a SQuAD~v2.0 dev single-reference
+      subset, both transferred arms show a descriptive F1 decrease and all arms
+      hit an EM floor of undiagnosed cause; the v2.4 verdict is
+      \texttt{exploratory\_disclosure} (Section~\ref{sec:anchor}).
+\end{enumerate}
+None of these is a positive contribution in the sense of protocol~\S10. The
+primary endpoint is unevaluated, P2/P3/P4 are permanently cancelled, and
+real-document external validity is unverified (\texttt{real=0}).
+
+\section{Related Work}
+\label{sec:related}
+
+\paragraph{Cross-model KV transfer and the utility/fidelity question.}
+Behavioral distillation of per-layer linear K/V maps
+(KV-Lingo~\cite{kvlingo}) and functional cache transport with frozen-receiver
+supervision (CacheLink~\cite{cachelink}) take ordinary task utility or
+token-distribution matching as their stated target. Their reported abstracts
+state that reconstruction fidelity need not coincide with receiver utility and
+that a closed-form ridge mapping can degrade sharply on some model
+pairs~\cite{heo2026}; we verified these works at abstract level only and make no
+section-level claim. These works score ordinary task quality, not paired
+counterfactual response change; we use them as baselines and conceptual
+precursors.
+
+\paragraph{A crowded 2026 method and audit landscape.}
+As reported in their abstracts, recent work already separates utility from
+fidelity: a cross-version study names \emph{Functional Cache Divergence} and
+reports a task-utility versus native-behavior-fidelity distinction~\cite{n1};
+a fidelity--consumability study reports that substitute caches remain near the
+no-information baseline~\cite{n2}; a safety study reports value-reuse bias
+exceeding key-reuse bias with a per-layer/per-head affine correction~\cite{n3}.
+Strong transfer baselines and failure analyses~\cite{n4,n5,n6,n8} and
+hybrid/linear attention translation~\cite{n9a,n9b} further compress the
+methodological space. A causal audit reports mismatched/zero/random cache
+controls with a preregistered equivalence test~\cite{n7}. These anticipate the
+general utility-versus-fidelity distinction and the control-group methodology;
+our contribution is \emph{not} a general distinction, a mechanism-layer first,
+or a new audit method, but a specific preregistered reversal case with a paired
+counterfactual $E_{\mathrm{CF}}$ audit trail.
+
+\paragraph{Counterfactual and faithfulness evaluation.}
+Paired minimal-pair construction that changes the gold label is established by
+Contrast Sets~\cite{contrastsets} and counterfactually augmented
+data~\cite{kaushik2020}; $E_{\mathrm{CF}}$ is a continuous logit-difference
+adaptation of that idea to the transfer setting. Under KV-cache compression,
+``Does Accuracy Equal Evidence?''~\cite{acc_evidence} reports that answer
+accuracy can be preserved while evidence faithfulness degrades; we distinguish
+their within-model, compression, reasoning-chain setting from our cross-model,
+paired counterfactual-document setting.
+
+\section{Method}
+\label{sec:method}
+
+A teacher $T$ prefill-computes a cache $C_T(d)$ of document $d$; a mapper
+$g_\theta$ maps it into receiver $S$'s cache format
+$\hat{C}_S(d)=g_\theta(C_T(d))$. The receiver decodes query $q$ from
+$\hat{C}_S(d)$ and never re-processes $d$. The receiver's own cache $C_S(d)$ is
+an \emph{offline Oracle} used only for training targets, evaluation anchors and
+intervention, never inside the deployable inference path. $S$'s main weights
+are frozen. The two documents of a counterfactual pair, $d_A$ and $d_B$, are
+prefilled \emph{independently}. Only the \emph{Joint} arm (mapped K and V)
+satisfies strict zero re-prefill; K-only, V-only, Self, Identity and Oracle are
+offline diagnostics.
+
+In the clean-data results the mapping arm is a closed-form ridge affine map
+with zero gradient-optimization epochs (it estimates affine coefficients from
+calibration data but has no gradient-trained parameters). The \texttt{kd\_only}
+baseline has $7.34$M gradient-optimised parameters and $8$ training epochs.
+The arms are aligned on the counterfactual pairs, dtype/kernel and forward
+budget, but \emph{not} on parameter count, training steps or tuning budget; we
+disclose this asymmetry as a limitation and do not present the comparison as a
+budget-matched ablation.
+
+\paragraph{Metrics and denominators.}
+For a candidate pair, define $g(C,q)=\log P(A\mid C,q)-\log P(B\mid C,q)$ at a
+single shared generation position, where $P(A\mid C,q)$ and $P(B\mid C,q)$ are
+probabilities of the \emph{candidate first tokens} A and B --- a binary proxy,
+not a full-sequence likelihood. Then $D_{\mathrm{self}}=g(C_S(d_A),q)-g(C_S(d_B),q)$,
+$D_{\mathrm{trans}}=g(\hat C_S(d_A),q)-g(\hat C_S(d_B),q)$, and
+$E_{\mathrm{CF}}=|D_{\mathrm{trans}}-D_{\mathrm{self}}|$ (normalized by
+$|D_{\mathrm{self}}|+\tau$, $\tau=1.0$). $E_{\mathrm{CF}}$ is a non-negative
+absolute difference and equals zero for Self and Identity \emph{by definition};
+an interval excluding zero describes error magnitude but cannot alone establish
+a utility--fidelity separation. It is always jointly reported with dual-side
+correctness \texttt{dual\_correct}, direction consistency
+\texttt{flip\_consistency} on the Self-valid subset $|D_{\mathrm{self}}|\ge0.1$,
+coverage, and the gap to no-information controls \texttt{info\_attribution}.
+
+The number $398$ is the \emph{corpus-level} must-flip count after excluding F5
+and F6, not a per-run denominator. Each validation cell has 60 pairs, of which
+46 are in F1--F4 (the only must-flip slices used here); after the F1--F4 and
+Self-threshold filters the reconstructed affine cells have $34/45$, $35/46$,
+$34/46$ evaluable must-flip pairs for seeds 0/1/2. Under the first-token proxy,
+F5 pairs have identical candidate texts (proxy error exactly zero, dual $=1$,
+no discriminative power) and F6 changes the person name and gold label (a
+length/position control); both are excluded from must-flip denominators. Full
+candidate-sequence scoring is evaluated as a preregistered robustness check
+in Section~\ref{sec:seqscore}.
+
+The primary endpoint (paired $E_{\mathrm{CF}}$ difference on the sealed test
+between a new method and \texttt{kd\_only}, CI upper $<0$, $\geq3$ seeds, Holm
+correction) is \emph{not evaluated}: no method was trained and the sealed test
+was never run. $P>0.05$ is not treated as equivalence.
+
+\section{Experimental Setup}
+\label{sec:setup}
+
+\paragraph{Data.} The corpus has 520 pairs (probe 40 / train 120 / val 60 /
+test 300 / \texttt{real 0}). Slices: F1 direct fact substitution; F2
+reasoning-chain change; F3 relation/negation reversal; F4 distractors and
+coreference; F5 surface equivalence (non-flip control); F6 length/position.
+The original release (SHA-256 \texttt{6058fd6d...d1887}) had 18 degenerate
+must-flip pairs, $\geq15$ groups of verbatim cross-split leakage, 8 shared
+entity names, 100\% train/test template-skeleton overlap, a flip count of 394,
+and pair-level bootstrap clusters. The reconstructed release
+(\texttt{f910f1f1...a894a}, 11/11 acceptance checks) has 0 on each defect, a
+flip count of 398, 24 base structures / 56 corpus-wide template families, and
+template-family bootstrap clustering. The corpus-wide 56 families (probe 16 /
+train 16 / val 8 / test 16) are distinct from the 8 \texttt{template\_family}
+clusters of the single evaluated validation split used as the v2.3 bootstrap
+unit; these are different scopes of one taxonomy, not a contradiction.
+
+\paragraph{Model pairs.} The MVP pair is equal-depth Qwen3-1.7B (teacher)
+$\to$ Qwen3-0.6B (student), $28\to28$ identity layer map; a non-equal-depth
+4B$\to$1.7B pair ($36\to28$) was used in earlier work. Runs use CUDA,
+\texttt{bfloat16}, \texttt{sdpa}. Clean-data results are at commits
+\texttt{efc3ba3} (affine) and \texttt{6413ba0} (\texttt{kd\_only}).
+
+\paragraph{Real documents and AI data.} Real-document collection was formally
+blocked (licence/network constraints and semantic unsuitability); \texttt{real=0}
+and real-document external validity is \textbf{unverified}. An AI-generated-data
+proposal was evaluated and withdrawn (not activated); no such data or result
+exists. These are stated for completeness of the data-availability record.
+
+\section{Results}
+\label{sec:results}
+
+All values below are transcribed verbatim from frozen artifacts in \texttt{reports/};
+no statistic was recomputed for this manuscript. Old P1/P2 runs on the pre-fix
+v2.0 corpus are \textbf{superseded} and appear only in the historical contrast
+(Section~\ref{sec:reversal}).
+
+\subsection{E0 implementation gate}
+The implementation gate on the reconstructed corpus (\texttt{e0\_clean\_mvp\_seed0})
+passes: Self/Identity first-token logit cosine $1.0$, first-token KL $0$,
+round-trip bit-identical, \texttt{zero\_re\_prefill} true, measurement-error
+ceiling $2.2\times10^{-16}$, EM agreement $0.975$.
+
+\subsection{Clean-data affine benchmark (MVP pair)}
+\label{sec:mvp}
+
+\begin{table}[t]
+\centering
+\caption{Clean-data P1 MVP pair, \texttt{p1\_clean\_mvp\_seed\{0,1,2\}}
+(commit \texttt{efc3ba3}, val, 60 pairs). Joint $E_{\mathrm{CF}}$ with the
+primary \texttt{template\_family} CI ($n_{\mathrm{clusters}}=8$,
+\texttt{exploratory=true}, wider) and a pair-level sensitivity CI, transcribed
+from \texttt{reports/bootstrap\_summary.json}, alongside joint-report metrics.
+Failure-boundary observations, not distortion evidence.}
+\label{tab:cleanmvp}
+\begin{tabular}{ccccccccc}
+\toprule
+seed & $E_{\mathrm{CF}}$ & primary CI & sensitivity CI & Self dual & Joint dual & flip & cov.\ & broken \\
+\midrule
+0 & $6.900$ & $[3.564,10.100]$ & $[5.496,8.321]$ & $0.817$ & $0.417$ & $0.750$ & $0.867$ & true \\
+1 & $8.159$ & $[4.357,11.584]$ & $[6.648,9.701]$ & $0.900$ & $0.283$ & $0.736$ & $0.883$ & true \\
+2 & $8.540$ & $[5.326,11.610]$ & $[7.046,10.051]$ & $0.783$ & $0.383$ & $0.755$ & $0.883$ & true \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+Dual-side correctness collapses from a native $\approx0.78$--$0.90$ to
+$0.28$--$0.42$ while $E_{\mathrm{CF}}$ approaches but does not exceed the
+mismatched ($8.383$) and zero-cache ($8.584$) controls; seed-0 information
+attributions are mixed ($+1.483$, $+1.684$, $-0.135$). The
+\texttt{transfer\_broken} flag follows a single signal (the dual drop $\geq0.2$
+on the Joint arm). We report a failure boundary of this mapper on this pair,
+not evidence for the withdrawn positive hypothesis.
+
+\subsection{Corpus-version contrast (historical vs reconstructed)}
+\label{sec:reversal}
+
+\begin{table}[t]
+\centering
+\caption{Before/after corpus-version contrast (descriptive; whole-version
+switch, not single-defect attribution). Old v2.0 values are superseded; ranges
+across three seeds.}
+\label{tab:reversal}
+\begin{tabular}{lll}
+\toprule
+Quantity & Old v2.0 (superseded) & Reconstructed v2.1 \\
+\midrule
+Joint $E_{\mathrm{CF}}$ & $1.93$--$2.12$ & $6.90$--$8.54$ \\
+Joint dual correctness & $0.617$--$0.667$ & $0.283$--$0.417$ \\
+Self dual correctness & $0.600$--$0.683$ & $0.783$--$0.900$ \\
+flip consistency & $0.898$--$0.958$ & $0.736$--$0.755$ \\
+\texttt{transfer\_broken} & false & true (all seeds) \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+In the controlled version contrast the reported gap judgement reverses into a
+transfer failure; because the changes were applied together, we do not
+attribute this to any single defect. Contribution~(1) and (2) are withdrawn.
+
+\subsection{KD baseline}
+\label{sec:kdbase}
+
+\begin{table}[t]
+\centering
+\caption{Clean-data \texttt{kd\_only} (\texttt{p1\_kd\_clean\_mvp\_seed\{0,1,2\}},
+commit \texttt{6413ba0}, val). Two 95\% CIs from
+\texttt{reports/bootstrap\_summary.json}: primary \texttt{template\_family}
+($n_{\mathrm{clusters}}=8$, \texttt{exploratory=true}) and pair-level
+sensitivity. All CIs exploratory; not established utility preservation.}
+\label{tab:cleankd}
+\begin{tabular}{ccccccc}
+\toprule
+seed & $E_{\mathrm{CF}}$ & primary CI & sensitivity CI & joint dual (drop) & flip & broken \\
+\midrule
+0 & $6.388$ & $[3.653,8.814]$ & $[5.340,7.400]$ & $0.700\;(0.117)$ & $0.942$ & false \\
+1 & $6.479$ & $[3.899,8.798]$ & $[5.431,7.529]$ & $0.733\;(0.167)$ & $0.906$ & false \\
+2 & $7.210$ & $[4.417,9.799]$ & $[6.074,8.331]$ & $0.767\;(0.017)$ & $0.925$ & false \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+Relative to Self, the aggregate all-slice dual drops are
+$0.117$/$0.167$/$0.017$ (points $11.7$/$16.7$/$1.7$), with exploratory
+template-family intervals $[-0.016,0.254]$, $[0.016,0.379]$,
+$[-0.048,0.102]$; the first two include the $0.2$ diagnostic magnitude.
+Restricting to F1--F4, the seed-1 drop reaches $0.217$ ($21.7$ points), so the
+conclusion is sensitive to slice definition. We do \emph{not} claim established
+utility preservation: $\texttt{transfer\_broken=false}$ only means the frozen
+diagnostic condition was not triggered under this aggregation, and the
+$E_{\mathrm{CF}}$ of $6.39$--$7.21$ remains stable and non-zero. This is the
+\emph{scenario C} exploratory observation, not a restored contribution.
+
+\subsection{External anchor: SQuAD~v2.0 dev}
+\label{sec:anchor}
+
+\begin{table}[t]
+\centering
+\caption{SQuAD~v2.0 dev single-reference subset (first 240 answerable questions
+in file order, two articles, first reference answer), seed0, from
+\texttt{reports/anchor\_eval\_summary.json}. Both arms have Self
+EM/F1 $=0.000/0.1975$ and Joint EM $=0.000$; v2.4 verdict
+\texttt{exploratory\_disclosure}.}
+\label{tab:anchor}
+\begin{tabular}{llll}
+\toprule
+Arm & Method & Joint F1 & Joint/Self F1 \\
+\midrule
+Joint & affine & $0.0051$ & $2.6\%$ \\
+Joint & kd\_only & $0.0014$ & $0.7\%$ \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+Both transferred arms show a descriptive F1 decrease on this subset (affine to
+$2.6\%$ of Self, kd to $0.7\%$); EM is at floor for all arms and we do not
+attribute the floor to a specific cause (no controlled intervention was
+performed). The official all-reference re-scoring of these same saved
+predictions is reported in the first-round review (Self / affine Joint / KD
+Joint F1 $\approx0.2178/0.0082/0.0014$, EM still zero); we cite it as a
+review-side recomputation, not a new run. The verdict is
+\texttt{exploratory\_disclosure}, not cross-source generalization.
+
+\subsection{Controlled 2$\times$2 corpus-version contrast}
+\label{sec:audit2x2}
+
+A preregistered 2$\times$2 design crosses calibration-corpus version
+(legacy / reconstructed) with validation-corpus version (legacy /
+reconstructed), three seeds, 12 cells; $L=\mathrm{mean}(\text{Self dual})-
+\mathrm{mean}(\text{Joint dual})$ in percentage points. All intervals use the
+frozen \texttt{template\_family} cluster bootstrap (8 clusters; all
+\texttt{exploratory}), transcribed from \texttt{reports/audit\_2x2\_l\_ci.json}
+and \texttt{reports/audit\_2x2\_formal\_summary.json}.
+
+\begin{table}[t]
+\centering
+\caption{2$\times$2 contrast: $L$ (pp), primary \texttt{template\_family}
+bootstrap CI, seed 0/1/2. A00/A10 use the legacy validation set, A01/A11 the
+reconstructed one (first index = calibration version, second = validation
+version). Diagonal A00/A11 reproduce historical P1 runs cell-for-cell
+(60/60 joint $E_{\mathrm{CF}}$ agreement).}
+\label{tab:audit2x2}
+\begin{tabular}{lccc}
+\toprule
+cell (cal / val) & seed 0 & seed 1 & seed 2 \\
+\midrule
+A00 (legacy / legacy) & $+1.7\;[-3.3,7.0]$ & $-5.0\;[-15.3,6.7]$ & $+3.3\;[0.0,10.3]$ \\
+A01 (legacy / fixed)  & $+26.7\;[1.7,48.4]$ & $+28.3\;[9.8,48.3]$ & $+33.3\;[11.7,54.8]$ \\
+A10 (fixed / legacy)  & $+38.3\;[15.8,57.4]$ & $+23.3\;[6.9,38.3]$ & $+25.0\;[3.4,43.6]$ \\
+A11 (fixed / fixed)   & $+40.0\;[16.7,62.7]$ & $+61.7\;[38.3,83.1]$ & $+40.0\;[20.3,58.7]$ \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+The three reconstruction-containing cells (A11/A01/A10) have positive $L$
+point estimates in all seeds with primary-CI lower bounds $>0$
+($23.3$--$61.7$ pp); the legacy diagonal A00 has CIs around zero. Across the
+four predeclared contrasts and three seeds there are 12 predeclared contrasts
+(not nine --- nine is the number of reconstruction-containing single cells),
+all with positive point estimates. The only defensible ``stable'' reading is
+that point estimates share a sign across seeds; CIs do not uniformly confirm a
+positive direction. Explicit counts: the fixed-validation calibration contrast
+A11$-$A01 crosses zero in 2/3 seeds, the fixed-calibration cross-version
+contrast A11$-$A10 in 2/3 seeds, A01$-$A00 in 1/3 and A11$-$A10 in 2/3 (3/6
+cross-version intervals cross zero). The preregistered v2.7 rule gives
+\texttt{mixed\_interaction}, not an upgrade to
+\texttt{calibration\_version\_effect}. Full weighting details, the interaction
+estimates, all 12 predeclared contrasts and sensitivity slices are in
+Appendix~\ref{sec:stats}.
+
+The design identifies only the effect of switching the \emph{whole} corpus
+version; it cannot attribute the change to de-duplication, degenerate-pair
+removal or template overlap individually. We report a controlled
+version-sensitivity observation, not a single-defect cause.
+
+\subsection{Sequence-scoring robustness (preregistered; branch \texttt{consistent\_across\_scoring})}
+\label{sec:seqscore}
+
+The first-token proxy scores only the candidate first token; candidate full
+texts can share that token while differing later. Under the frozen v2.8
+protocol we scored the \emph{full candidate sequence} (teacher-forcing
+log-likelihood sum, \texttt{full}) and a length-normalized variant
+(\texttt{length\_normalized}) alongside \texttt{first}, using the same paired
+documents and Self-valid threshold. All values below are transcribed from the
+six authoritative \texttt{\_b0} formal cells
+\texttt{audit\_seq\_\{A11,A00\}\_s\{0,1,2\}\_b0} and the frozen statistical
+interpretation; older run ids are \textbf{superseded} and are not used. No
+statistic was recomputed for this manuscript.
+
+\paragraph{Analysis sets and inference.} The \emph{primary analysis} is F1--F4
+with differing candidate texts and swapped gold labels (A11 $46/46/46$ pairs,
+A00 $42/42/41$ across seeds; 6 \texttt{template\_family} clusters). A secondary
+sensitivity uses all 60 pairs (8 families). The primary interval is the
+sample-weighted \texttt{template\_family} cluster bootstrap (each resampled
+family's sum divided by its sampled pair count; 10{,}000 resamples, 95\%
+percentile CI); pair-level and family-equal estimates are reported as
+sensitivities. Both sets have $<24$ families and are \texttt{exploratory};
+$L=\mathrm{Self\ dual}-\mathrm{Joint\ dual}$ is reported as a proportion
+($0.4783=47.83$ points). $E_{\mathrm{CF}}$ is computed \emph{within} each
+reading only: \texttt{full} is a log-probability sum, \texttt{first} a single
+term, \texttt{length\_normalized} a length quotient, so their absolute scales
+are not comparable and are never contrasted.
+
+\begin{table}[t]
+\centering
+\caption{Sequence-scoring primary analysis (F1--F4, 6 families): $L$ by reading,
+transcribed from the \texttt{\_b0} authoritative cells. A11 full $L$ is positive
+in all three seeds.}
+\label{tab:seqL}
+\begin{tabular}{lccc}
+\toprule
+cell / seed & $L$ first & $L$ full & $L$ length-normalized \\
+\midrule
+A11 s0 & $+0.4348$ & $+0.4783$ & $+0.5000$ \\
+A11 s1 & $+0.6522$ & $+0.4348$ & $+0.5000$ \\
+A11 s2 & $+0.4348$ & $+0.5217$ & $+0.6304$ \\
+A00 s0 & $+0.0000$ & $+0.0000$ & $+0.0000$ \\
+A00 s1 & $-0.0952$ & $-0.0714$ & $-0.0714$ \\
+A00 s2 & $+0.0488$ & $+0.0488$ & $+0.0488$ \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\begin{table}[t]
+\centering
+\caption{Sequence-scoring primary analysis (F1--F4, 6 families):
+$\mathrm{cell\_diff}=A11-A00$ of $L$ by reading; primary
+sample-weighted \texttt{template\_family} 95\% CI (10{,}000 resamples).
+All nine intervals exclude zero; this is an exploratory point-estimate
+observation, not a strong-significance result.}
+\label{tab:seqcell}
+\begin{tabular}{llc}
+\toprule
+seed & reading & cell\_diff [primary CI] \\
+\midrule
+0 & first & $+0.4348\;[+0.1106,+0.7259]$ \\
+0 & full & $+0.4783\;[+0.2649,+0.6972]$ \\
+0 & length-normalized & $+0.5000\;[+0.2792,+0.7184]$ \\
+1 & first & $+0.7474\;[+0.5132,+0.9792]$ \\
+1 & full & $+0.5062\;[+0.2867,+0.7323]$ \\
+1 & length-normalized & $+0.5714\;[+0.3201,+0.8205]$ \\
+2 & first & $+0.3860\;[+0.1439,+0.6170]$ \\
+2 & full & $+0.4730\;[+0.2026,+0.7234]$ \\
+2 & length-normalized & $+0.5817\;[+0.2831,+0.8413]$ \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\begin{table}[t]
+\centering
+\caption{Reading contrasts for the primary analysis (F1--F4, 6 families).
+$\mathrm{reading\_diff}=L_{\mathrm{full}}-L_{\mathrm{first}}$ within A11;
+$\mathrm{reading\_of\_diff}=\mathrm{cell\_diff}_{\mathrm{full}}-\mathrm{cell\_diff}_{\mathrm{first}}$.
+Primary sample-weighted \texttt{template\_family} CI with pair-level and
+family-equal sensitivities (10{,}000 resamples; all exploratory).}
+\label{tab:seqdiff}
+\begin{tabular}{llcc}
+\toprule
+seed & quantity & primary CI & pair / family-equal CI \\
+\midrule
+0 & reading\_diff (A11) & $+0.0435\;[-0.2553,+0.3182]$ & $[+0.0435\;(-0.1522,0.2391)]$ / $[+0.0595\;(-0.2500,0.3333)]$ \\
+1 & reading\_diff (A11) & $-0.2174\;[-0.3404,-0.1304]$ & $[-0.2174\;(-0.3696,-0.0652)]$ / $[-0.2143\;(-0.3363,-0.1310)]$ \\
+2 & reading\_diff (A11) & $+0.0870\;[-0.1087,+0.3043]$ & $[+0.0870\;(-0.0652,0.2391)]$ / $[+0.0923\;(-0.1101,0.3155)]$ \\
+0 & reading\_of\_diff & $+0.0435\;[-0.2612,+0.3211]$ & $[+0.0435\;(-0.1543,0.2412)]$ / $[+0.0595\;(-0.2639,0.3423)]$ \\
+1 & reading\_of\_diff & $-0.2412\;[-0.3978,-0.1054]$ & $[-0.2412\;(-0.4130,-0.0828)]$ / $[-0.2321\;(-0.3810,-0.1042)]$ \\
+2 & reading\_of\_diff & $+0.0870\;[-0.1064,+0.3043]$ & $[+0.0870\;(-0.0652,0.2391)]$ / $[+0.0923\;(-0.1101,0.3155)]$ \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\paragraph{All-60-pair sensitivity and denominator-convention difference.}
+The secondary all-60-pair, 8-family set reproduces the archived headline
+values; for example A11 $\mathrm{reading\_diff}$ at seed 1 is
+$-0.2167\;[-0.3333,-0.1167]$ there (primary set: $-0.2174$). The two sets differ
+in denominators, not in per-pair scores: e.g.\ A11 seed-0 $L$ first is $+0.4348$
+on the F1--F4 primary set versus $+0.3833$ on all 60 pairs. Both sets are listed
+here and never mixed; the F1--F4 set is the primary analysis. The direction and
+branch classification are unchanged.
+
+\paragraph{Preregistered branch classification.} Under the v2.8~\S7 conditions
+frozen before the results were seen, the classification is
+\textbf{branch~① \texttt{consistent\_across\_scoring}} (no post-hoc branch
+selection): A11 full $L$ is positive in all three seeds, the A11$-$A00 point
+estimates have the same sign under \texttt{first}, \texttt{full} and
+\texttt{length\_normalized}, and length normalization does not change the
+reading. Branch~② is \emph{not} triggered: although A11 seed-1
+$\mathrm{reading\_diff}$ has a primary interval excluding zero, $L_{\mathrm{full}}$
+remains positive ($+0.4348$) and the A11$-$A00 difference does not disappear
+($+0.5062$ full). Branch~③ is not triggered because normalization leaves the
+reading unchanged. The wording is confined to ``\emph{the point estimates share
+a direction under both candidate scorings (first token and full sequence)}'';
+we report magnitudes and intervals only, and make no strong-significance,
+method-gain or contribution-restoration claim. Six/eight families are $<24$, so
+all intervals are exploratory.
+
+\paragraph{Boundaries.} This analysis concerns only robustness to the
+\emph{scoring readout}; it makes no causal attribution to any single defect and
+does not quantify individual defect contributions. Contributions~(1) and~(2)
+remain withdrawn and (3) withheld; the primary endpoint and the sealed test
+remain unevaluated; and peak GPU memory was not collected. $E_{\mathrm{CF}}$
+values are not compared across scoring readings.
+
+\section{Conclusion and Limitations}
+\label{sec:conclusion}
+
+The paper is a \textbf{negative / empirical boundary and version-contrast study}
+with no positive contribution in the sense of protocol~\S10. It reports (i)~an
+affine KV transfer failure boundary under the present data construction on one
+equal-depth pair, (ii)~a methodological negative result---the reported finding
+did not survive a controlled corpus-version contrast (whole-version switch,
+not single-defect attribution)---and (iii)~an exploratory observation that the
+strong \texttt{kd\_only} baseline has a smaller aggregate dual-accuracy drop
+sensitive to slice definition, with a stable nonzero $E_{\mathrm{CF}}$
+($6.39$--$7.21$), not established utility preservation. The SQuAD anchor yields
+\texttt{exploratory\_disclosure}.
+
+We make \emph{no} claim of a general counterfactual gap, a receiver-side
+mechanism (the old mechanism evidence is withdrawn; its existence on clean data
+is undecided), a general utility/fidelity distinction, a mechanism-layer first,
+any method improvement, a new audit metric, or a general leakage lesson.
+Contribution~(3) remains withheld; the primary endpoint is unevaluated; P2/P3/P4
+are permanently cancelled; the sealed test was never evaluated; and $P>0.05$ is
+not treated as equivalence. Mock numbers are not scientific evidence. All
+clean-data conclusions are \texttt{exploratory} (8 \texttt{template\_family}
+clusters $<24$), come from a single synthetic equal-depth pair, and rest on the
+single dual-drop signal; no cross-pair, real-world or strong-significance claim
+is made. All data are synthetic; \texttt{real=0} with M4 blocked (real-document
+external validity unverified); the AI-data proposal was withdrawn (not
+activated); and the affine and \texttt{kd\_only} arms are not parameter- or
+step-matched. These limits bound every conclusion above.
+
+\appendix
+\section{Statistics appendix}
+\label{sec:stats}
+
+\paragraph{Weighting convention and two-estimator sensitivity.} Point estimates
+average over the 60 pairs of a cell (sample weighting). For cross-version
+validation contrasts the two validation sets are different samples; the frozen
+archived intervals averaged over resampled families equally (family-equal),
+which does not match the point-estimate weighting. We adopt a single
+\emph{sample-weighted} convention (each resampled family's sum divided by its
+sampled pair count) and report the family-equal estimate as a sensitivity; the
+cross-zero classification is unchanged. Values below are transcribed from the
+second-round review's CPU re-run of the frozen CIs (pp):
+
+\begin{center}
+\small
+\begin{tabular}{llcc}
+\toprule
+contrast & seed & sample-weighted CI & family-equal CI \\
+\midrule
+A01$-$A00 & 0 & $[-1.53,47.54]$ & $[-2.46,46.21]$ \\
+A01$-$A00 & 1 & $[10.40,55.54]$ & $[10.49,54.69]$ \\
+A01$-$A00 & 2 & $[7.01,51.67]$ & $[6.69,51.56]$ \\
+A11$-$A10 & 0 & $[-28.66,32.23]$ & $[-29.24,31.70]$ \\
+A11$-$A10 & 1 & $[10.44,64.48]$ & $[10.27,64.73]$ \\
+A11$-$A10 & 2 & $[-13.15,44.01]$ & $[-12.72,43.75]$ \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+\noindent The family-equal point difference for A01$-$A00 at seed 0 is $23.2$ pp
+versus $25.0$ pp sample-weighted (second-round review).
+
+\paragraph{All 12 predeclared contrasts (template-family main CI, pp).}
+Transcribed from \texttt{reports/audit\_2x2\_l\_ci.json}. Contrast (i) fixed
+validation, swap calibration (paired by sample id); contrast (ii) fixed
+calibration, swap validation (unpaired independent cluster bootstrap).
+
+\begin{center}
+\small
+\begin{tabular}{llcc}
+\toprule
+contrast & seed & point & primary CI \\
+\midrule
+A10$-$A00 (legacy val) & 0 & $36.67$ & $[15.52,54.84]$ \\
+A10$-$A00 (legacy val) & 1 & $28.33$ & $[13.79,42.37]$ \\
+A10$-$A00 (legacy val) & 2 & $21.67$ & $[0.00,41.27]$ \\
+A11$-$A01 (fixed val)  & 0 & $13.33$ & $[-1.64,30.00]$ \\
+A11$-$A01 (fixed val)  & 1 & $33.33$ & $[10.00,55.17]$ \\
+A11$-$A01 (fixed val)  & 2 & $6.67$  & $[-14.52,28.81]$ \\
+A01$-$A00 (legacy cal) & 0 & $25.00$ & $[-2.46,46.21]$ \\
+A01$-$A00 (legacy cal) & 1 & $33.33$ & $[10.49,54.69]$ \\
+A01$-$A00 (legacy cal) & 2 & $30.00$ & $[6.69,51.56]$ \\
+A11$-$A10 (fixed cal)  & 0 & $1.67$  & $[-29.24,31.70]$ \\
+A11$-$A10 (fixed cal)  & 1 & $38.33$ & $[10.27,64.73]$ \\
+A11$-$A10 (fixed cal)  & 2 & $15.00$ & $[-12.72,43.75]$ \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+\paragraph{Interaction $(A11-A01)-(A10-A00)$.} Recomputed by the second-round
+review with paired resampling within each fixed validation set, independent
+template-family resampling of the two validation versions, sample weighting,
+10{,}000 resamples: $-23.3\;[-47.6,3.4]$, $+5.0\;[-22.9,31.0]$,
+$-15.0\;[-44.0,16.1]$ points for seeds 0/1/2. Point estimates have mixed sign
+and all three exploratory intervals cover zero; switching either corpus version
+changes the point estimates while the interaction direction is not stable.
+
+\paragraph{Prespecified sensitivity slices (second-round review).} Restricting
+to F1--F4, A00 yields $0.0$/$-6.5$/$4.3$ points and the other nine cells
+$23.9$--$65.2$ points. After removing samples with identical candidate texts,
+A00 yields $2.0$/$-6.1$/$4.2$ points and the other nine cells
+$28.6$--$69.8$ points. These support the qualitative contrast but cannot
+quantify the individual contribution of de-duplication, degenerate-pair removal
+or template overlap.
+
+\paragraph{Caveats.} All 12 cells and contrasts have 8 template families
+($<24$) and are \texttt{exploratory}; cross-seed sign agreement is a consistency
+check, not a significance result; the contrast-(\ii) intervals use unpaired
+resampling and are not directly comparable in width with contrast~(\i); no
+Holm correction was applied to the 24 cell/contrast tests; the $L$ scale has
+resolution $\approx1.67$ pp for 60 pairs.
+
+\bibliographystyle{plain}
+\begin{thebibliography}{99}
+
+\bibitem{kvlingo} V.~Castin, K.~Sakamoto, A.~Filippova, J.~Monteiro, M.~Cuturi,
+and P.~Ablin. KV-Lingo: Learning KV-cache translators with distillation.
+\emph{arXiv preprint arXiv:2609.32610}, 2026.
+
+\bibitem{cachelink} H.~Qiu, Y.~Tang, Z.~Song, R.~Han, Z.~Qiao, and M.~Zhang.
+CacheLink: Functional KV transport for zero-prefill cross-model context handoff.
+\emph{arXiv preprint arXiv:2610.15509}, 2026.
+
+\bibitem{heo2026} T.~Heo, R.~Shafipour, R.~Zhao, M.~Golub, M.~M.~Kamani,
+R.~Borkar, M.~T.~Chandran, P.~Zardoshti, and B.~D.~Rouhani. Cross-model KV cache
+transfer in LLM families: A closed-form linear mapping for prefill reuse.
+\emph{arXiv preprint arXiv:2608.03893}, 2026.
+
+\bibitem{acc_evidence} X.~Ai, H.~He, and W.~Guo. Does accuracy equal evidence?
+Reasoning faithfulness under KV cache compression. \emph{arXiv preprint
+arXiv:2608.01631}, 2026; EMNLP 2026 Findings.
+
+\bibitem{contrastsets} M.~Gardner, Y.~Artzi, V.~Basmov, J.~Berant, B.~Bogin,
+S.~Chen, P.~Dasigi, D.~Dua, Y.~Elazar, A.~Gottumukkala, N.~Gupta,
+H.~Hajishirzi, G.~Ilharco, D.~Khashabi, K.~Lin, J.~Liu, N.~F.~Liu,
+P.~Mulcaire, Q.~Ning, S.~Singh, N.~A.~Smith, S.~Subramanian, R.~Tsarfaty,
+E.~Wallace, A.~Zhang, and B.~Zhou. Evaluating models' local decision boundaries
+via contrast sets. \emph{Findings of EMNLP}, pages 1307--1323, 2020.
+arXiv:2004.02709.
+
+\bibitem{kaushik2020} N.~Kaushik, E.~Hovy, and Z.~Lipton. Learning the
+difference that makes a difference with counterfactually-augmented data.
+\emph{ICLR}, 2020. arXiv:1909.12434.
+
+\bibitem{kapoor2023} S.~Kapoor and V.~Narayanan. Leakage and the reproducibility
+crisis in machine-learning-based science. \emph{Patterns}, 2023.
+arXiv:2207.07048.
+
+\bibitem{n1} Z.~Tao, F.~Jin, and J.~Zhao. Can KV cache be reused across model
+updates? A DeepSeek-V4-Flash case study. \emph{arXiv:2611.14051}, 2026.
+
+\bibitem{n2} A.~Deng, S.~Liu, and Y.~Zhu. Close enough is nowhere near:
+Fidelity-consumability decoupling in KV caches. \emph{arXiv:2610.22016}, 2026.
+
+\bibitem{n3} Z.~Lin, J.~Liu, Y.~Liu, and C.~Wang. To cache or not to cache:
+Understanding and mitigating safety incompatibility in cross-model KV cache
+reuse. \emph{arXiv:2610.15721}, 2026.
+
+\bibitem{n4} Y.~Liu, H.~Tian, and T.~Wang. ACCT: Asymmetric cross-LLM context
+transfer. \emph{arXiv:2610.42116}, 2026.
+
+\bibitem{n5} A.~Alabdulkareem, I.~Tenison, Y.~Zhang, Y.~Zhu, B.~Katz, and
+D.~Gutfreund. Swarm telepathy: Prefill-free KV-cache transfer across families.
+\emph{arXiv:2610.15095}, 2026.
+
+\bibitem{n6} S.~Sarkar, S.~Mitra, S.~Huang, S.~Kundu, and P.~A.~Beerel.
+RaReCache: Bridging the gap in cross-model KV cache reuse via rank
+disagreement-based selective recomputation. \emph{arXiv:2610.11358}, 2026.
+
+\bibitem{n7} J.~Cheng, S.~Das, and R.~Ramnath. When does latent communication
+pay? A causal audit of relayed KV caches in multi-agent LLMs.
+\emph{arXiv:2608.04893}, 2026.
+
+\bibitem{n8} R.~Khare. CacheFuse: Enabling training-free latent communication
+between language models. \emph{arXiv:2610.16165}, 2026.
+
+\bibitem{n9a} P.~Kvedaras and T.~Rasymas. Translating KV caches between
+hybrid-attention language models. \emph{arXiv:2611.12062}, 2026.
+
+\bibitem{n9b} P.~Behnam, D.~Sanyal, P.~Ponnusamy, K.~M.~Ravi, P.~Sastry,
+M.~C.~Bandaru, A.~Khare, M.~Lee, and A.~Tumanov. BridgeKV: Large-model prefill
+and small-model decoding for LLM inference via KV cache translation.
+\emph{arXiv:2611.11761}, 2026.
+
+\bibitem{squad16} R.~Rajpurkar, J.~Zhang, K.~Lopyrev, and P.~Liang. SQuAD:
+100,000+ questions for machine comprehension of text. \emph{EMNLP}, 2016.
+
+\bibitem{squad18} R.~Rajpurkar, J.~Jia, and P.~Liang. Know what you don't know:
+Unanswerable questions for SQuAD. \emph{ACL}, 2018.
+
+\end{thebibliography}
+
+\end{document}

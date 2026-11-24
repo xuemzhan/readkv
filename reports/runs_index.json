@@ -1041,5 +1041,173 @@
       "train-fixed": "53258777ab214fb9226b85389673672c9c4b1b17c8cb9d07cf1a97beddcf3e6e",
       "val-fixed": "5633a8bf052f33c44ec694704baef64c96898a1548fc313abc2fb537a5e5b475"
     }
+  },
+  {
+    "run_id": "audit_seq_A11_s0",
+    "stage": "sequence_scoring",
+    "gate": "full_candidate_scoring_v2.8",
+    "backend": "gpu",
+    "superseded": true,
+    "authoritative": false,
+    "superseded_reason": "pre-baseline：git_hash=a05e9b3 早于判据与代码，无法从该 hash 重建；已由 `_b0` 干净基线重跑取代",
+    "superseded_by": "_b0 clean-baseline reruns"
+  },
+  {
+    "run_id": "audit_seq_A00_s0",
+    "stage": "sequence_scoring",
+    "gate": "full_candidate_scoring_v2.8",
+    "backend": "gpu",
+    "superseded": true,
+    "authoritative": false,
+    "superseded_reason": "pre-baseline：git_hash=a05e9b3 早于判据与代码，无法从该 hash 重建；已由 `_b0` 干净基线重跑取代",
+    "superseded_by": "_b0 clean-baseline reruns"
+  },
+  {
+    "run_id": "audit_seq_A11_s1",
+    "stage": "sequence_scoring",
+    "gate": "full_candidate_scoring_v2.8",
+    "backend": "gpu",
+    "superseded": true,
+    "authoritative": false,
+    "superseded_reason": "pre-baseline：git_hash=a05e9b3 早于判据与代码，无法从该 hash 重建；已由 `_b0` 干净基线重跑取代",
+    "superseded_by": "_b0 clean-baseline reruns"
+  },
+  {
+    "run_id": "audit_seq_A00_s1",
+    "stage": "sequence_scoring",
+    "gate": "full_candidate_scoring_v2.8",
+    "backend": "gpu",
+    "superseded": true,
+    "authoritative": false,
+    "superseded_reason": "pre-baseline：git_hash=a05e9b3 早于判据与代码，无法从该 hash 重建；已由 `_b0` 干净基线重跑取代",
+    "superseded_by": "_b0 clean-baseline reruns"
+  },
+  {
+    "run_id": "audit_seq_A11_s2",
+    "stage": "sequence_scoring",
+    "gate": "full_candidate_scoring_v2.8",
+    "backend": "gpu",
+    "superseded": true,
+    "authoritative": false,
+    "superseded_reason": "pre-baseline：git_hash=a05e9b3 早于判据与代码，无法从该 hash 重建；已由 `_b0` 干净基线重跑取代",
+    "superseded_by": "_b0 clean-baseline reruns"
+  },
+  {
+    "run_id": "audit_seq_A00_s2",
+    "stage": "sequence_scoring",
+    "gate": "full_candidate_scoring_v2.8",
+    "backend": "gpu",
+    "superseded": true,
+    "authoritative": false,
+    "superseded_reason": "pre-baseline：git_hash=a05e9b3 早于判据与代码，无法从该 hash 重建；已由 `_b0` 干净基线重跑取代",
+    "superseded_by": "_b0 clean-baseline reruns"
+  },
+  {
+    "run_id": "audit_seq_smoke_A11_s0_v2",
+    "stage": "sequence_scoring",
+    "gate": "full_candidate_scoring_v2.8",
+    "backend": "gpu",
+    "superseded": true,
+    "authoritative": false,
+    "superseded_reason": "pre-baseline：git_hash=a05e9b3 早于判据与代码，无法从该 hash 重建；已由 `_b0` 干净基线重跑取代",
+    "superseded_by": "_b0 clean-baseline reruns"
+  },
+  {
+    "run_id": "audit_seq_smoke_A00_s0_v2",
+    "stage": "sequence_scoring",
+    "gate": "full_candidate_scoring_v2.8",
+    "backend": "gpu",
+    "superseded": true,
+    "authoritative": false,
+    "superseded_reason": "pre-baseline：git_hash=a05e9b3 早于判据与代码，无法从该 hash 重建；已由 `_b0` 干净基线重跑取代",
+    "superseded_by": "_b0 clean-baseline reruns"
+  },
+  {
+    "run_id": "audit_seq_smoke_A11_s0",
+    "stage": "sequence_scoring",
+    "gate": "full_candidate_scoring_v2.8",
+    "backend": "gpu",
+    "superseded": true,
+    "authoritative": false,
+    "superseded_reason": "pre-baseline：git_hash=a05e9b3 早于判据与代码，无法从该 hash 重建；已由 `_b0` 干净基线重跑取代",
+    "superseded_by": "_b0 clean-baseline reruns"
+  },
+  {
+    "run_id": "audit_seq_A11_s0_b0",
+    "stage": "sequence_scoring",
+    "gate": "full_candidate_scoring_v2.8",
+    "backend": "gpu",
+    "version": "fixed",
+    "seed": 0,
+    "protocol_version": "2.8",
+    "git_hash": "35e78e0",
+    "authoritative": true,
+    "superseded": false,
+    "role": "protocol-v2.8 clean-baseline authoritative run"
+  },
+  {
+    "run_id": "audit_seq_A00_s0_b0",
+    "stage": "sequence_scoring",
+    "gate": "full_candidate_scoring_v2.8",
+    "backend": "gpu",
+    "version": "legacy",
+    "seed": 0,
+    "protocol_version": "2.8",
+    "git_hash": "35e78e0",
+    "authoritative": true,
+    "superseded": false,
+    "role": "protocol-v2.8 clean-baseline authoritative run"
+  },
+  {
+    "run_id": "audit_seq_A11_s1_b0",
+    "stage": "sequence_scoring",
+    "gate": "full_candidate_scoring_v2.8",
+    "backend": "gpu",
+    "version": "fixed",
+    "seed": 1,
+    "protocol_version": "2.8",
+    "git_hash": "35e78e0",
+    "authoritative": true,
+    "superseded": false,
+    "role": "protocol-v2.8 clean-baseline authoritative run"
+  },
+  {
+    "run_id": "audit_seq_A00_s1_b0",
+    "stage": "sequence_scoring",
+    "gate": "full_candidate_scoring_v2.8",
+    "backend": "gpu",
+    "version": "legacy",
+    "seed": 1,
+    "protocol_version": "2.8",
+    "git_hash": "35e78e0",
+    "authoritative": true,
+    "superseded": false,
+    "role": "protocol-v2.8 clean-baseline authoritative run"
+  },
+  {
+    "run_id": "audit_seq_A11_s2_b0",
+    "stage": "sequence_scoring",
+    "gate": "full_candidate_scoring_v2.8",
+    "backend": "gpu",
+    "version": "fixed",
+    "seed": 2,
+    "protocol_version": "2.8",
+    "git_hash": "35e78e0",
+    "authoritative": true,
+    "superseded": false,
+    "role": "protocol-v2.8 clean-baseline authoritative run"
+  },
+  {
+    "run_id": "audit_seq_A00_s2_b0",
+    "stage": "sequence_scoring",
+    "gate": "full_candidate_scoring_v2.8",
+    "backend": "gpu",
+    "version": "legacy",
+    "seed": 2,
+    "protocol_version": "2.8",
+    "git_hash": "35e78e0",
+    "authoritative": true,
+    "superseded": false,
+    "role": "protocol-v2.8 clean-baseline authoritative run"
   }
 ]

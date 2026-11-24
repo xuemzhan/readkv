@@ -58,6 +58,30 @@
 
 ---
 
+## 0.4 第二轮复审定向大修 + `_b0` 序列评分结果（2026-11-24，本轮已完成）
+
+> 依据：`reports/review/independent_research_and_manuscript_review_2026-11-24.md`（定向大修阻塞）。只改 `papers/readkv_v2_draft/**` 与新建 `papers/readkv_v2_tmlr_anonymous/**`；未改 arXiv 版 / 代码 / 数据 / 判据 / 运行产物；数字只转抄冻结产物与复审复算。
+
+**R1–R4 全部关闭，定向大修由写作者关闭；待 PI 新出重新签 off（不改写旧 `p5_final_resignoff.md`）。**
+
+1. **编译致命错误（R，必须）— 已修复**：draft 第 753 行 `\texttt{mixed_interaction}` 裸下划线 → `mixed\_interaction`；静态检查 draft 与匿名稿全文无裸下划线 / 裸 `E_CF` / `\begin`–`\end` 失衡 / 表格列数不符。本机无 tectonic/pdflatex，无法编译验证（见 §7「静态编译检查」）。
+2. **表注写反（R）— 已修复**：`tab:audit2x2` 表注改为 **A00/A10 用旧 val、A01/A11 用修复版 val**（首索引=校准版本、次索引=验证版本）；已更正对比文字保留。
+3. **标题/摘要/投稿信因果措辞（R）— 已修复**：标题改描述性 "A Finding Reversed After Corpus Reconstruction: A Controlled Version-Contrast Study..."；摘要与 cover letter 不再称原机制/gap 被追溯到具体缺陷并消失；机制状态 = 旧机制**证据撤回**、清洁数据下是否存在**未决**（P2 缺席）；区分事先冻结的 v2.7/v2.8 交叉实验与结果后形成的审计问题。正文无单项缺陷强因果措辞。
+4. **口径（R/A M1–M4）— 已修复**：398 = corpus-level；验证格候选 46、F1–F4 + Self 阈值后 A11 34/45、35/46、34/46；首 token 二选一代理、F5 读数误差 0/dual 1、F6 改姓名+金标签；flip 分母按 F1–F4 重算（A11 三组 34/45、35/46、34/46）；KD 不写 preserves utility（全切片 dual 差 11.7/16.7/1.7、F1–F4 seed1 21.7、对切片敏感）；matched→匹配样本/模型配置、计算设置不同；affine 0 参数→零梯度优化 epoch（闭式仍从校准估计约 740 万系数）；首 token E_CF 非负绝对差、Self 零由定义；SQuAD 标单参考子集（前 240 可回答/两篇/首参考答案）+ 官方全参考重算 0.2178/0.0082/0.0014（复审侧重算）；EM 触底「未识别原因」不归因；2×2 样本加权主 + 族等权敏感性、12 项预定对比、A01−A00 1/3 与 A11−A10 2/3（合计 3/6）跨零、交互 −23.3[−47.6,3.4]/+5.0[−22.9,31.0]/−15.0[−44.0,16.1] 区间均跨零；Contrast Sets 作者表、Heo 作者缩写、BridgeKV 元数据按 arXiv/ACL 一手核验修正。摘要 191 词（非 171）。
+5. **匿名稿（R）— 已新建**：`papers/readkv_v2_tmlr_anonymous/{main.tex,README.md}`，官方 TMLR 双盲匿名约定（作者匿名、无致谢/自引身份泄露）、自包含（标准宏包、无外部 .sty、无硬编码 `/root/readkv`）、含可读主表与统计附录，数值与 draft 一致。
+
+**`_b0` 序列评分权威结果（R4 关闭，scientist `docs/audit_seq_statistical_interpretation.md`）**——只写 6 个 `_b0` 正式格，旧 id superseded 禁入稿：
+
+- 主分析 F1–F4（A00 42/42/41、A11 46/46/46、6 族 exploratory）；主 CI = 样本加权 `template_family`（10,000 resamples），附 pair-level 与族等权敏感性；全 60 对 8 族作敏感性（A11 reading_diff s1 −0.2167[−0.3333,−0.1167]）。
+- A11 三组 full L = +0.4783/+0.4348/+0.5217（tab:seqL）。
+- cell_diff（A11−A00）：first +0.4348/+0.7474/+0.3860、full +0.4783/+0.5062/+0.4730、norm +0.5000/+0.5714/+0.5817，主 CI 见 tab:seqcell（九项区间均不含零，描述性）。
+- reading_diff(A11)：+0.0435[−0.2553,0.3182]/−0.2174[−0.3404,−0.1304]/+0.0870[−0.1087,0.3043]；reading_of_diff：+0.0435[−0.2612,0.3211]/−0.2412[−0.3978,−0.1054]/+0.0870[−0.1064,0.3043]（tab:seqdiff，三套 CI 齐全）。
+- 判读分支：**① `consistent_across_scoring`（预承诺归类，无事后择支）**；措辞仅到「两种候选评分下点估计方向一致」；A11 s1 reading_diff 主区间不含零但 L_full 仍正、cell_diff 未消失 → 不触发分支②；长度归一不改判读 → 不触发分支③；不写强显著性 / 方法增益 / 贡献恢复。
+- 口径差异如实登记：handoff/summary_b0 headline 为全 60 对 8 族，v2.8 主分析 F1–F4 6 族，点估计不同（A11 s0 first +0.4348 vs +0.3833）；方向/分支不变；两套并列、主表 F1–F4、不混写。
+- 边界：仅评分方式稳健性；无单项缺陷因果归因；贡献(1)(2) 撤回/(3) withheld；主终点与封存 test 未评；8 族（主分析 6 族）exploratory；E_CF 不跨评分口径比较；显存峰值未采集。
+
+---
+
 ## 1. 权威数值清单（逐字转抄冻结产物，禁止重算）
 
 ### 1.1 干净 affine 三 seed（`p1_clean_mvp_seed{0,1,2}/metrics.json`，commit `efc3ba3`，val 60 对）
@@ -112,6 +136,24 @@
 - **锚点数值待补事项已清零**：SQuAD 锚点数值已全部补入正文 §「External anchor」与表 `tab:anchor`；ARC/HellaSwag 为顺位增强项（未跑、非本稿待补项）。venue 已由真实 PI 指定为 **TMLR**（见决策记录）。
 - 引用要求（`anchor_confirmation.md` §3）：Rajpurkar et al., EMNLP 2016（doi:10.18653/v1/D16-1264）与 Rajpurkar, Jia et al., ACL 2018（doi:10.18653/v1/P18-2124）。**已补入 bibliography**（`bibitem{squad16}` / `bibitem{squad18}`），并在 §External anchor 正文 `\cite{squad16,squad18}`。
 
+### 1.6 `_b0` 序列评分权威数值（6 个 `_b0` 正式格；旧 id superseded 禁入稿）
+
+> 源：`docs/audit_seq_statistical_interpretation.md`、`reports/review/sequence_scoring_summary_b0.md`、6 个 `reports/runs/audit_seq_*_b0/`。主 CI = 样本加权 `template_family`（10,000 resamples），附 pair-level 与族等权敏感性。L 为比例（0.4783 = 47.83 点）。
+
+| 主分析 F1–F4（6 族） | s0 | s1 | s2 |
+|---|---|---|---|
+| A11 full L | +0.4783 | +0.4348 | +0.5217 |
+| cell_diff first | +0.4348 | +0.7474 | +0.3860 |
+| cell_diff full | +0.4783 | +0.5062 | +0.4730 |
+| cell_diff norm | +0.5000 | +0.5714 | +0.5817 |
+| reading_diff(A11) 主 CI | +0.0435 [−0.2553,0.3182] | −0.2174 [−0.3404,−0.1304] | +0.0870 [−0.1087,0.3043] |
+| reading_of_diff 主 CI | +0.0435 [−0.2612,0.3211] | −0.2412 [−0.3978,−0.1054] | +0.0870 [−0.1064,0.3043] |
+
+- 全 60 对 8 族敏感性：A11 reading_diff s1 −0.2167 [−0.3333,−0.1167]；A11 s0 first L +0.3833（vs 主分析 +0.4348）——分母口径差异，方向/分支不变。
+- 分母：A00 42/42/41、A11 46/46/46（主分析 F1–F4）；全 60 对 8 族作敏感性。
+- cell_diff 九项主 CI 均不含零（描述性，6 族 exploratory）；pair-level 与族等权敏感性见 `audit_seq_statistical_interpretation.md` §3。
+- 判读分支 ① `consistent_across_scoring`（预承诺）；E_CF 不跨评分口径比较；显存峰值未采集。
+
 ---
 
 ## 2. 贡献措辞门槛（§10，全部撤回 / withheld）
@@ -149,6 +191,7 @@
 | Table `tab:cleankd` | 干净 kd 三 seed | `p1_kd_clean_mvp_seed{0,1,2}/metrics.json`（`6413ba0`） | 正文已填（exploratory） |
 | Table `tab:anchor` | SQuAD v2.0 dev 锚点 | `reports/anchor_eval_summary.json`（seed0） | 正文已填（exploratory_disclosure） |
 | Table `tab:audit2x2` | 2×2 受控版本敏感性（L 主 CI） | `reports/audit_2x2_l_ci.json` / `audit_2x2_formal_summary.json` | 正文已填（mixed_interaction，全 exploratory，详见补充材料） |
+| Table `tab:seqL` / `tab:seqcell` / `tab:seqdiff` | `_b0` 序列评分（L 三读数 / cell_diff / reading 差） | 6 个 `reports/runs/audit_seq_*_b0/` + `docs/audit_seq_statistical_interpretation.md` | 正文已填（branch ① consistent_across_scoring，全 exploratory；旧 id superseded） |
 | — | v2.6 AI 数据结果 | 无（not activated） | **删除，不设结果位** |
 
 注：所有正文数值表从冻结产物转抄；旧 P1/P2 数值仅出现在翻转对照历史侧；不得用 mock 或旧 run 作最终结论。
@@ -181,7 +224,7 @@
 
 ## 6. 投稿状态 / venue / 署名
 
-- **投稿状态（P5 CONDITIONAL GO → ready-to-submit）**：审稿人终审给出 CONDITIONAL GO，先后两轮修复全部完成——第一轮三项（CI 口径并列 / 摘要 ≤200 词 / 可核验 bibitems，见 §0.2）；第二轮 B 主要项（预算不对等显式披露）+ A M1（投稿状态）/ M2（章节级引用降为摘要级）/ M4（族数口径桥接 + 191 词记账，见 §0.3）。所有已知修复项均已消解；剩余仅为章节级引用细节的 §9 全文口径复核（不阻塞）。论文 header/`\date{}`/引言/结论均标注 `Ready-to-submit (TMLR); P5 conditionally signed off`；最终提交由真实 PI 本人通过 OpenReview 完成，agent 不代为投递。
+- **投稿状态（第二轮复审定向大修已关闭 → 待 PI 新出重新签 off）**：2026-11-24 复审的定向大修阻塞由写作者逐项关闭——编译致命错误 / 表注写反 / 标题·摘要·投稿信因果措辞 / 指标口径 / KD 语言 / SQuAD 子集 / 2×2 统计 / 元数据 / 匿名稿 / `_b0` 序列评分结果（见 §0.4）；R1–R4 全部关闭（R4 由 scientist `docs/audit_seq_statistical_interpretation.md` 关闭）。**旧 `p5_final_resignoff.md` 已被后续复审超越，不构成当前投稿许可**；本稿需 PI 据修订后稿本新出重新签 off 后方可提交。venue=TMLR（真实 PI 决策 5）与署名 Zhang Xuein 不变；论文 header/`\date{}` 标注 `Ready-to-submit (TMLR); P5 conditionally signed off`。最终提交由真实 PI 本人通过 OpenReview 完成，agent 不代为投递。
 - **venue：TMLR（真实 PI 已指定，2026-11-23）**。`docs/decisions/venue_recommendation.md` 首选 TMLR（次选 EASE 2027 RENE、ACL 2027 ARR）；理由：接受 modest contribution、对单模型对 / exploratory / 无方法贡献的证据强度最友好、Reproducibility Certification 契合。P5 已获附条件最终签off（docs/decisions/p5_final_signoff.md），进入 ready-to-submit。
 - **署名（真实 PI 决策 6，已定）**：作者统一为 **Zhang Xuein \<zxm0813@gmail.com\>**；论文 `\author{}`、cover letter 与投稿元数据须一致。单作者原创，非会议扩写。
 - **格式状态（P5 R2 已修复）**：摘要已压缩至 191 个渲染 token（<200，TMLR 合规），保留全部强制边界措辞（见 §0.2 第 2 项）。图 1–3 仍为文字占位，TMLR 投稿时可说明、接受后补齐。
@@ -195,5 +238,6 @@
 - **引用核验（P5 R3 已完成主体）**：N1–N9 作者已填、SQuAD 两条 bibitem 已补入并引用；**剩余**：章节级细节的 §9 全文口径复核（审稿人 / PI），不阻塞投递。
 - **kd / affine v2.3 口径（P5 R1 已完成）**：两张表已并列 template_family 主 CI + pair-level 敏感性，取自 `reports/bootstrap_summary.json` 权威值；写作者未重算、未改数值。两套下界 >0，不推翻情形 C。
 - **S1–S5 闭环**：S1 数据哈希绑定勘误、S2 manifest sha 同步、S3 runs_index 已闭环；S4/S5 本稿已写入；收尾后由审稿人出 P5 合规意见。
-- **投稿状态**：引用已实际核验、口径与审稿复核（含锚点合规）均已完成、venue=TMLR 已指定、P5 已签off → **ready-to-submit**；由真实 PI 本人通过 OpenReview 提交（agent 不代为提交）。
+- **投稿状态（待 PI 新签 off）**：R1–R4 与第二轮复审定向大修已由写作者关闭，draft 与匿名稿数值一致、静态编译检查已做（本机无编译器，见 §0.4 第 1 项）。**剩余唯一人工动作**：PI 据修订后稿本新出重新签 off（旧 `p5_final_resignoff.md` 已被复审超越）。venue=TMLR；由真实 PI 本人通过 OpenReview 提交（agent 不代为提交）。
+- **静态编译检查项（已做）**：draft 与匿名稿全文 `\begin`–`\end` 配对、表格列数与 `tabular` 列定义一致、无裸下划线（`mixed\_interaction` 等已转义）、无裸 `E_CF`（正文均 `$E_{\mathrm{CF}}$`）、`\title`/`\author`/`\date` 与匿名约定一致。**限制**：本机无 tectonic/pdflatex，未能实际出 PDF；复审记录的 ~103 pt 横向溢出需作者在可编译环境复核（窄表、避免一行重复三个 seed 区间）。
 - **不变量**：P2/P3/P4 永久放弃、不另立「修复 broken transfer」新课题；v2.6 not activated、`data/generated/` 不创建；封存 test 不碰；不恢复任何已撤回贡献。

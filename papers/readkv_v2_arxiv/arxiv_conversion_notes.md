@@ -1,195 +1,188 @@
 # arXiv conversion notes — `papers/readkv_v2_arxiv`
 
-Date: 2026-11-23. Scope: format conversion of the negative/empirical
-boundary-and-audit study into a self-contained arXiv submission package.
-**No code, data, preregistration file, run artifact, or `papers/readkv_v2_draft/**`
-file was modified by this work.** No statistic was recomputed.
+Date: 2026-11-24 (third sync round). Scope: format conversion of the
+negative/empirical version-contrast and data-audit study into a self-contained
+arXiv submission package. **No code, data, preregistration file, run artifact,
+`papers/readkv_v2_draft/**`, or `papers/readkv_v2_tmlr_anonymous/**` file was
+modified by this work.** No statistic was recomputed.
 
 ## 1. Conversion assumptions
 
 1. **Class and layout.** Draft `\documentclass[11pt,a4paper]{article}` +
    `geometry` (single column) → `\documentclass[11pt,twocolumn]{article}`
    without `geometry`, allowing arXiv to control page margins.
-2. **Packages.** Only standard arXiv-safe packages are used: `inputenc`,
-   `fontenc`, `amsmath`, `amssymb`, `graphicx`, `booktabs`, `natbib`,
-   `hyperref[hidelinks]`. No local `.cls`/`.sty`.
-3. **Citations.** Draft `\cite{...}` commands were converted to natbib
-   `\citep`/`\citet`; `\bibliographystyle{plain}` + embedded `thebibliography`
-   → `\bibliographystyle{plainnat}` + `\bibliography{references}`.
+2. **Packages.** Only standard arXiv-safe packages: `inputenc`, `fontenc`,
+   `amsmath`, `amssymb`, `graphicx`, `booktabs`, `natbib`, `hyperref[hidelinks]`.
+   No local `.cls`/`.sty`.
+3. **Citations.** Draft `\cite{...}` → natbib `\citep`/`\citet`;
+   `\bibliographystyle{plain}` + embedded `thebibliography` →
+   `\bibliographystyle{plainnat}` + `\bibliography{references}`.
 4. **Figures.** Figures 1--3 remain text-only `fbox`/`parbox` schematics inside
-   `main.tex`, so the source is self-contained (no external image files).
-   The draft's "placeholder; figure file not yet generated" wording was
-   changed to "schematic; text-only". No mechanism heatmap, method-ablation
-   figure, or generalization/cost--Pareto figure was added: the corresponding
-   results were withdrawn or never run and would have to be fabricated.
+   `main.tex` (no external image files). No mechanism heatmap, method-ablation,
+   or generalization/cost figure is added: those results were withdrawn or never
+   run and would have to be fabricated.
 5. **Tables.** All tables use `booktabs`; wide tables use `table*`. Every table
    reporting $E_{\mathrm{CF}}$ (clean affine, clean kd, reversal) lists the
-   primary `template_family` cluster-paired CI ($n_{\mathrm{clusters}}=8$,
-   `exploratory=true`) and the pair-level sensitivity CI side by side; no
-   table reports a pair-level CI alone. This closes reviewer R1.
+   `template_family` primary CI ($n_{\mathrm{clusters}}=8$, `exploratory=true`)
+   and the pair-level sensitivity CI side by side; no table reports a pair-level
+   CI alone (R1). The 2$\times$2 and sequence-scoring tables carry sample-weighted
+   `template_family` primary intervals with pair-level / family-equal
+   sensitivities alongside.
 6. **Sections.** Added explicit *Research Questions* (RQ1--RQ4, descriptive
-   negative framing from the frozen scope update), split the draft's sections
-   into *Data and Audit*, *Method and Evaluation Protocol*, *Discussion*, and
-   *Limitations*, and added *Data Availability* plus a *Status and
-   Pre-registration / Contribution Record* section with a status table.
-7. **Status wording (updated this round).** The earlier "submission is
-   deferred / citation verification pending" wording is **superseded** by
-   `docs/decisions/p5_final_signoff.md`: venue = TMLR (decision 5), P5
-   **conditionally signed off**, paper **ready-to-submit**, with the real PI
-   submitting personally via OpenReview (no agent submits on the author's
-   behalf). The status section/table now state this. Scientific claims,
-   contribution status, and exploratory boundaries are unchanged.
-8. **Training-budget asymmetry (synced with draft fix).** Matching is now
-   stated only for pairs/dtype/kernel/forward budget; no claim of matching
-   trainable parameter count, training steps, or tuning budget. Disclosed:
-   affine $0$ params / $0$ epochs vs kd\_only $7{,}340{,}032$ params / $8$
-   epochs, in both Method (`sec:baselines`) and Limitations. Numbers verified
-   from frozen run configs: `p1_kd_clean_mvp_seed{0,1,2}/metrics.json`
-   `"trainable_params": 7340032`, `"epochs": 8`; affine mapper
-   `"mapper_trainable_params": 0` / `"epochs": 0`.
-9. **Related-work conservatism (synced with draft fix).** Three section-level
-   descriptions were downgraded to explicitly abstract-level statements:
-   CacheLink's four-arm K/V source-swap diagnostic and Heo's closed-form ridge
-   / per-pair degradation; the N7 causal-audit mismatched/zero/random controls
-   and preregistered equivalence test; and ``Does Accuracy Equal Evidence?''
-   answer-vs-evidence finding. All citation keys are preserved. A blanket note
-   states the N1--N9 characterizations are abstract-level and section-level
-   claims were not verified.
-10. **Family/cluster bridging (synced with draft fix).** Added a sentence in
-    `sec:datafix` distinguishing the $56$ corpus-wide template families
-    (over $24$ structures) from the $8$ per-split `template_family` bootstrap
-    clusters that set the v2.3 exploratory flag.
+   negative framing), split the draft's sections into *Data and Audit*, *Method
+   and Evaluation Protocol*, *Discussion*, and *Limitations*, and added *Data
+   Availability* and a *Status and Pre-registration / Contribution Record*
+   section/table.
 
-## 2. Numbers: transcribed sources and known cross-source discrepancies
+## 2. Numbers: transcribed sources
 
-All numbers were transcribed, never recomputed. Sources, in priority order:
+All numbers were transcribed, never recomputed. Sources:
 `reports/bootstrap_summary.json`, `reports/anchor_eval_summary.json`,
-`reports/data/data_fix_report.md`, and the latest draft.
+`reports/audit_2x2_l_ci.json`, `reports/audit_2x2_formal_summary.json`,
+`docs/audit_seq_statistical_interpretation.md` (with the six authoritative
+`reports/runs/audit_seq_*_b0` cells), `reports/data/data_fix_report.md`, and the
+latest draft.
 
-- Clean affine (commit `efc3ba3`) — from `bootstrap_summary.json`:
-  seed0 6.900, primary CI [3.564,10.100], pair-level [5.496,8.321];
-  seed1 8.159, [4.357,11.584], [6.648,9.701];
-  seed2 8.540, [5.326,11.610], [7.046,10.051]. These match the latest draft
-  exactly.
-- Clean kd (commit `6413ba0`) — from `bootstrap_summary.json`:
-  seed0 6.388, primary [3.653,8.814], pair-level [5.340,7.400];
-  seed1 6.479, [3.899,8.798], [5.431,7.529];
-  seed2 7.210, [4.417,9.799], [6.074,8.331]. These match the latest draft.
-- **Discrepancy (documented, not adjudicated):** `papers/readkv_v2_draft/notes.md`
-  and `final_boundary_study_signoff.md` quote slightly different pair-level
-  numbers from `metrics.json`: affine seed0 [5.499,8.313] vs. [5.496,8.321];
-  kd seed0 [5.360,7.400] vs. [5.340,7.400], seed1 [5.419,7.539] vs.
-  [5.431,7.529], seed2 point 7.211 vs. 7.210 with [6.078,8.322] vs.
-  [6.074,8.331]. The arXiv package follows the explicit instruction to
-  transcribe `reports/bootstrap_summary.json` and the latest draft; it does
-  **not** recompute or silently reconcile either set. The differences do not
-  affect any directional claim. The meta-review's earlier cluster-CI values
-  (e.g. kd seed1 [3.883,8.773]) used `bootstrap_seed=0` for all rows and are
-  likewise not used here.
-- SQuAD anchor — from `anchor_eval_summary.json`: Self EM/F1 0.000/0.1975;
-  Joint(affine) F1 0.0051 (2.6% of Self, drop 0.1924); Joint(kd) F1 0.0014
-  (0.7%, drop 0.1961); all Joint EM 0.000; verdict `exploratory_disclosure`.
-- Data-quality table and SHA-256 strings transcribed from the draft's
-  `tab:datafix`, which cites the frozen data-fix report and acceptance checks.
+- Clean affine (commit `efc3ba3`), from `bootstrap_summary.json`: seed0 6.900
+  primary [3.564,10.100] / pair [5.496,8.321]; seed1 8.159 [4.357,11.584] /
+  [6.648,9.701]; seed2 8.540 [5.326,11.610] / [7.046,10.051].
+- Clean kd (commit `6413ba0`): seed0 6.388 primary [3.653,8.814] / pair
+  [5.340,7.400]; seed1 6.479 [3.899,8.798] / [5.431,7.529]; seed2 7.210
+  [4.417,9.799] / [6.074,8.331]. Two CI sets match the frozen file and draft.
+- Historical cross-source discrepancy (not adjudicated): `notes.md` /
+  `final_boundary_study_signoff.md` quote slightly different pair-level values
+  from `metrics.json` (e.g. kd seed2 7.211 [6.078,8.322] vs 7.210 [6.074,8.331]).
+  This package follows the instruction to transcribe `bootstrap_summary.json`
+  and the latest draft; it recomputes nothing. The differences do not affect any
+  directional claim.
+- 2$\times$2 contrast: cell $L$ values and primary CIs transcribed from
+  `audit_2x2_l_ci.json` (e.g. A00 s0 +1.7 [-3.333,7.018], A11 s0 +40.0
+  [16.667,62.712]); sample-weighted / family-equal contrast CIs, the 12
+  predeclared contrasts, interaction intervals and sensitivity slices transcribed
+  from `audit_2x2_formal_summary.json` / second-round review as reported in the
+  draft. Counts: A01$-$A00 crosses zero 1/3 seeds, A11$-$A10 2/3 (3/6
+  cross-version intervals); interaction $-23.3[-47.6,3.4]$ / $+5.0[-22.9,31.0]$ /
+  $-15.0[-44.0,16.1]$, all covering zero.
+- `_b0` sequence-scoring (authoritative set = six `audit_seq_*_b0` cells; older
+  ids superseded): from `docs/audit_seq_statistical_interpretation.md` and
+  `reports/review/sequence_scoring_summary_b0.md`. Primary analysis F1--F4, 6
+  families (A11 46/46/46, A00 42/42/41); A11 full $L$ +0.4783/+0.4348/+0.5217;
+  cell_diff first +0.4348/+0.7474/+0.3860, full +0.4783/+0.5062/+0.4730,
+  norm +0.5000/+0.5714/+0.5817; reading_diff(A11)
+  +0.0435[-0.2553,0.3182]/-0.2174[-0.3404,-0.1304]/+0.0870[-0.1087,0.3043];
+  reading_of_diff +0.0435[-0.2612,0.3211]/-0.2412[-0.3978,-0.1054]/+0.0870
+  [-0.1064,0.3043]. All-60-pair 8-family sensitivity A11 reading_diff s1
+  -0.2167[-0.3333,-0.1167]. Denominator-convention difference (Primary
+  F1--F4 6 families vs all-60 8 families, e.g. A11 s0 first $L$ +0.4348 vs
+  +0.3833) is recorded honestly; the two sets are never mixed. Verdict: branch 1
+  `consistent_across_scoring`, preregistered, no post-hoc branch selection.
+- SQuAD anchor, from `anchor_eval_summary.json`: single-reference subset (first
+  240 answerable, two articles, first reference answer); Self EM/F1 0.000/0.1975,
+  Joint(affine) F1 0.0051 (2.6% of Self, drop 0.1924), Joint(kd) 0.0014 (0.7%,
+  drop 0.1961); all Joint EM 0.000; verdict `exploratory_disclosure`. Official
+  all-reference re-scoring of the saved predictions (Self / affine Joint / KD
+  Joint F1 $\approx$ 0.2178 / 0.0082 / 0.0014, EM still zero) is cited as a
+  review-side recomputation, not a new run.
+- 398 = corpus-level must-flip count; per-cell 46 F1--F4 pairs; after F1--F4 +
+  Self-threshold filters A11 34/45, 35/46, 34/46 for seeds 0/1/2. First-token
+  binary proxy: F5 identical candidates (proxy error 0, dual 1), F6 changes name
+  and gold label; both excluded from must-flip denominators.
 
 ## 3. Citations: verified vs. unverified
 
-- **Author strings.** N1--N5 author names came from the latest draft's
-  bibliography (parent-session arXiv API verification). N6--N9a author names
-  were filled in by the other writer **during** this task (see §4) and were
-  adopted here verbatim: S. Sarkar, S. Mitra, S. Huang, S. Kundu, P. A. Beerel
-  (arXiv:2610.11358); J. Cheng, S. Das, R. Ramnath (arXiv:2608.04893);
-  R. Khare (arXiv:2610.16165); P. Kvedaras, T. Rasymas (arXiv:2611.12062).
+- **Metadata fixes (this round, synced from draft).** Contrast Sets now carries
+  the full verified author list (Gardner, Artzi, Basmov, ... Zhou), venue
+  *Findings of ACL: EMNLP 2020*, pages 1307--1323, doi
+  10.18653/v1/2020.findings-emnlp.117. Heo uses corrected initials
+  (T. Heo, R. Shafipour, R. Zhao, M. Golub, M. M. Kamani, R. Borkar, M. T.
+  Chandran, P. Zardoshti, B. D. Rouhani) with [cs.LG] and 4 Aug 2026. BridgeKV
+  (n9b, arXiv:2611.11761) now carries the full author list (Behnam, Sanyal, ...
+  Tumanov) with [cs.CL], 9 Nov 2026, instead of the earlier "author not verified"
+  placeholder. N1--N9 author names are from arXiv API metadata (parent-session
+  verification); only title/abstract-level claims are made about them in text.
 - **arXiv-only entries.** N1--N9 are recorded only as arXiv preprints + year
-  (no venue invented), per instruction. Only titles, arXiv IDs, and years are
-  used in the text; no unverified section-level claims are made about them.
-- **n9b BridgeKV (arXiv:2611.11761).** Author list not independently verified;
-  the bib entry carries a `note` to that effect and no author field.
-- **KV-Lingo / CacheLink / Heo.** Kept as arXiv preprints with their verified
-  arXiv IDs/DOIs. The frozen sources available here did not contain a verified
-  conference venue for these three, so none was supplied. (The task brief
-  mentions "verified conference papers" including these names; if the parent
-  session has verified venues, they should be added before submission rather
-  than guessed.)
-- **SQuAD.** Keys `squad16`/`squad18` were adopted to match the draft's final
-  citation keys; entries use full first names plus the required DOIs
-  (10.18653/v1/D16-1264 and 10.18653/v1/P18-2124), whereas the draft uses
-  initials. Bibliographically equivalent.
-- **Section-level detail (still unverified).** The CacheLink four-arm
-  diagnostic, Heo per-pair degradation, N7 causal-audit controls/TOST, and
-  ``Does Accuracy Equal Evidence?'' finding are now stated only at abstract
-  level in the text (this round), but no full-text/§-level verification was
-  performed in this session per protocol §9. They remain a residual risk for
-  the real PI to clear before submission. **n9b BridgeKV author list remains
-  unverified** (no author field; bib `note` records this).
+  (with arXiv class / date where the draft records them); no conference venue is
+  invented.
+- **Still unverified.** No protocol §9 full-text verification was performed in
+  this session. Section-level details of CacheLink, Heo, N7 causal-audit, and
+  ``Does Accuracy Equal Evidence?'' are stated only at abstract level in the
+  text. The cover letter discloses this limitation (N1--N9 identified by
+  title/arXiv/version/date from public metadata; full text not read at
+  submission). This is a residual item for the real PI to clear; it does not
+  affect the core version-contrast / failure-boundary result.
 
-## 4. Draft synchronization log (start vs. end)
+## 4. Draft/anonymous synchronization and abstract accounting
 
-The draft was read once at task start and once at task end, as instructed.
+Sources read this round: `papers/readkv_v2_draft/main.tex` (1193 lines),
+`papers/readkv_v2_draft/notes.md` (243 lines),
+`papers/readkv_v2_draft/cover_letter.md`, and
+`papers/readkv_v2_tmlr_anonymous/main.tex` (755 lines). All five sync items
+from the parent-session brief were applied: (1) descriptive title/abstract and
+version-contrast framing with mechanism evidence withdrawn / clean-data
+existence undecided; (2) 2$\times$2 table note (A00/A10 legacy val, A01/A11
+reconstructed val), sample-weighted main + family-equal sensitivity, 12
+predeclared contrasts, cross-zero counts, interaction covering zero; (3) SQuAD
+single-reference subset + official all-reference F1, descriptive KD language,
+affine zero gradient-optimization epochs, first-token proxy, denominator
+bracket; (4) `_b0` sequence-scoring section and tables with branch 1; (5)
+metadata fixes and status (TMLR, ready-to-submit pending **new** PI sign-off;
+earlier sign-offs superseded; real PI submits in person).
 
-| Snapshot | `papers/readkv_v2_draft/main.tex` |
-|---|---|
-| **Start** | 825 lines. Title: "Data Defects Reverse a Reported Finding: A Failure-Boundary and Audit Study of Cross-Model KV Handoff"; author Zhang Xuein <zxm0813@gmail.com>. Abstract still ~270--290 words (per `notes.md` §6), not yet compressed. Dual-CI tables (`tab:cleanmvp`, `tab:cleankd`) already present. No SQuAD citations in text; bibliography is `thebibliography` with N6--N9b lacking author names and no SQuAD bibitems. |
-| **End** | 839 lines (+14). Title/author/abstract unchanged (abstract still not compressed). Dual-CI tables unchanged. **New:** `\cite{squad16,squad18}` added in the SQuAD anchor paragraph; a comment states "N1--N9 author lists below were verified by the main session via the arXiv API"; full author names added for n6--n9a; n9b gained an "author list not independently verified" note; new bibitems `squad16` and `squad18` with the required DOIs. |
+**Abstract accounting.** The abstract is transcribed verbatim from the current
+draft. By this package's whitespace-token count it is **186 tokens**; the draft's
+`notes.md` §0.4 bookkeeping calls its abstract "191 rendered tokens". The
+difference is a counting-convention artifact (how `key--value`, math expressions,
+and `\texttt{...}` are split); both counts are under the 200-word cap. The
+previous arXiv abstract (a different, independently compressed text) was 191
+whitespace tokens; that number no longer applies after the verbatim resync.
 
-`papers/readkv_v2_draft/notes.md` was unchanged (156 lines) across the two reads.
+**Status nuance.** The 2026-11-24 second-round review supersedes the earlier
+`p5_final_signoff.md` and `p5_final_resignoff.md`; `docs/decisions/sequence_scoring_baseline_ruling.md`
+requires a **new** PI sign-off after R1--R4 and the targeted revisions close.
+Accordingly the arXiv status text says ready-to-submit pending a new PI sign-off
+rather than claiming an active sign-off.
 
-**Sync actions taken in this package:** adopted the newly added SQuAD citation
-keys `squad16`/`squad18`; adopted the newly verified author lists for n6--n9a;
-retained the n9b "not independently verified" caveat. The arXiv abstract is
-independently compressed to **191 whitespace tokens** (LaTeX commands counted
-once each), matching the draft writer's 191-word bookkeeping; it preserves all
-mandatory boundary wording and adds the budget-asymmetry disclosure. The exact
-rendered word count can differ by counter (e.g. whether `key--value`, math
-expressions, or `\texttt{...}` tokens are split); both this package and the
-draft report 191 by the same whitespace-token convention, and both are under
-the 200-word cap.
+**Historical sync log (earlier rounds, retained).** Earlier rounds synced the
+SQuAD bibitems and N6--N9a author lists (round 1), then the training-budget
+asymmetry, ready-to-submit status, related-work conservatism, and 56-vs-8 family
+bridging (round 2). Those changes are all carried forward into the present file.
+At the time of round 2 the draft was still the 839-line version with fixes in
+progress; this round the draft has landed the full 1193-line revision, and the
+arXiv package now tracks it.
 
-### 4.1 Second sync round (training budget / status / related work / bridging)
+## 5. Static compile check (performed this round)
 
-The parent session reported that the other writer was applying three fixes to
-the draft (training-budget mismatch, ready-to-submit status, related-work
-conservatism) plus a family/cluster bridging sentence and 191-word abstract
-bookkeeping. This package applied the equivalent changes (see §1 items 7--10):
-budget asymmetry disclosed with verified numbers; status updated per
-`p5_final_signoff.md` (TMLR, P5 conditional, ready-to-submit, real PI submits);
-three related-work passages downgraded to abstract-level; 56-vs-8 bridging
-added; abstract set to 191 tokens. The draft is re-read once more at the very
-end of this round; the result is recorded in §4.2.
+Text-search checks completed:
+- **Bare underscores:** grep for `[a-zA-Z]_[a-zA-Z]` — all hits are math-mode
+  subscripts (`$d_A$`, `$C_T$`, `$K_S$`), escaped `\_` inside `\texttt{}`,
+  comments, or bib keys; the only bare `E_CF` in text (a `\textbf{E_CF ...}`
+  in Limitations) was found and fixed to `\textbf{$E_{\mathrm{CF}}$ ...}`.
+- **Bare `E_CF`:** one hit, fixed; all other uses are `$E_{\mathrm{CF}}$`.
+- **`\begin`/`\end` balance:** 34 of each; `document`, `abstract`, three
+  `figure`, two `enumerate`, one `description`, one `align`, one `center`,
+  and the `table`/`table*`/`tabular` sets all pair.
+- **Table column counts:** each row matches its `\begin{tabular}{...}` spec
+  (e.g. `tab:cleanmvp` 9 columns, `tab:cleankd` 8, `tab:seqcell` 3,
+  `tab:seqdiff` 4, `tab:audit2x2` 4, status table 3).
+- **Citation keys:** all `\citep`/`\citet` keys resolve to the 19 bib entries.
 
-### 4.2 End-of-round draft re-read (as instructed)
+**Limitation.** No LaTeX compiler (`pdflatex`/`tectonic`) is available on this
+machine, so the package was **not** compiled to PDF; the above are static checks
+only. The build sequence in `README.md` must be run in a compiler environment.
+A prior review noted a $\sim$103 pt horizontal overflow in the draft's wide
+tables; the arXiv version uses full-width `table*` for the widest tables, but
+this should be re-checked when a compiler is available.
 
-Re-read at the end of this round: `papers/readkv_v2_draft/main.tex` is **still
-839 lines** and does **not yet** contain the three fixes — it still says
-"submission is deferred" (header note, `\date`, intro, conclusion), still lists
-"trainable parameter count, training steps, and tuning budget" as matched
-(`sec:baselines`), still has the "four-arm K/V source-swap diagnostic" and
-section-level related-work statements, has no 56-vs-8 bridging sentence, and
-its abstract is still the ~270-word pre-compression version. In other words,
-the other writer's fixes were **still in progress** at this snapshot.
-
-**Consequence:** this arXiv package is deliberately **ahead of the draft** on
-these five items, having applied the parent-supplied fix specification and the
-frozen `p5_final_signoff.md` / `human_decisions.md` decision 5. All five changes
-are traceable to frozen/authoritative sources (TMLR + P5 signoff docs; verified
-run config numbers for 7.34M/8 epochs; protocol §9 abstract-level verification
-status; data-fix report counts 56 families / 24 structures / 8 per-split
-clusters). No fix was invented. If the writer's landed wording differs in
-detail from this package's, the real PI should do one final consistency check
-before submission; the scientific content and boundary wording are identical.
-The R1 dual-CI tables were untouched by this round and remain closed.
-
-## 5. Deliberate omissions and non-claims
+## 6. Deliberate omissions and non-claims
 
 - No mechanism heatmap, method-ablation, or generalization/cost figure.
 - No method gain, no restored contribution, no cross-model/real-world/strong-
-  significance claim; `P>0.05` not treated as equivalence; mock numbers not
-  used as evidence.
-- `real=0` (M4 blocked), SQuAD/ARC anchors evaluation-only (ARC not run),
-  v2.6 AI-data proposal withdrawn and not activated (no artifacts), sealed test
+  significance claim, no single-defect causal attribution; `P>0.05` not treated
+  as equivalence; mock numbers not used as evidence.
+- `real=0` (M4 blocked), SQuAD/ARC anchors evaluation-only (ARC not run), v2.6
+  AI-data proposal withdrawn and not activated (no artifacts), sealed test
   unevaluated, contributions (1)(2) withdrawn and (3) withheld, P2/P3/P4
   permanently cancelled, G1 not performed, primary endpoint unevaluated.
-- No LaTeX compilation was performed in this session (to avoid writing build
-  artifacts); `README.md` gives the `pdflatex → bibtex → pdflatex ×2` sequence.
-  Cite keys and bibliography entries were cross-checked by text search: 19
-  bibliography entries, all cited keys resolve.
+- Sequence-scoring branch 1 reported only as point-estimate direction
+  consistency under two scorings; no strong-significance, method-gain, or
+  contribution-restoration claim; $E_{\mathrm{CF}}$ not compared across readings.

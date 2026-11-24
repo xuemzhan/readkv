@@ -1,9 +1,11 @@
 % ===========================================================================
 % Self-contained bibliography for papers/readkv_v2_arxiv/main.tex.
 % Entries with an arXiv identifier are recorded only as arXiv preprints +
-% year; no conference venue is invented. Author strings for n1--n9a follow
-% the author names supplied by the parent session (arXiv API verified);
-% where only surnames were supplied, surnames are given verbatim.
+% year (with arXiv class / submission date where the draft records them);
+% no conference venue is invented. Author strings follow the names supplied
+% by the parent session (arXiv API metadata verified). Contrast Sets carries
+% the full verified author list, venue, pages and doi; Heo uses the corrected
+% initials; BridgeKV (n9b) now carries the full author list from arXiv metadata.
 % ===========================================================================
 
 % ---------------------- Cross-model KV transfer ---------------------------
@@ -25,13 +27,13 @@
 }
 
 @misc{heo2026,
-  author        = {Heo, S. and Shafipour, S. and Zhao, Y. and Golub, D. and
-                   Kamani, M. and Borkar, S. and Chandran, P. and Zardoshti, P.
-                   and Rouhani, M.},
+  author        = {Heo, T. and Shafipour, R. and Zhao, R. and Golub, M. and
+                   Kamani, M. M. and Borkar, R. and Chandran, M. T. and
+                   Zardoshti, P. and Rouhani, B. D.},
   title         = {{Cross-model KV cache transfer in LLM families: A closed-form
                     linear mapping for prefill reuse}},
   year          = {2026},
-  note          = {arXiv preprint arXiv:2608.03893}
+  note          = {arXiv preprint arXiv:2608.03893 [cs.LG]; submitted 4 Aug 2026}
 }
 
 % ------------------ Faithfulness / counterfactual evaluation -------------
@@ -46,13 +48,20 @@
 }
 
 @inproceedings{contrastsets,
-  author        = {Gardner, R. and Talmor, A. and Rajpurkar, S. and Etezadi, J.
-                   and Zhan, T. Y. and Lust, E. and Jurafsky, D.},
+  author        = {Gardner, M. and Artzi, Y. and Basmov, V. and Berant, J. and
+                   Bogin, B. and Chen, S. and Dasigi, P. and Dua, D. and
+                   Elazar, Y. and Gottumukkala, A. and Gupta, N. and
+                   Hajishirzi, H. and Ilharco, G. and Khashabi, D. and Lin, K.
+                   and Liu, J. and Liu, N. F. and Mulcaire, P. and Ning, Q. and
+                   Singh, S. and Smith, N. A. and Subramanian, S. and
+                   Tsarfaty, R. and Wallace, E. and Zhang, A. and Zhou, B.},
   title         = {{Evaluating models' local decision boundaries via contrast sets}},
   booktitle     = {Findings of the Association for Computational Linguistics:
                    EMNLP 2020},
+  pages         = {1307--1323},
   year          = {2020},
-  note          = {arXiv preprint arXiv:2004.02709}
+  note          = {arXiv preprint arXiv:2004.02709;
+                   doi:10.18653/v1/2020.findings-emnlp.117}
 }
 
 @inproceedings{kaushik2020,
@@ -166,8 +175,11 @@
 }
 
 @misc{n9b,
-  title         = {{BridgeKV}},
+  author        = {Behnam, P. and Sanyal, D. and Ponnusamy, P. and Ravi, K. M.
+                   and Sastry, P. and Bandaru, M. C. and Khare, A. and Lee, M.
+                   and Tumanov, A.},
+  title         = {{BridgeKV: Large-model prefill and small-model decoding for
+                    LLM inference via KV cache translation}},
   year          = {2026},
-  note          = {arXiv preprint arXiv:2611.11761. Author list not
-                   independently verified; cited as arXiv preprint only}
+  note          = {arXiv preprint arXiv:2611.11761 [cs.CL]; submitted 9 Nov 2026}
 }

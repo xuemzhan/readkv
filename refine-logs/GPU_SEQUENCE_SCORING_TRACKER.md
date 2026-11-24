@@ -31,3 +31,28 @@
 - 显存峰值：入口未采集，如实记为未采集（不编造）。六格 wall 合计 558s，冒烟 v2 合计 101s。
 
 全量格中首 token、整串 logprob 和长度归一同次输出。先运行候选边界与缓存审计，再核对 A00/A11 的历史首 token 锚点。 [完整方案](GPU_SEQUENCE_SCORING_PLAN.md)
+
+## B0 rerun（2026-11-24 · R1 关闭执行）
+
+> PI 裁决 `docs/decisions/sequence_scoring_baseline_ruling.md`；冻结基线 `35e78e06917eb16461d6c925c8b0a435e99fd39c`（短 `35e78e0`）。
+> B0 后产出代码 diff 为空（执行前已确认，执行后再次确认）；未改判据/数据/论文；未做 A01/A10、未碰封存 test。
+
+| 顺序 | run ID | 状态 | wall |
+| --- | --- | --- | --- |
+| B0-1 | `audit_seq_smoke_A11_s0_b0` | SMOKE_GATE_PASSED_NON_AUTHORITATIVE（git_hash=35e78e0） | 52s |
+| B0-2 | `audit_seq_smoke_A00_s0_b0` | SMOKE_GATE_PASSED_NON_AUTHORITATIVE（git_hash=35e78e0） | 54s |
+| B0-3 | `audit_seq_A11_s0_b0` | OK | 95s |
+| B0-4 | `audit_seq_A00_s0_b0` | OK | 91s |
+| B0-5 | `audit_seq_A11_s1_b0` | OK | 91s |
+| B0-6 | `audit_seq_A00_s1_b0` | OK | 90s |
+| B0-7 | `audit_seq_A11_s2_b0` | OK | 92s |
+| B0-8 | `audit_seq_A00_s2_b0` | OK | 90s |
+| B0-汇总 | `audit_seq_summary_b0` | CPU 汇总已生成（`reports/review/sequence_scoring_summary_b0.md`），无 GPU run | — |
+
+- 权威集仅 `_b0` 八格 + `audit_seq_summary_b0`；旧 6 正式 + 2 v2 冒烟 + 原失败冒烟共 9 id 已在
+  `reports/runs_index.json` 标 `superseded=true` / `authoritative=false`，reason 用裁决 §4.2 原文；文件保留未删改。
+- 重跑审计（临时输出，未覆盖仓库报告）：`consistency_check` 对 6 个正式 `_b0` run 报
+  `git_hash_in_history=true`、`traceable=true`、`run_code_unchanged_vs_head=true`、
+  `protocol_compat.ok=true`、`v28_fields.ok=true`，problems 为空；`bootstrap_ci_report` 对 6 格产出
+  first/full/length_normalized 三读数主 CI + pair 敏感性，排除数 0。结果交 reviewer。
+- 显存峰值入口未采集，如实记录；B0 后未改 §2.2 产出代码，无 B1 需求。

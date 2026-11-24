@@ -1,0 +1,99 @@
+{
+  "per_arm": {
+    "self": {
+      "n": 60,
+      "first": {
+        "dual_correct": 0.5333333333333333,
+        "D_mean": -1.2276040663321812,
+        "E_CF_mean": 2.1234374582767486,
+        "coverage": 0.8,
+        "n_flip_evaluable": 48,
+        "flip_consistency": 0.9583333333333334
+      },
+      "full": {
+        "dual_correct": 0.5333333333333333,
+        "D_mean": -2.955615747665676,
+        "E_CF_mean": 1.8521246728720144,
+        "coverage": 0.8,
+        "n_flip_evaluable": 48,
+        "flip_consistency": 1.0
+      },
+      "length_normalized": {
+        "dual_correct": 0.5333333333333333,
+        "D_mean": -1.2520266059514447,
+        "E_CF_mean": 1.2268435844491856,
+        "coverage": 0.8,
+        "n_flip_evaluable": 48,
+        "flip_consistency": 1.0
+      }
+    },
+    "joint": {
+      "n": 60,
+      "first": {
+        "dual_correct": 0.5,
+        "D_mean": -1.1656250168879827,
+        "E_CF_mean": 2.1234374582767486,
+        "coverage": 0.8,
+        "n_flip_evaluable": 48,
+        "flip_consistency": 0.9583333333333334
+      },
+      "full": {
+        "dual_correct": 0.5,
+        "D_mean": -2.99033952280879,
+        "E_CF_mean": 1.8521246728720144,
+        "coverage": 0.8,
+        "n_flip_evaluable": 48,
+        "flip_consistency": 1.0
+      },
+      "length_normalized": {
+        "dual_correct": 0.5,
+        "D_mean": -1.3383989360183477,
+        "E_CF_mean": 1.2268435844491856,
+        "coverage": 0.8,
+        "n_flip_evaluable": 48,
+        "flip_consistency": 1.0
+      }
+    }
+  },
+  "L_self_minus_joint": {
+    "first": 0.033333333333333326,
+    "full": 0.033333333333333326,
+    "length_normalized": 0.033333333333333326
+  },
+  "reading_diff_L_full_minus_L_first": {
+    "point": 0.0,
+    "ci": [
+      0.0,
+      0.0
+    ],
+    "n": 60
+  },
+  "n_template_families": 8,
+  "exploratory": true,
+  "n_resamples": 10000,
+  "run_id": "audit_seq_A00_s2_b0",
+  "backend": "gpu",
+  "protocol_version": "2.8",
+  "cell": "A00",
+  "calibration_version": "legacy",
+  "validation_version": "legacy",
+  "seed": 2,
+  "dtype": "bfloat16",
+  "kernel": "sdpa",
+  "zero_re_prefill": true,
+  "sealed_test_read": false,
+  "input_sha256": {
+    "train": "3ad49eea2a41ff0e0ffd516b0fb1b8dc5282dce9a8336d7f371bf28adc97bb11",
+    "val": "df24f7cf9d6fae8ce2e8a7af9b2a68aefe040a447534d30119aed99cd7f0c759"
+  },
+  "version_tag": "legacy_458de18",
+  "n_train": 120,
+  "n_val": 60,
+  "n_audit_forwards": 480,
+  "token_boundary_inconsistent": {
+    "A": 0,
+    "B": 0
+  },
+  "elapsed_sec": 84.5,
+  "note": "v2.8 读数稳健性补充；首/整串/长度归一并列；不重算主终点、不碰封存 test、不恢复贡献。"
+}

@@ -81,3 +81,57 @@ arm 自身迁移 D 在 `D_trans`）；修正后 self arm 6 对 diff=0、joint ar
 - 未做 A01/A10；未读取封存 test；未改 `configs/prereg/*`、`docs/protocol.md`、方案、论文；
   未改任何既有正式 run（本轮新增正式 run 目录 6 个，均为新 id）；原失败冒烟产物保留未覆盖。
 - 本实验为读数稳健性补充：不重算 V2.0 主终点、不恢复贡献(1)(2)(3)、不构成方法贡献；结果触发 P5 重审。
+
+## 8. B0 rerun（R1 关闭执行 · 2026-11-24）
+
+> PI 裁决 `docs/decisions/sequence_scoring_baseline_ruling.md`；B0 = `35e78e06917eb16461d6c925c8b0a435e99fd39c`（短 `35e78e0`）。
+> 执行前确认 `git diff HEAD -- <§2.2 产出代码 + v2.8 判据>` 为空；执行后再次确认仍为空。未改产出代码/判据/数据/论文；未跑 GPU 以外的任何额外实验。
+
+### 8.1 运行状态
+
+| run_id | 状态 | wall | config git_hash |
+| --- | --- | --- | --- |
+| `audit_seq_smoke_A11_s0_b0` | SMOKE_GATE_PASSED_NON_AUTHORITATIVE | 52s | 35e78e0 |
+| `audit_seq_smoke_A00_s0_b0` | SMOKE_GATE_PASSED_NON_AUTHORITATIVE | 54s | 35e78e0 |
+| `audit_seq_A11_s0_b0` | OK | 95s | 35e78e0 |
+| `audit_seq_A00_s0_b0` | OK | 91s | 35e78e0 |
+| `audit_seq_A11_s1_b0` | OK | 91s | 35e78e0 |
+| `audit_seq_A00_s1_b0` | OK | 90s | 35e78e0 |
+| `audit_seq_A11_s2_b0` | OK | 92s | 35e78e0 |
+| `audit_seq_A00_s2_b0` | OK | 90s | 35e78e0 |
+
+8 格全部 rc=0、无 ABORTED；B0 wall 合计冒烟 106s + 正式 549s = **655s**。每格 5 类产物齐全，
+config 含 `git_hash=35e78e0`、`protocol_version=2.8`、`version_tag`、seed、`input_sha256.train/val`、
+bf16/sdpa、`zero_re_prefill=true`、`sealed_test_read=false`、模型路径与 tokenizer 指纹 `5b99b566…`、
+`criteria_source` 指向 v2.8。显存峰值入口未采集，如实记录。
+
+### 8.2 冒烟门与产物核验
+
+两个 `_b0` 冒烟门全通过：首 token 回放 A11 4.768e-07 / A00 2.384e-07（tol 0.02）；单 token full=first
+冒烟子集空检（CPU 单测覆盖）、正式格非空核验（A11 28 / A00 112 个单 token 候选，max diff 0）；
+逐次审计 76 条 / 152 forward 全 pass、zero re-prefill=true、缓存实例 76/76 互异、Self/Identity max diff=0、
+A/B 顺序交换 max diff=0、token 边界异常 0、未读封存 test。正式格每格 120 scores / 480 audit records、
+三读数齐全、逐次审计与 zero re-prefill 全 pass、分支缓存 480/480 互异。
+
+### 8.3 审计脚本重跑（临时输出，未覆盖仓库报告）
+
+- `consistency_check.py --output /tmp/opencode/seq_logs/consistency_b0.json`：6 个正式 `_b0` run
+  `ok=true`、`git_hash_in_history=true`、`traceable=true`、`run_code_unchanged_vs_head=true`、
+  `protocol_compat.ok=true`、`v28_fields.ok=true`、`problems=[]`；`dirty_run_paths=[]`。R1 关闭。
+- `bootstrap_ci_report.py --n-resamples 2048 --output /tmp/opencode/seq_logs/bootstrap_b0.json`：
+  6 格全部 `protocol=v2.8`、`sequence_scoring=true`，每格 joint arm 产出 first/full/length_normalized
+  三读数 template_family 主 CI + pair-level 敏感性，`n_excluded_non_numeric_total=0`。例 A11_s0 joint
+  first E_CF = 6.900 [3.788, 10.118]，pair 敏感性 [5.500, 8.301]。
+- 结果交 reviewer；本工程不重判结果、不作科学结论。
+
+### 8.4 旧 id 处置
+
+旧 6 个正式 run、2 个 v2 冒烟、原失败冒烟共 9 个 id 在 `reports/runs_index.json` 标
+`superseded=true` / `authoritative=false`，reason 用裁决 §4.2 原文
+（"pre-baseline：git_hash=a05e9b3 早于判据与代码，无法从该 hash 重建；已由 `_b0` 干净基线重跑取代"）；
+文件全部保留、未删未改，仅供审计溯源，不作为科学证据。授权集为 `_b0` 八格 + `audit_seq_summary_b0`。
+
+### 8.5 边界
+
+不碰封存 test、不做 A01/A10、不恢复贡献、不重算主终点、不新增 prereg 版本；B0 后未改产出代码，无需 B1。
+本实验触发 P5 重审，但定向大修阻塞未由本实验解除。
