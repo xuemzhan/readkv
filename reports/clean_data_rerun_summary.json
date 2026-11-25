@@ -1,0 +1,156 @@
+{
+  "file": "reports/clean_data_rerun_summary.json",
+  "date": "2026-11-23",
+  "basis": "docs/decisions/data_readiness_ruling.md + clean_data_reversal_ruling.md",
+  "data": {
+    "sha256": "f910f1f1196a21041765834654af8233d216ef4bf4f28f4c60abbd0641aa894a",
+    "splits": {
+      "probe": 40,
+      "train": 120,
+      "val": 60,
+      "test": 300
+    },
+    "degenerate_pairs": 0,
+    "cross_split_overlap": 0,
+    "entity_overlap": 0,
+    "flip_denominator": 398,
+    "stats_convention": "v2.3 (template_family primary + pair-level sensitivity; min 24 clusters)"
+  },
+  "commit": {
+    "data_fix": "efc3ba3",
+    "pi_v2_3_freeze": "6413ba0 (HEAD)",
+    "run_code_diff_efc3ba3_HEAD": "empty",
+    "worktree_clean": true
+  },
+  "runs": {
+    "E0": {
+      "run_id": "e0_clean_mvp_seed0",
+      "passed": true,
+      "git_hash": "efc3ba3",
+      "cosine": 1.0,
+      "kl": 0.0,
+      "em": 0.975,
+      "roundtrip": true,
+      "zero_re_prefill": true
+    },
+    "P1_affine": [
+      {
+        "run_id": "p1_clean_mvp_seed0",
+        "git_hash": "efc3ba3",
+        "E_CF": 6.8996,
+        "CI_pi": [
+          5.4985,
+          8.3134
+        ],
+        "cluster_ci_v2_3": "6.900 [3.564, 10.100] (8 clusters, exploratory=true)",
+        "dual": 0.4167,
+        "flip": 0.75,
+        "coverage": 0.8667,
+        "transfer_broken": true
+      },
+      {
+        "run_id": "p1_clean_mvp_seed1",
+        "git_hash": "efc3ba3",
+        "E_CF": 8.159,
+        "CI_pi": [
+          6.6467,
+          9.7016
+        ],
+        "dual": 0.2833,
+        "flip": 0.7361,
+        "coverage": 0.8833,
+        "transfer_broken": true
+      },
+      {
+        "run_id": "p1_clean_mvp_seed2",
+        "git_hash": "efc3ba3",
+        "E_CF": 8.5402,
+        "CI_pi": [
+          7.0565,
+          10.062
+        ],
+        "dual": 0.3833,
+        "flip": 0.7547,
+        "coverage": 0.8833,
+        "transfer_broken": true
+      }
+    ],
+    "kd_only": [
+      {
+        "run_id": "p1_kd_clean_mvp_seed0",
+        "git_hash": "6413ba0",
+        "E_CF": 6.388,
+        "CI_pi": [
+          5.3603,
+          7.4001
+        ],
+        "self_dual": 0.8167,
+        "joint_dual": 0.7,
+        "dual_drop": 0.1167,
+        "flip": 0.9423,
+        "coverage": 0.8667,
+        "transfer_broken": false
+      },
+      {
+        "run_id": "p1_kd_clean_mvp_seed1",
+        "git_hash": "6413ba0",
+        "E_CF": 6.4789,
+        "CI_pi": [
+          5.4185,
+          7.5389
+        ],
+        "self_dual": 0.9,
+        "joint_dual": 0.7333,
+        "dual_drop": 0.1667,
+        "flip": 0.9057,
+        "coverage": 0.8833,
+        "transfer_broken": false
+      },
+      {
+        "run_id": "p1_kd_clean_mvp_seed2",
+        "git_hash": "6413ba0",
+        "E_CF": 7.2105,
+        "CI_pi": [
+          6.0779,
+          8.3218
+        ],
+        "self_dual": 0.7833,
+        "joint_dual": 0.7667,
+        "dual_drop": 0.0167,
+        "flip": 0.9245,
+        "coverage": 0.8833,
+        "transfer_broken": false
+      }
+    ],
+    "not_run": {
+      "delta_reval_clean_0p5": "cancelled per reversal ruling",
+      "p2_clean_mvp_seed0/1/2": "cancelled per reversal ruling",
+      "p3_*": "maintained suspended / effectively cancelled"
+    }
+  },
+  "findings": {
+    "P1_gap_still_exists": true,
+    "P1_gap_is_broken_transfer": true,
+    "P1_vs_old": "old E_CF 1.93-2.12 / dual 0.62-0.67 / broken=false → new E_CF 6.90-8.54 / dual 0.28-0.42 / broken=true (directional reversal)",
+    "kd_broken": false,
+    "kd_near_self": false,
+    "kd_E_CF_still_large": true,
+    "scenario_per_PI_3_3": "C (kd_only not broken but stable non-small gap) -> boundary research; not A (kd broken) nor B (kd near Self)",
+    "v2_3_caveat": "val uses 8 template_family clusters (<24) => exploratory=true; template-family CI wider than pair-level (e.g. P1 seed0 6.900 [3.564,10.100] vs pair [5.496,8.321])",
+    "CI_interpretation": "all clean E_CF CIs lower bound >0 but exploratory under v2.3; do not treat as strong inference"
+  },
+  "audit": {
+    "consistency_check": "7 new runs all ok=true; old runs superseded",
+    "bootstrap_ci_report": "v2.3 output with template_family primary + pair-level sensitivity; flip denominator 398",
+    "pytest": "53 passed"
+  },
+  "claim_boundary": "Per reversal ruling: contributions (1)(2) frozen/withdrawn; (3) withheld; no method claims; engineering does not reinterpret science.",
+  "elapsed_sec_total": 3922.8,
+  "artifacts": [
+    "reports/runs/e0_clean_mvp_seed0/",
+    "reports/runs/p1_clean_mvp_seed{0,1,2}/",
+    "reports/runs/p1_kd_clean_mvp_seed{0,1,2}/",
+    "reports/consistency_report.json",
+    "reports/engineer_status.md"
+  ]
+}

@@ -1,0 +1,30 @@
+{
+  "run_id": "v3_E5_pilot_s0",
+  "files": [
+    {
+      "name": "config.json",
+      "sha256": "d4d35eb206f4330b019a7b5d36717abfef44a865edf071cb31399918f599b0ca",
+      "size": 1331
+    },
+    {
+      "name": "ecf_ledger.jsonl",
+      "sha256": "ab56f8c5b78e44c3f7d2cf4fa310f49b87e3748b9fa4c82f42bc194ab8832003",
+      "size": 39075
+    },
+    {
+      "name": "manifest.json",
+      "sha256": "969b3b3b8c7ab562d2f26563ea3d9c96642f19fd4559199b8c10bca4a7edfc49",
+      "size": 639
+    },
+    {
+      "name": "metrics.json",
+      "sha256": "61e65bd44a93dee8dd79178e945ec5900227ed68549cc5d37cf718ef63f43a00",
+      "size": 10619
+    },
+    {
+      "name": "scores.jsonl",
+      "sha256": "ab56f8c5b78e44c3f7d2cf4fa310f49b87e3748b9fa4c82f42bc194ab8832003",
+      "size": 39075
+    }
+  ]
+}

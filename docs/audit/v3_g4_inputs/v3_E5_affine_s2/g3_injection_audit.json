@@ -1,0 +1,371 @@
+{
+  "g3_formal_cell": true,
+  "authoritative_technical_gate": true,
+  "pilot_only": false,
+  "reads_test": false,
+  "run_id": "v3_E5_affine_s2",
+  "stage": "E5",
+  "criteria_source": "configs/prereg/gpu_followup_v3.0.yaml",
+  "release_source": "docs/decisions/v3_g2_release.md",
+  "note": "Authoritative G3 formal-cell technical gate; NOT a scientific result.",
+  "seed": 2,
+  "environment": {
+    "python": "3.12.3",
+    "torch": "2.11.0+cu130",
+    "torch_cuda_build": "13.0",
+    "transformers": "5.24.0",
+    "numpy": "2.5.5",
+    "cuda_available": true,
+    "gpu_name": "NVIDIA GeForce RTX 5090",
+    "gpu_capability": [
+      12,
+      0
+    ],
+    "nvidia_driver": "580.82.07",
+    "dtype": "bfloat16",
+    "kernel": "sdpa",
+    "seeds": [
+      0,
+      1,
+      2
+    ],
+    "scheduling": "serial_single_gpu"
+  },
+  "code_sha256": {
+    "experiments/P1_gpu.py": "97043a318fc0ed8928cafa4891887ddd0c522bc5b67dba98b3d6c975429884f5",
+    "experiments/v3_e6_control_gpu.py": "86948cf99a9f76764cc050ec5332651c2da218cd3c7bffccd9dd241e6adb1b8d",
+    "src/readkv/data/build_cf_pairs.py": "3682c98fe7c1e8cd18517db447258c41ab8b2a8c8d2498cc3229486a81160c13",
+    "src/readkv/evaluate/cf_pipeline.py": "ab98614e9970cbc10bd16e7f6afc596a1c6299799002c602224f051777d91554",
+    "src/readkv/models/hooks.py": "8bb29acdc4d97293fe7cccc54edb186934f91ec980aab4929216e5e0fbbc8344",
+    "src/readkv/models/gpu_backend.py": "eb72b14461d2cea47d8b50cbdb7ba0fa107f6a57e1bf6fcffeb3149c4b31417f",
+    "src/readkv/models/layer_map.py": "f147d324b29e8957746bd8efece720fe51c59272442f13e87823c361ee16c3b9",
+    "src/readkv/mapper/representation.py": "c79d935ca1ce6bffb9e9896e21677e4095739db44c89a2c2eb973732ed0c55a9",
+    "src/readkv/mapper/mlp_kd.py": "96d31c1e17616f3aee2a6554ab96720423cc7c4c57614c866d05f17a511c926d",
+    "src/readkv/runtime/context.py": "804e9ecb3ae29b72b9f2a4dc08f9e30d761fa0ba9cb6b9e66d5bd166d5afd3e2",
+    "configs/protocol.yaml": "a6bc08cc997ac17a3deab47fe96f711d5d69c1ae2e6684a7dd1d7677b91173a6",
+    "configs/eval.yaml": "d3b6a5c32c43db0b535d186d17679fc7c2edb82860470fe104d93cba9993fef7",
+    "configs/prereg/gpu_followup_v3.0.yaml": "d8c2321fc4ba6abeda80e6f581d3f7ef6c592c9173de757aad1a40120ae811e6",
+    "docs/decisions/v3_baseline_spec.md": "54be0861929e355bbd0333fd06562373536abdf54f6f2849905101ddb2f165cc",
+    "docs/decisions/v3_g2_release.md": "3f9086ba870d6ecbca9516247b0fbbbd725a3158c2ef433a12f8941ec6644003",
+    "scripts/g3_injection_audit.py": "1a952e9706c0227e8d201a45a570db4624b3912fe830102607fb806c4b549c4d"
+  },
+  "model_provenance": {
+    "model_manifest_path": "reports/_non_authoritative/v3_env/model_manifest.json",
+    "model_manifest_sha256": "db97ef5ff91213020a8fa5bc56f818ffc95303ab367f3974087f90d0b57166e0",
+    "downloaded_at_utc": "2026-11-25T14:45:06.274651+00:00",
+    "source": "modelscope.cn",
+    "teacher": {
+      "model": "Qwen/Qwen3-4B",
+      "path": "reports/_non_authoritative/v3_g2_pilot/pinned/Qwen34B-sha256-8ba006f74fecfaae",
+      "resolved_snapshot_dir": "/root/.cache/modelscope/models/Qwen--Qwen3-4B/snapshots/master",
+      "sha_named_pin": true,
+      "file_count": 11,
+      "total_bytes": 8060896929,
+      "config_json_sha256_computed": "8ba006f74fecfaaeb392872a60f4a480e7ec9860153d2e1b769ec81f9a147f8a",
+      "all_files_sha256_from_manifest": {
+        "config.json": "8ba006f74fecfaaeb392872a60f4a480e7ec9860153d2e1b769ec81f9a147f8a",
+        "configuration.json": "f888421726665e8a84b738eed42a64875aed79de8be7daade851ac8bf4c0cef9",
+        "generation_config.json": "2325da0f15bb848e018c5ae071b7943332e9f871d6b60e2ed22ca97d4cb993d2",
+        "merges.txt": "8831e4f1a044471340f7c0a83d7bd71306a5b867e95fd870f74d0c5308a904d5",
+        "model-00001-of-00003.safetensors": "328a91d3122359d5547f9d79521205bc0a46e1f79a792dfe650e99fc2d651223",
+        "model-00002-of-00003.safetensors": "6cd087b316306a68c562436b5492edbcf6e16c6dba3a1308279caa5a58e21ca5",
+        "model-00003-of-00003.safetensors": "e4bf436957184f4eeb86a80e9db394503f1f56446b2e6b7edeac5b81470f4ca1",
+        "model.safetensors.index.json": "6dc0981b8829fead746441f68f38f24c5ca4a3a66351f652c26c6df0efc43ab2",
+        "tokenizer.json": "aeb13307a71acd8fe81861d94ad54ab689df773318809eed3cbe794b4492dae4",
+        "tokenizer_config.json": "d5d09f07b48c3086c508b30d1c9114bd1189145b74e982a265350c923acd8101",
+        "vocab.json": "ca10d7e9fb3ed18575dd1e277a2579c16d108e32f27439684afa0e10b1440910"
+      },
+      "per_file_hash_mismatches": []
+    },
+    "student": {
+      "model": "Qwen/Qwen3-1.7B",
+      "path": "reports/_non_authoritative/v3_g2_pilot/pinned/Qwen31.7B-sha256-1ddb5b89ebc90dcb",
+      "resolved_snapshot_dir": "/root/.cache/modelscope/models/Qwen--Qwen3-1.7B/snapshots/master",
+      "sha_named_pin": true,
+      "file_count": 10,
+      "total_bytes": 4079423307,
+      "config_json_sha256_computed": "1ddb5b89ebc90dcb417a45c213d818577e65976454d29385c8f6140771d95197",
+      "all_files_sha256_from_manifest": {
+        "config.json": "1ddb5b89ebc90dcb417a45c213d818577e65976454d29385c8f6140771d95197",
+        "configuration.json": "f888421726665e8a84b738eed42a64875aed79de8be7daade851ac8bf4c0cef9",
+        "generation_config.json": "2325da0f15bb848e018c5ae071b7943332e9f871d6b60e2ed22ca97d4cb993d2",
+        "merges.txt": "8831e4f1a044471340f7c0a83d7bd71306a5b867e95fd870f74d0c5308a904d5",
+        "model-00001-of-00002.safetensors": "169ad53ec313c3a34b06c0809216e4fc072cce444a5d4ff2b59690d064130ed5",
+        "model-00002-of-00002.safetensors": "912becff8d60672aa8628ef08c05898d9adf17c2ad4ae3caf99b065622fdeff9",
+        "model.safetensors.index.json": "0d660e94b165eb912669a5249dff44b83188c4777a07ddb9611fb78d91b0578d",
+        "tokenizer.json": "aeb13307a71acd8fe81861d94ad54ab689df773318809eed3cbe794b4492dae4",
+        "tokenizer_config.json": "d5d09f07b48c3086c508b30d1c9114bd1189145b74e982a265350c923acd8101",
+        "vocab.json": "ca10d7e9fb3ed18575dd1e277a2579c16d108e32f27439684afa0e10b1440910"
+      },
+      "per_file_hash_mismatches": []
+    }
+  },
+  "data": {
+    "path": "data/variants_v3/fully_repaired/val_seed2.jsonl",
+    "sha256": "5633a8bf052f33c44ec694704baef64c96898a1548fc313abc2fb537a5e5b475",
+    "n_pairs": 2,
+    "variants_manifest": {
+      "path": "data/variants_v3/manifest.json",
+      "sha256": "6b3d63ae194df9af8d1369737a1e8c627cae9f17be37fb3380797fa0a26c2ff9"
+    }
+  },
+  "data_fingerprint": {
+    "generator": "src/readkv/data/build_cf_pairs.py",
+    "seed": 2,
+    "sizes_generated": {
+      "train": 120,
+      "val": 60
+    },
+    "sizes_frozen_full": {
+      "train": 120,
+      "val": 60
+    },
+    "model_pair_argument": null,
+    "note": "model_pair sets metadata only; it does not change text/split/label/candidate order",
+    "splits": {
+      "train": {
+        "n": 120,
+        "sha256": "41c18774a921b3aa0d0f320a31c77c21a7506e68743b10ef85735392b32b215e"
+      },
+      "val": {
+        "n": 60,
+        "sha256": "aa24d480a4fe861033757a141cd8f579baf6ed5bf3c2c8fa82d83ceaeae969df"
+      }
+    }
+  },
+  "depths": {
+    "teacher": 36,
+    "student": 28,
+    "layer_map_kind": "proportional"
+  },
+  "layer_map": {
+    "kind": "proportional",
+    "n_student_layers": 28,
+    "n_teacher_layers": 36,
+    "offset": 0,
+    "permutation": null
+  },
+  "cache_shapes": {
+    "teacher": {
+      "0": [
+        8,
+        25,
+        128
+      ],
+      "1": [
+        8,
+        25,
+        128
+      ],
+      "2": [
+        8,
+        25,
+        128
+      ],
+      "n_layers": 36,
+      "seq_len": 25
+    },
+    "student": {
+      "0": [
+        8,
+        25,
+        128
+      ],
+      "1": [
+        8,
+        25,
+        128
+      ],
+      "2": [
+        8,
+        25,
+        128
+      ],
+      "n_layers": 28,
+      "seq_len": 25
+    },
+    "mapped_student_space": {
+      "0": [
+        8,
+        25,
+        128
+      ],
+      "1": [
+        8,
+        25,
+        128
+      ],
+      "2": [
+        8,
+        25,
+        128
+      ],
+      "n_layers": 28,
+      "seq_len": 25
+    }
+  },
+  "layer_map_fix": {
+    "resolved_injection_map": null,
+    "source_map": {
+      "0": 0,
+      "1": 1,
+      "2": 3,
+      "3": 4,
+      "4": 5,
+      "5": 6,
+      "6": 8,
+      "7": 9,
+      "8": 10,
+      "9": 12,
+      "10": 13,
+      "11": 14,
+      "12": 15,
+      "13": 17,
+      "14": 18,
+      "15": 19,
+      "16": 21,
+      "17": 22,
+      "18": 23,
+      "19": 24,
+      "20": 26,
+      "21": 27,
+      "22": 28,
+      "23": 30,
+      "24": 31,
+      "25": 32,
+      "26": 33,
+      "27": 35
+    },
+    "layer_map_entries": {
+      "0": 0,
+      "1": 1,
+      "2": 3,
+      "3": 4,
+      "4": 5,
+      "5": 6,
+      "6": 8,
+      "7": 9,
+      "8": 10,
+      "9": 12,
+      "10": 13,
+      "11": 14,
+      "12": 15,
+      "13": 17,
+      "14": 18,
+      "15": 19,
+      "16": 21,
+      "17": 22,
+      "18": 23,
+      "19": 24,
+      "20": 26,
+      "21": 27,
+      "22": 28,
+      "23": 30,
+      "24": 31,
+      "25": 32,
+      "26": 33,
+      "27": 35
+    },
+    "entries_match_source_map": true,
+    "no_silent_wraparound": true,
+    "v_stamp_read_order": [
+      0.0,
+      1.0,
+      2.0,
+      3.0,
+      4.0,
+      5.0,
+      6.0,
+      7.0,
+      8.0,
+      9.0,
+      10.0,
+      11.0,
+      12.0,
+      13.0,
+      14.0,
+      15.0,
+      16.0,
+      17.0,
+      18.0,
+      19.0,
+      20.0,
+      21.0,
+      22.0,
+      23.0,
+      24.0,
+      25.0,
+      26.0,
+      27.0
+    ],
+    "per_layer_injection_correct": true
+  },
+  "self_identity": {
+    "max_abs_logits_diff": 0.0,
+    "passed": true
+  },
+  "zero_re_prefill": {
+    "passed": true,
+    "basis": "forward_audit(strict)",
+    "audit": {
+      "input_token_counts": [
+        7
+      ],
+      "cache_prefix_lengths": [
+        25,
+        25,
+        25,
+        25,
+        25,
+        25,
+        25,
+        25,
+        25,
+        25,
+        25,
+        25,
+        25,
+        25,
+        25,
+        25,
+        25,
+        25,
+        25,
+        25,
+        25,
+        25,
+        25,
+        25,
+        25,
+        25,
+        25,
+        25
+      ],
+      "doc_len": 25,
+      "query_len": 7,
+      "n_decode_steps": 0,
+      "doc_tokens_fed_to_student": 0
+    }
+  },
+  "forward_count": {
+    "total": 14,
+    "capture_forwards": 10,
+    "inference_input_lengths": [
+      7,
+      7,
+      7,
+      7
+    ],
+    "max_inference_input_len": 7,
+    "query_len": 7,
+    "no_doc_tokens_in_inference": true
+  },
+  "memory": {
+    "peak_allocated_bytes": 11569921536,
+    "peak_reserved_bytes": 11586764800,
+    "peak_allocated_mib": 11033.9,
+    "peak_reserved_mib": 11050.0
+  },
+  "elapsed_sec": 36.1,
+  "PASS": true
+}

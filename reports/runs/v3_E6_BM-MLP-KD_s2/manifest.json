@@ -1,0 +1,20 @@
+{
+  "run_id": "v3_E6_BM-MLP-KD_s2",
+  "files": [
+    {
+      "name": "config.json",
+      "sha256": "ad942355d62f3d491128c86ced740ea10a21b195391f1895424476b5a26282b9",
+      "size": 2429
+    },
+    {
+      "name": "scores.jsonl",
+      "sha256": "40868f4a9da77231c1e3e19440311cb7a73e73e86e4726eeb027aa48440670a2",
+      "size": 118148
+    },
+    {
+      "name": "metrics.json",
+      "sha256": "1c2bebe0d84a46836d7df7f15ddee6f7dfd0bf82edd5d3b3a3f6db7229af6ea7",
+      "size": 45150
+    }
+  ]
+}

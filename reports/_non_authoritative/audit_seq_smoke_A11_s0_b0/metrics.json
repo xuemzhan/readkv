@@ -1,0 +1,174 @@
+{
+  "per_arm": {
+    "self": {
+      "n": 6,
+      "first": {
+        "dual_correct": 0.8333333333333334,
+        "D_mean": 0.11979170640309651,
+        "E_CF_mean": 0.0,
+        "coverage": 0.8333333333333334,
+        "n_flip_evaluable": 5,
+        "flip_consistency": 1.0
+      },
+      "full": {
+        "dual_correct": 0.8333333333333334,
+        "D_mean": 1.4971568826586008,
+        "E_CF_mean": 0.0,
+        "coverage": 0.8333333333333334,
+        "n_flip_evaluable": 5,
+        "flip_consistency": 1.0
+      },
+      "length_normalized": {
+        "dual_correct": 0.8333333333333334,
+        "D_mean": 0.7485784413293004,
+        "E_CF_mean": 0.0,
+        "coverage": 0.8333333333333334,
+        "n_flip_evaluable": 5,
+        "flip_consistency": 1.0
+      }
+    },
+    "joint": {
+      "n": 6,
+      "first": {
+        "dual_correct": 0.0,
+        "D_mean": -1.9661458333333333,
+        "E_CF_mean": 8.97656261920929,
+        "coverage": 0.8333333333333334,
+        "n_flip_evaluable": 5,
+        "flip_consistency": 0.6
+      },
+      "full": {
+        "dual_correct": 0.16666666666666666,
+        "D_mean": -3.3187928994496665,
+        "E_CF_mean": 15.325573161865274,
+        "coverage": 0.8333333333333334,
+        "n_flip_evaluable": 5,
+        "flip_consistency": 0.6
+      },
+      "length_normalized": {
+        "dual_correct": 0.16666666666666666,
+        "D_mean": -1.6593964497248332,
+        "E_CF_mean": 7.662786580932637,
+        "coverage": 0.8333333333333334,
+        "n_flip_evaluable": 5,
+        "flip_consistency": 0.6
+      }
+    },
+    "identity": {
+      "n": 6,
+      "first": {
+        "dual_correct": 0.8333333333333334,
+        "D_mean": 0.11979170640309651,
+        "E_CF_mean": 0.0,
+        "coverage": 0.8333333333333334,
+        "n_flip_evaluable": 5,
+        "flip_consistency": 1.0
+      },
+      "full": {
+        "dual_correct": 0.8333333333333334,
+        "D_mean": 1.4971568826586008,
+        "E_CF_mean": 0.0,
+        "coverage": 0.8333333333333334,
+        "n_flip_evaluable": 5,
+        "flip_consistency": 1.0
+      },
+      "length_normalized": {
+        "dual_correct": 0.8333333333333334,
+        "D_mean": 0.7485784413293004,
+        "E_CF_mean": 0.0,
+        "coverage": 0.8333333333333334,
+        "n_flip_evaluable": 5,
+        "flip_consistency": 1.0
+      }
+    }
+  },
+  "L_self_minus_joint": {
+    "first": 0.8333333333333334,
+    "full": 0.6666666666666667,
+    "length_normalized": 0.6666666666666667
+  },
+  "reading_diff_L_full_minus_L_first": {
+    "point": -0.16666666666666666,
+    "ci": [
+      -0.5,
+      0.0
+    ],
+    "n": 6
+  },
+  "n_template_families": 6,
+  "exploratory": true,
+  "n_resamples": 10000,
+  "run_id": "audit_seq_smoke_A11_s0_b0",
+  "backend": "gpu",
+  "protocol_version": "2.8",
+  "cell": "A11",
+  "calibration_version": "fixed",
+  "validation_version": "fixed",
+  "seed": 0,
+  "dtype": "bfloat16",
+  "kernel": "sdpa",
+  "zero_re_prefill": true,
+  "sealed_test_read": false,
+  "input_sha256": {
+    "train": "9b03522746825f3fe0794c7f62ec7b1fb430f46734bb175b90a55a788d91e953",
+    "val": "19e9839e4e27b584c53d30242411ab14a659ac5cc487849b205928f5caa3c595"
+  },
+  "version_tag": "fixed_efc3ba3",
+  "n_train": 120,
+  "n_val": 6,
+  "n_audit_forwards": 76,
+  "token_boundary_inconsistent": {
+    "A": 0,
+    "B": 0
+  },
+  "elapsed_sec": 47.4,
+  "note": "v2.8 读数稳健性补充；首/整串/长度归一并列；不重算主终点、不碰封存 test、不恢复贡献。",
+  "smoke_checks": {
+    "single_token_consistency": {
+      "n": 0,
+      "passed": true,
+      "max_abs_diff": 0.0
+    },
+    "first_token_replay": {
+      "n": 12,
+      "max_abs_diff": 4.76837158203125e-07,
+      "tol": 0.02,
+      "passed": true
+    },
+    "multi_token_positions": {
+      "n_records": 76,
+      "n_forwards": 152,
+      "passed": true
+    },
+    "forward_audit": {
+      "n_records": 76,
+      "n_forwards": 152,
+      "all_passed": true,
+      "all_zero_re_prefill": true,
+      "passed": true
+    },
+    "candidate_cache_independence": {
+      "n_records": 76,
+      "n_unique_instance_ids": 76,
+      "passed": true
+    },
+    "sealed_test_not_read": {
+      "read": false,
+      "passed": true
+    },
+    "self_identity_anchor": {
+      "n": 18,
+      "max_abs_diff": 0.0,
+      "tol": 0.0001,
+      "passed": true
+    },
+    "swap_ab_by_candidate_identity": {
+      "n": 12,
+      "max_abs_diff": 0.0,
+      "tol": 1e-05,
+      "passed": true
+    },
+    "swap_ab_requested": false
+  },
+  "status": "SMOKE_GATE_PASSED_NON_AUTHORITATIVE"
+}

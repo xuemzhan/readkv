@@ -1,0 +1,20 @@
+{
+  "run_id": "v3_E1_fully_repaired_s0_smoke_bridge",
+  "files": [
+    {
+      "name": "config.json",
+      "sha256": "22732dbb18cf251db8e9f378d46c688a5273b74c1dac012d3985a5f28aa40c0c",
+      "size": 4732
+    },
+    {
+      "name": "scores.jsonl",
+      "sha256": "0d9ccf9d76eab3e414b9d757459dd3299a1e04068daea5abfb520faccfb903b4",
+      "size": 33763
+    },
+    {
+      "name": "metrics.json",
+      "sha256": "253364044090c49ec2f0025ea7969451a83ae24f9a431f38cda2638b89042f27",
+      "size": 7617
+    }
+  ]
+}

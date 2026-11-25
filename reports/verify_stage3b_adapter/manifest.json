@@ -1,0 +1,20 @@
+{
+  "run_id": "verify_stage3b_adapter",
+  "files": [
+    {
+      "name": "config.json",
+      "sha256": "44ce6d970a1cbafd4c50d1ebc3dc21f73817ff9cd4c262e85dd7c46b34342bce",
+      "size": 351
+    },
+    {
+      "name": "metrics.json",
+      "sha256": "b68477fce0328c2b607f8bd8713cd03cac5ea33b7cccd243e2871aa49ae16b7b",
+      "size": 3444
+    },
+    {
+      "name": "scores.jsonl",
+      "sha256": "b93f61a1e718989dd1c293b44ae126abddccde759dcaded9cd451519884f7d23",
+      "size": 9155
+    }
+  ]
+}

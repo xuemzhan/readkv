@@ -1,0 +1,15 @@
+{
+  "run_id": "verify_stage4_summary",
+  "files": [
+    {
+      "name": "config.json",
+      "sha256": "b6033aababc4a79b503645262ed34edacee5496189aa46f60483aa8621664de8",
+      "size": 297
+    },
+    {
+      "name": "summary.json",
+      "sha256": "e91e7e86c8e0f3a2783a79e748a441ca5222981f36e5659b3173eba71cfe9713",
+      "size": 1103
+    }
+  ]
+}

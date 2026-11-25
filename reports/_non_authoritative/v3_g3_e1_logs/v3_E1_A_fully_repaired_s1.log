@@ -1,0 +1,11 @@
+Loading weights:   0%|          | 0/311 [00:00<?, ?it/s]Loading weights: 100%|██████████| 311/311 [00:00<00:00, 3510.88it/s]
+Loading weights:   0%|          | 0/311 [00:00<?, ?it/s]Loading weights: 100%|██████████| 311/311 [00:00<00:00, 3584.74it/s]
+{
+  "run_id": "v3_E1_A_fully_repaired_s1",
+  "variant": "fully_repaired",
+  "panel": "A",
+  "status": "COMPLETE",
+  "run_dir": "/root/readkv/reports/runs/v3_E1_A_fully_repaired_s1",
+  "exploratory": true,
+  "n_scores": 480
+}

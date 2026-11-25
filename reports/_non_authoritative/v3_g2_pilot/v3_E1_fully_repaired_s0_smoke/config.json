@@ -1,0 +1,19 @@
+{
+  "run_id": "v3_E1_fully_repaired_s0_smoke",
+  "protocol_version": "3.0",
+  "status": "ABORTED",
+  "created_at": "2026-11-25T15:15:09Z",
+  "seed": 0,
+  "device": "cuda",
+  "dtype": "bfloat16",
+  "kernel": "sdpa",
+  "zero_re_prefill": true,
+  "experiment_config": {
+    "stage": "E1",
+    "variant": "fully_repaired",
+    "panel": "A",
+    "criteria_source": "configs/prereg/gpu_followup_v3.0.yaml",
+    "sealed_test_read": false,
+    "reason": "ValueError: Panel A requires (train,val) variants ('fully_repaired', 'fully_repaired'); hash matches train=['fully_repaired'], val=['legacy_bundle', 'dedup_only']"
+  }
+}

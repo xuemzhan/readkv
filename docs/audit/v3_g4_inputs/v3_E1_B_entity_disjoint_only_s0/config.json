@@ -1,0 +1,19 @@
+{
+  "run_id": "v3_E1_B_entity_disjoint_only_s0",
+  "protocol_version": "3.0",
+  "status": "ABORTED",
+  "created_at": "2026-11-25T19:43:31Z",
+  "seed": 0,
+  "device": "cuda",
+  "dtype": "bfloat16",
+  "kernel": "sdpa",
+  "zero_re_prefill": true,
+  "experiment_config": {
+    "stage": "E1",
+    "variant": "entity_disjoint_only",
+    "panel": "B",
+    "criteria_source": "configs/prereg/gpu_followup_v3.0.yaml",
+    "sealed_test_read": false,
+    "reason": "PathRejected: input text was changed by variant/panel (DATA-TASK change); GPU forward needs explicit --allow-input-change-gpu-forward. CPU replay on original logits is NOT valid."
+  }
+}

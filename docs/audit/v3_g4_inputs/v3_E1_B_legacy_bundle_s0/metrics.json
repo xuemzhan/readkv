@@ -1,0 +1,298 @@
+{
+  "arms": {
+    "self": {
+      "n": 60,
+      "n_evaluable": 48,
+      "dual_correct": 0.6833333333333333,
+      "self_dual_correct": 0.6833333333333333,
+      "E_CF": {
+        "mean": 0.0,
+        "ci_family": [
+          0.0,
+          0.0
+        ],
+        "ci_pair_sensitivity": [
+          0.0,
+          0.0
+        ]
+      },
+      "coverage": 0.8,
+      "flip_consistency": 1.0,
+      "n_flip_evaluable": 48,
+      "n_families": 8
+    },
+    "identity": {
+      "n": 60,
+      "n_evaluable": 48,
+      "dual_correct": 0.6833333333333333,
+      "self_dual_correct": 0.6833333333333333,
+      "E_CF": {
+        "mean": 0.0,
+        "ci_family": [
+          0.0,
+          0.0
+        ],
+        "ci_pair_sensitivity": [
+          0.0,
+          0.0
+        ]
+      },
+      "coverage": 0.8,
+      "flip_consistency": 1.0,
+      "n_flip_evaluable": 48,
+      "n_families": 8
+    },
+    "joint": {
+      "n": 60,
+      "n_evaluable": 48,
+      "dual_correct": 0.35,
+      "self_dual_correct": 0.6833333333333333,
+      "E_CF": {
+        "mean": 4.907283528645833,
+        "ci_family": [
+          2.7813741393008473,
+          6.808262711864407
+        ],
+        "ci_pair_sensitivity": [
+          3.992317708333333,
+          5.830574544270833
+        ]
+      },
+      "coverage": 0.8,
+      "flip_consistency": 0.8333333333333334,
+      "n_flip_evaluable": 48,
+      "n_families": 8
+    },
+    "k_only": {
+      "n": 60,
+      "n_evaluable": 48,
+      "dual_correct": 0.7,
+      "self_dual_correct": 0.6833333333333333,
+      "E_CF": {
+        "mean": 1.08203125,
+        "ci_family": [
+          0.7176906779661016,
+          1.3865927419354838
+        ],
+        "ci_pair_sensitivity": [
+          0.8486979166666667,
+          1.3294270833333333
+        ]
+      },
+      "coverage": 0.8,
+      "flip_consistency": 0.9791666666666666,
+      "n_flip_evaluable": 48,
+      "n_families": 8
+    },
+    "v_only": {
+      "n": 60,
+      "n_evaluable": 48,
+      "dual_correct": 0.6333333333333333,
+      "self_dual_correct": 0.6833333333333333,
+      "E_CF": {
+        "mean": 2.4153645833333335,
+        "ci_family": [
+          1.60703125,
+          3.14375
+        ],
+        "ci_pair_sensitivity": [
+          2.0260416666666665,
+          2.81328125
+        ]
+      },
+      "coverage": 0.8,
+      "flip_consistency": 0.9166666666666666,
+      "n_flip_evaluable": 48,
+      "n_families": 8
+    },
+    "control:random": {
+      "n": 60,
+      "n_evaluable": 48,
+      "dual_correct": 0.3,
+      "self_dual_correct": 0.6833333333333333,
+      "E_CF": {
+        "mean": 4.7535888671875,
+        "ci_family": [
+          2.7251902613146552,
+          6.797131147540983
+        ],
+        "ci_pair_sensitivity": [
+          3.7711995442708335,
+          5.813728841145833
+        ]
+      },
+      "coverage": 0.8,
+      "flip_consistency": 0.7708333333333334,
+      "n_flip_evaluable": 48,
+      "n_families": 8
+    },
+    "control:zero": {
+      "n": 60,
+      "n_evaluable": 48,
+      "dual_correct": 0.11666666666666667,
+      "self_dual_correct": 0.6833333333333333,
+      "E_CF": {
+        "mean": 6.147135416666667,
+        "ci_family": [
+          3.3471354166666667,
+          8.837923728813559
+        ],
+        "ci_pair_sensitivity": [
+          5.021614583333333,
+          7.262239583333334
+        ]
+      },
+      "coverage": 0.8,
+      "flip_consistency": 0.5833333333333334,
+      "n_flip_evaluable": 48,
+      "n_families": 8
+    },
+    "control:mismatch": {
+      "n": 60,
+      "n_evaluable": 48,
+      "dual_correct": 0.21666666666666667,
+      "self_dual_correct": 0.6833333333333333,
+      "E_CF": {
+        "mean": 6.178287760416667,
+        "ci_family": [
+          3.4024430614406778,
+          8.793126260080646
+        ],
+        "ci_pair_sensitivity": [
+          5.035286458333333,
+          7.312141927083333
+        ]
+      },
+      "coverage": 0.8,
+      "flip_consistency": 0.5208333333333334,
+      "n_flip_evaluable": 48,
+      "n_families": 8
+    }
+  },
+  "L_self_minus_joint": 0.33333333333333337,
+  "info_gap_control_minus_joint": {
+    "control:mismatch": 1.2710042317708332,
+    "control:random": -0.15369466145833321,
+    "control:zero": 1.2398518880208336
+  },
+  "bootstrap": {
+    "primary_unit": "template_family",
+    "n_resamples": 10000,
+    "seed": 0,
+    "sensitivity_unit": "pair",
+    "min_clusters_for_inference": 24
+  },
+  "n_families": 8,
+  "exploratory": true,
+  "run_id": "v3_E1_B_legacy_bundle_s0",
+  "variant": "legacy_bundle",
+  "panel": "B",
+  "seed": 0,
+  "backend": "gpu",
+  "dtype": "bfloat16",
+  "kernel": "sdpa",
+  "device": "cuda",
+  "zero_re_prefill": true,
+  "zero_re_prefill_basis": "forward_audit",
+  "sealed_test_read": false,
+  "criteria_source": "configs/prereg/gpu_followup_v3.0.yaml",
+  "input_sha256": {
+    "train": "9b03522746825f3fe0794c7f62ec7b1fb430f46734bb175b90a55a788d91e953",
+    "val": "24a5077bec11657c70d8eeddeed6fbe4871253d6d141daf16989903d1ebccaaa",
+    "manifest": "6b3d63ae194df9af8d1369737a1e8c627cae9f17be37fb3380797fa0a26c2ff9"
+  },
+  "variant_registration": {
+    "variant": "legacy_bundle",
+    "panel": "B",
+    "changed_attribute": "NONE (baseline)",
+    "scope": "verbatim legacy copy",
+    "rule": "byte-for-byte copy of legacy train/val",
+    "caveat": null,
+    "composition_changed_vs_legacy": false,
+    "family_count_changed_vs_legacy": false,
+    "version_difference_flag": false,
+    "train": {
+      "variant": "fully_repaired",
+      "hash_matches_variants": [
+        "fully_repaired"
+      ],
+      "path": "/root/readkv/data/variants_v3/fully_repaired/train_seed0.jsonl",
+      "sha256": "9b03522746825f3fe0794c7f62ec7b1fb430f46734bb175b90a55a788d91e953",
+      "rows_registered": 120,
+      "template_family_count": 16,
+      "template_families": [
+        "S-F1-city-A",
+        "S-F1-city-B",
+        "S-F1-person-A",
+        "S-F1-person-B",
+        "S-F2-alias-A",
+        "S-F2-alias-B",
+        "S-F3-direction-A",
+        "S-F3-direction-B",
+        "S-F3-negation-A",
+        "S-F3-negation-B",
+        "S-F4-distractor-A",
+        "S-F4-distractor-B",
+        "S-F5-paraphrase-A",
+        "S-F5-paraphrase-B",
+        "S-F6-position-A",
+        "S-F6-position-B"
+      ],
+      "slice_counts": {
+        "F1": 30,
+        "F2": 16,
+        "F3": 30,
+        "F4": 16,
+        "F5": 14,
+        "F6": 14
+      },
+      "degenerate_mustflip_rows": 0
+    },
+    "val": {
+      "variant": "legacy_bundle",
+      "hash_matches_variants": [
+        "legacy_bundle",
+        "dedup_only"
+      ],
+      "path": "/root/readkv/data/variants_v3/legacy_bundle/val_seed0.jsonl",
+      "sha256": "24a5077bec11657c70d8eeddeed6fbe4871253d6d141daf16989903d1ebccaaa",
+      "rows_registered": 60,
+      "template_family_count": 8,
+      "template_families": [
+        "T-F1-city-C",
+        "T-F1-person-C",
+        "T-F2-alias-C",
+        "T-F3-direction-C",
+        "T-F3-negation-C",
+        "T-F4-distractor-C",
+        "T-F5-paraphrase-C",
+        "T-F6-position-C"
+      ],
+      "slice_counts": {
+        "F1": 15,
+        "F2": 8,
+        "F3": 15,
+        "F4": 8,
+        "F5": 7,
+        "F6": 7
+      },
+      "degenerate_mustflip_rows": 4
+    },
+    "changes": {
+      "removed_pair_ids": {},
+      "added_pair_ids": {},
+      "n_text_hash_changed": {},
+      "substitution_map_present": false,
+      "n_query_rewrites": 0
+    }
+  },
+  "input_text_changed": false,
+  "data_task_change": false,
+  "gpu_forward_authorized_by_flag": false,
+  "cpu_replay_valid": true,
+  "n_train": 120,
+  "n_val": 60,
+  "n_scores": 480,
+  "elapsed_sec": 149.9,
+  "note": "E1 单缺陷干预筛查；版本差异不作因果分解；familes<24 标 exploratory；不碰封存 test。"
+}

@@ -1,0 +1,20 @@
+{
+  "run_id": "audit_2x2_smoke_s0_A00",
+  "files": [
+    {
+      "name": "config.json",
+      "sha256": "1142cfeebe80a04fce15739023603ea82e9ddb1cfc37aa0f667552ac46105e31",
+      "size": 2050
+    },
+    {
+      "name": "metrics.json",
+      "sha256": "62fd02d298ae8ef8945381d4758fee56bcbe7960da5f8252315e8d5772caef3e",
+      "size": 1905
+    },
+    {
+      "name": "scores.jsonl",
+      "sha256": "0249a84a5803659c9b3a6b8328a0648d38fd54a42ff8a43cfba90ef7517f23d5",
+      "size": 19143
+    }
+  ]
+}

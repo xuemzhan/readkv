@@ -1,0 +1,30 @@
+{
+  "run_id": "p1_kd_clean_mvp_seed1",
+  "files": [
+    {
+      "name": "config.json",
+      "sha256": "c40f603005f66759c008d9f4c07ad0a925991e90abdf223fa6fdd89c9f820b1e",
+      "size": 1524
+    },
+    {
+      "name": "ecf_ledger.jsonl",
+      "sha256": "089064d2a09ef549b8fdcda015b43756c0fbde5b2ff05db3e908b38f1754708b",
+      "size": 396763
+    },
+    {
+      "name": "manifest.json",
+      "sha256": "b48543ca8bdde9c41d9192e1d15b89e445e1d77ad60a042593f5b2d5bd9f1da4",
+      "size": 648
+    },
+    {
+      "name": "metrics.json",
+      "sha256": "fb147b3905780c267748552664cc23537bcd2f8de6dafd81baebfa4270b12309",
+      "size": 11025
+    },
+    {
+      "name": "scores.jsonl",
+      "sha256": "089064d2a09ef549b8fdcda015b43756c0fbde5b2ff05db3e908b38f1754708b",
+      "size": 396763
+    }
+  ]
+}

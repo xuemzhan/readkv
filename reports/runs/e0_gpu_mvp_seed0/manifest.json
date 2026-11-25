@@ -1,0 +1,20 @@
+{
+  "run_id": "e0_gpu_mvp_seed0",
+  "files": [
+    {
+      "name": "config.json",
+      "sha256": "90e274ba5faff0f7c192fffb212d02319dd1a9c50c3fcabede8762e7b0e520b8",
+      "size": 1060
+    },
+    {
+      "name": "metrics.json",
+      "sha256": "5b4dc4ec49393f7124f75302d35698168c7dea6df2654d5ad0189bde0291a53f",
+      "size": 2511
+    },
+    {
+      "name": "scores.jsonl",
+      "sha256": "101a4f338db42afb6fdc497e73a8c428b95590c89e2179a39d01825a989936da",
+      "size": 38824
+    }
+  ]
+}

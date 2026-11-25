@@ -1,0 +1,11 @@
+{
+  "run_id": "v3_E1_fully_repaired_s0_smoke",
+  "status": "ABORTED",
+  "files": [
+    {
+      "name": "config.json",
+      "sha256": "761f169008a13aeed9db90ddfb491a15fff307d12b16cfe05a444d965a8bcb57",
+      "size": 617
+    }
+  ]
+}

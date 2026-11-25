@@ -1,0 +1,154 @@
+{
+  "run_id": "v3_E1_A_template_disjoint_only_s1",
+  "protocol_version": "3.0",
+  "git_hash": "no-git",
+  "created_at": "2026-11-25T19:18:56+00:00",
+  "seed": 1,
+  "device": "cuda",
+  "dtype": "bfloat16",
+  "kernel": "sdpa",
+  "zero_re_prefill": true,
+  "experiment_config": {
+    "stage": "E1",
+    "gate": "GPU_followup_v3.0",
+    "backend": "gpu",
+    "variant": "template_disjoint_only",
+    "panel": "A",
+    "seed": 1,
+    "bootstrap_seed": 1,
+    "model_pair": "qwen3-1.7b-to-0.6b",
+    "teacher": "/root/readkv/reports/_non_authoritative/v3_env/pinned_links/Qwen3-1.7B-1ddb5b89ebc9",
+    "student": "/root/readkv/reports/_non_authoritative/v3_env/pinned_links/Qwen3-0.6B-660db3b73d78",
+    "train_path": "/root/readkv/data/variants_v3/template_disjoint_only/train_seed1.jsonl",
+    "val_path": "/root/readkv/data/variants_v3/fully_repaired/val_seed1.jsonl",
+    "manifest_path": "/root/readkv/data/variants_v3/manifest.json",
+    "input_sha256": {
+      "train": "7385245c6b2db4e4f78abc837aaa31817cd7025eaa23dc099b2dc92c9f4a793e",
+      "val": "b4f9587fc7e28a780b923c7e4a3e1aec96ddf6cde3c63a50fd0cc4b8423e7921",
+      "manifest": "6b3d63ae194df9af8d1369737a1e8c627cae9f17be37fb3380797fa0a26c2ff9"
+    },
+    "criteria_source": "configs/prereg/gpu_followup_v3.0.yaml",
+    "sealed_test_read": false,
+    "zero_re_prefill": true,
+    "zero_re_prefill_basis": "forward_audit",
+    "dtype": "bfloat16",
+    "kernel": "sdpa",
+    "device": "cuda",
+    "mapper": "affine_per_layer_head",
+    "ridge_lambda": 0.001,
+    "layer_map": {
+      "kind": "identity",
+      "n_student_layers": 28,
+      "n_teacher_layers": 28
+    },
+    "tau": 1.0,
+    "self_threshold": 0.1,
+    "n_resamples": 10000,
+    "n_train": 120,
+    "n_val": 60,
+    "smoke": false,
+    "smoke_n_val": null,
+    "cpu_replay_only": false,
+    "replay_logits_path": null,
+    "variant_registration": {
+      "variant": "template_disjoint_only",
+      "panel": "A",
+      "changed_attribute": "query skeleton overlap across train/val only",
+      "scope": "VAL only; TRAIN verbatim",
+      "rule": "rewrite each val query into a structurally different skeleton (6 deterministic paraphrase rules); context documents and correctness labels unchanged; recompute sample_hash & sample_id; row count and template_family labels unchanged",
+      "caveat": "query input text changes -> counts as a DATA-TASK change requiring GPU forward if used for Panel B; CPU replay on original logits is NOT valid for this variant",
+      "composition_changed_vs_legacy": false,
+      "family_count_changed_vs_legacy": false,
+      "version_difference_flag": false,
+      "train": {
+        "variant": "template_disjoint_only",
+        "hash_matches_variants": [
+          "legacy_bundle",
+          "entity_disjoint_only",
+          "template_disjoint_only"
+        ],
+        "path": "/root/readkv/data/variants_v3/template_disjoint_only/train_seed1.jsonl",
+        "sha256": "7385245c6b2db4e4f78abc837aaa31817cd7025eaa23dc099b2dc92c9f4a793e",
+        "rows_registered": 120,
+        "template_family_count": 16,
+        "template_families": [
+          "T-F1-city-A",
+          "T-F1-city-B",
+          "T-F1-person-A",
+          "T-F1-person-B",
+          "T-F2-alias-A",
+          "T-F2-alias-B",
+          "T-F3-direction-A",
+          "T-F3-direction-B",
+          "T-F3-negation-A",
+          "T-F3-negation-B",
+          "T-F4-distractor-A",
+          "T-F4-distractor-B",
+          "T-F5-paraphrase-A",
+          "T-F5-paraphrase-B",
+          "T-F6-position-A",
+          "T-F6-position-B"
+        ],
+        "slice_counts": {
+          "F1": 30,
+          "F2": 16,
+          "F3": 30,
+          "F4": 16,
+          "F5": 14,
+          "F6": 14
+        },
+        "degenerate_mustflip_rows": 3
+      },
+      "val": {
+        "variant": "fully_repaired",
+        "hash_matches_variants": [
+          "fully_repaired"
+        ],
+        "path": "/root/readkv/data/variants_v3/fully_repaired/val_seed1.jsonl",
+        "sha256": "b4f9587fc7e28a780b923c7e4a3e1aec96ddf6cde3c63a50fd0cc4b8423e7921",
+        "rows_registered": 60,
+        "template_family_count": 8,
+        "template_families": [
+          "S-F1-city-C",
+          "S-F1-person-C",
+          "S-F2-alias-C",
+          "S-F3-direction-C",
+          "S-F3-negation-C",
+          "S-F4-distractor-C",
+          "S-F5-paraphrase-C",
+          "S-F6-position-C"
+        ],
+        "slice_counts": {
+          "F1": 15,
+          "F2": 8,
+          "F3": 15,
+          "F4": 8,
+          "F5": 7,
+          "F6": 7
+        },
+        "degenerate_mustflip_rows": 0
+      },
+      "changes": {
+        "removed_pair_ids": {},
+        "added_pair_ids": {},
+        "n_text_hash_changed": {},
+        "substitution_map_present": false,
+        "n_query_rewrites": 60
+      }
+    },
+    "input_text_changed": false,
+    "data_task_change": false,
+    "gpu_forward_authorized_by_flag": false,
+    "cpu_replay_valid": true
+  },
+  "metadata": {
+    "stage": "E1",
+    "backend": "gpu",
+    "protocol_version": "3.0",
+    "non_authoritative": false,
+    "variant": "template_disjoint_only",
+    "panel": "A",
+    "criteria_source": "configs/prereg/gpu_followup_v3.0.yaml",
+    "sealed_test_read": false
+  }
+}

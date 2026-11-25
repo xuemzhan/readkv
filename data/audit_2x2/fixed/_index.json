@@ -1,0 +1,50 @@
+{
+  "train_seed0.jsonl": {
+    "version": "fixed_efc3ba3",
+    "split": "train",
+    "seed": 0,
+    "rows": 120,
+    "sha256": "9b03522746825f3fe0794c7f62ec7b1fb430f46734bb175b90a55a788d91e953",
+    "bytes": 124602
+  },
+  "val_seed0.jsonl": {
+    "version": "fixed_efc3ba3",
+    "split": "val",
+    "seed": 0,
+    "rows": 60,
+    "sha256": "19e9839e4e27b584c53d30242411ab14a659ac5cc487849b205928f5caa3c595",
+    "bytes": 61853
+  },
+  "train_seed1.jsonl": {
+    "version": "fixed_efc3ba3",
+    "split": "train",
+    "seed": 1,
+    "rows": 120,
+    "sha256": "024a69e9f35c777ad1030227eed37ef8f3dd43a82fb0a905a569e9150a37633f",
+    "bytes": 124439
+  },
+  "val_seed1.jsonl": {
+    "version": "fixed_efc3ba3",
+    "split": "val",
+    "seed": 1,
+    "rows": 60,
+    "sha256": "b4f9587fc7e28a780b923c7e4a3e1aec96ddf6cde3c63a50fd0cc4b8423e7921",
+    "bytes": 61857
+  },
+  "train_seed2.jsonl": {
+    "version": "fixed_efc3ba3",
+    "split": "train",
+    "seed": 2,
+    "rows": 120,
+    "sha256": "53258777ab214fb9226b85389673672c9c4b1b17c8cb9d07cf1a97beddcf3e6e",
+    "bytes": 124685
+  },
+  "val_seed2.jsonl": {
+    "version": "fixed_efc3ba3",
+    "split": "val",
+    "seed": 2,
+    "rows": 60,
+    "sha256": "5633a8bf052f33c44ec694704baef64c96898a1548fc313abc2fb537a5e5b475",
+    "bytes": 61890
+  }
+}

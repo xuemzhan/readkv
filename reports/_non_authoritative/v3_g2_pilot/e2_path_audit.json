@@ -1,0 +1,121 @@
+{
+  "pilot_only": true,
+  "authoritative": false,
+  "reads_test": false,
+  "one_shot_test_evaluation": "G3_NOT_RELEASED",
+  "config": {
+    "mappers": [
+      "affine",
+      "kd_only"
+    ],
+    "seeds": [
+      0
+    ],
+    "affine_lambda": 0.001,
+    "kd_epochs": 8,
+    "kd_lr": 0.001,
+    "lam_kd": 1.0,
+    "lam_cf": 0.0,
+    "lam_reg": 0.0001,
+    "dtype": "bfloat16",
+    "kernel": "sdpa"
+  },
+  "data": {
+    "train": {
+      "path": "data/variants_v3/fully_repaired/train_seed0.jsonl",
+      "sha256": "9b03522746825f3fe0794c7f62ec7b1fb430f46734bb175b90a55a788d91e953",
+      "n": 6
+    },
+    "val": {
+      "path": "data/variants_v3/fully_repaired/val_seed0.jsonl",
+      "sha256": "19e9839e4e27b584c53d30242411ab14a659ac5cc487849b205928f5caa3c595",
+      "n": 6
+    }
+  },
+  "model_pair": {
+    "teacher": "/root/readkv/reports/_non_authoritative/v3_g2_pilot/pinned/Qwen31.7B-sha256-1ddb5b89ebc90dcb",
+    "student": "/root/readkv/reports/_non_authoritative/v3_g2_pilot/pinned/Qwen30.6B-sha256-660db3b73d788119",
+    "teacher_config_sha256": "1ddb5b89ebc90dcb417a45c213d818577e65976454d29385c8f6140771d95197",
+    "student_config_sha256": "660db3b73d788119c04535e48cf9be5f55bc3100841a718637ae695b442f27dd"
+  },
+  "mappers_loaded_and_ran": [
+    "affine",
+    "kd_only"
+  ],
+  "results_non_authoritative": {
+    "affine": {
+      "n_val": 6,
+      "self_dual": 1.0,
+      "joint_dual": 0.3333333333333333,
+      "E_CF_mean": 7.197916666666667,
+      "coverage": 0.8333333333333334,
+      "flip": 0.8
+    },
+    "kd_only": {
+      "n_val": 6,
+      "self_dual": 1.0,
+      "joint_dual": 0.8333333333333334,
+      "E_CF_mean": 7.247395833333333,
+      "coverage": 0.8333333333333334,
+      "flip": 1.0
+    }
+  },
+  "forward_count": {
+    "total_student_forwards": 254,
+    "note": "total includes offline cache-capture forwards that legitimately consume doc tokens",
+    "strict_audit_injection_input_lengths": [
+      7
+    ],
+    "query_len": 7
+  },
+  "zero_re_prefill": {
+    "basis": "forward_audit(strict) on inject_and_generate",
+    "passed": true,
+    "audit": {
+      "input_token_counts": [
+        7
+      ],
+      "cache_prefix_lengths": [
+        25,
+        25,
+        25,
+        25,
+        25,
+        25,
+        25,
+        25,
+        25,
+        25,
+        25,
+        25,
+        25,
+        25,
+        25,
+        25,
+        25,
+        25,
+        25,
+        25,
+        25,
+        25,
+        25,
+        25,
+        25,
+        25,
+        25,
+        25
+      ],
+      "doc_len": 25,
+      "query_len": 7,
+      "n_decode_steps": 0,
+      "doc_tokens_fed_to_student": 0
+    }
+  },
+  "memory": {
+    "peak_allocated_bytes": 4701057536,
+    "peak_allocated_mib": 4483.3
+  },
+  "elapsed_sec": 151.4,
+  "note": "E2 technical path only; no test read, no formal cell, no scientific conclusion.",
+  "PASS": true
+}

@@ -1,0 +1,35 @@
+{
+  "run_id": "v3_E5_affine_s0",
+  "files": [
+    {
+      "name": "config.json",
+      "sha256": "f209ce12b59291632bc874b6dc5c5d658a9ca85dd2fa388f369285ca2319025d",
+      "size": 1365
+    },
+    {
+      "name": "ecf_ledger.jsonl",
+      "sha256": "7e79a378b46618c7c59f63440ac1bddaf597e31ff530b2df230e6444f6331bbb",
+      "size": 391459
+    },
+    {
+      "name": "g3_runtime_audit.json",
+      "sha256": "a16f9d98ece9b8341e7ab32f6c1cbf5b1af3fff82f31c0124096d2102b840030",
+      "size": 9321
+    },
+    {
+      "name": "manifest.json",
+      "sha256": "7668b48b6ef6755e8e743609d73d7ede7fc06768725f4c918d445afd0b91964c",
+      "size": 797
+    },
+    {
+      "name": "metrics.json",
+      "sha256": "85b2976a45b7105373fd81522a1e33dc4e4d394df1647f1ba3c5837e890f7b2f",
+      "size": 11039
+    },
+    {
+      "name": "scores.jsonl",
+      "sha256": "7e79a378b46618c7c59f63440ac1bddaf597e31ff530b2df230e6444f6331bbb",
+      "size": 391459
+    }
+  ]
+}

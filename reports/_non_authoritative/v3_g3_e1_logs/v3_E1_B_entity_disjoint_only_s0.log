@@ -1,0 +1,1 @@
+{"status": "ABORTED", "run_dir": "/root/readkv/reports/runs/v3_E1_B_entity_disjoint_only_s0", "reason": "input text was changed by variant/panel (DATA-TASK change); GPU forward needs explicit --allow-input-change-gpu-forward. CPU replay on original logits is NOT valid."}

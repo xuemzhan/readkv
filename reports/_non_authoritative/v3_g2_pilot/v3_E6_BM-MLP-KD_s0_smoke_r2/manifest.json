@@ -1,0 +1,20 @@
+{
+  "run_id": "v3_E6_BM-MLP-KD_s0_smoke_r2",
+  "files": [
+    {
+      "name": "config.json",
+      "sha256": "162e79235ec924f8bd5d1c95233c7f48ebd4cf438b3c7266763e150d1ff71151",
+      "size": 2459
+    },
+    {
+      "name": "scores.jsonl",
+      "sha256": "6fcfe5ce5d1c2c21ef6a79113a5dd9f00819bd1ec35c4c210eb8124db77ec67a",
+      "size": 11694
+    },
+    {
+      "name": "metrics.json",
+      "sha256": "094201f831fda3da93eb16447309e1ce49c5d14e55268a85761277f87c188cfb",
+      "size": 4847
+    }
+  ]
+}

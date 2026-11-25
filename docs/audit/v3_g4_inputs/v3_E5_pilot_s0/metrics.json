@@ -1,0 +1,412 @@
+{
+  "run_id": "v3_E5_pilot_s0",
+  "backend": "gpu",
+  "protocol_version": "2.0",
+  "method": "none",
+  "n_calibration": 6,
+  "n_eval": 6,
+  "tau": 1.0,
+  "data_quality": {
+    "total": 352,
+    "by_slice": {
+      "F1": 69,
+      "F2": 69,
+      "F3": 68,
+      "F4": 64,
+      "F5": 41,
+      "F6": 41
+    },
+    "by_split": {
+      "probe": 40,
+      "train": 6,
+      "val": 6,
+      "test": 300
+    },
+    "length_mismatch": 41,
+    "length_mismatch_by_slice": {
+      "F5": 41
+    },
+    "length_mismatch_by_split": {
+      "probe": 4,
+      "val": 1,
+      "test": 36
+    },
+    "f5_negative_controls": 41,
+    "flip_denominator": 270,
+    "flip_denominator_excludes": [
+      "F5",
+      "F6"
+    ],
+    "degenerate_must_flip_pairs": 0,
+    "cross_split_overlap": {
+      "context_A": 0,
+      "context_B": 0,
+      "query": 0,
+      "edited_span": 0,
+      "source_doc_id": 0,
+      "cluster": 0
+    },
+    "entity_pool_overlap": {
+      "names": 0,
+      "projects": 0,
+      "cities": 0,
+      "dates": 0,
+      "numbers": 0,
+      "roles": 0,
+      "policies": 0,
+      "teams": 0
+    },
+    "template_overlap_train_eval": [],
+    "template_skeleton_overlap_train_test": [],
+    "query_skeleton_overlap_train_test": [],
+    "template_family_count_by_split": {
+      "probe": 16,
+      "train": 6,
+      "val": 6,
+      "test": 16
+    },
+    "total_template_families": 44,
+    "structural_template_count": 24,
+    "unseen_template_subset": {
+      "splits": [
+        "probe",
+        "test"
+      ],
+      "family_count": 32,
+      "structural_template_count": 16,
+      "family_names": [
+        "U-F1-annex-D",
+        "U-F1-annex-P",
+        "U-F1-minutes-D",
+        "U-F1-minutes-P",
+        "U-F1-register-D",
+        "U-F1-register-P",
+        "U-F2-dossier-D",
+        "U-F2-dossier-P",
+        "U-F2-filing-D",
+        "U-F2-filing-P",
+        "U-F2-log-D",
+        "U-F2-log-P",
+        "U-F3-flow-D",
+        "U-F3-flow-P",
+        "U-F3-request-D",
+        "U-F3-request-P",
+        "U-F3-token-D",
+        "U-F3-token-P",
+        "U-F4-beforeafter-D",
+        "U-F4-beforeafter-P",
+        "U-F4-change-D",
+        "U-F4-change-P",
+        "U-F4-entry-D",
+        "U-F4-entry-P",
+        "U-F5-brief-D",
+        "U-F5-brief-P",
+        "U-F5-notice-D",
+        "U-F5-notice-P",
+        "U-F6-background-D",
+        "U-F6-background-P",
+        "U-F6-index-D",
+        "U-F6-index-P"
+      ]
+    },
+    "seen_template_families": [
+      "S-F1-person-A",
+      "S-F1-person-B",
+      "S-F2-alias-A",
+      "S-F2-alias-B",
+      "S-F3-direction-A",
+      "S-F3-direction-B"
+    ],
+    "quality_gate": "pass",
+    "note": "v2.1 修正版：退化对=0；跨 split 逐字重叠=0；实体池不相交；train/test 模板骨架不重合；flip 分母排除 F5+F6（stats_convention_v2.3.yaml）；length_mismatch 分层报告。"
+  },
+  "arms": {
+    "self": {
+      "n_total": 6,
+      "n_evaluable": 5,
+      "E_CF": {
+        "mean": 0.0,
+        "ci": [
+          0.0,
+          0.0
+        ]
+      },
+      "normalized_E_CF": 0.0,
+      "flip_consistency": 1.0,
+      "dual_correct": 0.8333333333333334,
+      "coverage": 0.8333333333333334,
+      "info_gap": null,
+      "self_gap": 0.0,
+      "detail": {
+        "tau": 1.0,
+        "evaluable_threshold": 0.001,
+        "n_flip_evaluable": 5
+      }
+    },
+    "identity": {
+      "n_total": 6,
+      "n_evaluable": 5,
+      "E_CF": {
+        "mean": 0.0,
+        "ci": [
+          0.0,
+          0.0
+        ]
+      },
+      "normalized_E_CF": 0.0,
+      "flip_consistency": 1.0,
+      "dual_correct": 0.8333333333333334,
+      "coverage": 0.8333333333333334,
+      "info_gap": null,
+      "self_gap": 0.0,
+      "detail": {
+        "tau": 1.0,
+        "evaluable_threshold": 0.001,
+        "n_flip_evaluable": 5
+      }
+    },
+    "joint": {
+      "n_total": 6,
+      "n_evaluable": 5,
+      "E_CF": {
+        "mean": 7.921875,
+        "ci": [
+          4.125,
+          11.442708333333334
+        ]
+      },
+      "normalized_E_CF": 0.8610858953499032,
+      "flip_consistency": 0.4,
+      "dual_correct": 0.16666666666666666,
+      "coverage": 0.8333333333333334,
+      "info_gap": null,
+      "self_gap": 7.921875,
+      "detail": {
+        "tau": 1.0,
+        "evaluable_threshold": 0.001,
+        "n_flip_evaluable": 5
+      }
+    },
+    "k_only": {
+      "n_total": 6,
+      "n_evaluable": 5,
+      "E_CF": {
+        "mean": 3.6875,
+        "ci": [
+          1.3229166666666667,
+          7.177083333333333
+        ]
+      },
+      "normalized_E_CF": 0.3726037391932217,
+      "flip_consistency": 1.0,
+      "dual_correct": 0.6666666666666666,
+      "coverage": 0.8333333333333334,
+      "info_gap": null,
+      "self_gap": 3.6875,
+      "detail": {
+        "tau": 1.0,
+        "evaluable_threshold": 0.001,
+        "n_flip_evaluable": 5
+      }
+    },
+    "v_only": {
+      "n_total": 6,
+      "n_evaluable": 5,
+      "E_CF": {
+        "mean": 7.427083333333333,
+        "ci": [
+          3.7708333333333335,
+          10.916666666666666
+        ]
+      },
+      "normalized_E_CF": 0.8103798359749829,
+      "flip_consistency": 0.8,
+      "dual_correct": 0.3333333333333333,
+      "coverage": 0.8333333333333334,
+      "info_gap": null,
+      "self_gap": 7.427083333333333,
+      "detail": {
+        "tau": 1.0,
+        "evaluable_threshold": 0.001,
+        "n_flip_evaluable": 5
+      }
+    },
+    "control:mismatch": {
+      "n_total": 6,
+      "n_evaluable": 5,
+      "E_CF": {
+        "mean": 7.276041666666667,
+        "ci": [
+          2.5208333333333335,
+          12.03125
+        ]
+      },
+      "normalized_E_CF": 0.6312493218877174,
+      "flip_consistency": 0.4,
+      "dual_correct": 0.3333333333333333,
+      "coverage": 0.8333333333333334,
+      "info_gap": null,
+      "self_gap": 7.276041666666667,
+      "detail": {
+        "tau": 1.0,
+        "evaluable_threshold": 0.001,
+        "n_flip_evaluable": 5
+      }
+    },
+    "control:random": {
+      "n_total": 6,
+      "n_evaluable": 5,
+      "E_CF": {
+        "mean": 10.641927083333334,
+        "ci": [
+          5.90625,
+          14.03125
+        ]
+      },
+      "normalized_E_CF": 1.228772150628014,
+      "flip_consistency": 0.2,
+      "dual_correct": 0.3333333333333333,
+      "coverage": 0.8333333333333334,
+      "info_gap": null,
+      "self_gap": 10.641927083333334,
+      "detail": {
+        "tau": 1.0,
+        "evaluable_threshold": 0.001,
+        "n_flip_evaluable": 5
+      }
+    },
+    "control:zero": {
+      "n_total": 6,
+      "n_evaluable": 5,
+      "E_CF": {
+        "mean": 7.395833333333333,
+        "ci": [
+          3.5729166666666665,
+          11.135416666666666
+        ]
+      },
+      "normalized_E_CF": 0.7314852031630966,
+      "flip_consistency": 0.0,
+      "dual_correct": 0.16666666666666666,
+      "coverage": 0.8333333333333334,
+      "info_gap": null,
+      "self_gap": 7.395833333333333,
+      "detail": {
+        "tau": 1.0,
+        "evaluable_threshold": 0.001,
+        "n_flip_evaluable": 5
+      }
+    },
+    "control:correct": {
+      "n_total": 6,
+      "n_evaluable": 5,
+      "E_CF": {
+        "mean": 7.921875,
+        "ci": [
+          4.125,
+          11.442708333333334
+        ]
+      },
+      "normalized_E_CF": 0.8610858953499032,
+      "flip_consistency": 0.4,
+      "dual_correct": 0.16666666666666666,
+      "coverage": 0.8333333333333334,
+      "info_gap": null,
+      "self_gap": 7.921875,
+      "detail": {
+        "tau": 1.0,
+        "evaluable_threshold": 0.001,
+        "n_flip_evaluable": 5
+      }
+    },
+    "new_joint": {
+      "n_total": 6,
+      "n_evaluable": 5,
+      "E_CF": {
+        "mean": 7.921875,
+        "ci": [
+          4.125,
+          11.442708333333334
+        ]
+      },
+      "normalized_E_CF": 0.8610858953499032,
+      "flip_consistency": 0.4,
+      "dual_correct": 0.16666666666666666,
+      "coverage": 0.8333333333333334,
+      "info_gap": null,
+      "self_gap": 7.921875,
+      "detail": {
+        "tau": 1.0,
+        "evaluable_threshold": 0.001,
+        "n_flip_evaluable": 5
+      }
+    }
+  },
+  "primary_endpoint": {
+    "point": 0.0,
+    "ci": [
+      0.0,
+      0.0
+    ],
+    "improved": false,
+    "n": 6,
+    "note": "paired E_CF difference (new - baseline); negative means new method is better"
+  },
+  "info_attribution": {
+    "control:mismatch": -0.645833333333333,
+    "control:random": 2.720052083333334,
+    "control:zero": -0.526041666666667
+  },
+  "transfer_health": {
+    "transfer_broken": true,
+    "verdict_note": "quality_pass = data-quality gate only (split isolation / template non-overlap / annotation consistency); it does NOT assert transfer utility. transfer_broken=true: joint quality collapsed / controls not dominated — P1 result is a failure boundary, NOT positive evidence of utility-preserving distortion. frozen verdict=None is unchanged; this field is an orthogonal annotation.",
+    "quality_pass_scope": "data_quality_gate_only",
+    "signals": {
+      "joint_dual_drop_vs_self": 0.6667,
+      "dual_drop_ge_0_2": true,
+      "joint_ecf_vs_controls": {
+        "control:mismatch": 7.276,
+        "control:zero": 7.3958
+      },
+      "joint_ecf_ge_control": {
+        "control:mismatch": true,
+        "control:zero": true
+      },
+      "info_attribution": {
+        "control:mismatch": -0.645833333333333,
+        "control:random": 2.720052083333334,
+        "control:zero": -0.526041666666667
+      },
+      "info_mostly_negative": true
+    }
+  },
+  "transfer_broken": true,
+  "verdict_note": "quality_pass = data-quality gate only (split isolation / template non-overlap / annotation consistency); it does NOT assert transfer utility. transfer_broken=true: joint quality collapsed / controls not dominated — P1 result is a failure boundary, NOT positive evidence of utility-preserving distortion. frozen verdict=None is unchanged; this field is an orthogonal annotation.",
+  "quality_pass_scope": "data_quality_gate_only",
+  "bootstrap_seed": 0,
+  "decision": {
+    "when": "distortion_present",
+    "verdict": "distortion_exists",
+    "conditions": {
+      "distortion_present": true,
+      "quality_pass": true
+    },
+    "action": "继续 P2 机制诊断与 P3 方法；报告 E_CF 与基线差距"
+  },
+  "decision_facts": {
+    "ecf_improved": false,
+    "ecf_point": 0.0,
+    "ci_upper": 0.0,
+    "distortion_present": true,
+    "joint_ecf_mean": 7.921875,
+    "identity_ecf_mean": 0.0,
+    "flip_consistency": 0.4,
+    "coverage": 0.8333333333333334,
+    "dual_correct": 0.16666666666666666,
+    "quality_pass": true,
+    "transfer_broken": true
+  },
+  "n_captures": 60,
+  "n_injections": 240,
+  "elapsed_sec": 42.0
+}

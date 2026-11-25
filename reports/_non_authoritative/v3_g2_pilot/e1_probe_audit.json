@@ -1,0 +1,213 @@
+{
+  "pilot_only": true,
+  "authoritative": false,
+  "reads_test": false,
+  "data": {
+    "path": "data/variants_v3/fully_repaired/val_seed0.jsonl",
+    "sha256": "19e9839e4e27b584c53d30242411ab14a659ac5cc487849b205928f5caa3c595",
+    "n_pairs": 2
+  },
+  "model_pair": {
+    "teacher": "/root/readkv/reports/_non_authoritative/v3_g2_pilot/pinned/Qwen31.7B-sha256-1ddb5b89ebc90dcb",
+    "student": "/root/readkv/reports/_non_authoritative/v3_g2_pilot/pinned/Qwen30.6B-sha256-660db3b73d788119",
+    "teacher_sha256_config": "1ddb5b89ebc90dcb417a45c213d818577e65976454d29385c8f6140771d95197",
+    "student_sha256_config": "660db3b73d788119c04535e48cf9be5f55bc3100841a718637ae695b442f27dd"
+  },
+  "depths": {
+    "teacher": 28,
+    "student": 28,
+    "layer_map_kind": "identity"
+  },
+  "cache_shapes": {
+    "teacher": {
+      "0": [
+        8,
+        25,
+        128
+      ],
+      "1": [
+        8,
+        25,
+        128
+      ],
+      "2": [
+        8,
+        25,
+        128
+      ],
+      "n_layers": 28,
+      "seq_len": 25
+    },
+    "student": {
+      "0": [
+        8,
+        25,
+        128
+      ],
+      "1": [
+        8,
+        25,
+        128
+      ],
+      "2": [
+        8,
+        25,
+        128
+      ],
+      "n_layers": 28,
+      "seq_len": 25
+    },
+    "mapped_student_space": {
+      "0": [
+        8,
+        25,
+        128
+      ],
+      "1": [
+        8,
+        25,
+        128
+      ],
+      "2": [
+        8,
+        25,
+        128
+      ],
+      "n_layers": 28,
+      "seq_len": 25
+    }
+  },
+  "layer_map_fix": {
+    "resolved_injection_map": null,
+    "layer_map_entries": {
+      "0": 0,
+      "1": 1,
+      "2": 2,
+      "3": 3,
+      "4": 4,
+      "5": 5,
+      "6": 6,
+      "7": 7,
+      "8": 8,
+      "9": 9,
+      "10": 10,
+      "11": 11,
+      "12": 12,
+      "13": 13,
+      "14": 14,
+      "15": 15,
+      "16": 16,
+      "17": 17,
+      "18": 18,
+      "19": 19,
+      "20": 20,
+      "21": 21,
+      "22": 22,
+      "23": 23,
+      "24": 24,
+      "25": 25,
+      "26": 26,
+      "27": 27
+    },
+    "entries_match_source_map": true,
+    "no_silent_wraparound": true,
+    "v_stamp_read_order": [
+      0.0,
+      1.0,
+      2.0,
+      3.0,
+      4.0,
+      5.0,
+      6.0,
+      7.0,
+      8.0,
+      9.0,
+      10.0,
+      11.0,
+      12.0,
+      13.0,
+      14.0,
+      15.0,
+      16.0,
+      17.0,
+      18.0,
+      19.0,
+      20.0,
+      21.0,
+      22.0,
+      23.0,
+      24.0,
+      25.0,
+      26.0,
+      27.0
+    ],
+    "per_layer_injection_correct": true
+  },
+  "self_identity": {
+    "max_abs_logits_diff": 0.0,
+    "passed": true
+  },
+  "zero_re_prefill": {
+    "passed": true,
+    "basis": "forward_audit(strict)",
+    "audit": {
+      "input_token_counts": [
+        7
+      ],
+      "cache_prefix_lengths": [
+        25,
+        25,
+        25,
+        25,
+        25,
+        25,
+        25,
+        25,
+        25,
+        25,
+        25,
+        25,
+        25,
+        25,
+        25,
+        25,
+        25,
+        25,
+        25,
+        25,
+        25,
+        25,
+        25,
+        25,
+        25,
+        25,
+        25,
+        25
+      ],
+      "doc_len": 25,
+      "query_len": 7,
+      "n_decode_steps": 0,
+      "doc_tokens_fed_to_student": 0
+    }
+  },
+  "forward_count": {
+    "total": 14,
+    "capture_forwards": 10,
+    "inference_input_lengths": [
+      7,
+      7,
+      7,
+      7
+    ],
+    "max_inference_input_len": 7,
+    "query_len": 7,
+    "no_doc_tokens_in_inference": true
+  },
+  "memory": {
+    "peak_allocated_bytes": 4666124800,
+    "peak_reserved_bytes": 4680843264,
+    "peak_allocated_mib": 4450.0
+  },
+  "elapsed_sec": 18.4,
+  "PASS": true
+}

@@ -1,0 +1,273 @@
+# ============================================================
+# 新增版本判据文件（protocol-v2.8）—— 完整候选答案评分（首 token vs 整串 teacher-forcing）
+# 本文件为新增，不回写 v2.7、v2.1–v2.6、protocol.yaml 或任何既有冻结文件。
+# 依据：真实 PI 指令（2026-11-24，提前执行候选全文评分）、
+#       docs/decisions/full_candidate_scoring_ruling.md（本次裁决）、
+#       refine-logs/GPU_SEQUENCE_SCORING_PLAN.md（实验方案，非冻结判据）、
+#       refine-logs/GPU_SEQUENCE_SCORING_TRACKER.md（运行清单）、
+#       reports/review/independent_research_and_manuscript_review_2026-11-24.md（第二轮复审）、
+#       configs/prereg/gpu_followup_v2.7.yaml（§4 deferred_options 排期）。
+# 性质：测量稳健性补充实验（读数口径敏感性），先冻后跑；不改主终点、不恢复贡献、
+#       不碰封存 test、不是方法贡献。
+# ============================================================
+version: "2.8"
+frozen_at: "protocol-v2.8"
+frozen_on: "2026-11-24"
+frozen: true
+decision_ref:
+  - "docs/decisions/full_candidate_scoring_ruling.md"
+  - "refine-logs/GPU_SEQUENCE_SCORING_PLAN.md"
+  - "refine-logs/GPU_SEQUENCE_SCORING_TRACKER.md"
+  - "reports/review/independent_research_and_manuscript_review_2026-11-24.md"
+
+# ------------------------------------------------------------
+# 0. 与 v2.7 的关系（显式覆盖排期，不回写）
+# ------------------------------------------------------------
+schedule_override:
+  overrides: "configs/prereg/gpu_followup_v2.7.yaml §4 deferred_options.candidate_full_string_scoring = '推迟到投稿后（读数稳健性补充）'"
+  effect: >-
+    经真实 PI 指令，candidate_full_string_scoring 由"投稿后"提前到本轮执行。
+    本文件仅为该排期的新增版本覆盖；v2.7 原文及其余条款（2×2 设计、判读四分支、不可变边界）保持冻结不变，
+    一字不回写。GPU_SEQUENCE_SCORING_PLAN.md 中"沿用投稿后排期"的表述以本文件为准。
+  scope: "仅覆盖候选全文评分的执行时点；不改变 v2.7 的科学结论、判读分支与贡献边界"
+
+freeze_rationale: >-
+  第二轮复审把候选全文评分列为"后续稳健性实验"，并指出当前论文仍有编译/匿名稿/指标口径/归因措辞等定向大修阻塞，
+  全文评分不是当前投稿门槛。真实 PI 仍要求现在执行该读数稳健性实验。为守住"判据先写后跑"与"不伪造"红线，
+  本文件在任何 audit_seq_* run 启动前冻结实验矩阵、数据版本、评分口径、输入审计、统计与判读分支；
+  本实验只检验两个既有结论（修复版 A11 的 affine 失败、A00→A11 的历史翻转）对评分方式的敏感性，
+  属测量稳健性补充，不恢复贡献、不重算主终点、不碰封存 test、不构成方法贡献。
+
+# ------------------------------------------------------------
+# 1. 不可变边界
+# ------------------------------------------------------------
+invariants:
+  role: "测量稳健性补充（读数口径敏感性）；不是新贡献、不是方法贡献"
+  contributes_to: "仅检验既有失败边界与历史翻转结论对候选评分方式的敏感性"
+  contribution_1: "withdrawn —— 不得恢复"
+  contribution_2: "withdrawn —— 不得恢复"
+  contribution_3: "withheld —— 不得声称方法增益"
+  p2_p3_p4: "永久放弃 —— 本实验不是 P3 重启"
+  primary_endpoint: "V2.0 主终点不变（封存 test 上 cf vs kd_only 成对 E_CF 差异，CI 上界<0）；不重算、不触碰"
+  sealed_test: "不读取、不评测封存 test；仅用 old/repaired 的 train/val"
+  verdict_note: "首 token 与整串读数并列报告，不得只报其一；不把整串结果写成新的正向发现"
+  ai_generated_data: "v2.6 not-activated，无遗留产物"
+  arc_hellaswag: "NO-Go 维持"
+
+# ------------------------------------------------------------
+# 2. 实验矩阵（冻结：共 8 个 run）
+# ------------------------------------------------------------
+experiment_matrix:
+  model_pair: "MVP 等深 Qwen3-1.7B(teacher)→0.6B(student)，28→28 identity layer map"
+  calibration_validation:
+    old: "生成器 commit 458de18（旧语料，含历史缺陷）"
+    repaired: "生成器 commit efc3ba3（修复版语料）"
+  cells_in_scope:
+    A00: {calibration: old,     validation: old,     role: "历史对角格，核验翻转基线"}
+    A11: {calibration: repaired, validation: repaired, role: "修复版对角格，核验失败边界"}
+  cells_out_of_scope:
+    A01: {calibration: old, validation: repaired, reason: "可选，本轮不做"}
+    A10: {calibration: repaired, validation: old, reason: "可选，本轮不做"}
+  runs:
+    smoke:                      # seed0 固定小样本冒烟
+      - "audit_seq_smoke_A11_s0"   # 单 token、多 token、Identity、A/B 顺序、逐次输入审计
+      - "audit_seq_smoke_A00_s0"   # 旧版对角格、相同候选与旧读数
+      size: "固定小样本（非全量），仅用于技术门"
+    full:                       # seed0/1/2 的 A00/A11 各 60 对
+      - "audit_seq_A11_s0"
+      - "audit_seq_A00_s0"
+      - "audit_seq_A11_s1"
+      - "audit_seq_A00_s1"
+      - "audit_seq_A11_s2"
+      - "audit_seq_A00_s2"
+      size_per_cell: 60
+    summary: "audit_seq_summary（CPU 复算、逐 seed 主表与敏感性表；不新增 GPU run）"
+  total_gpu_runs: 8             # 2 冒烟 + 6 全量；A01/A10 可选本轮不做
+  per_cell_outputs:
+    - "config.json"
+    - "scores.jsonl"
+    - "forward_audit.jsonl"
+    - "metrics.json"
+    - "manifest.json"
+  per_pair_log_fields:
+    - "样本指纹（版本+样本文本哈希）"
+    - "校准与验证版本"
+    - "双侧两候选的三种分数（first / full / length-normalized）"
+    - "gold / 预测"
+    - "template_family"
+    - "候选 token 长度"
+    - "失败标记"
+
+# ------------------------------------------------------------
+# 3. 数据版本与分析样本（冻结）
+# ------------------------------------------------------------
+data:
+  versions:
+    - {label: old,      generator_commit: "458de18", splits: ["train", "val"]}
+    - {label: repaired, generator_commit: "efc3ba3", splits: ["train", "val"]}
+  prohibited_splits: ["test"]   # 封存 test 不评
+  registration: "每版本/split/seed 记录规范 LF SHA-256；用版本+样本文本哈希标识，避免同名 pair_id 跨版本误配"
+  counts: "CPU 已核对每版每 seed 共 60 对；历史 20 点线仅作描述性参照"
+  analysis_sets:
+    primary: >-
+      F1–F4 中候选文本不同、两侧金标签确实在 A/B 之间交换的样本。
+      旧版 42/42/41 对、修复版 46/46/46 对，每格 6 个 template_family。
+    secondary: "全部 60 对（对齐旧表）；单列 F5、F6 与相同候选样本"
+  same_samples_rule: "两种评分始终使用同一格内相同的样本集合；old 与 repaired 是两套验证样本，不混算"
+  denominator_audit: "明确总库计数、验证格候选分母、Self 阈值后分母；flip 排除 F5+F6 沿用 v2.3 口径，不与 F1–F4 主分析分母混写"
+
+# ------------------------------------------------------------
+# 4. 固定实现与评分口径（冻结）
+# ------------------------------------------------------------
+scoring:
+  frozen_config:
+    layer_map: "identity 等深 28→28"
+    mapper: "逐层逐头 K/V affine + ridge λ=0.001"
+    dtype: "bfloat16"
+    kernel: "sdpa"
+    zero_re_prefill: true
+    fit_once: "每格只拟合一次，同一 mapper 服务三种评分口径"
+    provenance: "记录 checkpoint、tokenizer、权重文件指纹、代码 commit、远端依赖与设备；旧快照身份不可恢复时，用首 token 逐对一致性确认数值复现并明示可核验身份范围"
+  token_boundary:
+    rule: "主口径用历史查询 token 加原先独立 tokenize 的候选 token，二者均关闭自动特殊 token；首位评分对象与归档相同"
+    check: "检查 encode(query+candidate) 与两段 token 序列拼接是否一致，记录不一致与候选互为前缀的样本数"
+    sensitivity: "边界不一致较多时，另用固定答案分隔符做边界敏感性，两读数用同一新前缀，单列结果"
+  three_readings:
+    first_token: "取首项 logprob，用于历史回放"
+    full_string: "各候选 token 的条件 logprob 之和；FP32 log-softmax 与求和；固定不追加 EOS"
+    length_normalized: "full_string 总和除以候选 token 数（敏感性）"
+  tie_rule: "精确同分时沿用归档固定候选顺序，并报告同分数"
+  record: "记录候选 token 长度、首 token 冲突与全序列同分"
+  teacher_forcing: >-
+    复用现有缓存路径：Self 与 Joint 保持相同历史查询 token 序列；分别从同一文档缓存新建候选 A/B 的可变学生缓存；
+    先前向 query 得首 token 分布，再依次喂入候选真实前缀 token 累加目标 token 的 logprob。
+    现有 inject_and_generate(max_new_tokens=...) 走贪心解码，teacher-forcing 须用独立入口或显式评分模式。
+  independence: "候选之间缓存相互独立；A/B 前后交换顺序后按候选身份比较分数应一致"
+
+# ------------------------------------------------------------
+# 5. 输入审计（冻结，逐次）
+# ------------------------------------------------------------
+input_audit:
+  expected_input_length_sequence: >-
+    对长度为 m 的候选，实际学生输入长度序列应为 [Q, 1 × (m−1)]，Q 为原查询长度；
+    只有查询和当前候选前缀进入学生的显式输入；文档长度只体现在注入缓存及位置偏移。
+  per_call_log: "每条候选分支记录实际输入 token id 或其指纹、位置与每次 forward 长度"
+  assertions:
+    - "候选缓存相互独立"
+    - "位置偏移与首 token 口径一致，后续每次位置加一"
+    - "zero re-prefill 成立（无文档 token 进入学生显式输入）"
+    - "审计失败即中止该格并保留失败信息，不得静默通过"
+  evidence_scope: >-
+    审计按代码路径与逐次记录陈述；若入口仅对每格首对做输入检查，须如实标注为抽检，
+    不得声称逐样本审计。运行写告警时顶层 zero_re_prefill 标记须与逐次审计一致。
+
+# ------------------------------------------------------------
+# 6. 统计口径（冻结，沿用 v2.3/v2.7）
+# ------------------------------------------------------------
+statistics:
+  primary_metric:
+    symbol: "L"
+    definition: "Self 双侧正确率 − Joint 双侧正确率（百分点）"
+    reporting: "每格每种评分报 Self、Joint 原值与 L；首/整串并列"
+  comparisons:
+    - {id: "reading_diff", definition: "同格内 L_full − L_first（配对差）"}
+    - {id: "cell_diff", definition: "每个 seed 的 A11 − A00 的 L 差（分别在首 token 与整串下）"}
+    - {id: "reading_of_diff", definition: "先在各验证集内算配对 full−first，再对两版本该差做独立模板族重采样"}
+  bootstrap:
+    method: "同一验证集按样本配对、template_family 簇级重采样 10000 次；pair-level 逐对区间作敏感性"
+    cluster_unit: "template_family"
+    pair_level_sensitivity: "required（不得只报 pair-level，沿用 v2.3/v2.7）"
+    statistic: "每次重采样取抽中样本之和除以抽中样本数，与样本加权点估计一致"
+    cross_version: "两验证版本独立重采样，即使 pair_id 字符串相同也按不同样本集处理"
+    min_clusters_for_inference: 24
+    if_below_min_clusters: "标 exploratory=true；每格 6 或 8 族，逐 seed 保留族计数；不作强推断"
+  secondary_metrics:
+    - "E_CF（各评分方式内计算；整串求和与首 token 的绝对误差尺度可能不同，不跨口径直接比大小）"
+    - "方向一致率（各评分 Self 合格集报告；另在两种评分共同合格样本上做敏感性），附分母"
+    - "coverage"
+    - "历史 20 点参考线（仅参照，不用于判读）"
+  reporting_rule: "每 seed 独立报告；单对比区间跨零分类须如实计数，不以夹角/均值掩盖"
+
+# ------------------------------------------------------------
+# 7. 判读三分支（预承诺，禁止事后择支）
+# ------------------------------------------------------------
+interpretation:
+  rule: "在看到结果前锁定以下分支；按结果对号入座，不得事后改归类或改判据。"
+  branches:
+    - when: "三组 A11 整串 L 仍为正，且 A11−A00 的方向与首 token 一致"
+      verdict: "consistent_across_scoring"
+      action: "写成'两种候选评分下点估计方向相同'，报告幅度与区间；标出跨历史 20 点线的 seed；区间仅示不确定性"
+    - when: "A11 下降明显缩小、某些 seed 方向改变或 A11−A00 的差消失"
+      verdict: "first_token_sensitive"
+      action: "明确失败或翻转结论对首 token 评分敏感；不升级为更强结论"
+    - when: "按长度归一后判读改变"
+      verdict: "length_norm_changes_reading"
+      action: "分别报告总 logprob 与归一结果，说明长度对读数的影响"
+  boundary: >-
+    只跑 A00/A11 支持对角翻转与 A11 失败边界的评分稳健性；本题结论限于评分方式，不涉及单项数据缺陷因果归因。
+    如需讨论 2×2 交互本身，须另行等量补 A01/A10（本轮不做）。不得据本实验恢复贡献或重开方法层。
+
+# ------------------------------------------------------------
+# 8. 执行门控与预算
+# ------------------------------------------------------------
+execution:
+  gates:
+    smoke_gate:
+      requirement: >-
+        先 seed0：首 token 路径复现工作树同输入旧打分；单 token 候选核验整串与首 token 一致；
+        多 token 候选核验 teacher-forcing 分数位置；交换 A/B 顺序按候选身份分数一致；
+        Self/Identity 在预定容差内；逐次输入审计全通过；候选从同一初始状态独立开始。
+      action_if_fail: "冒烟门未过不得跑任何正式格；先核对 checkpoint、token 边界、精度、缓存位置；无法解释的差异暂停扩展"
+    seed0_full: "冒烟通过后跑 seed0 的 A11、A00 全量格，核对首 token 对角格与归档样本身份/逐对 margin/dual"
+    seed12_full: "seed0 技术门通过后串行完成 seed1/2 各两格；任何无法解释差异先暂停"
+  scheduling: "单卡串行（并发 3–7× 惩罚）；冒烟与 seed0 两全量格预留 30 分钟上机窗口；六格先按 0.5–1 GPU 小时调度；以 seed0 实测每格耗时/每候选 token 数/显存峰值更新剩余预算"
+  fallback: "若只能排到一格，先跑 A11 seed0（回答修复版失败是否对评分方式敏感）"
+  review: "审稿人出具稳健性合规审计 + compliance note；本实验触发 P5 重新审稿/签 off"
+  triggers_p5_review: true
+  does_not_unblock_submission: >-
+    本实验不是当前投稿门槛；第二轮复审列出的编译/匿名稿/指标口径/归因措辞定向大修仍为投稿阻塞，须独立关闭。
+
+# ------------------------------------------------------------
+# 9. 角色任务清单
+# ------------------------------------------------------------
+role_tasks:
+  data-engineer:
+    - "CPU 侧导出并登记 old(458de18)/repaired(efc3ba3) 的 train/val × seed0/1/2，写规范 LF SHA-256"
+    - "核对全量 60 对与主分析分母（旧 42/42/41、修复 46/46/46），单列 F5/F6/相同候选"
+    - "审计 flip 分母（F5+F6 排除）、总库/验证格/Self 阈值后分母，写数据审计记录"
+  engineer:
+    - "实现独立 teacher-forcing 评分入口（不复用贪解码 inject_and_generate），输出 first/full/length-normalized 三读数"
+    - "过冒烟门（A11/A00 seed0）后再串行跑六个全量格；逐次前向审计，失败即中止该格"
+    - "新 run ID 与五类产物齐全；不覆盖旧 2×2 归档"
+  scientist:
+    - "锁定 L、L_full−L_first、A11−A00 三比较的统计口径与三判读分支"
+    - "template_family 主 CI + pair-level 敏感性、10000 resamples、<24 族 exploratory、样本加权口径"
+    - "按分支对号入座给出稳健性解读，不做事后择支、不作单项因果归因"
+  reviewer:
+    - "审计输入独立性/位置偏移/zero re-prefill/实际输入长度序列与证据抽检范围"
+    - "核对三读数同样本、对角格首 token 锚点、统计口径与判读纪律；出合规 note"
+  writer:
+    - "把首 token/整串对照表与归一敏感性表纳入匿名稿附录，保留首 token 主表"
+    - "按判读分支措辞：一致则写'两评分下方向相同'，敏感则如实披露；不恢复贡献、不写方法增益"
+  doc-engineer:
+    - "把 v2.8 排期覆盖与三读数口径写入复现文档，标明冻结版本与 run 清单"
+    - "说明本实验不重算主终点、不碰封存 test、不恢复贡献"
+
+forbidden_after_freeze:
+  - "不得按结果改实验矩阵、换 val、挑 seed、改 L 或三读数口径"
+  - "不得只报 pair-level CI 而不报 template_family 主 CI（沿用 v2.3/v2.7）"
+  - "不得把两种评分混算、不得跨口径直接比较 E_CF 绝对尺度"
+  - "不得回写 v2.7、v2.1–v2.6 或任何既有冻结文件"
+  - "不得改主终点、恢复贡献(1)(2)(3)、触碰封存 test 或重开 P2/P3/P4"
+  - "不得把本实验写成新的审计方法/一般泄漏教训/跨源普适性或方法贡献"
+  - "不得声称逐样本审计（若仅抽检）或伪造 token 边界/审计记录"
+
+reviewer_checks:
+  - "v2.8 为新增文件、v2.7 §4 deferred 排期仅被本文件覆盖、旧冻结文件 diff 为空"
+  - "8 个 run 的 run ID、版本/split/seed 数据 SHA-256、样本身份与分母齐全；封存 test 未评"
+  - "冒烟门通过后才跑正式格；首 token 对角格与归档逐对一致（或差异如实记录）"
+  - "三读数同一批样本；teacher-forcing 独立入口；FP32 log-softmax、固定边界、同分规则落实"
+  - "逐次输入审计 [Q,1×(m−1)]、候选缓存独立、位置偏移、zero re-prefill 与抽检范围如实"
+  - "template_family 主 CI + pair-level 敏感性、10000 resamples、<24 族 exploratory、样本加权口径正确"
+  - "三判读分支对号入座、无事后择支、无单项因果归因、无贡献恢复、无封存 test 泄漏"
+  - "本实验触发 P5 重新审稿/签 off；定向大修阻塞项仍独立待关闭"

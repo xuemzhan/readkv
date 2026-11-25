@@ -1,0 +1,19 @@
+{
+  "run_id": "v3_E6_BM-MLP-KD_s0_smoke",
+  "protocol_version": "3.0",
+  "status": "ABORTED",
+  "created_at": "2026-11-25T15:33:44Z",
+  "seed": 0,
+  "device": "cuda",
+  "dtype": "bfloat16",
+  "kernel": "sdpa",
+  "zero_re_prefill": true,
+  "experiment_config": {
+    "stage": "E6",
+    "experiment": "v3-BM-MLP-KD",
+    "criteria_source": "configs/prereg/gpu_followup_v3.0.yaml",
+    "spec_source": "docs/decisions/v3_baseline_spec.md",
+    "sealed_test_read": false,
+    "reason": "COMPUTE_FAILED: RuntimeError: Expected all tensors to be on the same device, but found at least two devices, cuda:0 and cpu!"
+  }
+}

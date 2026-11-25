@@ -1,0 +1,258 @@
+# ============================================================
+# 新增版本判据文件（protocol-v3.0）—— 审稿后续 GPU 实验（E1/E2/E5/E6）
+# 本文件为新增，不回写 v2.1–v2.9 或任何既有冻结文件/裁决/稿件。
+# 依据：docs/audit/GPU_experiment_plan_2026-11-25.md（提案）、
+#       docs/decisions/gpu_v3_scope_ruling.md（真实 PI G0 新授权）、
+#       真实 PI 补充授权（模型/数据可从 modelscope.cn 下载）。
+# 性质：**新研究**的先写后跑判据；不是当前 TMLR 稿件的补充实验，不改变任何已签 off 结论。
+# ============================================================
+version: "3.0"
+frozen_at: "protocol-v3.0"
+frozen_on: "2026-11-25"
+frozen: true
+decision_ref:
+  - "docs/audit/GPU_experiment_plan_2026-11-25.md"
+  - "docs/decisions/gpu_v3_scope_ruling.md"
+
+freeze_rationale: >-
+  真实 PI 于 2026-11-25 新授权 E1/E2/E5/E6 四个工作包，结果另立新研究、不纳入当前稿件。
+  GPU_experiment_plan_2026-11-25.md 是提案而非运行授权（其 §0/§7/§8 明确禁止未批先跑、禁止回写旧判据、
+  禁止访问未解锁的 held-out split）。本文件据此在任何 GPU run 之前冻结设计、指标、判读、门控与边界，
+  落实「判据先写后跑」与「不伪造」红线。
+
+# ------------------------------------------------------------
+# 0. 不可变边界
+# ------------------------------------------------------------
+invariants:
+  result_destination: "另立新研究；不回写当前 TMLR 稿件，不重新触发当前 P5 CONDITIONAL SIGN-OFF"
+  current_manuscript: "papers/readkv_v2_{draft,tmlr_anonymous,arxiv}/** 只读"
+  frozen_preregs: "v2.1–v2.9 一字不回写；git diff（若可用）应为空"
+  contribution_1: "withdrawn —— 不得恢复"
+  contribution_2: "withdrawn —— 不得恢复"
+  contribution_3: "withheld —— 不得声称方法增益"
+  p2_p3_p4: "永久放弃 —— 本实验不是 P3/P4 重启"
+  old_primary_endpoint: "不重算、不改写已冻结主终点"
+  rerun_policy: "不重跑已完成的 v2.7 2×2 与 A00/A11 序列评分"
+  excluded_data: "不混入 SQuAD/ARC/HellaSwag、真实文档采集、AI 生成数据"
+  submission: "agent 不代为投稿；本实验不涉及投稿动作"
+
+# ------------------------------------------------------------
+# 1. 范围（G0 已授权，未列者不得运行）
+# ------------------------------------------------------------
+scope:
+  authorized: ["E1", "E2", "E5", "E6"]
+  E1: "单缺陷干预筛查（新研究；Panel A 校准干预 / Panel B 验证干预）"
+  E2: "此前未评测的 held-out split 评测（PI 已明确解锁；一次性 dedicated evaluator）"
+  E5: "第二模型对 Qwen3-4B→1.7B 有限复验（P4 仍 NO-GO）"
+  E6: "强/预算匹配基线（方法复现门优先）"
+
+# ------------------------------------------------------------
+# 2. 共用运行纪律（所有包适用）
+# ------------------------------------------------------------
+common:
+  fixed_before_run:
+    - "模型权重 revision 与权重文件 SHA-256（modelscope.cn 下载，记录 snapshot/revision，不得用漂移的 master 别名而不记实际文件 hash）"
+    - "tokenizer 指纹（文件 SHA-256 + 版本）"
+    - "代码 commit / 入口脚本 SHA-256"
+    - "数据文件 SHA-256（规范 LF，逐 split/变体绑定）"
+    - "软件 / CUDA / 驱动版本、dtype、kernel、layer map、mapper 参数、seed"
+  execution:
+    dtype: "bfloat16"
+    kernel: "sdpa"
+    zero_re_prefill: true
+    per_forward_audit: "记录每次 student forward 的输入长度、cache/position 审计"
+    scheduling: "单卡串行（RTX 5090 32GB）；禁止并发抢卡"
+    run_id_scheme: "v3_<pkg>_<variant>_s<seed>[_smoke]；冒烟写 reports/_non_authoritative/，正式写新的 reports/runs/<run_id>/"
+    overwrite_policy: "不覆盖历史目录；所有 seed、对照与失败 run 全部入账"
+    smoke_first: "先单 seed/小样本技术门；失败即停止扩展，不把烟测数字当科学结果"
+    stop_condition: "各包在 G1 数据/基线审计与 G2 pilot 放行文件中分别冻结，见 §7"
+  reporting_per_seed:
+    required:
+      - "Self 与 Joint 双侧正确率（百分点）"
+      - "L = Self − Joint（百分点）"
+      - "E_CF（Joint）"
+      - "coverage"
+      - "方向一致率及其实际分母"
+    rule: "不得只报 E_CF；所有 seed 分开报告，不合并为 pooled 推断"
+  bootstrap:
+    primary_unit: "template_family 簇级（10000 次）"
+    sensitivity: "pair-level 逐对区间，必须并列"
+    min_clusters_for_inference: 24
+    if_below_min_clusters: "exploratory=true；逐 seed 保留族计数；不作强推断"
+  environment_setup:
+    source: "modelscope.cn（PI 授权）；记录下载 URL、snapshot/revision、文件 SHA-256、下载日期"
+    python_env: "用 uv 建立隔离环境；固定 torch/CUDA 版本并记录 wheel 来源与 hash"
+
+# ------------------------------------------------------------
+# 3. E1：单缺陷干预筛查（冻结设计）
+# ------------------------------------------------------------
+E1:
+  prerequisite: "G1 CPU 数据变体构造/审计 + 独立文件输入入口（现有 experiments/audit_2x2_gpu.py 仅支持 legacy/fixed，不得直接用于变体）"
+  goal: "估计单类数据修改与 mapper 指标变化之间的受控关联；不证明泄漏普遍制造假发现"
+  variants:
+    - "legacy_bundle（历史参照）"
+    - "dedup_only（仅预定义重复/重叠组）"
+    - "degenerate_only（仅 must-flip 但候选相同）"
+    - "entity_disjoint_only（仅规定 split 间实体池互斥）"
+    - "template_disjoint_only（仅规定 split 间模板骨架互斥）"
+    - "fully_repaired（当前 v2.1 全修复版本）"
+  variant_registration:
+    required: "逐变体记录改变了哪些 sample/text/hash、样本数是否改变、替换/剔除规则、各 slice/family 数、质量审计"
+    if_composition_changes: "报告为版本差异，不得声称纯粹单缺陷效应"
+    data_entry: "独立入口显式接收变体 train/val JSONL 路径 + 哈希绑定；不得调用自动重建数据的 P1_gpu.py"
+  degenerate_note: "must-flip 退化对属标签/任务有效性缺陷，不进入 ridge 监督拟合；对旧 logits 的重计分优先 CPU replay，只有候选文本/输入上下文改变才追加 GPU 前向，并单列『数据任务改变』"
+  panels:
+    Panel_A:
+      question: "校准集干预，固定 clean v2.1 validation"
+      mapper_fit: "各 seed 分别用 legacy/单缺陷变体/fully_repaired 的 train 拟合 affine mapper"
+      evaluation: "所有 mapper 在同一 v2.1 validation 评分"
+      cells: "5 变体 × 3 seed = 15 格（legacy 与 fully_repaired 对角若 checkpoint/代码/tokenizer/输入指纹核验通过可复用历史锚点，否则增跑桥接格）"
+      dedup_definition: "须显式声明是训练集内去重还是 train–validation overlap 清理，两者不混称"
+    Panel_B:
+      question: "验证集干预，固定 clean calibration mapper"
+      mapper_fit: "固定 v2.1 train 拟合的 mapper，不变"
+      evaluation: "在预构造的 validation 变体上评分；仅在任务定义有效、gold 可审计的样本上比较"
+      cells: "最多 15 格；样本组成变化时并列报告预定义共同样本集与全样本描述性结果"
+      degenerate_replay: "修复退化标签对原始 logits 的重计分先做 CPU replay，输入内容变化才追加 GPU"
+  primary_metric: "逐 seed 的 Self、Joint dual correctness 与 L；并列各变体实际有效 pair/family 数"
+  secondary_metrics: ["E_CF", "coverage", "flip/direction consistency", "旧版/clean 逐对变化"]
+  interpretation:
+    rule: "看到结果前锁定分支；报告全部六种版本条件，不预设/不按结果挑选主缺陷"
+    branches:
+      - when: "某单缺陷变体相对 legacy 复现大部分差距且方向跨 seed 稳健"
+        verdict: "single_defect_associated"
+        action: "仅可写『在该生成器/样本构造下，该单一改动与指标变化相关』"
+      - when: "无单一缺陷能解释，差距主要在 fully_repaired 或组合"
+        verdict: "interaction_or_combination"
+        action: "报告为缺陷间交互/组合；不得称定量分解"
+      - when: "方向依赖 seed 或样本构成变化"
+        verdict: "seed_or_composition_sensitive"
+        action: "如实限定，不作归因"
+    forbidden_claims: ["因果贡献分解", "泄漏制造普遍假阳性", "单一缺陷解释全部差距"]
+
+# ------------------------------------------------------------
+# 4. E2：此前未评测的 held-out split 评测（已解锁）
+# ------------------------------------------------------------
+E2:
+  naming: "称『此前未评测的 held-out split』，不称『sealed』"
+  unlock: "真实 PI 已在 G0 明确解锁（docs/decisions/gpu_v3_scope_ruling.md §1）"
+  lock_before_run:
+    - "test 数据 SHA-256（data/tasks/cf_pairs.jsonl 中 test split，300 对 / 16 template family）"
+    - "分析代码 commit、模型/checkpoint/tokenizer 指纹、输出指标、seed、全部排除规则、统计脚本"
+    - "验证集不再用于选参；固定 affine 与 kd_only 配置"
+  prohibitions:
+    - "不在 test 上调参、选阈值、错误样本返修、多轮查看后再跑"
+    - "不得把 val/test 混跑；evaluator 须有 test-only 显式路径/哈希/锁检查"
+    - "现有 P1_gpu.py 默认只评 val；P1_kd_gpu.py 的 --eval-splits test 仅在锁完成后由 dedicated evaluator 使用"
+  design:
+    mapper_seeds: [0, 1, 2]
+    mappers: ["affine", "kd_only"]
+    cells: "2 mapper × 3 seed = 6 评测格"
+    test_set: "同一固定 300 对 test split；三次评分是 mapper/calibration seeds，不是 3 份独立 test replicate"
+    reporting: "逐 mapper seed 报 Self/Joint dual、L、E_CF、coverage、flip 及 template-family 区间"
+    exploratory: "16 family < 24，exploratory=true；不得合并三次评分作独立 replicate 推断"
+  interpretation:
+    - when: "test 上方向复现且区间与 val 一致"
+      verdict: "held_out_consistent"
+      action: "仅作固定配置外推表现，不作普遍泛化结论"
+    - when: "test 上失败"
+      verdict: "held_out_failure"
+      action: "照实报告；不得返回 val 调整后再声称为独立 test"
+
+# ------------------------------------------------------------
+# 5. E5：第二模型对复验（有限范围）
+# ------------------------------------------------------------
+E5:
+  status: "P4 仍 NO-GO；本项仅是新授权下的独立案例"
+  model_pair: "Qwen3-4B → Qwen3-1.7B（36→28 层，proportional layer map）"
+  model_source: "modelscope.cn（记录 snapshot/revision/文件 SHA-256/下载日期）"
+  prerequisite: "先检查 model-pair 配置不改变文本/split/label；若生成器 pair 参数改变数据则固定并绑定独立 manifest"
+  systems:
+    required: ["affine"]
+    optional_if_pi_approved_and_baseline_gate_passes: ["kd_only"]
+  cells: "2 mapper × 3 seed = 6 正式格（若只 affine 则 3 格）"
+  data: "相同 cf_pairs_v2.1 生成协议；train 120 / eval 60；与主 MVP 一致"
+  split: "仅 validation，除非 E2 单独获批"
+  tech_gate: "seed0 先做模型加载、tokenizer、层映射、cache 形状、Self/Identity、zero-re-prefill 审计；4B+1.7B 同卡显存先实测；不得因 OOM 改精度/kernel 后与主结果直接合并"
+  interpretation:
+    - when: "同方向"
+      verdict: "replicated_on_one_extra_pair"
+      action: "只写『在一个额外模型对复现/未复现该模式』，不称跨模型泛化"
+    - when: "失败"
+      verdict: "not_replicated"
+      action: "照实报告；不得删去该模型对或另选一对替代"
+
+# ------------------------------------------------------------
+# 6. E6：强/预算匹配基线
+# ------------------------------------------------------------
+E6:
+  reproduction_gate_first: true
+  gate:
+    criteria:
+      - "全文方法可获得"
+      - "代码/权重可用且许可允许"
+      - "mapper 结构、训练数据、训练目标、输入信息明确"
+      - "推理严格 zero-re-prefill"
+    if_fail: "不得只按摘要重实现后称 faithful baseline；记录为『不可复现/不具备公平比较条件』"
+    fallback: "明确命名的预算匹配内部对照（不称已发表方法基线）"
+  internal_control:
+    same: ["模型对", "train/val 样本", "三 seed", "zero-re-prefill"]
+    affine: "现有闭式 ridge λ=1e-3"
+    kd_only: "现有 8 epochs、lr=1e-3、训练对数 120"
+    extra_mapper: "在 prereg 中明确架构/参数数量；报告参数、GPU 时间、前向/反向次数、显存、训练目标"
+    caveat: "参数量相似不等于算力/目标公平，须分项披露"
+  gpu_matrix:
+    primary_pair: "Qwen3-1.7B→0.6B，三 seed，同一 clean train/val 逐对评测所有 baseline"
+    reuse: "affine/kd_only 已有权威结果可复用，但须核验 data hash/checkpoint/code 绑定"
+    new_baseline: "三 seed 新跑"
+    e5_interaction: "若纳入 E5 的 4B→1.7B，分开报告，不与 MVP affine 直接比较"
+  success_criteria: "在看到结果前定义模型质量、参数匹配容差、训练预算、主指标、失败/中断处理及比较族；即使排名不变也完整报告训练成本差异"
+
+# ------------------------------------------------------------
+# 7. 执行门控（G1–G4，不得越门）
+# ------------------------------------------------------------
+gates:
+  G1:
+    status: "进行中"
+    work: "冻结本 prereg；CPU 数据变体/基线审计；模型来源与判读分支冻结"
+    release: "本文件 frozen=true；E1 变体清单与 SHA、E2 test SHA 与锁、E5 模型 revision、E6 复现门结论全部落盘"
+    gpu: false
+  G2:
+    work: "技术 pilot：单 seed/小样本，逐包走 Self/Identity、层映射、zero-re-prefill、显存与时间门"
+    release: "每包 pilot 报告 PASS；失败则停止该包扩展"
+    gpu: "pilot 实测"
+  G3:
+    work: "E1/E2/E5/E6 正式格；串行、独立 run ID、不覆盖归档"
+    release: "按 §3–§6 各自矩阵完成；所有 seed/对照/失败 run 入账"
+    gpu: true
+  G4:
+    work: "统计（family bootstrap + pair 敏感性）+ 独立审阅"
+    release: "无事后择支；结论用词只达设计识别范围；新研究报告签署"
+    gpu: false
+
+# ------------------------------------------------------------
+# 8. 冻结后禁止项
+# ------------------------------------------------------------
+forbidden_after_freeze:
+  - "不得先看结果再改版本定义、变体、样本、seed、阈值或判读分支"
+  - "不得把 E1 单因素筛查称为因果贡献分解或缺陷交互的定量分解"
+  - "不得把 E2 三次 mapper-seed 评分合并为 3 个独立 test replicate"
+  - "不得把 E5 单额外模型对称为跨模型泛化，或删失败结果/另选模型对"
+  - "不得把未过复现门的外部方法称为 faithful baseline"
+  - "不得只报 pair-level CI 而不报 template_family 主 CI"
+  - "不得回写 v2.1–v2.9 或任何既有冻结文件/当前稿件"
+  - "不得触碰未列入 scope 的实验、不得重跑已完成的 v2.7 2×2 / 序列评分"
+  - "不得伪造任何数据、日志、哈希、审阅意见或投稿动作"
+
+# ------------------------------------------------------------
+# 9. 审阅核对清单（G4）
+# ------------------------------------------------------------
+reviewer_checks:
+  - "本 prereg 在任何 GPU run 前冻结；未回写旧判据"
+  - "E1 变体清单/哈希/样本数/族数齐全；独立入口未调用自动重建；CPU replay 与 GPU 前向边界遵守"
+  - "E2 test 哈希与锁、一次性 evaluator、无 test 调参/返修/多轮查看"
+  - "E5 模型 revision、proportional layer map、显存实测、only-one-extra-pair 措辞"
+  - "E6 复现门结论、预算匹配分项披露、成功标准事先定义"
+  - "所有 seed/对照/失败 run 入账；family 主 CI + pair 敏感性；<24 族 exploratory"
+  - "判读按预承诺分支对号入座、无事后择支；结论不越过 §3–§6 边界"
+  - "新研究与当前稿件隔离；当前 P5 签 off 与冻结判据无回归"

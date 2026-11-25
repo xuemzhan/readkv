@@ -1,0 +1,11 @@
+Loading weights:   0%|          | 0/311 [00:00<?, ?it/s]Loading weights: 100%|██████████| 311/311 [00:00<00:00, 5070.53it/s]
+Loading weights:   0%|          | 0/311 [00:00<?, ?it/s]Loading weights: 100%|██████████| 311/311 [00:00<00:00, 3627.60it/s]
+{
+  "run_id": "v3_E1_B_legacy_bundle_s2",
+  "variant": "legacy_bundle",
+  "panel": "B",
+  "status": "COMPLETE",
+  "run_dir": "/root/readkv/reports/runs/v3_E1_B_legacy_bundle_s2",
+  "exploratory": true,
+  "n_scores": 480
+}

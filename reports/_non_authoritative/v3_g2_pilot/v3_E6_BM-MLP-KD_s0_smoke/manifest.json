@@ -1,0 +1,11 @@
+{
+  "run_id": "v3_E6_BM-MLP-KD_s0_smoke",
+  "status": "ABORTED",
+  "files": [
+    {
+      "name": "config.json",
+      "sha256": "6478c8f0397047ddd0dbd5578c86d8e8fe01058090d0e55839cff333ecb675ee",
+      "size": 614
+    }
+  ]
+}

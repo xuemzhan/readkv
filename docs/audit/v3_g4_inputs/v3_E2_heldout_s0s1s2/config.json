@@ -1,0 +1,82 @@
+{
+  "run_id": "v3_E2_heldout_s0s1s2",
+  "protocol_version": "2.0",
+  "git_hash": "no-git",
+  "created_at": "2026-11-25T18:50:34+00:00",
+  "seed": 0,
+  "device": "cuda",
+  "dtype": "bfloat16",
+  "kernel": "sdpa",
+  "zero_re_prefill": true,
+  "experiment_config": {
+    "stage": "E2",
+    "gate": "held_out_one_shot",
+    "backend": "gpu",
+    "mappers": [
+      "affine",
+      "kd_only"
+    ],
+    "mapper_seeds": [
+      0,
+      1,
+      2
+    ],
+    "eval_splits": [
+      "test"
+    ],
+    "n_pairs": 300,
+    "n_template_families": 16,
+    "exploratory": true,
+    "dtype": "bfloat16",
+    "kernel": "sdpa",
+    "n_resamples": 10000,
+    "verification": {
+      "run_id": "v3_E2_heldout_s0s1s2",
+      "test_path": "data/tasks/cf_pairs.jsonl",
+      "test_sha256": "f910f1f1196a21041765834654af8233d216ef4bf4f28f4c60abbd0641aa894a",
+      "binding_kind": "whole_file",
+      "lock_path": "/root/readkv/reports/data/v3_e2_test_lock.md",
+      "lock_sha256": "c2d629b5f928d03c106a2b4b6e8e3e7059af11f34c12bd5ace019d5c9b9c9d5e",
+      "data_hashes_in_lock": {
+        "whole_file": "f910f1f1196a21041765834654af8233d216ef4bf4f28f4c60abbd0641aa894a",
+        "test_split": "c5450013bc9fc9b84dec286a653207f2dde8168d0df74a24896218d32769a7a2"
+      },
+      "eval_config_path": "configs/prereg/gpu_followup_v3.0.yaml",
+      "eval_config_sha256": "d8c2321fc4ba6abeda80e6f581d3f7ef6c592c9173de757aad1a40120ae811e6",
+      "criteria_source": "configs/prereg/gpu_followup_v3.0.yaml",
+      "smoke": false,
+      "out_dir": "/root/readkv/reports/runs/v3_E2_heldout_s0s1s2",
+      "split_designation": "previously_unevaluated_held_out_split",
+      "sealed_test_read": false
+    },
+    "criteria_source": "configs/prereg/gpu_followup_v3.0.yaml",
+    "split_designation": "previously_unevaluated_held_out_split",
+    "sealed_test_read": false,
+    "prereg": "configs/prereg/gpu_followup_v3.0.yaml (frozen protocol-v3.0)",
+    "entry_sha256": "da80afdc35f433c65c22938a0bde516927feaef5dac0a6ae59d60e07d72b8f6f",
+    "entry_source": "experiments/e2_test_evaluator.py",
+    "per_seed_train": {
+      "0": {
+        "path": "data/variants_v3/fully_repaired/train_seed0.jsonl",
+        "sha256": "9b03522746825f3fe0794c7f62ec7b1fb430f46734bb175b90a55a788d91e953"
+      },
+      "1": {
+        "path": "data/variants_v3/fully_repaired/train_seed1.jsonl",
+        "sha256": "024a69e9f35c777ad1030227eed37ef8f3dd43a82fb0a905a569e9150a37633f"
+      },
+      "2": {
+        "path": "data/variants_v3/fully_repaired/train_seed2.jsonl",
+        "sha256": "53258777ab214fb9226b85389673672c9c4b1b17c8cb9d07cf1a97beddcf3e6e"
+      }
+    }
+  },
+  "metadata": {
+    "stage": "E2",
+    "backend": "gpu",
+    "prereg_version": "3.0",
+    "run_context_schema_version": "2.0",
+    "criteria_source": "configs/prereg/gpu_followup_v3.0.yaml",
+    "authoritative": true,
+    "one_shot": true
+  }
+}

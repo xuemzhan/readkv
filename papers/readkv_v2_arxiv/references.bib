@@ -1,0 +1,185 @@
+% ===========================================================================
+% Self-contained bibliography for papers/readkv_v2_arxiv/main.tex.
+% Entries with an arXiv identifier are recorded only as arXiv preprints +
+% year (with arXiv class / submission date where the draft records them);
+% no conference venue is invented. Author strings follow the names supplied
+% by the parent session (arXiv API metadata verified). Contrast Sets carries
+% the full verified author list, venue, pages and doi; Heo uses the corrected
+% initials; BridgeKV (n9b) now carries the full author list from arXiv metadata.
+% ===========================================================================
+
+% ---------------------- Cross-model KV transfer ---------------------------
+@misc{kvlingo,
+  author        = {Castin, V. and Sakamoto, K. and Filippova, A. and Monteiro, J.
+                   and Cuturi, M. and Ablin, P.},
+  title         = {{KV-Lingo: Learning KV-cache translators with distillation}},
+  year          = {2026},
+  note          = {arXiv preprint arXiv:2609.32610; doi:10.48550/arXiv.2609.32610}
+}
+
+@misc{cachelink,
+  author        = {Qiu, H. and Tang, Y. and Song, Z. and Han, R. and Qiao, Z.
+                   and Zhang, M.},
+  title         = {{CacheLink: Functional KV transport for zero-prefill cross-model
+                    context handoff}},
+  year          = {2026},
+  note          = {arXiv preprint arXiv:2610.15509; doi:10.48550/arXiv.2610.15509}
+}
+
+@misc{heo2026,
+  author        = {Heo, T. and Shafipour, R. and Zhao, R. and Golub, M. and
+                   Kamani, M. M. and Borkar, R. and Chandran, M. T. and
+                   Zardoshti, P. and Rouhani, B. D.},
+  title         = {{Cross-model KV cache transfer in LLM families: A closed-form
+                    linear mapping for prefill reuse}},
+  year          = {2026},
+  note          = {arXiv preprint arXiv:2608.03893 [cs.LG]; submitted 4 Aug 2026}
+}
+
+% ------------------ Faithfulness / counterfactual evaluation -------------
+@inproceedings{acc_evidence,
+  author        = {Ai, X. and He, H. and Guo, W.},
+  title         = {{Does accuracy equal evidence? Reasoning faithfulness under
+                    KV cache compression}},
+  booktitle     = {Findings of the 2026 Conference on Empirical Methods in
+                   Natural Language Processing (EMNLP Findings)},
+  year          = {2026},
+  note          = {arXiv preprint arXiv:2608.01631}
+}
+
+@inproceedings{contrastsets,
+  author        = {Gardner, M. and Artzi, Y. and Basmov, V. and Berant, J. and
+                   Bogin, B. and Chen, S. and Dasigi, P. and Dua, D. and
+                   Elazar, Y. and Gottumukkala, A. and Gupta, N. and
+                   Hajishirzi, H. and Ilharco, G. and Khashabi, D. and Lin, K.
+                   and Liu, J. and Liu, N. F. and Mulcaire, P. and Ning, Q. and
+                   Singh, S. and Smith, N. A. and Subramanian, S. and
+                   Tsarfaty, R. and Wallace, E. and Zhang, A. and Zhou, B.},
+  title         = {{Evaluating models' local decision boundaries via contrast sets}},
+  booktitle     = {Findings of the Association for Computational Linguistics:
+                   EMNLP 2020},
+  pages         = {1307--1323},
+  year          = {2020},
+  note          = {arXiv preprint arXiv:2004.02709;
+                   doi:10.18653/v1/2020.findings-emnlp.117}
+}
+
+@inproceedings{kaushik2020,
+  author        = {Kaushik, N. and Hovy, E. and Lipton, Z.},
+  title         = {{Learning the difference that makes a difference with
+                    counterfactually-augmented data}},
+  booktitle     = {International Conference on Learning Representations (ICLR)},
+  year          = {2020},
+  note          = {arXiv preprint arXiv:1909.12434}
+}
+
+@article{kapoor2023,
+  author        = {Kapoor, S. and Narayanan, V.},
+  title         = {{Leakage and the reproducibility crisis in machine-learning-based
+                    science}},
+  journal       = {Patterns},
+  year          = {2023},
+  note          = {arXiv preprint arXiv:2207.07048}
+}
+
+% -------------------------- SQuAD anchors --------------------------------
+@inproceedings{squad16,
+  author        = {Rajpurkar, Pranav and Zhang, Jian and Lopyrev, Konstantin
+                   and Liang, Percy},
+  title         = {{SQuAD: 100,000+ Questions for Machine Comprehension of Text}},
+  booktitle     = {Proceedings of the 2016 Conference on Empirical Methods in
+                   Natural Language Processing (EMNLP)},
+  year          = {2016},
+  doi           = {10.18653/v1/D16-1264}
+}
+
+@inproceedings{squad18,
+  author        = {Rajpurkar, Pranav and Jia, Robin and Liang, Percy},
+  title         = {{Know What You Don't Know: Unanswerable Questions for SQuAD}},
+  booktitle     = {Proceedings of the 56th Annual Meeting of the Association
+                   for Computational Linguistics (ACL)},
+  year          = {2018},
+  doi           = {10.18653/v1/P18-2124}
+}
+
+% ------------- N1--N9: arXiv preprints only (no venue claimed) -----------
+@misc{n1,
+  author        = {Tao, Z. and Jin, F. and Zhao, J.},
+  title         = {{Can KV cache be reused across model updates? A DeepSeek-V4-Flash
+                    case study}},
+  year          = {2026},
+  note          = {arXiv preprint arXiv:2611.14051}
+}
+
+@misc{n2,
+  author        = {Deng, A. and Liu, S. and Zhu, Y.},
+  title         = {{Close enough is nowhere near: Fidelity-consumability
+                    decoupling in KV caches}},
+  year          = {2026},
+  note          = {arXiv preprint arXiv:2610.22016}
+}
+
+@misc{n3,
+  author        = {Lin, Z. and Liu, J. and Liu, Y. and Wang, C.},
+  title         = {{To cache or not to cache: Understanding and mitigating safety
+                    incompatibility in cross-model KV cache reuse}},
+  year          = {2026},
+  note          = {arXiv preprint arXiv:2610.15721}
+}
+
+@misc{n4,
+  author        = {Liu, Y. and Tian, H. and Wang, T.},
+  title         = {{ACCT: Asymmetric cross-LLM context transfer}},
+  year          = {2026},
+  note          = {arXiv preprint arXiv:2610.42116}
+}
+
+@misc{n5,
+  author        = {Alabdulkareem, A. and Tenison, I. and Zhang, Y. and Zhu, Y.
+                   and Katz, B. and Gutfreund, D.},
+  title         = {{Swarm telepathy: Prefill-free KV-cache transfer across families}},
+  year          = {2026},
+  note          = {arXiv preprint arXiv:2610.15095}
+}
+
+@misc{n6,
+  author        = {Sarkar, S. and Mitra, S. and Huang, S. and Kundu, S.
+                   and Beerel, P. A.},
+  title         = {{RaReCache: Bridging the gap in cross-model KV cache reuse
+                    via rank disagreement-based selective recomputation}},
+  year          = {2026},
+  note          = {arXiv preprint arXiv:2610.11358}
+}
+
+@misc{n7,
+  author        = {Cheng, J. and Das, S. and Ramnath, R.},
+  title         = {{When does latent communication pay? A causal audit of relayed
+                    KV caches in multi-agent LLMs}},
+  year          = {2026},
+  note          = {arXiv preprint arXiv:2608.04893}
+}
+
+@misc{n8,
+  author        = {Khare, R.},
+  title         = {{CacheFuse: Enabling training-free latent communication
+                    between language models}},
+  year          = {2026},
+  note          = {arXiv preprint arXiv:2610.16165}
+}
+
+@misc{n9a,
+  author        = {Kvedaras, P. and Rasymas, T.},
+  title         = {{Translating KV caches between hybrid-attention language models}},
+  year          = {2026},
+  note          = {arXiv preprint arXiv:2611.12062}
+}
+
+@misc{n9b,
+  author        = {Behnam, P. and Sanyal, D. and Ponnusamy, P. and Ravi, K. M.
+                   and Sastry, P. and Bandaru, M. C. and Khare, A. and Lee, M.
+                   and Tumanov, A.},
+  title         = {{BridgeKV: Large-model prefill and small-model decoding for
+                    LLM inference via KV cache translation}},
+  year          = {2026},
+  note          = {arXiv preprint arXiv:2611.11761 [cs.CL]; submitted 9 Nov 2026}
+}

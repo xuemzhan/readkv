@@ -1,0 +1,49 @@
+{
+  "stage": 4,
+  "backend": "mock",
+  "recompute_plan": [
+    3,
+    1
+  ],
+  "recompute_cost": {
+    "naive_worst_case_layers": 12.0,
+    "naive_average_layers": 7.0,
+    "with_hidden_state_mapping": 2.0,
+    "fraction_of_full_prefill": 2.0
+  },
+  "H3": {
+    "gate": "H3_exploitability",
+    "passed": false,
+    "per_config": [
+      {
+        "point": -0.0008014728598726798,
+        "ci": [
+          -0.0014489403510196761,
+          -0.0001743995983991368
+        ]
+      },
+      {
+        "point": 0.00016240384004061656,
+        "ci": [
+          -0.0018013081222690204,
+          0.002376195386451424
+        ]
+      },
+      {
+        "point": 0.0002207532820410659,
+        "ci": [
+          -0.0009088813511970527,
+          0.0011352308542642948
+        ]
+      }
+    ],
+    "family_wise_max": {
+      "observed": 0.0002207532820410659,
+      "ci": [
+        -0.0008014728598726798,
+        0.0002207532820410659
+      ]
+    }
+  },
+  "note": "mock 结果仅用于探针/成本核算接线验证；hidden-state 路线需 GPU 机器实现"
+}

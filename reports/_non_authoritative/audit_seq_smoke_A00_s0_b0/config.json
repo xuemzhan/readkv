@@ -1,0 +1,76 @@
+{
+  "run_id": "audit_seq_smoke_A00_s0_b0",
+  "protocol_version": "2.8",
+  "git_hash": "35e78e0",
+  "created_at": "2026-11-24T00:19:07+00:00",
+  "seed": 0,
+  "device": "cuda",
+  "dtype": "bfloat16",
+  "kernel": "sdpa",
+  "zero_re_prefill": true,
+  "experiment_config": {
+    "stage": "sequence_scoring",
+    "gate": "full_candidate_scoring_v2.8",
+    "backend": "gpu",
+    "cell": "A00",
+    "calibration_version": "legacy",
+    "validation_version": "legacy",
+    "version_tag": "legacy_458de18",
+    "seed": 0,
+    "train_path": "/root/readkv/data/audit_2x2/legacy/train_seed0.jsonl",
+    "val_path": "/root/readkv/data/audit_2x2/legacy/val_seed0.jsonl",
+    "input_sha256": {
+      "train": "81da04a041a4e7757caa02e502c10ca9a9236d7f98da5419fb226ca95a02b00a",
+      "val": "24a5077bec11657c70d8eeddeed6fbe4871253d6d141daf16989903d1ebccaaa"
+    },
+    "dtype": "bfloat16",
+    "kernel": "sdpa",
+    "zero_re_prefill": true,
+    "teacher": "/root/.cache/modelscope/models/Qwen--Qwen3-1.7B/snapshots/master",
+    "student": "/root/.cache/modelscope/models/Qwen--Qwen3-0.6B/snapshots/master",
+    "tokenizer_fingerprint": {
+      "sha256": "5b99b5662966bd3f797c6f1e0bfa921cb567280f314f410c18b08431feaaf8c6",
+      "path": "/root/.cache/modelscope/models/Qwen--Qwen3-0.6B/snapshots/master",
+      "class": "Qwen2Tokenizer"
+    },
+    "tokenizer_fingerprint_teacher": {
+      "sha256": "15fc68ef30c133b05c502863bc8cd3c1184fc9a844f098cc10ca740481b020a7",
+      "path": "/root/.cache/modelscope/models/Qwen--Qwen3-1.7B/snapshots/master",
+      "class": "Qwen2Tokenizer"
+    },
+    "layer_map": {
+      "kind": "identity",
+      "n_student_layers": 28,
+      "n_teacher_layers": 28,
+      "offset": 0,
+      "permutation": null
+    },
+    "mapper": "affine_per_layer_head",
+    "ridge_lambda": 0.001,
+    "layer_map_kind": "identity",
+    "scoring": [
+      "first",
+      "full",
+      "length_normalized"
+    ],
+    "token_boundary": "query+candidate 独立 tokenize（add_special_tokens=False），不追加 EOS",
+    "teacher_forcing": "explicit score_candidate_sequence（非贪解码 inject_and_generate）",
+    "input_length_sequence": "[Q, 1*(m-1)]",
+    "n_train": 120,
+    "n_val": 6,
+    "tau": 1.0,
+    "self_threshold": 0.1,
+    "n_resamples": 10000,
+    "smoke": true,
+    "sealed_test_read": false,
+    "criteria_source": "configs/prereg/full_candidate_scoring_v2.8.yaml (frozen)",
+    "protocol_version": "2.8"
+  },
+  "metadata": {
+    "stage": "sequence_scoring",
+    "backend": "gpu",
+    "cell": "A00",
+    "protocol_version": "2.8",
+    "non_authoritative": true
+  }
+}

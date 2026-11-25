@@ -1,0 +1,211 @@
+{
+  "file": "reports/audit_2x2_formal_summary.json",
+  "date": "2026-11-23",
+  "protocol": "gpu_followup_v2.7 (frozen)",
+  "design": "2x2 calibration-version x validation-version, seeds 0/1/2, 12 cells serial",
+  "data": {
+    "versions": {
+      "legacy": "458de18 generator",
+      "fixed": "efc3ba3 generator"
+    },
+    "per_cell": {
+      "n_train": 120,
+      "n_val": 60
+    },
+    "source": "data/audit_2x2/{legacy,fixed}/train_seed{0,1,2}.jsonl + val_seed{0,1,2}.jsonl",
+    "hashes": "data/audit_2x2/{legacy,fixed}/_index.json"
+  },
+  "run_environment": {
+    "dtype": "bfloat16",
+    "kernel": "sdpa",
+    "zero_re_prefill": true,
+    "layer_map": "identity 28->28",
+    "mapper": "per-layer/head KV affine",
+    "ridge_lambda": 0.001,
+    "scoring": "first_token"
+  },
+  "cells": {
+    "A00_s0": {
+      "run_id": "audit_2x2_A00_s0",
+      "L": 0.01666666666666672,
+      "self_dual": 0.6833333333333333,
+      "joint_dual": 0.6666666666666666,
+      "n_val": 60,
+      "git_hash": "fec8a64",
+      "elapsed_sec": 126.3,
+      "identity_check": true,
+      "joint_zero_re_prefill": true
+    },
+    "A11_s0": {
+      "run_id": "audit_2x2_A11_s0",
+      "L": 0.39999999999999997,
+      "self_dual": 0.8166666666666667,
+      "joint_dual": 0.4166666666666667,
+      "n_val": 60,
+      "git_hash": "43cc800",
+      "elapsed_sec": 120.9,
+      "identity_check": true,
+      "joint_zero_re_prefill": true
+    },
+    "A01_s0": {
+      "run_id": "audit_2x2_A01_s0",
+      "L": 0.2666666666666666,
+      "self_dual": 0.8166666666666667,
+      "joint_dual": 0.55,
+      "n_val": 60,
+      "git_hash": "2ef23ab",
+      "elapsed_sec": 119.2,
+      "identity_check": true,
+      "joint_zero_re_prefill": true
+    },
+    "A10_s0": {
+      "run_id": "audit_2x2_A10_s0",
+      "L": 0.38333333333333336,
+      "self_dual": 0.6833333333333333,
+      "joint_dual": 0.3,
+      "n_val": 60,
+      "git_hash": "290e959",
+      "elapsed_sec": 112.7,
+      "identity_check": true,
+      "joint_zero_re_prefill": true
+    },
+    "A00_s1": {
+      "run_id": "audit_2x2_A00_s1",
+      "L": -0.050000000000000044,
+      "self_dual": 0.6,
+      "joint_dual": 0.65,
+      "n_val": 60,
+      "git_hash": "c58f0d1",
+      "elapsed_sec": 109.5,
+      "identity_check": true,
+      "joint_zero_re_prefill": true
+    },
+    "A11_s1": {
+      "run_id": "audit_2x2_A11_s1",
+      "L": 0.6166666666666667,
+      "self_dual": 0.9,
+      "joint_dual": 0.2833333333333333,
+      "n_val": 60,
+      "git_hash": "26feb0d",
+      "elapsed_sec": 108.0,
+      "identity_check": true,
+      "joint_zero_re_prefill": true
+    },
+    "A01_s1": {
+      "run_id": "audit_2x2_A01_s1",
+      "L": 0.2833333333333333,
+      "self_dual": 0.9,
+      "joint_dual": 0.6166666666666667,
+      "n_val": 60,
+      "git_hash": "eca1b1d",
+      "elapsed_sec": 111.2,
+      "identity_check": true,
+      "joint_zero_re_prefill": true
+    },
+    "A10_s1": {
+      "run_id": "audit_2x2_A10_s1",
+      "L": 0.23333333333333334,
+      "self_dual": 0.6,
+      "joint_dual": 0.36666666666666664,
+      "n_val": 60,
+      "git_hash": "97e6fe0",
+      "elapsed_sec": 118.6,
+      "identity_check": true,
+      "joint_zero_re_prefill": true
+    },
+    "A00_s2": {
+      "run_id": "audit_2x2_A00_s2",
+      "L": 0.033333333333333326,
+      "self_dual": 0.65,
+      "joint_dual": 0.6166666666666667,
+      "n_val": 60,
+      "git_hash": "9485596",
+      "elapsed_sec": 135.4,
+      "identity_check": true,
+      "joint_zero_re_prefill": true
+    },
+    "A11_s2": {
+      "run_id": "audit_2x2_A11_s2",
+      "L": 0.39999999999999997,
+      "self_dual": 0.7833333333333333,
+      "joint_dual": 0.38333333333333336,
+      "n_val": 60,
+      "git_hash": "14b1a57",
+      "elapsed_sec": 121.4,
+      "identity_check": true,
+      "joint_zero_re_prefill": true
+    },
+    "A01_s2": {
+      "run_id": "audit_2x2_A01_s2",
+      "L": 0.3333333333333333,
+      "self_dual": 0.7833333333333333,
+      "joint_dual": 0.45,
+      "n_val": 60,
+      "git_hash": "dce2ee4",
+      "elapsed_sec": 118.3,
+      "identity_check": true,
+      "joint_zero_re_prefill": true
+    },
+    "A10_s2": {
+      "run_id": "audit_2x2_A10_s2",
+      "L": 0.25,
+      "self_dual": 0.65,
+      "joint_dual": 0.4,
+      "n_val": 60,
+      "git_hash": "8e85071",
+      "elapsed_sec": 123.3,
+      "identity_check": true,
+      "joint_zero_re_prefill": true
+    }
+  },
+  "predeclared_contrasts": {
+    "s0": {
+      "calibration_effect_legacy_val_A10_minus_A00": 0.3667,
+      "calibration_effect_fixed_val_A11_minus_A01": 0.1333,
+      "eval_sensitivity_legacy_cal_A01_minus_A00": 0.25,
+      "eval_sensitivity_fixed_cal_A11_minus_A10": 0.0167
+    },
+    "s1": {
+      "calibration_effect_legacy_val_A10_minus_A00": 0.2833,
+      "calibration_effect_fixed_val_A11_minus_A01": 0.3333,
+      "eval_sensitivity_legacy_cal_A01_minus_A00": 0.3333,
+      "eval_sensitivity_fixed_cal_A11_minus_A10": 0.3833
+    },
+    "s2": {
+      "calibration_effect_legacy_val_A10_minus_A00": 0.2167,
+      "calibration_effect_fixed_val_A11_minus_A01": 0.0667,
+      "eval_sensitivity_legacy_cal_A01_minus_A00": 0.3,
+      "eval_sensitivity_fixed_cal_A11_minus_A10": 0.15
+    }
+  },
+  "diagonal_checks": {
+    "A00": "s0/s1/s2: 60/60 joint E_CF exact vs p1_gpu_mvp_repro_seed{0,1,2} (sample_hash==cache_hash)",
+    "A11": "s0/s1/s2: 60/60 joint E_CF exact vs p1_clean_mvp_seed{0,1,2} (sample_hash==cache_hash)"
+  },
+  "failure_retry": "0 formal-cell failures; all 12 cells completed on attempt 1 (smoke needed 3 attempts, see audit_2x2_smoke_report.md)",
+  "commit_chain": [
+    "8aeb282 (entry)",
+    "c1a161a/03c9f50 (smoke fixes)",
+    "fec8a64 (smoke pass)",
+    "43cc800/80f0421/2ef23ab/290e959/c58f0d1 (seed0)",
+    "26feb0d/eca1b1d/97e6fe0/9485596 (seed1)",
+    "14b1a57/dce2ee4/8e85071/3ed85f0 (seed2)"
+  ],
+  "audit_note": {
+    "consistency_check": "12 cells flagged ok=false ONLY because model_pair field is empty in audit entry config; model_pair is intentionally replaced by explicit calibration_version/validation_version + teacher/student paths. This is a field-contract false positive, not a data/metric error. bootstrap_ci_report ran normally (43 runs).",
+    "traceable": "all 12 cells git_hash in HEAD history, run-code unchanged vs HEAD, code_tracked=true"
+  },
+  "interpretation": "L(calibration) contrasts positive in all seeds on both val versions; eval-set sensitivity also mostly positive. Attribution limited to whole version switch per v2.7 (no single-defect causality). No contribution restored; main endpoint untouched.",
+  "contribution_status_unchanged": {
+    "c1": "withdrawn",
+    "c2": "withdrawn",
+    "c3": "withheld"
+  },
+  "elapsed_sec_total": 1424.8,
+  "artifacts": [
+    "reports/runs/audit_2x2_A{ij}_s{k}/ (12 dirs)",
+    "reports/audit_2x2_bootstrap.json",
+    "reports/consistency_report.json",
+    "reports/engineer_status.md"
+  ]
+}

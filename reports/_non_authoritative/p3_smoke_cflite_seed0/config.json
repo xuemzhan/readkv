@@ -1,0 +1,69 @@
+{
+  "run_id": "p3_smoke_cflite_seed0",
+  "protocol_version": "2.0",
+  "git_hash": "ee74382",
+  "created_at": "2026-11-23T10:21:22+00:00",
+  "seed": 0,
+  "device": "cuda",
+  "dtype": "bfloat16",
+  "kernel": "sdpa",
+  "zero_re_prefill": true,
+  "experiment_config": {
+    "stage": "P3",
+    "gate": "method",
+    "backend": "gpu",
+    "method": "cf_lite",
+    "teacher": "/root/.cache/modelscope/models/Qwen--Qwen3-1.7B/snapshots/master",
+    "student": "/root/.cache/modelscope/models/Qwen--Qwen3-0.6B/snapshots/master",
+    "model_pair": "qwen3-1.7b-to-0.6b",
+    "layer_map": {
+      "kind": "identity",
+      "n_student_layers": 28,
+      "n_teacher_layers": 28,
+      "offset": 0,
+      "permutation": null
+    },
+    "seed": 0,
+    "bootstrap_seed": 0,
+    "dtype": "bfloat16",
+    "kernel": "sdpa",
+    "device": "cuda",
+    "epochs": 1,
+    "lr": 0.001,
+    "rank": 0,
+    "huber_delta": 0.5,
+    "tau": 1.0,
+    "self_threshold": 0.1,
+    "lambda": {
+      "KD": 1.0,
+      "CF": 1.0,
+      "local": 0.0,
+      "reg": 0.0001
+    },
+    "budget": {
+      "epochs": 1,
+      "lr": 0.001,
+      "rank": 0,
+      "trainable_params": 7340032,
+      "student_forward_calls": 65,
+      "train_sec": 21.1,
+      "seed": 0
+    },
+    "primary_endpoint_definition": "sealed test paired E_CF difference (cf method vs primary_baseline=kd_only), cluster paired bootstrap, 95% CI upper < 0; distinct from P1/P2 relative-Self E_CF",
+    "baseline_mapper_source": "self (smoke, no external baseline)",
+    "eval_splits": [
+      "val"
+    ],
+    "n_resamples": 100,
+    "zero_re_prefill": true,
+    "smoke": true,
+    "prereg": "configs/prereg/phase3_method_decision.yaml + phase3_loss_config_v2.2.yaml (frozen)"
+  },
+  "metadata": {
+    "stage": "P3",
+    "backend": "gpu",
+    "method": "cf_lite",
+    "non_authoritative": true,
+    "protocol_version": "2.0"
+  }
+}

@@ -1,0 +1,57 @@
+{
+  "run_id": "v3_E5_affine_s1",
+  "protocol_version": "2.0",
+  "git_hash": "no-git",
+  "created_at": "2026-11-25T15:50:47+00:00",
+  "seed": 1,
+  "device": "cuda",
+  "dtype": "bfloat16",
+  "kernel": "sdpa",
+  "zero_re_prefill": true,
+  "experiment_config": {
+    "stage": "P1",
+    "gate": "counterfactual_benchmark",
+    "backend": "gpu",
+    "teacher": "reports/_non_authoritative/v3_g2_pilot/pinned/Qwen34B-sha256-8ba006f74fecfaae",
+    "student": "reports/_non_authoritative/v3_g2_pilot/pinned/Qwen31.7B-sha256-1ddb5b89ebc90dcb",
+    "model_pair": "qwen3-4b-to-1.7b",
+    "mapper": "affine",
+    "layer_map": {
+      "kind": "proportional",
+      "n_student_layers": 28,
+      "n_teacher_layers": 36,
+      "offset": 0,
+      "permutation": null
+    },
+    "seeds": [
+      0,
+      1,
+      2
+    ],
+    "seed": 1,
+    "bootstrap_seed": 1,
+    "dtype": "bfloat16",
+    "kernel": "sdpa",
+    "n_resamples": 10000,
+    "tau": 1.0,
+    "self_threshold": 0.1,
+    "sizes": {
+      "probe": 40,
+      "train": 120,
+      "val": 60,
+      "test": 300,
+      "real": 0
+    },
+    "eval_splits": [
+      "val"
+    ],
+    "primary_baseline": "kd_only",
+    "mapper_trainable_params": 0,
+    "prereg": "configs/prereg/phase1_benchmark_decision.yaml (frozen protocol-v2.0)"
+  },
+  "metadata": {
+    "stage": "P1",
+    "backend": "gpu",
+    "protocol_version": "2.0"
+  }
+}

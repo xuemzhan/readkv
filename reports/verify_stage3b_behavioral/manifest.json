@@ -1,0 +1,20 @@
+{
+  "run_id": "verify_stage3b_behavioral",
+  "files": [
+    {
+      "name": "config.json",
+      "sha256": "afdc0b7fdf013a69d2f4b5722701a3304a20bdd418b4d7eb2d1f6dff3ddbcfe0",
+      "size": 357
+    },
+    {
+      "name": "metrics.json",
+      "sha256": "faf634c1e8fd058b41ddb9dfdd8a1c912d02c824c5ba2278b523047937c49236",
+      "size": 3517
+    },
+    {
+      "name": "scores.jsonl",
+      "sha256": "e58146507ad6a8efce9657569bc463d3bc1edf4fd649b42b6f878cababbf0109",
+      "size": 9154
+    }
+  ]
+}

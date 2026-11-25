@@ -1,0 +1,240 @@
+{"pair_id": "val-F1-0000", "cluster": "val-T-F1-person-C-000", "arm": "self", "deployable": false, "E_CF": 0.0, "dual_correct": 1.0, "flip_consistency": true}
+{"pair_id": "val-F1-0000", "cluster": "val-T-F1-person-C-000", "arm": "k_only", "deployable": false, "E_CF": 0.5, "dual_correct": 1.0, "flip_consistency": true}
+{"pair_id": "val-F1-0000", "cluster": "val-T-F1-person-C-000", "arm": "v_only", "deployable": false, "E_CF": 0.4375, "dual_correct": 1.0, "flip_consistency": true}
+{"pair_id": "val-F1-0000", "cluster": "val-T-F1-person-C-000", "arm": "joint", "deployable": true, "E_CF": 1.875, "dual_correct": 1.0, "flip_consistency": true}
+{"pair_id": "val-F2-0001", "cluster": "val-T-F2-alias-C-001", "arm": "self", "deployable": false, "E_CF": 0.0, "dual_correct": 1.0, "flip_consistency": true}
+{"pair_id": "val-F2-0001", "cluster": "val-T-F2-alias-C-001", "arm": "k_only", "deployable": false, "E_CF": 0.25, "dual_correct": 1.0, "flip_consistency": true}
+{"pair_id": "val-F2-0001", "cluster": "val-T-F2-alias-C-001", "arm": "v_only", "deployable": false, "E_CF": 1.1875, "dual_correct": 1.0, "flip_consistency": true}
+{"pair_id": "val-F2-0001", "cluster": "val-T-F2-alias-C-001", "arm": "joint", "deployable": true, "E_CF": 1.5, "dual_correct": 0.0, "flip_consistency": true}
+{"pair_id": "val-F3-0002", "cluster": "val-T-F3-direction-C-002", "arm": "self", "deployable": false, "E_CF": 0.0, "dual_correct": 0.0, "flip_consistency": true}
+{"pair_id": "val-F3-0002", "cluster": "val-T-F3-direction-C-002", "arm": "k_only", "deployable": false, "E_CF": 0.8125, "dual_correct": 0.0, "flip_consistency": true}
+{"pair_id": "val-F3-0002", "cluster": "val-T-F3-direction-C-002", "arm": "v_only", "deployable": false, "E_CF": 2.3125, "dual_correct": 1.0, "flip_consistency": false}
+{"pair_id": "val-F3-0002", "cluster": "val-T-F3-direction-C-002", "arm": "joint", "deployable": true, "E_CF": 1.5625, "dual_correct": 1.0, "flip_consistency": false}
+{"pair_id": "val-F4-0003", "cluster": "val-T-F4-distractor-C-003", "arm": "self", "deployable": false, "E_CF": 0.0, "dual_correct": 0.0, "flip_consistency": null}
+{"pair_id": "val-F4-0003", "cluster": "val-T-F4-distractor-C-003", "arm": "k_only", "deployable": false, "E_CF": 0.0, "dual_correct": 0.0, "flip_consistency": null}
+{"pair_id": "val-F4-0003", "cluster": "val-T-F4-distractor-C-003", "arm": "v_only", "deployable": false, "E_CF": 0.0, "dual_correct": 0.0, "flip_consistency": null}
+{"pair_id": "val-F4-0003", "cluster": "val-T-F4-distractor-C-003", "arm": "joint", "deployable": true, "E_CF": 0.0, "dual_correct": 0.0, "flip_consistency": null}
+{"pair_id": "val-F5-0004", "cluster": "val-T-F5-paraphrase-C-004", "arm": "self", "deployable": false, "E_CF": 0.0, "dual_correct": 1.0, "flip_consistency": null}
+{"pair_id": "val-F5-0004", "cluster": "val-T-F5-paraphrase-C-004", "arm": "k_only", "deployable": false, "E_CF": 0.0, "dual_correct": 1.0, "flip_consistency": null}
+{"pair_id": "val-F5-0004", "cluster": "val-T-F5-paraphrase-C-004", "arm": "v_only", "deployable": false, "E_CF": 0.0, "dual_correct": 1.0, "flip_consistency": null}
+{"pair_id": "val-F5-0004", "cluster": "val-T-F5-paraphrase-C-004", "arm": "joint", "deployable": true, "E_CF": 0.0, "dual_correct": 1.0, "flip_consistency": null}
+{"pair_id": "val-F6-0005", "cluster": "val-T-F6-position-C-005", "arm": "self", "deployable": false, "E_CF": 0.0, "dual_correct": 1.0, "flip_consistency": true}
+{"pair_id": "val-F6-0005", "cluster": "val-T-F6-position-C-005", "arm": "k_only", "deployable": false, "E_CF": 0.03125, "dual_correct": 1.0, "flip_consistency": true}
+{"pair_id": "val-F6-0005", "cluster": "val-T-F6-position-C-005", "arm": "v_only", "deployable": false, "E_CF": 1.15625, "dual_correct": 1.0, "flip_consistency": true}
+{"pair_id": "val-F6-0005", "cluster": "val-T-F6-position-C-005", "arm": "joint", "deployable": true, "E_CF": 1.65625, "dual_correct": 1.0, "flip_consistency": true}
+{"pair_id": "val-F1-0006", "cluster": "val-T-F1-city-C-006", "arm": "self", "deployable": false, "E_CF": 0.0, "dual_correct": 1.0, "flip_consistency": true}
+{"pair_id": "val-F1-0006", "cluster": "val-T-F1-city-C-006", "arm": "k_only", "deployable": false, "E_CF": 0.796875, "dual_correct": 1.0, "flip_consistency": true}
+{"pair_id": "val-F1-0006", "cluster": "val-T-F1-city-C-006", "arm": "v_only", "deployable": false, "E_CF": 1.890625, "dual_correct": 1.0, "flip_consistency": true}
+{"pair_id": "val-F1-0006", "cluster": "val-T-F1-city-C-006", "arm": "joint", "deployable": true, "E_CF": 2.453125, "dual_correct": 1.0, "flip_consistency": true}
+{"pair_id": "val-F3-0007", "cluster": "val-T-F3-negation-C-007", "arm": "self", "deployable": false, "E_CF": 0.0, "dual_correct": 0.0, "flip_consistency": true}
+{"pair_id": "val-F3-0007", "cluster": "val-T-F3-negation-C-007", "arm": "k_only", "deployable": false, "E_CF": 1.375, "dual_correct": 0.0, "flip_consistency": true}
+{"pair_id": "val-F3-0007", "cluster": "val-T-F3-negation-C-007", "arm": "v_only", "deployable": false, "E_CF": 1.875, "dual_correct": 0.0, "flip_consistency": true}
+{"pair_id": "val-F3-0007", "cluster": "val-T-F3-negation-C-007", "arm": "joint", "deployable": true, "E_CF": 2.8125000000000004, "dual_correct": 0.0, "flip_consistency": true}
+{"pair_id": "val-F1-0008", "cluster": "val-T-F1-person-C-008", "arm": "self", "deployable": false, "E_CF": 0.0, "dual_correct": 1.0, "flip_consistency": true}
+{"pair_id": "val-F1-0008", "cluster": "val-T-F1-person-C-008", "arm": "k_only", "deployable": false, "E_CF": 1.46875, "dual_correct": 1.0, "flip_consistency": true}
+{"pair_id": "val-F1-0008", "cluster": "val-T-F1-person-C-008", "arm": "v_only", "deployable": false, "E_CF": 2.46875, "dual_correct": 1.0, "flip_consistency": true}
+{"pair_id": "val-F1-0008", "cluster": "val-T-F1-person-C-008", "arm": "joint", "deployable": true, "E_CF": 0.59375, "dual_correct": 1.0, "flip_consistency": true}
+{"pair_id": "val-F2-0009", "cluster": "val-T-F2-alias-C-009", "arm": "self", "deployable": false, "E_CF": 0.0, "dual_correct": 1.0, "flip_consistency": true}
+{"pair_id": "val-F2-0009", "cluster": "val-T-F2-alias-C-009", "arm": "k_only", "deployable": false, "E_CF": 1.3125, "dual_correct": 1.0, "flip_consistency": true}
+{"pair_id": "val-F2-0009", "cluster": "val-T-F2-alias-C-009", "arm": "v_only", "deployable": false, "E_CF": 4.34375, "dual_correct": 1.0, "flip_consistency": true}
+{"pair_id": "val-F2-0009", "cluster": "val-T-F2-alias-C-009", "arm": "joint", "deployable": true, "E_CF": 4.09375, "dual_correct": 1.0, "flip_consistency": true}
+{"pair_id": "val-F3-0010", "cluster": "val-T-F3-direction-C-010", "arm": "self", "deployable": false, "E_CF": 0.0, "dual_correct": 0.0, "flip_consistency": true}
+{"pair_id": "val-F3-0010", "cluster": "val-T-F3-direction-C-010", "arm": "k_only", "deployable": false, "E_CF": 1.0, "dual_correct": 0.0, "flip_consistency": true}
+{"pair_id": "val-F3-0010", "cluster": "val-T-F3-direction-C-010", "arm": "v_only", "deployable": false, "E_CF": 4.875, "dual_correct": 0.0, "flip_consistency": false}
+{"pair_id": "val-F3-0010", "cluster": "val-T-F3-direction-C-010", "arm": "joint", "deployable": true, "E_CF": 6.375, "dual_correct": 0.0, "flip_consistency": false}
+{"pair_id": "val-F4-0011", "cluster": "val-T-F4-distractor-C-011", "arm": "self", "deployable": false, "E_CF": 0.0, "dual_correct": 1.0, "flip_consistency": true}
+{"pair_id": "val-F4-0011", "cluster": "val-T-F4-distractor-C-011", "arm": "k_only", "deployable": false, "E_CF": 0.1875, "dual_correct": 1.0, "flip_consistency": true}
+{"pair_id": "val-F4-0011", "cluster": "val-T-F4-distractor-C-011", "arm": "v_only", "deployable": false, "E_CF": 2.9375, "dual_correct": 1.0, "flip_consistency": true}
+{"pair_id": "val-F4-0011", "cluster": "val-T-F4-distractor-C-011", "arm": "joint", "deployable": true, "E_CF": 2.375, "dual_correct": 1.0, "flip_consistency": true}
+{"pair_id": "val-F5-0012", "cluster": "val-T-F5-paraphrase-C-012", "arm": "self", "deployable": false, "E_CF": 0.0, "dual_correct": 1.0, "flip_consistency": null}
+{"pair_id": "val-F5-0012", "cluster": "val-T-F5-paraphrase-C-012", "arm": "k_only", "deployable": false, "E_CF": 0.0, "dual_correct": 1.0, "flip_consistency": null}
+{"pair_id": "val-F5-0012", "cluster": "val-T-F5-paraphrase-C-012", "arm": "v_only", "deployable": false, "E_CF": 0.0, "dual_correct": 1.0, "flip_consistency": null}
+{"pair_id": "val-F5-0012", "cluster": "val-T-F5-paraphrase-C-012", "arm": "joint", "deployable": true, "E_CF": 0.0, "dual_correct": 1.0, "flip_consistency": null}
+{"pair_id": "val-F6-0013", "cluster": "val-T-F6-position-C-013", "arm": "self", "deployable": false, "E_CF": 0.0, "dual_correct": 1.0, "flip_consistency": true}
+{"pair_id": "val-F6-0013", "cluster": "val-T-F6-position-C-013", "arm": "k_only", "deployable": false, "E_CF": 0.1875, "dual_correct": 1.0, "flip_consistency": true}
+{"pair_id": "val-F6-0013", "cluster": "val-T-F6-position-C-013", "arm": "v_only", "deployable": false, "E_CF": 2.46875, "dual_correct": 1.0, "flip_consistency": true}
+{"pair_id": "val-F6-0013", "cluster": "val-T-F6-position-C-013", "arm": "joint", "deployable": true, "E_CF": 2.90625, "dual_correct": 1.0, "flip_consistency": true}
+{"pair_id": "val-F1-0014", "cluster": "val-T-F1-city-C-014", "arm": "self", "deployable": false, "E_CF": 0.0, "dual_correct": 1.0, "flip_consistency": true}
+{"pair_id": "val-F1-0014", "cluster": "val-T-F1-city-C-014", "arm": "k_only", "deployable": false, "E_CF": 0.15625, "dual_correct": 1.0, "flip_consistency": true}
+{"pair_id": "val-F1-0014", "cluster": "val-T-F1-city-C-014", "arm": "v_only", "deployable": false, "E_CF": 2.21875, "dual_correct": 1.0, "flip_consistency": true}
+{"pair_id": "val-F1-0014", "cluster": "val-T-F1-city-C-014", "arm": "joint", "deployable": true, "E_CF": 2.8125, "dual_correct": 1.0, "flip_consistency": true}
+{"pair_id": "val-F3-0015", "cluster": "val-T-F3-negation-C-015", "arm": "self", "deployable": false, "E_CF": 0.0, "dual_correct": 0.0, "flip_consistency": true}
+{"pair_id": "val-F3-0015", "cluster": "val-T-F3-negation-C-015", "arm": "k_only", "deployable": false, "E_CF": 1.40625, "dual_correct": 0.0, "flip_consistency": true}
+{"pair_id": "val-F3-0015", "cluster": "val-T-F3-negation-C-015", "arm": "v_only", "deployable": false, "E_CF": 2.21875, "dual_correct": 0.0, "flip_consistency": true}
+{"pair_id": "val-F3-0015", "cluster": "val-T-F3-negation-C-015", "arm": "joint", "deployable": true, "E_CF": 2.8125, "dual_correct": 0.0, "flip_consistency": true}
+{"pair_id": "val-F1-0016", "cluster": "val-T-F1-person-C-016", "arm": "self", "deployable": false, "E_CF": 0.0, "dual_correct": 1.0, "flip_consistency": true}
+{"pair_id": "val-F1-0016", "cluster": "val-T-F1-person-C-016", "arm": "k_only", "deployable": false, "E_CF": 1.5, "dual_correct": 1.0, "flip_consistency": true}
+{"pair_id": "val-F1-0016", "cluster": "val-T-F1-person-C-016", "arm": "v_only", "deployable": false, "E_CF": 0.5625, "dual_correct": 1.0, "flip_consistency": true}
+{"pair_id": "val-F1-0016", "cluster": "val-T-F1-person-C-016", "arm": "joint", "deployable": true, "E_CF": 1.0, "dual_correct": 1.0, "flip_consistency": true}
+{"pair_id": "val-F2-0017", "cluster": "val-T-F2-alias-C-017", "arm": "self", "deployable": false, "E_CF": 0.0, "dual_correct": 1.0, "flip_consistency": true}
+{"pair_id": "val-F2-0017", "cluster": "val-T-F2-alias-C-017", "arm": "k_only", "deployable": false, "E_CF": 0.96875, "dual_correct": 1.0, "flip_consistency": true}
+{"pair_id": "val-F2-0017", "cluster": "val-T-F2-alias-C-017", "arm": "v_only", "deployable": false, "E_CF": 2.0625, "dual_correct": 1.0, "flip_consistency": true}
+{"pair_id": "val-F2-0017", "cluster": "val-T-F2-alias-C-017", "arm": "joint", "deployable": true, "E_CF": 2.4375, "dual_correct": 1.0, "flip_consistency": true}
+{"pair_id": "val-F3-0018", "cluster": "val-T-F3-direction-C-018", "arm": "self", "deployable": false, "E_CF": 0.0, "dual_correct": 0.0, "flip_consistency": true}
+{"pair_id": "val-F3-0018", "cluster": "val-T-F3-direction-C-018", "arm": "k_only", "deployable": false, "E_CF": 1.375, "dual_correct": 0.0, "flip_consistency": true}
+{"pair_id": "val-F3-0018", "cluster": "val-T-F3-direction-C-018", "arm": "v_only", "deployable": false, "E_CF": 4.5, "dual_correct": 0.0, "flip_consistency": true}
+{"pair_id": "val-F3-0018", "cluster": "val-T-F3-direction-C-018", "arm": "joint", "deployable": true, "E_CF": 6.25, "dual_correct": 0.0, "flip_consistency": true}
+{"pair_id": "val-F4-0019", "cluster": "val-T-F4-distractor-C-019", "arm": "self", "deployable": false, "E_CF": 0.0, "dual_correct": 1.0, "flip_consistency": true}
+{"pair_id": "val-F4-0019", "cluster": "val-T-F4-distractor-C-019", "arm": "k_only", "deployable": false, "E_CF": 0.59375, "dual_correct": 1.0, "flip_consistency": true}
+{"pair_id": "val-F4-0019", "cluster": "val-T-F4-distractor-C-019", "arm": "v_only", "deployable": false, "E_CF": 1.90625, "dual_correct": 0.0, "flip_consistency": true}
+{"pair_id": "val-F4-0019", "cluster": "val-T-F4-distractor-C-019", "arm": "joint", "deployable": true, "E_CF": 1.09375, "dual_correct": 1.0, "flip_consistency": true}
+{"pair_id": "val-F5-0020", "cluster": "val-T-F5-paraphrase-C-020", "arm": "self", "deployable": false, "E_CF": 0.0, "dual_correct": 1.0, "flip_consistency": null}
+{"pair_id": "val-F5-0020", "cluster": "val-T-F5-paraphrase-C-020", "arm": "k_only", "deployable": false, "E_CF": 0.0, "dual_correct": 1.0, "flip_consistency": null}
+{"pair_id": "val-F5-0020", "cluster": "val-T-F5-paraphrase-C-020", "arm": "v_only", "deployable": false, "E_CF": 0.0, "dual_correct": 1.0, "flip_consistency": null}
+{"pair_id": "val-F5-0020", "cluster": "val-T-F5-paraphrase-C-020", "arm": "joint", "deployable": true, "E_CF": 0.0, "dual_correct": 1.0, "flip_consistency": null}
+{"pair_id": "val-F6-0021", "cluster": "val-T-F6-position-C-021", "arm": "self", "deployable": false, "E_CF": 0.0, "dual_correct": 1.0, "flip_consistency": true}
+{"pair_id": "val-F6-0021", "cluster": "val-T-F6-position-C-021", "arm": "k_only", "deployable": false, "E_CF": 0.0, "dual_correct": 1.0, "flip_consistency": true}
+{"pair_id": "val-F6-0021", "cluster": "val-T-F6-position-C-021", "arm": "v_only", "deployable": false, "E_CF": 1.90625, "dual_correct": 1.0, "flip_consistency": true}
+{"pair_id": "val-F6-0021", "cluster": "val-T-F6-position-C-021", "arm": "joint", "deployable": true, "E_CF": 2.6875, "dual_correct": 1.0, "flip_consistency": true}
+{"pair_id": "val-F1-0022", "cluster": "val-T-F1-city-C-022", "arm": "self", "deployable": false, "E_CF": 0.0, "dual_correct": 0.0, "flip_consistency": true}
+{"pair_id": "val-F1-0022", "cluster": "val-T-F1-city-C-022", "arm": "k_only", "deployable": false, "E_CF": 0.03125, "dual_correct": 0.0, "flip_consistency": true}
+{"pair_id": "val-F1-0022", "cluster": "val-T-F1-city-C-022", "arm": "v_only", "deployable": false, "E_CF": 1.34375, "dual_correct": 0.0, "flip_consistency": true}
+{"pair_id": "val-F1-0022", "cluster": "val-T-F1-city-C-022", "arm": "joint", "deployable": true, "E_CF": 2.1875, "dual_correct": 0.0, "flip_consistency": true}
+{"pair_id": "val-F3-0023", "cluster": "val-T-F3-negation-C-023", "arm": "self", "deployable": false, "E_CF": 0.0, "dual_correct": 0.0, "flip_consistency": true}
+{"pair_id": "val-F3-0023", "cluster": "val-T-F3-negation-C-023", "arm": "k_only", "deployable": false, "E_CF": 0.875, "dual_correct": 0.0, "flip_consistency": true}
+{"pair_id": "val-F3-0023", "cluster": "val-T-F3-negation-C-023", "arm": "v_only", "deployable": false, "E_CF": 1.125, "dual_correct": 0.0, "flip_consistency": true}
+{"pair_id": "val-F3-0023", "cluster": "val-T-F3-negation-C-023", "arm": "joint", "deployable": true, "E_CF": 1.5, "dual_correct": 0.0, "flip_consistency": true}
+{"pair_id": "val-F1-0024", "cluster": "val-T-F1-person-C-024", "arm": "self", "deployable": false, "E_CF": 0.0, "dual_correct": 1.0, "flip_consistency": true}
+{"pair_id": "val-F1-0024", "cluster": "val-T-F1-person-C-024", "arm": "k_only", "deployable": false, "E_CF": 0.03125, "dual_correct": 1.0, "flip_consistency": true}
+{"pair_id": "val-F1-0024", "cluster": "val-T-F1-person-C-024", "arm": "v_only", "deployable": false, "E_CF": 2.25, "dual_correct": 1.0, "flip_consistency": true}
+{"pair_id": "val-F1-0024", "cluster": "val-T-F1-person-C-024", "arm": "joint", "deployable": true, "E_CF": 2.21875, "dual_correct": 1.0, "flip_consistency": true}
+{"pair_id": "val-F2-0025", "cluster": "val-T-F2-alias-C-025", "arm": "self", "deployable": false, "E_CF": 0.0, "dual_correct": 1.0, "flip_consistency": true}
+{"pair_id": "val-F2-0025", "cluster": "val-T-F2-alias-C-025", "arm": "k_only", "deployable": false, "E_CF": 0.34375, "dual_correct": 1.0, "flip_consistency": true}
+{"pair_id": "val-F2-0025", "cluster": "val-T-F2-alias-C-025", "arm": "v_only", "deployable": false, "E_CF": 3.03125, "dual_correct": 0.0, "flip_consistency": true}
+{"pair_id": "val-F2-0025", "cluster": "val-T-F2-alias-C-025", "arm": "joint", "deployable": true, "E_CF": 3.78125, "dual_correct": 0.0, "flip_consistency": true}
+{"pair_id": "val-F3-0026", "cluster": "val-T-F3-direction-C-026", "arm": "self", "deployable": false, "E_CF": 0.0, "dual_correct": 0.0, "flip_consistency": true}
+{"pair_id": "val-F3-0026", "cluster": "val-T-F3-direction-C-026", "arm": "k_only", "deployable": false, "E_CF": 0.25, "dual_correct": 0.0, "flip_consistency": true}
+{"pair_id": "val-F3-0026", "cluster": "val-T-F3-direction-C-026", "arm": "v_only", "deployable": false, "E_CF": 4.0, "dual_correct": 1.0, "flip_consistency": false}
+{"pair_id": "val-F3-0026", "cluster": "val-T-F3-direction-C-026", "arm": "joint", "deployable": true, "E_CF": 4.5625, "dual_correct": 1.0, "flip_consistency": false}
+{"pair_id": "val-F4-0027", "cluster": "val-T-F4-distractor-C-027", "arm": "self", "deployable": false, "E_CF": 0.0, "dual_correct": 0.0, "flip_consistency": null}
+{"pair_id": "val-F4-0027", "cluster": "val-T-F4-distractor-C-027", "arm": "k_only", "deployable": false, "E_CF": 0.0, "dual_correct": 0.0, "flip_consistency": null}
+{"pair_id": "val-F4-0027", "cluster": "val-T-F4-distractor-C-027", "arm": "v_only", "deployable": false, "E_CF": 0.0, "dual_correct": 0.0, "flip_consistency": null}
+{"pair_id": "val-F4-0027", "cluster": "val-T-F4-distractor-C-027", "arm": "joint", "deployable": true, "E_CF": 0.0, "dual_correct": 0.0, "flip_consistency": null}
+{"pair_id": "val-F5-0028", "cluster": "val-T-F5-paraphrase-C-028", "arm": "self", "deployable": false, "E_CF": 0.0, "dual_correct": 1.0, "flip_consistency": null}
+{"pair_id": "val-F5-0028", "cluster": "val-T-F5-paraphrase-C-028", "arm": "k_only", "deployable": false, "E_CF": 0.0, "dual_correct": 1.0, "flip_consistency": null}
+{"pair_id": "val-F5-0028", "cluster": "val-T-F5-paraphrase-C-028", "arm": "v_only", "deployable": false, "E_CF": 0.0, "dual_correct": 1.0, "flip_consistency": null}
+{"pair_id": "val-F5-0028", "cluster": "val-T-F5-paraphrase-C-028", "arm": "joint", "deployable": true, "E_CF": 0.0, "dual_correct": 1.0, "flip_consistency": null}
+{"pair_id": "val-F6-0029", "cluster": "val-T-F6-position-C-029", "arm": "self", "deployable": false, "E_CF": 0.0, "dual_correct": 1.0, "flip_consistency": true}
+{"pair_id": "val-F6-0029", "cluster": "val-T-F6-position-C-029", "arm": "k_only", "deployable": false, "E_CF": 0.0625, "dual_correct": 1.0, "flip_consistency": true}
+{"pair_id": "val-F6-0029", "cluster": "val-T-F6-position-C-029", "arm": "v_only", "deployable": false, "E_CF": 1.9375, "dual_correct": 1.0, "flip_consistency": true}
+{"pair_id": "val-F6-0029", "cluster": "val-T-F6-position-C-029", "arm": "joint", "deployable": true, "E_CF": 2.125, "dual_correct": 1.0, "flip_consistency": true}
+{"pair_id": "val-F1-0030", "cluster": "val-T-F1-city-C-030", "arm": "self", "deployable": false, "E_CF": 0.0, "dual_correct": 0.0, "flip_consistency": true}
+{"pair_id": "val-F1-0030", "cluster": "val-T-F1-city-C-030", "arm": "k_only", "deployable": false, "E_CF": 0.1875, "dual_correct": 0.0, "flip_consistency": true}
+{"pair_id": "val-F1-0030", "cluster": "val-T-F1-city-C-030", "arm": "v_only", "deployable": false, "E_CF": 1.765625, "dual_correct": 0.0, "flip_consistency": true}
+{"pair_id": "val-F1-0030", "cluster": "val-T-F1-city-C-030", "arm": "joint", "deployable": true, "E_CF": 1.96875, "dual_correct": 0.0, "flip_consistency": true}
+{"pair_id": "val-F3-0031", "cluster": "val-T-F3-negation-C-031", "arm": "self", "deployable": false, "E_CF": 0.0, "dual_correct": 0.0, "flip_consistency": true}
+{"pair_id": "val-F3-0031", "cluster": "val-T-F3-negation-C-031", "arm": "k_only", "deployable": false, "E_CF": 0.90625, "dual_correct": 0.0, "flip_consistency": true}
+{"pair_id": "val-F3-0031", "cluster": "val-T-F3-negation-C-031", "arm": "v_only", "deployable": false, "E_CF": 1.03125, "dual_correct": 0.0, "flip_consistency": true}
+{"pair_id": "val-F3-0031", "cluster": "val-T-F3-negation-C-031", "arm": "joint", "deployable": true, "E_CF": 1.625, "dual_correct": 0.0, "flip_consistency": true}
+{"pair_id": "val-F1-0032", "cluster": "val-T-F1-person-C-032", "arm": "self", "deployable": false, "E_CF": 0.0, "dual_correct": 1.0, "flip_consistency": true}
+{"pair_id": "val-F1-0032", "cluster": "val-T-F1-person-C-032", "arm": "k_only", "deployable": false, "E_CF": 0.5625, "dual_correct": 1.0, "flip_consistency": true}
+{"pair_id": "val-F1-0032", "cluster": "val-T-F1-person-C-032", "arm": "v_only", "deployable": false, "E_CF": 1.0625, "dual_correct": 1.0, "flip_consistency": true}
+{"pair_id": "val-F1-0032", "cluster": "val-T-F1-person-C-032", "arm": "joint", "deployable": true, "E_CF": 1.9375, "dual_correct": 1.0, "flip_consistency": true}
+{"pair_id": "val-F2-0033", "cluster": "val-T-F2-alias-C-033", "arm": "self", "deployable": false, "E_CF": 0.0, "dual_correct": 0.0, "flip_consistency": null}
+{"pair_id": "val-F2-0033", "cluster": "val-T-F2-alias-C-033", "arm": "k_only", "deployable": false, "E_CF": 0.0, "dual_correct": 0.0, "flip_consistency": null}
+{"pair_id": "val-F2-0033", "cluster": "val-T-F2-alias-C-033", "arm": "v_only", "deployable": false, "E_CF": 0.0, "dual_correct": 0.0, "flip_consistency": null}
+{"pair_id": "val-F2-0033", "cluster": "val-T-F2-alias-C-033", "arm": "joint", "deployable": true, "E_CF": 0.0, "dual_correct": 0.0, "flip_consistency": null}
+{"pair_id": "val-F3-0034", "cluster": "val-T-F3-direction-C-034", "arm": "self", "deployable": false, "E_CF": 0.0, "dual_correct": 0.0, "flip_consistency": true}
+{"pair_id": "val-F3-0034", "cluster": "val-T-F3-direction-C-034", "arm": "k_only", "deployable": false, "E_CF": 1.5625, "dual_correct": 0.0, "flip_consistency": true}
+{"pair_id": "val-F3-0034", "cluster": "val-T-F3-direction-C-034", "arm": "v_only", "deployable": false, "E_CF": 0.9375, "dual_correct": 0.0, "flip_consistency": true}
+{"pair_id": "val-F3-0034", "cluster": "val-T-F3-direction-C-034", "arm": "joint", "deployable": true, "E_CF": 0.3125, "dual_correct": 0.0, "flip_consistency": true}
+{"pair_id": "val-F4-0035", "cluster": "val-T-F4-distractor-C-035", "arm": "self", "deployable": false, "E_CF": 0.0, "dual_correct": 1.0, "flip_consistency": true}
+{"pair_id": "val-F4-0035", "cluster": "val-T-F4-distractor-C-035", "arm": "k_only", "deployable": false, "E_CF": 0.25, "dual_correct": 1.0, "flip_consistency": true}
+{"pair_id": "val-F4-0035", "cluster": "val-T-F4-distractor-C-035", "arm": "v_only", "deployable": false, "E_CF": 2.1875, "dual_correct": 1.0, "flip_consistency": true}
+{"pair_id": "val-F4-0035", "cluster": "val-T-F4-distractor-C-035", "arm": "joint", "deployable": true, "E_CF": 2.0625, "dual_correct": 1.0, "flip_consistency": true}
+{"pair_id": "val-F5-0036", "cluster": "val-T-F5-paraphrase-C-036", "arm": "self", "deployable": false, "E_CF": 0.0, "dual_correct": 1.0, "flip_consistency": null}
+{"pair_id": "val-F5-0036", "cluster": "val-T-F5-paraphrase-C-036", "arm": "k_only", "deployable": false, "E_CF": 0.0, "dual_correct": 1.0, "flip_consistency": null}
+{"pair_id": "val-F5-0036", "cluster": "val-T-F5-paraphrase-C-036", "arm": "v_only", "deployable": false, "E_CF": 0.0, "dual_correct": 1.0, "flip_consistency": null}
+{"pair_id": "val-F5-0036", "cluster": "val-T-F5-paraphrase-C-036", "arm": "joint", "deployable": true, "E_CF": 0.0, "dual_correct": 1.0, "flip_consistency": null}
+{"pair_id": "val-F6-0037", "cluster": "val-T-F6-position-C-037", "arm": "self", "deployable": false, "E_CF": 0.0, "dual_correct": 1.0, "flip_consistency": true}
+{"pair_id": "val-F6-0037", "cluster": "val-T-F6-position-C-037", "arm": "k_only", "deployable": false, "E_CF": 0.6875, "dual_correct": 1.0, "flip_consistency": true}
+{"pair_id": "val-F6-0037", "cluster": "val-T-F6-position-C-037", "arm": "v_only", "deployable": false, "E_CF": 1.4375, "dual_correct": 1.0, "flip_consistency": true}
+{"pair_id": "val-F6-0037", "cluster": "val-T-F6-position-C-037", "arm": "joint", "deployable": true, "E_CF": 2.1875, "dual_correct": 1.0, "flip_consistency": true}
+{"pair_id": "val-F1-0038", "cluster": "val-T-F1-city-C-038", "arm": "self", "deployable": false, "E_CF": 0.0, "dual_correct": 1.0, "flip_consistency": true}
+{"pair_id": "val-F1-0038", "cluster": "val-T-F1-city-C-038", "arm": "k_only", "deployable": false, "E_CF": 0.375, "dual_correct": 1.0, "flip_consistency": true}
+{"pair_id": "val-F1-0038", "cluster": "val-T-F1-city-C-038", "arm": "v_only", "deployable": false, "E_CF": 0.75, "dual_correct": 1.0, "flip_consistency": true}
+{"pair_id": "val-F1-0038", "cluster": "val-T-F1-city-C-038", "arm": "joint", "deployable": true, "E_CF": 1.125, "dual_correct": 1.0, "flip_consistency": true}
+{"pair_id": "val-F3-0039", "cluster": "val-T-F3-negation-C-039", "arm": "self", "deployable": false, "E_CF": 0.0, "dual_correct": 0.0, "flip_consistency": true}
+{"pair_id": "val-F3-0039", "cluster": "val-T-F3-negation-C-039", "arm": "k_only", "deployable": false, "E_CF": 1.375, "dual_correct": 0.0, "flip_consistency": true}
+{"pair_id": "val-F3-0039", "cluster": "val-T-F3-negation-C-039", "arm": "v_only", "deployable": false, "E_CF": 2.0, "dual_correct": 0.0, "flip_consistency": true}
+{"pair_id": "val-F3-0039", "cluster": "val-T-F3-negation-C-039", "arm": "joint", "deployable": true, "E_CF": 2.8125, "dual_correct": 0.0, "flip_consistency": true}
+{"pair_id": "val-F1-0000", "cluster": "val-T-F1-person-C-000", "split": "val", "slice_id": "F1", "arm": "oracle_U", "delta_ecf": 1.625, "delta_rand": -0.1875, "hit_u": 1.0, "hit_rand": 0.0, "delta_hit": 1.0, "hit": true}
+{"pair_id": "val-F1-0000", "cluster": "val-T-F1-person-C-000", "split": "val", "slice_id": "F1", "arm": "oracle_random", "delta_ecf": -0.1875, "hit": false}
+{"pair_id": "val-F2-0001", "cluster": "val-T-F2-alias-C-001", "split": "val", "slice_id": "F2", "arm": "oracle_U", "delta_ecf": 1.125, "delta_rand": -0.0625, "hit_u": 1.0, "hit_rand": 0.0, "delta_hit": 1.0, "hit": true}
+{"pair_id": "val-F2-0001", "cluster": "val-T-F2-alias-C-001", "split": "val", "slice_id": "F2", "arm": "oracle_random", "delta_ecf": -0.0625, "hit": false}
+{"pair_id": "val-F3-0002", "cluster": "val-T-F3-direction-C-002", "split": "val", "slice_id": "F3", "arm": "oracle_U", "delta_ecf": 1.3125, "delta_rand": -0.25, "hit_u": 1.0, "hit_rand": 0.0, "delta_hit": 1.0, "hit": true}
+{"pair_id": "val-F3-0002", "cluster": "val-T-F3-direction-C-002", "split": "val", "slice_id": "F3", "arm": "oracle_random", "delta_ecf": -0.25, "hit": false}
+{"pair_id": "val-F4-0003", "cluster": "val-T-F4-distractor-C-003", "split": "val", "slice_id": "F4", "arm": "oracle_U", "delta_ecf": 0.0, "delta_rand": 0.0, "hit_u": 0.0, "hit_rand": 0.0, "delta_hit": 0.0, "hit": false}
+{"pair_id": "val-F4-0003", "cluster": "val-T-F4-distractor-C-003", "split": "val", "slice_id": "F4", "arm": "oracle_random", "delta_ecf": 0.0, "hit": false}
+{"pair_id": "val-F5-0004", "cluster": "val-T-F5-paraphrase-C-004", "split": "val", "slice_id": "F5", "arm": "oracle_U", "delta_ecf": 0.0, "delta_rand": 0.0, "hit_u": 0.0, "hit_rand": 0.0, "delta_hit": 0.0, "hit": false}
+{"pair_id": "val-F5-0004", "cluster": "val-T-F5-paraphrase-C-004", "split": "val", "slice_id": "F5", "arm": "oracle_random", "delta_ecf": 0.0, "hit": false}
+{"pair_id": "val-F6-0005", "cluster": "val-T-F6-position-C-005", "split": "val", "slice_id": "F6", "arm": "oracle_U", "delta_ecf": 1.125, "delta_rand": 0.03125, "hit_u": 1.0, "hit_rand": 1.0, "delta_hit": 0.0, "hit": true}
+{"pair_id": "val-F6-0005", "cluster": "val-T-F6-position-C-005", "split": "val", "slice_id": "F6", "arm": "oracle_random", "delta_ecf": 0.03125, "hit": true}
+{"pair_id": "val-F1-0006", "cluster": "val-T-F1-city-C-006", "split": "val", "slice_id": "F1", "arm": "oracle_U", "delta_ecf": 0.15625, "delta_rand": 0.0, "hit_u": 1.0, "hit_rand": 0.0, "delta_hit": 1.0, "hit": true}
+{"pair_id": "val-F1-0006", "cluster": "val-T-F1-city-C-006", "split": "val", "slice_id": "F1", "arm": "oracle_random", "delta_ecf": 0.0, "hit": false}
+{"pair_id": "val-F3-0007", "cluster": "val-T-F3-negation-C-007", "split": "val", "slice_id": "F3", "arm": "oracle_U", "delta_ecf": 0.5625000000000004, "delta_rand": 0.6562500000000004, "hit_u": 1.0, "hit_rand": 1.0, "delta_hit": 0.0, "hit": true}
+{"pair_id": "val-F3-0007", "cluster": "val-T-F3-negation-C-007", "split": "val", "slice_id": "F3", "arm": "oracle_random", "delta_ecf": 0.6562500000000004, "hit": true}
+{"pair_id": "val-F1-0008", "cluster": "val-T-F1-person-C-008", "split": "val", "slice_id": "F1", "arm": "oracle_U", "delta_ecf": 0.34375, "delta_rand": 0.0625, "hit_u": 1.0, "hit_rand": 1.0, "delta_hit": 0.0, "hit": true}
+{"pair_id": "val-F1-0008", "cluster": "val-T-F1-person-C-008", "split": "val", "slice_id": "F1", "arm": "oracle_random", "delta_ecf": 0.0625, "hit": true}
+{"pair_id": "val-F2-0009", "cluster": "val-T-F2-alias-C-009", "split": "val", "slice_id": "F2", "arm": "oracle_U", "delta_ecf": 1.6875, "delta_rand": 0.0625, "hit_u": 1.0, "hit_rand": 1.0, "delta_hit": 0.0, "hit": true}
+{"pair_id": "val-F2-0009", "cluster": "val-T-F2-alias-C-009", "split": "val", "slice_id": "F2", "arm": "oracle_random", "delta_ecf": 0.0625, "hit": true}
+{"pair_id": "val-F3-0010", "cluster": "val-T-F3-direction-C-010", "split": "val", "slice_id": "F3", "arm": "oracle_U", "delta_ecf": 3.6875, "delta_rand": 0.25, "hit_u": 1.0, "hit_rand": 1.0, "delta_hit": 0.0, "hit": true}
+{"pair_id": "val-F3-0010", "cluster": "val-T-F3-direction-C-010", "split": "val", "slice_id": "F3", "arm": "oracle_random", "delta_ecf": 0.25, "hit": true}
+{"pair_id": "val-F4-0011", "cluster": "val-T-F4-distractor-C-011", "split": "val", "slice_id": "F4", "arm": "oracle_U", "delta_ecf": 0.4375, "delta_rand": -0.0625, "hit_u": 1.0, "hit_rand": 0.0, "delta_hit": 1.0, "hit": true}
+{"pair_id": "val-F4-0011", "cluster": "val-T-F4-distractor-C-011", "split": "val", "slice_id": "F4", "arm": "oracle_random", "delta_ecf": -0.0625, "hit": false}
+{"pair_id": "val-F5-0012", "cluster": "val-T-F5-paraphrase-C-012", "split": "val", "slice_id": "F5", "arm": "oracle_U", "delta_ecf": 0.0, "delta_rand": 0.0, "hit_u": 0.0, "hit_rand": 0.0, "delta_hit": 0.0, "hit": false}
+{"pair_id": "val-F5-0012", "cluster": "val-T-F5-paraphrase-C-012", "split": "val", "slice_id": "F5", "arm": "oracle_random", "delta_ecf": 0.0, "hit": false}
+{"pair_id": "val-F6-0013", "cluster": "val-T-F6-position-C-013", "split": "val", "slice_id": "F6", "arm": "oracle_U", "delta_ecf": 0.5625, "delta_rand": 0.21875, "hit_u": 1.0, "hit_rand": 1.0, "delta_hit": 0.0, "hit": true}
+{"pair_id": "val-F6-0013", "cluster": "val-T-F6-position-C-013", "split": "val", "slice_id": "F6", "arm": "oracle_random", "delta_ecf": 0.21875, "hit": true}
+{"pair_id": "val-F1-0014", "cluster": "val-T-F1-city-C-014", "split": "val", "slice_id": "F1", "arm": "oracle_U", "delta_ecf": 0.28125, "delta_rand": 0.125, "hit_u": 1.0, "hit_rand": 1.0, "delta_hit": 0.0, "hit": true}
+{"pair_id": "val-F1-0014", "cluster": "val-T-F1-city-C-014", "split": "val", "slice_id": "F1", "arm": "oracle_random", "delta_ecf": 0.125, "hit": true}
+{"pair_id": "val-F3-0015", "cluster": "val-T-F3-negation-C-015", "split": "val", "slice_id": "F3", "arm": "oracle_U", "delta_ecf": 0.625, "delta_rand": 0.03125, "hit_u": 1.0, "hit_rand": 1.0, "delta_hit": 0.0, "hit": true}
+{"pair_id": "val-F3-0015", "cluster": "val-T-F3-negation-C-015", "split": "val", "slice_id": "F3", "arm": "oracle_random", "delta_ecf": 0.03125, "hit": true}
+{"pair_id": "val-F1-0016", "cluster": "val-T-F1-person-C-016", "split": "val", "slice_id": "F1", "arm": "oracle_U", "delta_ecf": -0.6875, "delta_rand": 0.25, "hit_u": 0.0, "hit_rand": 1.0, "delta_hit": -1.0, "hit": false}
+{"pair_id": "val-F1-0016", "cluster": "val-T-F1-person-C-016", "split": "val", "slice_id": "F1", "arm": "oracle_random", "delta_ecf": 0.25, "hit": true}
+{"pair_id": "val-F2-0017", "cluster": "val-T-F2-alias-C-017", "split": "val", "slice_id": "F2", "arm": "oracle_U", "delta_ecf": 1.46875, "delta_rand": 0.03125, "hit_u": 1.0, "hit_rand": 1.0, "delta_hit": 0.0, "hit": true}
+{"pair_id": "val-F2-0017", "cluster": "val-T-F2-alias-C-017", "split": "val", "slice_id": "F2", "arm": "oracle_random", "delta_ecf": 0.03125, "hit": true}
+{"pair_id": "val-F3-0018", "cluster": "val-T-F3-direction-C-018", "split": "val", "slice_id": "F3", "arm": "oracle_U", "delta_ecf": 2.3125, "delta_rand": 0.9375, "hit_u": 1.0, "hit_rand": 1.0, "delta_hit": 0.0, "hit": true}
+{"pair_id": "val-F3-0018", "cluster": "val-T-F3-direction-C-018", "split": "val", "slice_id": "F3", "arm": "oracle_random", "delta_ecf": 0.9375, "hit": true}
+{"pair_id": "val-F4-0019", "cluster": "val-T-F4-distractor-C-019", "split": "val", "slice_id": "F4", "arm": "oracle_U", "delta_ecf": 0.5, "delta_rand": 0.03125, "hit_u": 1.0, "hit_rand": 1.0, "delta_hit": 0.0, "hit": true}
+{"pair_id": "val-F4-0019", "cluster": "val-T-F4-distractor-C-019", "split": "val", "slice_id": "F4", "arm": "oracle_random", "delta_ecf": 0.03125, "hit": true}
+{"pair_id": "val-F5-0020", "cluster": "val-T-F5-paraphrase-C-020", "split": "val", "slice_id": "F5", "arm": "oracle_U", "delta_ecf": 0.0, "delta_rand": 0.0, "hit_u": 0.0, "hit_rand": 0.0, "delta_hit": 0.0, "hit": false}
+{"pair_id": "val-F5-0020", "cluster": "val-T-F5-paraphrase-C-020", "split": "val", "slice_id": "F5", "arm": "oracle_random", "delta_ecf": 0.0, "hit": false}
+{"pair_id": "val-F6-0021", "cluster": "val-T-F6-position-C-021", "split": "val", "slice_id": "F6", "arm": "oracle_U", "delta_ecf": 1.40625, "delta_rand": -0.125, "hit_u": 1.0, "hit_rand": 0.0, "delta_hit": 1.0, "hit": true}
+{"pair_id": "val-F6-0021", "cluster": "val-T-F6-position-C-021", "split": "val", "slice_id": "F6", "arm": "oracle_random", "delta_ecf": -0.125, "hit": false}
+{"pair_id": "val-F1-0022", "cluster": "val-T-F1-city-C-022", "split": "val", "slice_id": "F1", "arm": "oracle_U", "delta_ecf": 0.1875, "delta_rand": -0.09375, "hit_u": 1.0, "hit_rand": 0.0, "delta_hit": 1.0, "hit": true}
+{"pair_id": "val-F1-0022", "cluster": "val-T-F1-city-C-022", "split": "val", "slice_id": "F1", "arm": "oracle_random", "delta_ecf": -0.09375, "hit": false}
+{"pair_id": "val-F3-0023", "cluster": "val-T-F3-negation-C-023", "split": "val", "slice_id": "F3", "arm": "oracle_U", "delta_ecf": 0.4375, "delta_rand": -0.0625, "hit_u": 1.0, "hit_rand": 0.0, "delta_hit": 1.0, "hit": true}
+{"pair_id": "val-F3-0023", "cluster": "val-T-F3-negation-C-023", "split": "val", "slice_id": "F3", "arm": "oracle_random", "delta_ecf": -0.0625, "hit": false}
+{"pair_id": "val-F1-0024", "cluster": "val-T-F1-person-C-024", "split": "val", "slice_id": "F1", "arm": "oracle_U", "delta_ecf": 0.40625, "delta_rand": 0.0625, "hit_u": 1.0, "hit_rand": 1.0, "delta_hit": 0.0, "hit": true}
+{"pair_id": "val-F1-0024", "cluster": "val-T-F1-person-C-024", "split": "val", "slice_id": "F1", "arm": "oracle_random", "delta_ecf": 0.0625, "hit": true}
+{"pair_id": "val-F2-0025", "cluster": "val-T-F2-alias-C-025", "split": "val", "slice_id": "F2", "arm": "oracle_U", "delta_ecf": 0.84375, "delta_rand": 0.0625, "hit_u": 1.0, "hit_rand": 1.0, "delta_hit": 0.0, "hit": true}
+{"pair_id": "val-F2-0025", "cluster": "val-T-F2-alias-C-025", "split": "val", "slice_id": "F2", "arm": "oracle_random", "delta_ecf": 0.0625, "hit": true}
+{"pair_id": "val-F3-0026", "cluster": "val-T-F3-direction-C-026", "split": "val", "slice_id": "F3", "arm": "oracle_U", "delta_ecf": 1.625, "delta_rand": 0.0625, "hit_u": 1.0, "hit_rand": 1.0, "delta_hit": 0.0, "hit": true}
+{"pair_id": "val-F3-0026", "cluster": "val-T-F3-direction-C-026", "split": "val", "slice_id": "F3", "arm": "oracle_random", "delta_ecf": 0.0625, "hit": true}
+{"pair_id": "val-F4-0027", "cluster": "val-T-F4-distractor-C-027", "split": "val", "slice_id": "F4", "arm": "oracle_U", "delta_ecf": 0.0, "delta_rand": 0.0, "hit_u": 0.0, "hit_rand": 0.0, "delta_hit": 0.0, "hit": false}
+{"pair_id": "val-F4-0027", "cluster": "val-T-F4-distractor-C-027", "split": "val", "slice_id": "F4", "arm": "oracle_random", "delta_ecf": 0.0, "hit": false}
+{"pair_id": "val-F5-0028", "cluster": "val-T-F5-paraphrase-C-028", "split": "val", "slice_id": "F5", "arm": "oracle_U", "delta_ecf": 0.0, "delta_rand": 0.0, "hit_u": 0.0, "hit_rand": 0.0, "delta_hit": 0.0, "hit": false}
+{"pair_id": "val-F5-0028", "cluster": "val-T-F5-paraphrase-C-028", "split": "val", "slice_id": "F5", "arm": "oracle_random", "delta_ecf": 0.0, "hit": false}
+{"pair_id": "val-F6-0029", "cluster": "val-T-F6-position-C-029", "split": "val", "slice_id": "F6", "arm": "oracle_U", "delta_ecf": 0.3125, "delta_rand": 0.0, "hit_u": 1.0, "hit_rand": 0.0, "delta_hit": 1.0, "hit": true}
+{"pair_id": "val-F6-0029", "cluster": "val-T-F6-position-C-029", "split": "val", "slice_id": "F6", "arm": "oracle_random", "delta_ecf": 0.0, "hit": false}
+{"pair_id": "val-F1-0030", "cluster": "val-T-F1-city-C-030", "split": "val", "slice_id": "F1", "arm": "oracle_U", "delta_ecf": -0.03125, "delta_rand": -0.09375, "hit_u": 0.0, "hit_rand": 0.0, "delta_hit": 0.0, "hit": false}
+{"pair_id": "val-F1-0030", "cluster": "val-T-F1-city-C-030", "split": "val", "slice_id": "F1", "arm": "oracle_random", "delta_ecf": -0.09375, "hit": false}
+{"pair_id": "val-F3-0031", "cluster": "val-T-F3-negation-C-031", "split": "val", "slice_id": "F3", "arm": "oracle_U", "delta_ecf": 0.5, "delta_rand": 0.1875, "hit_u": 1.0, "hit_rand": 1.0, "delta_hit": 0.0, "hit": true}
+{"pair_id": "val-F3-0031", "cluster": "val-T-F3-negation-C-031", "split": "val", "slice_id": "F3", "arm": "oracle_random", "delta_ecf": 0.1875, "hit": true}
+{"pair_id": "val-F1-0032", "cluster": "val-T-F1-person-C-032", "split": "val", "slice_id": "F1", "arm": "oracle_U", "delta_ecf": 1.40625, "delta_rand": 0.15625, "hit_u": 1.0, "hit_rand": 1.0, "delta_hit": 0.0, "hit": true}
+{"pair_id": "val-F1-0032", "cluster": "val-T-F1-person-C-032", "split": "val", "slice_id": "F1", "arm": "oracle_random", "delta_ecf": 0.15625, "hit": true}
+{"pair_id": "val-F2-0033", "cluster": "val-T-F2-alias-C-033", "split": "val", "slice_id": "F2", "arm": "oracle_U", "delta_ecf": 0.0, "delta_rand": 0.0, "hit_u": 0.0, "hit_rand": 0.0, "delta_hit": 0.0, "hit": false}
+{"pair_id": "val-F2-0033", "cluster": "val-T-F2-alias-C-033", "split": "val", "slice_id": "F2", "arm": "oracle_random", "delta_ecf": 0.0, "hit": false}
+{"pair_id": "val-F3-0034", "cluster": "val-T-F3-direction-C-034", "split": "val", "slice_id": "F3", "arm": "oracle_U", "delta_ecf": -0.75, "delta_rand": -0.0625, "hit_u": 0.0, "hit_rand": 0.0, "delta_hit": 0.0, "hit": false}
+{"pair_id": "val-F3-0034", "cluster": "val-T-F3-direction-C-034", "split": "val", "slice_id": "F3", "arm": "oracle_random", "delta_ecf": -0.0625, "hit": false}
+{"pair_id": "val-F4-0035", "cluster": "val-T-F4-distractor-C-035", "split": "val", "slice_id": "F4", "arm": "oracle_U", "delta_ecf": 0.9375, "delta_rand": 0.25, "hit_u": 1.0, "hit_rand": 1.0, "delta_hit": 0.0, "hit": true}
+{"pair_id": "val-F4-0035", "cluster": "val-T-F4-distractor-C-035", "split": "val", "slice_id": "F4", "arm": "oracle_random", "delta_ecf": 0.25, "hit": true}
+{"pair_id": "val-F5-0036", "cluster": "val-T-F5-paraphrase-C-036", "split": "val", "slice_id": "F5", "arm": "oracle_U", "delta_ecf": 0.0, "delta_rand": 0.0, "hit_u": 0.0, "hit_rand": 0.0, "delta_hit": 0.0, "hit": false}
+{"pair_id": "val-F5-0036", "cluster": "val-T-F5-paraphrase-C-036", "split": "val", "slice_id": "F5", "arm": "oracle_random", "delta_ecf": 0.0, "hit": false}
+{"pair_id": "val-F6-0037", "cluster": "val-T-F6-position-C-037", "split": "val", "slice_id": "F6", "arm": "oracle_U", "delta_ecf": 0.875, "delta_rand": 0.0, "hit_u": 1.0, "hit_rand": 0.0, "delta_hit": 1.0, "hit": true}
+{"pair_id": "val-F6-0037", "cluster": "val-T-F6-position-C-037", "split": "val", "slice_id": "F6", "arm": "oracle_random", "delta_ecf": 0.0, "hit": false}
+{"pair_id": "val-F1-0038", "cluster": "val-T-F1-city-C-038", "split": "val", "slice_id": "F1", "arm": "oracle_U", "delta_ecf": 0.34375, "delta_rand": -0.03125, "hit_u": 1.0, "hit_rand": 0.0, "delta_hit": 1.0, "hit": true}
+{"pair_id": "val-F1-0038", "cluster": "val-T-F1-city-C-038", "split": "val", "slice_id": "F1", "arm": "oracle_random", "delta_ecf": -0.03125, "hit": false}
+{"pair_id": "val-F3-0039", "cluster": "val-T-F3-negation-C-039", "split": "val", "slice_id": "F3", "arm": "oracle_U", "delta_ecf": 0.4375, "delta_rand": -0.0625, "hit_u": 1.0, "hit_rand": 0.0, "delta_hit": 1.0, "hit": true}
+{"pair_id": "val-F3-0039", "cluster": "val-T-F3-negation-C-039", "split": "val", "slice_id": "F3", "arm": "oracle_random", "delta_ecf": -0.0625, "hit": false}

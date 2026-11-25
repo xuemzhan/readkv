@@ -1,0 +1,20 @@
+{
+  "run_id": "v2_p5_full",
+  "protocol_version": "2.0",
+  "git_hash": "no-git",
+  "created_at": "2026-11-22T12:34:15+00:00",
+  "seed": 0,
+  "device": "cpu",
+  "dtype": "bfloat16",
+  "kernel": "sdpa",
+  "zero_re_prefill": true,
+  "experiment_config": {
+    "stage": "P5",
+    "backend": "mock",
+    "kind": "paper_artifacts"
+  },
+  "metadata": {
+    "protocol_version": "2.0",
+    "stage": "P5"
+  }
+}

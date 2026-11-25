@@ -1,0 +1,20 @@
+{
+  "run_id": "v3_E1_B_template_disjoint_only_s1_r2",
+  "files": [
+    {
+      "name": "config.json",
+      "sha256": "1a66d973288df62623d3481fd84fabe9f9b9ea2ed36738443b0f85ee39c54cd8",
+      "size": 5155
+    },
+    {
+      "name": "scores.jsonl",
+      "sha256": "35557fc12f51bc8ffca3de1f069a08bd635d14c7bc2cbfd3d2b32f8d5029de71",
+      "size": 354906
+    },
+    {
+      "name": "metrics.json",
+      "sha256": "d6d78081df995c65fdd51dc0aab2203be60e3eae36482a5a5e8add2b747d74a4",
+      "size": 8218
+    }
+  ]
+}

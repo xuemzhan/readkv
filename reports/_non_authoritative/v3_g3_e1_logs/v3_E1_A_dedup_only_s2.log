@@ -1,0 +1,11 @@
+Loading weights:   0%|          | 0/311 [00:00<?, ?it/s]Loading weights: 100%|██████████| 311/311 [00:00<00:00, 3664.87it/s]
+Loading weights:   0%|          | 0/311 [00:00<?, ?it/s]Loading weights: 100%|██████████| 311/311 [00:00<00:00, 3372.93it/s]
+{
+  "run_id": "v3_E1_A_dedup_only_s2",
+  "variant": "dedup_only",
+  "panel": "A",
+  "status": "COMPLETE",
+  "run_dir": "/root/readkv/reports/runs/v3_E1_A_dedup_only_s2",
+  "exploratory": true,
+  "n_scores": 480
+}

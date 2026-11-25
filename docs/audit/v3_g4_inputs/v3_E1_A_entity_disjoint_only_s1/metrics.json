@@ -1,0 +1,301 @@
+{
+  "arms": {
+    "self": {
+      "n": 60,
+      "n_evaluable": 53,
+      "dual_correct": 0.9,
+      "self_dual_correct": 0.9,
+      "E_CF": {
+        "mean": 0.0,
+        "ci_family": [
+          0.0,
+          0.0
+        ],
+        "ci_pair_sensitivity": [
+          0.0,
+          0.0
+        ]
+      },
+      "coverage": 0.8833333333333333,
+      "flip_consistency": 1.0,
+      "n_flip_evaluable": 53,
+      "n_families": 8
+    },
+    "identity": {
+      "n": 60,
+      "n_evaluable": 53,
+      "dual_correct": 0.9,
+      "self_dual_correct": 0.9,
+      "E_CF": {
+        "mean": 0.0,
+        "ci_family": [
+          0.0,
+          0.0
+        ],
+        "ci_pair_sensitivity": [
+          0.0,
+          0.0
+        ]
+      },
+      "coverage": 0.8833333333333333,
+      "flip_consistency": 1.0,
+      "n_flip_evaluable": 53,
+      "n_families": 8
+    },
+    "joint": {
+      "n": 60,
+      "n_evaluable": 53,
+      "dual_correct": 0.6333333333333333,
+      "self_dual_correct": 0.9,
+      "E_CF": {
+        "mean": 6.3203125,
+        "ci_family": [
+          3.4573622881355934,
+          8.857758620689655
+        ],
+        "ci_pair_sensitivity": [
+          5.23671875,
+          7.36484375
+        ]
+      },
+      "coverage": 0.8833333333333333,
+      "flip_consistency": 0.9811320754716981,
+      "n_flip_evaluable": 53,
+      "n_families": 8
+    },
+    "k_only": {
+      "n": 60,
+      "n_evaluable": 53,
+      "dual_correct": 0.8,
+      "self_dual_correct": 0.9,
+      "E_CF": {
+        "mean": 2.5619791666666667,
+        "ci_family": [
+          1.4870689655172413,
+          3.542264344262295
+        ],
+        "ci_pair_sensitivity": [
+          2.044791666666667,
+          3.0635416666666666
+        ]
+      },
+      "coverage": 0.8833333333333333,
+      "flip_consistency": 0.9622641509433962,
+      "n_flip_evaluable": 53,
+      "n_families": 8
+    },
+    "v_only": {
+      "n": 60,
+      "n_evaluable": 53,
+      "dual_correct": 0.7833333333333333,
+      "self_dual_correct": 0.9,
+      "E_CF": {
+        "mean": 4.5859375,
+        "ci_family": [
+          2.6767418032786887,
+          6.258474576271187
+        ],
+        "ci_pair_sensitivity": [
+          3.8432291666666667,
+          5.319010416666667
+        ]
+      },
+      "coverage": 0.8833333333333333,
+      "flip_consistency": 0.9811320754716981,
+      "n_flip_evaluable": 53,
+      "n_families": 8
+    },
+    "control:random": {
+      "n": 60,
+      "n_evaluable": 53,
+      "dual_correct": 0.36666666666666664,
+      "self_dual_correct": 0.9,
+      "E_CF": {
+        "mean": 8.693074544270834,
+        "ci_family": [
+          4.977333470394737,
+          11.938802083333334
+        ],
+        "ci_pair_sensitivity": [
+          7.102945963541667,
+          10.245760091145833
+        ]
+      },
+      "coverage": 0.8833333333333333,
+      "flip_consistency": 0.5660377358490566,
+      "n_flip_evaluable": 53,
+      "n_families": 8
+    },
+    "control:zero": {
+      "n": 60,
+      "n_evaluable": 53,
+      "dual_correct": 0.13333333333333333,
+      "self_dual_correct": 0.9,
+      "E_CF": {
+        "mean": 9.119864908854167,
+        "ci_family": [
+          5.161907327586207,
+          12.630826271186441
+        ],
+        "ci_pair_sensitivity": [
+          7.630208333333333,
+          10.566666666666666
+        ]
+      },
+      "coverage": 0.8833333333333333,
+      "flip_consistency": 0.39622641509433965,
+      "n_flip_evaluable": 53,
+      "n_families": 8
+    },
+    "control:mismatch": {
+      "n": 60,
+      "n_evaluable": 53,
+      "dual_correct": 0.18333333333333332,
+      "self_dual_correct": 0.9,
+      "E_CF": {
+        "mean": 9.1625,
+        "ci_family": [
+          5.031762295081967,
+          12.7578125
+        ],
+        "ci_pair_sensitivity": [
+          7.5765625,
+          10.729427083333333
+        ]
+      },
+      "coverage": 0.8833333333333333,
+      "flip_consistency": 0.4528301886792453,
+      "n_flip_evaluable": 53,
+      "n_families": 8
+    }
+  },
+  "L_self_minus_joint": 0.2666666666666667,
+  "info_gap_control_minus_joint": {
+    "control:mismatch": 2.8421874999999996,
+    "control:random": 2.372762044270834,
+    "control:zero": 2.799552408854167
+  },
+  "bootstrap": {
+    "primary_unit": "template_family",
+    "n_resamples": 10000,
+    "seed": 1,
+    "sensitivity_unit": "pair",
+    "min_clusters_for_inference": 24
+  },
+  "n_families": 8,
+  "exploratory": true,
+  "run_id": "v3_E1_A_entity_disjoint_only_s1",
+  "variant": "entity_disjoint_only",
+  "panel": "A",
+  "seed": 1,
+  "backend": "gpu",
+  "dtype": "bfloat16",
+  "kernel": "sdpa",
+  "device": "cuda",
+  "zero_re_prefill": true,
+  "zero_re_prefill_basis": "forward_audit",
+  "sealed_test_read": false,
+  "criteria_source": "configs/prereg/gpu_followup_v3.0.yaml",
+  "input_sha256": {
+    "train": "7385245c6b2db4e4f78abc837aaa31817cd7025eaa23dc099b2dc92c9f4a793e",
+    "val": "b4f9587fc7e28a780b923c7e4a3e1aec96ddf6cde3c63a50fd0cc4b8423e7921",
+    "manifest": "6b3d63ae194df9af8d1369737a1e8c627cae9f17be37fb3380797fa0a26c2ff9"
+  },
+  "variant_registration": {
+    "variant": "entity_disjoint_only",
+    "panel": "A",
+    "changed_attribute": "entity-pool overlap across train/val only",
+    "scope": "VAL only; TRAIN verbatim",
+    "rule": "replace every entity string (name/project/city/date/number) occurring in val text with an injective, rule-generated disjoint substitute absent from train text, applied consistently across context_A/context_B/query/candidate_A/candidate_B/edited_span; recompute sample_hash & sample_id; row count and template_family labels unchanged",
+    "caveat": null,
+    "composition_changed_vs_legacy": false,
+    "family_count_changed_vs_legacy": false,
+    "version_difference_flag": false,
+    "train": {
+      "variant": "entity_disjoint_only",
+      "hash_matches_variants": [
+        "legacy_bundle",
+        "entity_disjoint_only",
+        "template_disjoint_only"
+      ],
+      "path": "/root/readkv/data/variants_v3/entity_disjoint_only/train_seed1.jsonl",
+      "sha256": "7385245c6b2db4e4f78abc837aaa31817cd7025eaa23dc099b2dc92c9f4a793e",
+      "rows_registered": 120,
+      "template_family_count": 16,
+      "template_families": [
+        "T-F1-city-A",
+        "T-F1-city-B",
+        "T-F1-person-A",
+        "T-F1-person-B",
+        "T-F2-alias-A",
+        "T-F2-alias-B",
+        "T-F3-direction-A",
+        "T-F3-direction-B",
+        "T-F3-negation-A",
+        "T-F3-negation-B",
+        "T-F4-distractor-A",
+        "T-F4-distractor-B",
+        "T-F5-paraphrase-A",
+        "T-F5-paraphrase-B",
+        "T-F6-position-A",
+        "T-F6-position-B"
+      ],
+      "slice_counts": {
+        "F1": 30,
+        "F2": 16,
+        "F3": 30,
+        "F4": 16,
+        "F5": 14,
+        "F6": 14
+      },
+      "degenerate_mustflip_rows": 3
+    },
+    "val": {
+      "variant": "fully_repaired",
+      "hash_matches_variants": [
+        "fully_repaired"
+      ],
+      "path": "/root/readkv/data/variants_v3/fully_repaired/val_seed1.jsonl",
+      "sha256": "b4f9587fc7e28a780b923c7e4a3e1aec96ddf6cde3c63a50fd0cc4b8423e7921",
+      "rows_registered": 60,
+      "template_family_count": 8,
+      "template_families": [
+        "S-F1-city-C",
+        "S-F1-person-C",
+        "S-F2-alias-C",
+        "S-F3-direction-C",
+        "S-F3-negation-C",
+        "S-F4-distractor-C",
+        "S-F5-paraphrase-C",
+        "S-F6-position-C"
+      ],
+      "slice_counts": {
+        "F1": 15,
+        "F2": 8,
+        "F3": 15,
+        "F4": 8,
+        "F5": 7,
+        "F6": 7
+      },
+      "degenerate_mustflip_rows": 0
+    },
+    "changes": {
+      "removed_pair_ids": {},
+      "added_pair_ids": {},
+      "n_text_hash_changed": {
+        "val": 60
+      },
+      "substitution_map_present": true,
+      "n_query_rewrites": 0
+    }
+  },
+  "input_text_changed": false,
+  "data_task_change": false,
+  "gpu_forward_authorized_by_flag": false,
+  "cpu_replay_valid": true,
+  "n_train": 120,
+  "n_val": 60,
+  "n_scores": 480,
+  "elapsed_sec": 149.4,
+  "note": "E1 单缺陷干预筛查；版本差异不作因果分解；familes<24 标 exploratory；不碰封存 test。"
+}

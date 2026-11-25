@@ -1,0 +1,20 @@
+{
+  "run_id": "v3_E1_B_dedup_only_s2",
+  "files": [
+    {
+      "name": "config.json",
+      "sha256": "41e7d2c362d5b4a5e4915fccef2decd79bb06da369a8d7dd3d24628b32bdc162",
+      "size": 4920
+    },
+    {
+      "name": "scores.jsonl",
+      "sha256": "a16225695fd97ff07821454134444d6130d163e6d55d2d0af95e638451c18af5",
+      "size": 335179
+    },
+    {
+      "name": "metrics.json",
+      "sha256": "ec7e7c59cd16ae1b3cfeb82021c9704d8eb1fbb3730e5b2d98364c7a6d444ace",
+      "size": 7784
+    }
+  ]
+}

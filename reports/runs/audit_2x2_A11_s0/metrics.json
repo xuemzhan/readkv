@@ -1,0 +1,69 @@
+{
+  "run_id": "audit_2x2_A11_s0",
+  "backend": "gpu",
+  "protocol_version": "2.7",
+  "cell": "A11",
+  "calibration_version": "fixed",
+  "validation_version": "fixed",
+  "seed": 0,
+  "dtype": "bfloat16",
+  "kernel": "sdpa",
+  "zero_re_prefill": true,
+  "input_sha256": {
+    "train-old": "81da04a041a4e7757caa02e502c10ca9a9236d7f98da5419fb226ca95a02b00a",
+    "val-old": "24a5077bec11657c70d8eeddeed6fbe4871253d6d141daf16989903d1ebccaaa",
+    "train-fixed": "9b03522746825f3fe0794c7f62ec7b1fb430f46734bb175b90a55a788d91e953",
+    "val-fixed": "19e9839e4e27b584c53d30242411ab14a659ac5cc487849b205928f5caa3c595"
+  },
+  "n_train": 120,
+  "n_val": 60,
+  "identity_check": true,
+  "joint_zero_re_prefill": true,
+  "defect_warnings": [],
+  "arms": {
+    "self": {
+      "n": 60,
+      "dual_correct": 0.8166666666666667,
+      "E_CF_mean": 0.0
+    },
+    "identity": {
+      "n": 60,
+      "dual_correct": 0.8166666666666667,
+      "E_CF_mean": 0.0
+    },
+    "joint": {
+      "n": 60,
+      "dual_correct": 0.4166666666666667,
+      "E_CF_mean": 6.899552408854166
+    },
+    "k_only": {
+      "n": 60,
+      "dual_correct": 0.8,
+      "E_CF_mean": 2.6921875
+    },
+    "v_only": {
+      "n": 60,
+      "dual_correct": 0.8,
+      "E_CF_mean": 3.6901041666666665
+    },
+    "control:random": {
+      "n": 60,
+      "dual_correct": 0.43333333333333335,
+      "E_CF_mean": 6.764827473958333
+    },
+    "control:zero": {
+      "n": 60,
+      "dual_correct": 0.11666666666666667,
+      "E_CF_mean": 8.583984375
+    },
+    "control:mismatch": {
+      "n": 60,
+      "dual_correct": 0.26666666666666666,
+      "E_CF_mean": 8.7361328125
+    }
+  },
+  "L_self_minus_joint": 0.39999999999999997,
+  "n_scores": 480,
+  "elapsed_sec": 120.9,
+  "note": "2×2 审计格；冒烟标 non-authoritative；不重算冻结 CI、不恢复贡献、不碰封存 test。"
+}

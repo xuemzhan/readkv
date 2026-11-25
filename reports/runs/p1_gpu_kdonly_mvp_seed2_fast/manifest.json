@@ -1,0 +1,30 @@
+{
+  "run_id": "p1_gpu_kdonly_mvp_seed2_fast",
+  "files": [
+    {
+      "name": "config.json",
+      "sha256": "bcf9f7eeea35158470d30ed9fe5a7868b3b55502c876c789b2be64238a9c9599",
+      "size": 1532
+    },
+    {
+      "name": "ecf_ledger.jsonl",
+      "sha256": "c4c5058f4671cbe5ecc4aab161572014d95dd17c48f337bc0f59a0c618a45d7f",
+      "size": 393296
+    },
+    {
+      "name": "manifest.json",
+      "sha256": "a6f84ad369f80531950560fbdc5bc5941bf0f5afdbf9af0047c512c065956a6a",
+      "size": 654
+    },
+    {
+      "name": "metrics.json",
+      "sha256": "da180d27d7699e3d8d7a318c07bda0721b54a7c41d8b9309d8d77fa5ed9a9243",
+      "size": 8470
+    },
+    {
+      "name": "scores.jsonl",
+      "sha256": "c4c5058f4671cbe5ecc4aab161572014d95dd17c48f337bc0f59a0c618a45d7f",
+      "size": 393296
+    }
+  ]
+}

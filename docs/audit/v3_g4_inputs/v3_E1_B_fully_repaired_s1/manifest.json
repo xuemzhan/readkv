@@ -1,0 +1,20 @@
+{
+  "run_id": "v3_E1_B_fully_repaired_s1",
+  "files": [
+    {
+      "name": "config.json",
+      "sha256": "754be480daead59beb01a0f02f61eaf252ee1a8bdfaa66b4859a9bb81d8b136a",
+      "size": 4774
+    },
+    {
+      "name": "scores.jsonl",
+      "sha256": "383f6603d3a1eb21611ecb41e19434e3a309e322d7ca71afae51a61284a96c46",
+      "size": 338637
+    },
+    {
+      "name": "metrics.json",
+      "sha256": "3a5fb42e15df3c863c5c39b50b1075619d70f802411e8a1296edc2460992c969",
+      "size": 7720
+    }
+  ]
+}

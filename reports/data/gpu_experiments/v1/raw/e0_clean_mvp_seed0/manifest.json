@@ -1,0 +1,20 @@
+{
+  "run_id": "e0_clean_mvp_seed0",
+  "files": [
+    {
+      "name": "config.json",
+      "sha256": "c48a25d732c631bdfaca4288ece2d5d0af0d9999a059b5cb08fea57d77989418",
+      "size": 1087
+    },
+    {
+      "name": "metrics.json",
+      "sha256": "2db62dadce9b8f317d75369f4fa118756108011e434dabb6b7858283f0c8a9b5",
+      "size": 4010
+    },
+    {
+      "name": "scores.jsonl",
+      "sha256": "d99a2d9e84c8a1b3c4c4d49c51042fa52878dc87305a8bfe572bec5848c092ba",
+      "size": 38958
+    }
+  ]
+}

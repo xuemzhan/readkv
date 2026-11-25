@@ -1,0 +1,30 @@
+{
+  "run_id": "p2_gpu_mvp_seed0_delta_rand_audit",
+  "files": [
+    {
+      "name": "config.json",
+      "sha256": "61fd81f40f99d374a5b4c477fa54a8084396b7d82874365790d0c7543e5a3b2f",
+      "size": 1581
+    },
+    {
+      "name": "decomposition.jsonl",
+      "sha256": "c2eb20ee66217b53f823afe64fb3e8055ed7db3ac608ab0ebf844c6629cd75c9",
+      "size": 5204468
+    },
+    {
+      "name": "mechanism.json",
+      "sha256": "9fa0246143b45903708275ce1e9349d3885d313540590fd89879b7eae62786f6",
+      "size": 3658
+    },
+    {
+      "name": "mechanism_units.jsonl",
+      "sha256": "32d7bac86bd08ade4d3b470a536797615ce95b591b8776429d6e1fed9c1f8bd2",
+      "size": 891658
+    },
+    {
+      "name": "scores.jsonl",
+      "sha256": "e09e968177daf1bd2bf2e6449da08c8b4f0dd530ef8cd27e0d9d22282422caed",
+      "size": 41239
+    }
+  ]
+}

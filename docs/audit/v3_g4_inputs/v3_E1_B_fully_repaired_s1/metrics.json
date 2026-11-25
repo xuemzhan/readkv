@@ -1,0 +1,297 @@
+{
+  "arms": {
+    "self": {
+      "n": 60,
+      "n_evaluable": 53,
+      "dual_correct": 0.9,
+      "self_dual_correct": 0.9,
+      "E_CF": {
+        "mean": 0.0,
+        "ci_family": [
+          0.0,
+          0.0
+        ],
+        "ci_pair_sensitivity": [
+          0.0,
+          0.0
+        ]
+      },
+      "coverage": 0.8833333333333333,
+      "flip_consistency": 1.0,
+      "n_flip_evaluable": 53,
+      "n_families": 8
+    },
+    "identity": {
+      "n": 60,
+      "n_evaluable": 53,
+      "dual_correct": 0.9,
+      "self_dual_correct": 0.9,
+      "E_CF": {
+        "mean": 0.0,
+        "ci_family": [
+          0.0,
+          0.0
+        ],
+        "ci_pair_sensitivity": [
+          0.0,
+          0.0
+        ]
+      },
+      "coverage": 0.8833333333333333,
+      "flip_consistency": 1.0,
+      "n_flip_evaluable": 53,
+      "n_families": 8
+    },
+    "joint": {
+      "n": 60,
+      "n_evaluable": 53,
+      "dual_correct": 0.4166666666666667,
+      "self_dual_correct": 0.9,
+      "E_CF": {
+        "mean": 7.602229817708333,
+        "ci_family": [
+          3.8937698622881354,
+          10.732261782786885
+        ],
+        "ci_pair_sensitivity": [
+          6.208723958333334,
+          8.968440755208333
+        ]
+      },
+      "coverage": 0.8833333333333333,
+      "flip_consistency": 0.7924528301886793,
+      "n_flip_evaluable": 53,
+      "n_families": 8
+    },
+    "k_only": {
+      "n": 60,
+      "n_evaluable": 53,
+      "dual_correct": 0.85,
+      "self_dual_correct": 0.9,
+      "E_CF": {
+        "mean": 3.117447916666667,
+        "ci_family": [
+          1.6971354166666666,
+          4.523834745762712
+        ],
+        "ci_pair_sensitivity": [
+          2.4291666666666667,
+          3.8372395833333335
+        ]
+      },
+      "coverage": 0.8833333333333333,
+      "flip_consistency": 0.9622641509433962,
+      "n_flip_evaluable": 53,
+      "n_families": 8
+    },
+    "v_only": {
+      "n": 60,
+      "n_evaluable": 53,
+      "dual_correct": 0.8,
+      "self_dual_correct": 0.9,
+      "E_CF": {
+        "mean": 4.021875,
+        "ci_family": [
+          2.2820581896551726,
+          5.625768442622951
+        ],
+        "ci_pair_sensitivity": [
+          3.3109375,
+          4.7328125
+        ]
+      },
+      "coverage": 0.8833333333333333,
+      "flip_consistency": 0.9811320754716981,
+      "n_flip_evaluable": 53,
+      "n_families": 8
+    },
+    "control:random": {
+      "n": 60,
+      "n_evaluable": 53,
+      "dual_correct": 0.43333333333333335,
+      "self_dual_correct": 0.9,
+      "E_CF": {
+        "mean": 7.286539713541667,
+        "ci_family": [
+          4.103549890350878,
+          10.235831839139344
+        ],
+        "ci_pair_sensitivity": [
+          5.9328125,
+          8.661767578125
+        ]
+      },
+      "coverage": 0.8833333333333333,
+      "flip_consistency": 0.660377358490566,
+      "n_flip_evaluable": 53,
+      "n_families": 8
+    },
+    "control:zero": {
+      "n": 60,
+      "n_evaluable": 53,
+      "dual_correct": 0.13333333333333333,
+      "self_dual_correct": 0.9,
+      "E_CF": {
+        "mean": 9.119864908854167,
+        "ci_family": [
+          5.161907327586207,
+          12.630826271186441
+        ],
+        "ci_pair_sensitivity": [
+          7.630208333333333,
+          10.566666666666666
+        ]
+      },
+      "coverage": 0.8833333333333333,
+      "flip_consistency": 0.39622641509433965,
+      "n_flip_evaluable": 53,
+      "n_families": 8
+    },
+    "control:mismatch": {
+      "n": 60,
+      "n_evaluable": 53,
+      "dual_correct": 0.2833333333333333,
+      "self_dual_correct": 0.9,
+      "E_CF": {
+        "mean": 9.151171875,
+        "ci_family": [
+          5.214744438559322,
+          12.654422883064516
+        ],
+        "ci_pair_sensitivity": [
+          7.555013020833333,
+          10.697721354166667
+        ]
+      },
+      "coverage": 0.8833333333333333,
+      "flip_consistency": 0.5283018867924528,
+      "n_flip_evaluable": 53,
+      "n_families": 8
+    }
+  },
+  "L_self_minus_joint": 0.48333333333333334,
+  "info_gap_control_minus_joint": {
+    "control:mismatch": 1.548942057291666,
+    "control:random": -0.31569010416666643,
+    "control:zero": 1.5176350911458334
+  },
+  "bootstrap": {
+    "primary_unit": "template_family",
+    "n_resamples": 10000,
+    "seed": 1,
+    "sensitivity_unit": "pair",
+    "min_clusters_for_inference": 24
+  },
+  "n_families": 8,
+  "exploratory": true,
+  "run_id": "v3_E1_B_fully_repaired_s1",
+  "variant": "fully_repaired",
+  "panel": "B",
+  "seed": 1,
+  "backend": "gpu",
+  "dtype": "bfloat16",
+  "kernel": "sdpa",
+  "device": "cuda",
+  "zero_re_prefill": true,
+  "zero_re_prefill_basis": "forward_audit",
+  "sealed_test_read": false,
+  "criteria_source": "configs/prereg/gpu_followup_v3.0.yaml",
+  "input_sha256": {
+    "train": "024a69e9f35c777ad1030227eed37ef8f3dd43a82fb0a905a569e9150a37633f",
+    "val": "b4f9587fc7e28a780b923c7e4a3e1aec96ddf6cde3c63a50fd0cc4b8423e7921",
+    "manifest": "6b3d63ae194df9af8d1369737a1e8c627cae9f17be37fb3380797fa0a26c2ff9"
+  },
+  "variant_registration": {
+    "variant": "fully_repaired",
+    "panel": "B",
+    "changed_attribute": "ALL defects (M1+M2+M3)",
+    "scope": "full v2.1 repaired version",
+    "rule": "verbatim copy of fixed generator train/val",
+    "caveat": "different commit/RNG than legacy -> VERSION DIFFERENCE",
+    "composition_changed_vs_legacy": false,
+    "family_count_changed_vs_legacy": false,
+    "version_difference_flag": true,
+    "train": {
+      "variant": "fully_repaired",
+      "hash_matches_variants": [
+        "fully_repaired"
+      ],
+      "path": "/root/readkv/data/variants_v3/fully_repaired/train_seed1.jsonl",
+      "sha256": "024a69e9f35c777ad1030227eed37ef8f3dd43a82fb0a905a569e9150a37633f",
+      "rows_registered": 120,
+      "template_family_count": 16,
+      "template_families": [
+        "S-F1-city-A",
+        "S-F1-city-B",
+        "S-F1-person-A",
+        "S-F1-person-B",
+        "S-F2-alias-A",
+        "S-F2-alias-B",
+        "S-F3-direction-A",
+        "S-F3-direction-B",
+        "S-F3-negation-A",
+        "S-F3-negation-B",
+        "S-F4-distractor-A",
+        "S-F4-distractor-B",
+        "S-F5-paraphrase-A",
+        "S-F5-paraphrase-B",
+        "S-F6-position-A",
+        "S-F6-position-B"
+      ],
+      "slice_counts": {
+        "F1": 30,
+        "F2": 16,
+        "F3": 30,
+        "F4": 16,
+        "F5": 14,
+        "F6": 14
+      },
+      "degenerate_mustflip_rows": 0
+    },
+    "val": {
+      "variant": "fully_repaired",
+      "hash_matches_variants": [
+        "fully_repaired"
+      ],
+      "path": "/root/readkv/data/variants_v3/fully_repaired/val_seed1.jsonl",
+      "sha256": "b4f9587fc7e28a780b923c7e4a3e1aec96ddf6cde3c63a50fd0cc4b8423e7921",
+      "rows_registered": 60,
+      "template_family_count": 8,
+      "template_families": [
+        "S-F1-city-C",
+        "S-F1-person-C",
+        "S-F2-alias-C",
+        "S-F3-direction-C",
+        "S-F3-negation-C",
+        "S-F4-distractor-C",
+        "S-F5-paraphrase-C",
+        "S-F6-position-C"
+      ],
+      "slice_counts": {
+        "F1": 15,
+        "F2": 8,
+        "F3": 15,
+        "F4": 8,
+        "F5": 7,
+        "F6": 7
+      },
+      "degenerate_mustflip_rows": 0
+    },
+    "changes": {
+      "removed_pair_ids": {},
+      "added_pair_ids": {},
+      "n_text_hash_changed": {},
+      "substitution_map_present": false,
+      "n_query_rewrites": 0
+    }
+  },
+  "input_text_changed": false,
+  "data_task_change": false,
+  "gpu_forward_authorized_by_flag": false,
+  "cpu_replay_valid": true,
+  "n_train": 120,
+  "n_val": 60,
+  "n_scores": 480,
+  "elapsed_sec": 136.9,
+  "note": "E1 单缺陷干预筛查；版本差异不作因果分解；familes<24 标 exploratory；不碰封存 test。"
+}

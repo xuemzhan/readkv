@@ -1,0 +1,20 @@
+{
+  "run_id": "v3_E2_heldout_s0s1s2",
+  "files": [
+    {
+      "name": "config.json",
+      "sha256": "985c71f1d632e9152e994d288cd671afb787cde438306c0994dc5384c73186b2",
+      "size": 2863
+    },
+    {
+      "name": "metrics.json",
+      "sha256": "42b78d5d2d74fa66384c7dc637fac5b6637d2b4865f94da4468d7fdff352cb68",
+      "size": 8636
+    },
+    {
+      "name": "scores.jsonl",
+      "sha256": "15fb742067184bad7504c3f71206e0b1a0be30c43b2a48b2239615fe9c00dd26",
+      "size": 761435
+    }
+  ]
+}

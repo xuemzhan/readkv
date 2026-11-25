@@ -1,0 +1,11 @@
+{
+  "run_id": "v3_E1_B_entity_disjoint_only_s0",
+  "status": "ABORTED",
+  "files": [
+    {
+      "name": "config.json",
+      "sha256": "f9da8e2f27ef4776d5cd1c243b9cc07f736b3bb64df395867c770986e40a7a70",
+      "size": 641
+    }
+  ]
+}

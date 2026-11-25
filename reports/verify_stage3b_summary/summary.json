@@ -1,0 +1,20 @@
+{
+  "stage": 3,
+  "backend": "mock",
+  "joint_em": {
+    "closed_form": 1.0,
+    "behavioral": 0.6666666666666666,
+    "adapter": 1.0
+  },
+  "v_only_em": {
+    "closed_form": 1.0,
+    "behavioral": 0.6666666666666666,
+    "adapter": 1.0
+  },
+  "self_em": {
+    "closed_form": 1.0,
+    "behavioral": 1.0,
+    "adapter": 1.0
+  },
+  "note": "mock 结果仅用于训练/对照接线验证，不是科学结论"
+}

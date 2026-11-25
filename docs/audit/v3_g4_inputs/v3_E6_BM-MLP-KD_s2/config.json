@@ -1,0 +1,71 @@
+{
+  "run_id": "v3_E6_BM-MLP-KD_s2",
+  "protocol_version": "3.0",
+  "git_hash": "no-git",
+  "created_at": "2026-11-25T16:25:18+00:00",
+  "seed": 2,
+  "device": "cuda",
+  "dtype": "bfloat16",
+  "kernel": "sdpa",
+  "zero_re_prefill": true,
+  "experiment_config": {
+    "stage": "E6",
+    "gate": "GPU_followup_v3.0",
+    "backend": "gpu",
+    "experiment": "v3-BM-MLP-KD",
+    "seed": 2,
+    "device": "cuda",
+    "dtype": "bfloat16",
+    "kernel": "sdpa",
+    "zero_re_prefill": true,
+    "teacher": "reports/_non_authoritative/v3_g2_pilot/pinned/Qwen31.7B-sha256-1ddb5b89ebc90dcb",
+    "student": "reports/_non_authoritative/v3_g2_pilot/pinned/Qwen30.6B-sha256-660db3b73d788119",
+    "model_pair": "qwen3-1.7b-to-0.6b",
+    "trainable_params": 7340032,
+    "epochs": 8,
+    "lr": 0.001,
+    "lam_kd": 1.0,
+    "lam_reg": 0.0001,
+    "lam_cf": 0.0,
+    "input_sha256": {
+      "train": "53258777ab214fb9226b85389673672c9c4b1b17c8cb9d07cf1a97beddcf3e6e",
+      "val": "5633a8bf052f33c44ec694704baef64c96898a1548fc313abc2fb537a5e5b475",
+      "manifest": "6b3d63ae194df9af8d1369737a1e8c627cae9f17be37fb3380797fa0a26c2ff9"
+    },
+    "split_registration": {
+      "variant": "fully_repaired",
+      "seed": 2,
+      "train": {
+        "path": "data/variants_v3/fully_repaired/train_seed2.jsonl",
+        "sha256": "53258777ab214fb9226b85389673672c9c4b1b17c8cb9d07cf1a97beddcf3e6e",
+        "rows_registered": 120
+      },
+      "val": {
+        "path": "data/variants_v3/fully_repaired/val_seed2.jsonl",
+        "sha256": "5633a8bf052f33c44ec694704baef64c96898a1548fc313abc2fb537a5e5b475",
+        "rows_registered": 60
+      },
+      "manifest": {
+        "path": "data/variants_v3/manifest.json",
+        "sha256": "6b3d63ae194df9af8d1369737a1e8c627cae9f17be37fb3380797fa0a26c2ff9"
+      },
+      "reason": "E6 frozen clean split (same as kd_only); fully_repaired is a version difference vs legacy"
+    },
+    "criteria_source": "configs/prereg/gpu_followup_v3.0.yaml",
+    "spec_source": "docs/decisions/v3_baseline_spec.md",
+    "sealed_test_read": false,
+    "smoke": false,
+    "n_train": 120,
+    "n_val": 60
+  },
+  "metadata": {
+    "stage": "E6",
+    "experiment": "v3-BM-MLP-KD",
+    "protocol_version": "3.0",
+    "non_authoritative": false,
+    "sealed_test_read": false,
+    "criteria_source": "configs/prereg/gpu_followup_v3.0.yaml",
+    "faithful_published_baseline": false,
+    "reproduction_gate": "NOT_PASSED"
+  }
+}

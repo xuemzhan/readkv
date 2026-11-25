@@ -1,0 +1,61 @@
+# V2.0 冻结协议配置（先写后跑）；判据见 docs/protocol.md
+version: "2.0"
+frozen: true
+
+implementation_gate:            # E0 / P0
+  name: "E0_implementation"
+  primary: "measurement_error_ceiling_below_effect"
+  cosine_reference: 0.9998      # V1 继承的 identity 锚点参考，非 V2 主终点
+  max_first_token_kl: 0.001
+  report_min_cosine: true
+
+counterfactual:                 # 主研究对象
+  primary_endpoint: "paired_E_CF_difference"
+  metric: "E_CF"
+  tau_selection: "validation_only"
+  tau: 1.0
+  self_threshold: 0.1
+  report_all_and_self_valid_subset: true
+  jointly_report:
+    - dual_correct
+    - flip_consistency
+    - coverage
+    - info_gap_vs_no_info_control
+  note: "低 E_CF 单独不足以证明信息正确利用"
+
+statistics:
+  ci: 0.95
+  n_resamples: 10000
+  bootstrap: "cluster_paired"
+  cluster_unit: "template_or_source_doc"
+  min_training_seeds: 3
+  multiple_comparison: "Holm"
+  equivalence: "non_inferiority_with_preallocated_tolerance"
+  note: "P>0.05 不等于等效"
+
+task_slices:
+  F1: direct_fact_replacement
+  F2: reasoning_chain_change
+  F3: relation_direction_negation
+  F4: distractor_and_pointing
+  F5: surface_equivalence_negative_control
+  F6: length_position_control
+  flip_denominator_excludes: [F5]
+
+data_sizes:
+  probe: 40
+  train: 120
+  val: 60
+  test: 300
+  real: 0
+
+controls:
+  - correct
+  - mismatch_derangement
+  - random_moment_matched
+  - zero
+  - shuffled_target_training
+  - self_identity
+  - receiver_only_adapted
+
+experiment_matrix: [E0, E1, E2, E3, E4, E5, E6, E7]

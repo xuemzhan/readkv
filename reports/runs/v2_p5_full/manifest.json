@@ -1,0 +1,15 @@
+{
+  "run_id": "v2_p5_full",
+  "files": [
+    {
+      "name": "config.json",
+      "sha256": "12bc545c3866c994af8cce9ba93816317421d921b25540d3df43b2043ad99750",
+      "size": 419
+    },
+    {
+      "name": "paper_artifacts.json",
+      "sha256": "b2cb9436adeea0249994c0a068f9e0ca431f89cfb2a43b03e1a2927ce01b9bb5",
+      "size": 2074
+    }
+  ]
+}

@@ -1,0 +1,32 @@
+{
+  "manifest_sha256_match": true,
+  "manifest_size_match": true,
+  "manifest_lines_match": true,
+  "split_sizes": {
+    "probe": 40,
+    "train": 120,
+    "val": 60,
+    "test": 300
+  },
+  "split_sizes_match_protocol": true,
+  "cross_split_verbatim_overlap": {
+    "context_A": 0,
+    "context_B": 0,
+    "query": 0,
+    "edited_span": 0
+  },
+  "cross_split_overlap_zero": true,
+  "degenerate_must_flip_pairs": 0,
+  "degenerate_ids_sample": [],
+  "template_skeleton_train_test_shared": 0,
+  "template_skeleton_disjoint": true,
+  "candidate_entity_cross_split_overlap": 0,
+  "recomputed_flip_denominator": 398,
+  "flip_denominator_matches_manifest": true,
+  "deterministic_rebuild_identical": true,
+  "stats_convention_v2_3_sha256": "e44c6acb79649ae55e4880696a00cb406636f5958f3d2053f7e1504c3d39bce0",
+  "stats_convention_v2_3_sha256_before_398_backfill": "5200940c0ad466af000aab74689a6f1101d5c486e7358d2fdd3c87afd4776603",
+  "manifest_stats_convention_sha_match": true,
+  "stats_convention_hash_annotation": "v2.3 初版（flip 分母 null，sha 5200940c…）→ PI 回填 398（sha e44c6acb…，commit 6413ba0）；同一冻结版本 protocol-v2.3 的内容补全，非改判据。详见 reports/data/s2_hash_annotation.md。",
+  "ALL_ACCEPTANCE_CHECKS_PASS": true
+}

@@ -1,0 +1,20 @@
+{
+  "run_id": "v3_E1_B_legacy_bundle_s2",
+  "files": [
+    {
+      "name": "config.json",
+      "sha256": "e7349ea5b228bf8fff68550f5bd8ca0a148fe5d05854d534c2bd992fada914b7",
+      "size": 4722
+    },
+    {
+      "name": "scores.jsonl",
+      "sha256": "7ba5aaad1b8921014c097ffe068ba07d1e191badbf98498927876ce8f8867266",
+      "size": 336619
+    },
+    {
+      "name": "metrics.json",
+      "sha256": "2eb65369ee966feb4c9282f2afd673ba53052064b04d69fc3c1229e96f336162",
+      "size": 7584
+    }
+  ]
+}

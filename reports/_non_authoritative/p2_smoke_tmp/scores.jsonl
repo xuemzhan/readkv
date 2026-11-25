@@ -1,0 +1,20 @@
+{"pair_id": "val-F1-0000", "cluster": "val-T-F1-person-C-000", "arm": "self", "deployable": false, "E_CF": 0.0, "dual_correct": 1.0, "flip_consistency": true}
+{"pair_id": "val-F1-0000", "cluster": "val-T-F1-person-C-000", "arm": "k_only", "deployable": false, "E_CF": 0.1875, "dual_correct": 1.0, "flip_consistency": true}
+{"pair_id": "val-F1-0000", "cluster": "val-T-F1-person-C-000", "arm": "v_only", "deployable": false, "E_CF": 0.5625, "dual_correct": 1.0, "flip_consistency": true}
+{"pair_id": "val-F1-0000", "cluster": "val-T-F1-person-C-000", "arm": "joint", "deployable": true, "E_CF": 1.0, "dual_correct": 1.0, "flip_consistency": true}
+{"pair_id": "val-F2-0001", "cluster": "val-T-F2-alias-C-001", "arm": "self", "deployable": false, "E_CF": 0.0, "dual_correct": 1.0, "flip_consistency": true}
+{"pair_id": "val-F2-0001", "cluster": "val-T-F2-alias-C-001", "arm": "k_only", "deployable": false, "E_CF": 0.3125, "dual_correct": 1.0, "flip_consistency": true}
+{"pair_id": "val-F2-0001", "cluster": "val-T-F2-alias-C-001", "arm": "v_only", "deployable": false, "E_CF": 0.3125, "dual_correct": 1.0, "flip_consistency": true}
+{"pair_id": "val-F2-0001", "cluster": "val-T-F2-alias-C-001", "arm": "joint", "deployable": true, "E_CF": 1.9375, "dual_correct": 1.0, "flip_consistency": true}
+{"pair_id": "val-F3-0002", "cluster": "val-T-F3-direction-C-002", "arm": "self", "deployable": false, "E_CF": 0.0, "dual_correct": 0.0, "flip_consistency": null}
+{"pair_id": "val-F3-0002", "cluster": "val-T-F3-direction-C-002", "arm": "k_only", "deployable": false, "E_CF": 0.0, "dual_correct": 0.0, "flip_consistency": null}
+{"pair_id": "val-F3-0002", "cluster": "val-T-F3-direction-C-002", "arm": "v_only", "deployable": false, "E_CF": 0.0, "dual_correct": 0.0, "flip_consistency": null}
+{"pair_id": "val-F3-0002", "cluster": "val-T-F3-direction-C-002", "arm": "joint", "deployable": true, "E_CF": 0.0, "dual_correct": 0.0, "flip_consistency": null}
+{"pair_id": "val-F4-0003", "cluster": "val-T-F4-distractor-C-003", "arm": "self", "deployable": false, "E_CF": 0.0, "dual_correct": 1.0, "flip_consistency": true}
+{"pair_id": "val-F4-0003", "cluster": "val-T-F4-distractor-C-003", "arm": "k_only", "deployable": false, "E_CF": 2.0, "dual_correct": 1.0, "flip_consistency": true}
+{"pair_id": "val-F4-0003", "cluster": "val-T-F4-distractor-C-003", "arm": "v_only", "deployable": false, "E_CF": 1.71875, "dual_correct": 1.0, "flip_consistency": true}
+{"pair_id": "val-F4-0003", "cluster": "val-T-F4-distractor-C-003", "arm": "joint", "deployable": true, "E_CF": 2.0, "dual_correct": 1.0, "flip_consistency": true}
+{"pair_id": "val-F1-0000", "cluster": "val-T-F1-person-C-000", "arm": "oracle_U", "delta_ecf": 0.3, "hit": 0.8}
+{"pair_id": "val-F2-0001", "cluster": "val-T-F2-alias-C-001", "arm": "oracle_U", "delta_ecf": 0.1, "hit": 0.4}
+{"pair_id": "val-F3-0002", "cluster": "val-T-F3-direction-C-002", "arm": "oracle_U", "delta_ecf": 0.0, "hit": 0.0}
+{"pair_id": "val-F4-0003", "cluster": "val-T-F4-distractor-C-003", "arm": "oracle_U", "delta_ecf": 0.2125, "hit": 0.6}

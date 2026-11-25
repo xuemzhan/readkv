@@ -1,0 +1,25 @@
+{
+  "run_id": "v2_p2_final",
+  "files": [
+    {
+      "name": "config.json",
+      "sha256": "f1c4167bb9f267581c7a1842a75676d6d7a96785c6e543207a6099edab2d29a6",
+      "size": 389
+    },
+    {
+      "name": "decomposition.jsonl",
+      "sha256": "377b43deea5c7df728fb0ff8db91a1b3c12a9b1a279be19262ae20be855b370e",
+      "size": 13828
+    },
+    {
+      "name": "mechanism.json",
+      "sha256": "0b04803c27c12eac5ad8ace86033f7ed8d8c7eff89cdd667a8814e57af25bac3",
+      "size": 6008
+    },
+    {
+      "name": "mechanism_units.jsonl",
+      "sha256": "2284c619ac85a490c333761d9d2cc19ae0cf21d7ca310f2cdf5e6ecace563f52",
+      "size": 6404
+    }
+  ]
+}

@@ -1,0 +1,62 @@
+{
+  "status": "NOT_LOCKED_GRID_INCOMPLETE",
+  "reference": "configs/prereg/phase3_loss_config_v2.1.yaml §huber_delta; PI p1_go_no_go.md §9.7",
+  "grid": [
+    0.5,
+    1.0,
+    2.0
+  ],
+  "available_grid_points": {
+    "0.5": {
+      "run_id": "delta_lock_v2p1_0p5",
+      "val_E_CF": 2.7495630900065104,
+      "val_E_CF_ci": [
+        2.0841660563151043,
+        3.496242052714029
+      ],
+      "dual_correct": 0.7,
+      "flip_consistency": 1.0,
+      "coverage": 0.8,
+      "eval_split": "val",
+      "train_pairs": 60,
+      "epochs": 3
+    },
+    "1.0": {
+      "run_id": "delta_lock_v2p1_1p0_par",
+      "val_E_CF": 1.5967623392740886,
+      "val_E_CF_ci": [
+        1.201638215382894,
+        2.048993199666341
+      ],
+      "dual_correct": 0.65,
+      "flip_consistency": 1.0,
+      "coverage": 0.8,
+      "eval_split": "val",
+      "train_pairs": 60,
+      "epochs": 3
+    }
+  },
+  "missing_grid_points": {
+    "2.0": "delta_lock_v2p1_2p0_par 未启动/无产物（并行实例未完成）"
+  },
+  "q70_supplement": "未计算（需额外 val 推理；v2.1 标注为“必要时补充候选”）",
+  "kd_only_reference": {
+    "dual_correct": 0.7,
+    "flip_consistency": 1.0,
+    "val_E_CF": 0.7349589029947917,
+    "train_pairs": 120,
+    "epochs": 8
+  },
+  "selection_rule_from_v2.1": [
+    "1. val E_CF 最小",
+    "2. dual_correct 与 flip_consistency 不劣于 kd_only",
+    "3. 普通 QA 不退化"
+  ],
+  "provisional_observation": {
+    "delta_1p0": "val E_CF 1.597 更低，但 dual_correct 0.65 < kd_only 0.70，违反第 2 优先级约束",
+    "delta_0p5": "val E_CF 2.750 较高，但 dual 0.70 / flip 1.0 满足非劣约束",
+    "conclusion": "在可用两点中，δ=0.5 是唯一满足非劣约束的候选；但 δ=2.0 缺失，按“判据先写后跑”不得据不完整网格锁定最终 δ。"
+  },
+  "budget_caveat": "δ 网格用 60 训练对/3 epoch，kd_only 参照用 120 对/8 epoch；预算不同，非劣比较仅供初步筛查，正式锁定须同预算重跑。",
+  "seal": "仅用 train/val，从未读取封存 test；本文件不修改 configs/prereg/**，最终 δ 须由 PI 新增版本文件冻结。"
+}

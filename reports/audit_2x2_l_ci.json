@@ -1,0 +1,558 @@
+{
+  "file": "reports/audit_2x2_l_ci.json",
+  "protocol": "gpu_followup_v2.7",
+  "method": "pure CPU recompute from frozen scores + val JSONL; no GPU, no run产物改动",
+  "cluster_unit": "template_family (primary) + pair-level sensitivity",
+  "n_resamples": 10000,
+  "cells": {
+    "A00_s0": {
+      "run_id": "audit_2x2_A00_s0",
+      "cell": "A00",
+      "seed": 0,
+      "n_pairs": 60,
+      "L_point_pp": 1.666667,
+      "L_template_family_ci": {
+        "point": 1.666667,
+        "ci": [
+          -3.333333,
+          7.017544
+        ]
+      },
+      "L_pair_level_sensitivity": {
+        "point": 1.666667,
+        "ci": [
+          -3.333333,
+          8.333333
+        ]
+      },
+      "n_clusters": 8,
+      "unknown_family_pairs": 0,
+      "exploratory": true,
+      "joint_E_CF_template_family_ci": {
+        "point": 1.968229,
+        "ci": [
+          1.372881,
+          2.4271
+        ]
+      },
+      "family_source": "data/audit_2x2/legacy/val_seed0.jsonl (version_tag+sample_hash join)"
+    },
+    "A00_s1": {
+      "run_id": "audit_2x2_A00_s1",
+      "cell": "A00",
+      "seed": 1,
+      "n_pairs": 60,
+      "L_point_pp": -5.0,
+      "L_template_family_ci": {
+        "point": -5.0,
+        "ci": [
+          -15.254237,
+          6.666667
+        ]
+      },
+      "L_pair_level_sensitivity": {
+        "point": -5.0,
+        "ci": [
+          -13.333333,
+          3.333333
+        ]
+      },
+      "n_clusters": 8,
+      "unknown_family_pairs": 0,
+      "exploratory": true,
+      "joint_E_CF_template_family_ci": {
+        "point": 1.934115,
+        "ci": [
+          1.186719,
+          2.615823
+        ]
+      },
+      "family_source": "data/audit_2x2/legacy/val_seed1.jsonl (version_tag+sample_hash join)"
+    },
+    "A00_s2": {
+      "run_id": "audit_2x2_A00_s2",
+      "cell": "A00",
+      "seed": 2,
+      "n_pairs": 60,
+      "L_point_pp": 3.333333,
+      "L_template_family_ci": {
+        "point": 3.333333,
+        "ci": [
+          0.0,
+          10.344828
+        ]
+      },
+      "L_pair_level_sensitivity": {
+        "point": 3.333333,
+        "ci": [
+          0.0,
+          8.333333
+        ]
+      },
+      "n_clusters": 8,
+      "unknown_family_pairs": 0,
+      "exploratory": true,
+      "joint_E_CF_template_family_ci": {
+        "point": 2.123438,
+        "ci": [
+          1.395742,
+          2.745556
+        ]
+      },
+      "family_source": "data/audit_2x2/legacy/val_seed2.jsonl (version_tag+sample_hash join)"
+    },
+    "A11_s0": {
+      "run_id": "audit_2x2_A11_s0",
+      "cell": "A11",
+      "seed": 0,
+      "n_pairs": 60,
+      "L_point_pp": 40.0,
+      "L_template_family_ci": {
+        "point": 40.0,
+        "ci": [
+          16.666667,
+          62.711864
+        ]
+      },
+      "L_pair_level_sensitivity": {
+        "point": 40.0,
+        "ci": [
+          23.333333,
+          55.0
+        ]
+      },
+      "n_clusters": 8,
+      "unknown_family_pairs": 0,
+      "exploratory": true,
+      "joint_E_CF_template_family_ci": {
+        "point": 6.899552,
+        "ci": [
+          3.564234,
+          10.099626
+        ]
+      },
+      "family_source": "data/audit_2x2/fixed/val_seed0.jsonl (version_tag+sample_hash join)"
+    },
+    "A11_s1": {
+      "run_id": "audit_2x2_A11_s1",
+      "cell": "A11",
+      "seed": 1,
+      "n_pairs": 60,
+      "L_point_pp": 61.666667,
+      "L_template_family_ci": {
+        "point": 61.666667,
+        "ci": [
+          38.333333,
+          83.050847
+        ]
+      },
+      "L_pair_level_sensitivity": {
+        "point": 61.666667,
+        "ci": [
+          48.333333,
+          75.0
+        ]
+      },
+      "n_clusters": 8,
+      "unknown_family_pairs": 0,
+      "exploratory": true,
+      "joint_E_CF_template_family_ci": {
+        "point": 8.159017,
+        "ci": [
+          4.35736,
+          11.584142
+        ]
+      },
+      "family_source": "data/audit_2x2/fixed/val_seed1.jsonl (version_tag+sample_hash join)"
+    },
+    "A11_s2": {
+      "run_id": "audit_2x2_A11_s2",
+      "cell": "A11",
+      "seed": 2,
+      "n_pairs": 60,
+      "L_point_pp": 40.0,
+      "L_template_family_ci": {
+        "point": 40.0,
+        "ci": [
+          20.338983,
+          58.730159
+        ]
+      },
+      "L_pair_level_sensitivity": {
+        "point": 40.0,
+        "ci": [
+          28.333333,
+          51.666667
+        ]
+      },
+      "n_clusters": 8,
+      "unknown_family_pairs": 0,
+      "exploratory": true,
+      "joint_E_CF_template_family_ci": {
+        "point": 8.540243,
+        "ci": [
+          5.326361,
+          11.610151
+        ]
+      },
+      "family_source": "data/audit_2x2/fixed/val_seed2.jsonl (version_tag+sample_hash join)"
+    },
+    "A01_s0": {
+      "run_id": "audit_2x2_A01_s0",
+      "cell": "A01",
+      "seed": 0,
+      "n_pairs": 60,
+      "L_point_pp": 26.666667,
+      "L_template_family_ci": {
+        "point": 26.666667,
+        "ci": [
+          1.694915,
+          48.387097
+        ]
+      },
+      "L_pair_level_sensitivity": {
+        "point": 26.666667,
+        "ci": [
+          11.666667,
+          41.666667
+        ]
+      },
+      "n_clusters": 8,
+      "unknown_family_pairs": 0,
+      "exploratory": true,
+      "joint_E_CF_template_family_ci": {
+        "point": 5.329688,
+        "ci": [
+          2.970805,
+          7.419989
+        ]
+      },
+      "family_source": "data/audit_2x2/fixed/val_seed0.jsonl (version_tag+sample_hash join)"
+    },
+    "A01_s1": {
+      "run_id": "audit_2x2_A01_s1",
+      "cell": "A01",
+      "seed": 1,
+      "n_pairs": 60,
+      "L_point_pp": 28.333333,
+      "L_template_family_ci": {
+        "point": 28.333333,
+        "ci": [
+          9.836066,
+          48.275862
+        ]
+      },
+      "L_pair_level_sensitivity": {
+        "point": 28.333333,
+        "ci": [
+          16.666667,
+          40.0
+        ]
+      },
+      "n_clusters": 8,
+      "unknown_family_pairs": 0,
+      "exploratory": true,
+      "joint_E_CF_template_family_ci": {
+        "point": 6.346094,
+        "ci": [
+          3.588371,
+          8.817412
+        ]
+      },
+      "family_source": "data/audit_2x2/fixed/val_seed1.jsonl (version_tag+sample_hash join)"
+    },
+    "A01_s2": {
+      "run_id": "audit_2x2_A01_s2",
+      "cell": "A01",
+      "seed": 2,
+      "n_pairs": 60,
+      "L_point_pp": 33.333333,
+      "L_template_family_ci": {
+        "point": 33.333333,
+        "ci": [
+          11.666667,
+          54.83871
+        ]
+      },
+      "L_pair_level_sensitivity": {
+        "point": 33.333333,
+        "ci": [
+          20.0,
+          46.666667
+        ]
+      },
+      "n_clusters": 8,
+      "unknown_family_pairs": 0,
+      "exploratory": true,
+      "joint_E_CF_template_family_ci": {
+        "point": 6.26901,
+        "ci": [
+          3.726594,
+          8.638406
+        ]
+      },
+      "family_source": "data/audit_2x2/fixed/val_seed2.jsonl (version_tag+sample_hash join)"
+    },
+    "A10_s0": {
+      "run_id": "audit_2x2_A10_s0",
+      "cell": "A10",
+      "seed": 0,
+      "n_pairs": 60,
+      "L_point_pp": 38.333333,
+      "L_template_family_ci": {
+        "point": 38.333333,
+        "ci": [
+          15.789474,
+          57.377049
+        ]
+      },
+      "L_pair_level_sensitivity": {
+        "point": 38.333333,
+        "ci": [
+          26.666667,
+          50.0
+        ]
+      },
+      "n_clusters": 8,
+      "unknown_family_pairs": 0,
+      "exploratory": true,
+      "joint_E_CF_template_family_ci": {
+        "point": 5.208122,
+        "ci": [
+          3.02207,
+          7.219011
+        ]
+      },
+      "family_source": "data/audit_2x2/legacy/val_seed0.jsonl (version_tag+sample_hash join)"
+    },
+    "A10_s1": {
+      "run_id": "audit_2x2_A10_s1",
+      "cell": "A10",
+      "seed": 1,
+      "n_pairs": 60,
+      "L_point_pp": 23.333333,
+      "L_template_family_ci": {
+        "point": 23.333333,
+        "ci": [
+          6.896552,
+          38.333333
+        ]
+      },
+      "L_pair_level_sensitivity": {
+        "point": 23.333333,
+        "ci": [
+          11.666667,
+          35.0
+        ]
+      },
+      "n_clusters": 8,
+      "unknown_family_pairs": 0,
+      "exploratory": true,
+      "joint_E_CF_template_family_ci": {
+        "point": 4.899479,
+        "ci": [
+          3.137152,
+          6.516773
+        ]
+      },
+      "family_source": "data/audit_2x2/legacy/val_seed1.jsonl (version_tag+sample_hash join)"
+    },
+    "A10_s2": {
+      "run_id": "audit_2x2_A10_s2",
+      "cell": "A10",
+      "seed": 2,
+      "n_pairs": 60,
+      "L_point_pp": 25.0,
+      "L_template_family_ci": {
+        "point": 25.0,
+        "ci": [
+          3.389831,
+          43.548387
+        ]
+      },
+      "L_pair_level_sensitivity": {
+        "point": 25.0,
+        "ci": [
+          11.666667,
+          38.333333
+        ]
+      },
+      "n_clusters": 8,
+      "unknown_family_pairs": 0,
+      "exploratory": true,
+      "joint_E_CF_template_family_ci": {
+        "point": 5.266943,
+        "ci": [
+          3.203919,
+          7.336578
+        ]
+      },
+      "family_source": "data/audit_2x2/legacy/val_seed2.jsonl (version_tag+sample_hash join)"
+    }
+  },
+  "predeclared_contrasts": {
+    "s0": {
+      "calibration_legacy_val_A10_minus_A00": {
+        "point": 36.666667,
+        "ci": [
+          15.517241,
+          54.83871
+        ],
+        "n_pairs": 60,
+        "n_clusters": 8,
+        "exploratory": true,
+        "label": "固定旧 val 换校准",
+        "scope": "legacy val",
+        "method": "paired-by-sample_id (same val, swap calibration)"
+      },
+      "calibration_fixed_val_A11_minus_A01": {
+        "point": 13.333333,
+        "ci": [
+          -1.639344,
+          30.0
+        ],
+        "n_pairs": 60,
+        "n_clusters": 8,
+        "exploratory": true,
+        "label": "固定修复 val 换校准",
+        "scope": "fixed val",
+        "method": "paired-by-sample_id (same val, swap calibration)"
+      },
+      "eval_legacy_cal_A01_minus_A00": {
+        "point": 25.0,
+        "ci": [
+          -2.455357,
+          46.205357
+        ],
+        "n_pairs": 120,
+        "n_clusters": 16,
+        "exploratory": true,
+        "label": "固定旧校准换 val",
+        "scope": "legacy cal",
+        "method": "unpaired independent template_family cluster bootstrap of mean(L) difference (cross-version vals are distinct sample sets)"
+      },
+      "eval_fixed_cal_A11_minus_A10": {
+        "point": 1.666667,
+        "ci": [
+          -29.241071,
+          31.696429
+        ],
+        "n_pairs": 120,
+        "n_clusters": 16,
+        "exploratory": true,
+        "label": "固定修复校准换 val",
+        "scope": "fixed cal",
+        "method": "unpaired independent template_family cluster bootstrap of mean(L) difference (cross-version vals are distinct sample sets)"
+      }
+    },
+    "s1": {
+      "calibration_legacy_val_A10_minus_A00": {
+        "point": 28.333333,
+        "ci": [
+          13.793103,
+          42.372881
+        ],
+        "n_pairs": 60,
+        "n_clusters": 8,
+        "exploratory": true,
+        "label": "固定旧 val 换校准",
+        "scope": "legacy val",
+        "method": "paired-by-sample_id (same val, swap calibration)"
+      },
+      "calibration_fixed_val_A11_minus_A01": {
+        "point": 33.333333,
+        "ci": [
+          10.0,
+          55.172414
+        ],
+        "n_pairs": 60,
+        "n_clusters": 8,
+        "exploratory": true,
+        "label": "固定修复 val 换校准",
+        "scope": "fixed val",
+        "method": "paired-by-sample_id (same val, swap calibration)"
+      },
+      "eval_legacy_cal_A01_minus_A00": {
+        "point": 33.333333,
+        "ci": [
+          10.491071,
+          54.6875
+        ],
+        "n_pairs": 120,
+        "n_clusters": 16,
+        "exploratory": true,
+        "label": "固定旧校准换 val",
+        "scope": "legacy cal",
+        "method": "unpaired independent template_family cluster bootstrap of mean(L) difference (cross-version vals are distinct sample sets)"
+      },
+      "eval_fixed_cal_A11_minus_A10": {
+        "point": 38.333333,
+        "ci": [
+          10.267857,
+          64.732143
+        ],
+        "n_pairs": 120,
+        "n_clusters": 16,
+        "exploratory": true,
+        "label": "固定修复校准换 val",
+        "scope": "fixed cal",
+        "method": "unpaired independent template_family cluster bootstrap of mean(L) difference (cross-version vals are distinct sample sets)"
+      }
+    },
+    "s2": {
+      "calibration_legacy_val_A10_minus_A00": {
+        "point": 21.666667,
+        "ci": [
+          0.0,
+          41.269841
+        ],
+        "n_pairs": 60,
+        "n_clusters": 8,
+        "exploratory": true,
+        "label": "固定旧 val 换校准",
+        "scope": "legacy val",
+        "method": "paired-by-sample_id (same val, swap calibration)"
+      },
+      "calibration_fixed_val_A11_minus_A01": {
+        "point": 6.666667,
+        "ci": [
+          -14.516129,
+          28.813559
+        ],
+        "n_pairs": 60,
+        "n_clusters": 8,
+        "exploratory": true,
+        "label": "固定修复 val 换校准",
+        "scope": "fixed val",
+        "method": "paired-by-sample_id (same val, swap calibration)"
+      },
+      "eval_legacy_cal_A01_minus_A00": {
+        "point": 30.0,
+        "ci": [
+          6.685268,
+          51.5625
+        ],
+        "n_pairs": 120,
+        "n_clusters": 16,
+        "exploratory": true,
+        "label": "固定旧校准换 val",
+        "scope": "legacy cal",
+        "method": "unpaired independent template_family cluster bootstrap of mean(L) difference (cross-version vals are distinct sample sets)"
+      },
+      "eval_fixed_cal_A11_minus_A10": {
+        "point": 15.0,
+        "ci": [
+          -12.723214,
+          43.75
+        ],
+        "n_pairs": 120,
+        "n_clusters": 16,
+        "exploratory": true,
+        "label": "固定修复校准换 val",
+        "scope": "fixed cal",
+        "method": "unpaired independent template_family cluster bootstrap of mean(L) difference (cross-version vals are distinct sample sets)"
+      }
+    }
+  },
+  "note": "L 主口径=template_family 簇级 bootstrap；pair-level 仅敏感性；8 族<24 全标 exploratory=true。跨版本 pair_id 碰撞已规避（关联键 version_tag+sample_hash）。不改任何 run 产物 / bootstrap.json 原文件。"
+}

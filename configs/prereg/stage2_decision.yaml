@@ -1,0 +1,19 @@
+# 冻结于阶段 2 运行之前；判据见 docs/protocol.md 第 5 节
+frozen: true
+frozen_at: "protocol-v1.0"
+hypothesis: "consumer-space 原则在真实基准与三道门下是否成立"
+gates_ref: gates.yaml
+rules:
+  - when: "V_only or Joint passes H2"
+    verdict: consumer_space_general
+    conditions: {h2_pass_any: true}
+    action: "go to stage3; focus on content specificity"
+  - when: "improvement but H2 fails"
+    verdict: partial
+    conditions: {h2_pass_any: false, any_positive_chg: true}
+    action: "narrowing not eliminating; stage3 behavioral mapper more necessary"
+  - when: "no improvement"
+    verdict: task_conditioned
+    conditions: {h2_pass_any: false, any_positive_chg: false}
+    action: "shrink stage3; explain why synthetic-domain result does not extrapolate"
+forbidden_after_run: ["changing epsilon", "dropping arms", "switching benchmark"]

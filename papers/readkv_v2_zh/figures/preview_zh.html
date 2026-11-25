@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<title>readkv 审计 — 中文图版</title>
+<style>
+  :root { --ink:#1c1c1c; --muted:#6d6d6d; --rule:#dcdfe4; --band:#f6f7f9; --j:#b0483f; }
+  * { box-sizing: border-box; }
+  body { margin: 0; padding: 32px 40px 72px; max-width: 1040px; color: var(--ink);
+         background: #fff; font: 15px/1.75 "Microsoft YaHei", "PingFang SC", "Noto Sans CJK SC", sans-serif; }
+  h1 { font-size: 22px; margin: 0 0 6px; }
+  .lede { color: var(--muted); margin: 0 0 26px; max-width: 62ch; }
+  figure { margin: 0 0 34px; padding: 18px 18px 14px; border: 1px solid var(--rule); border-radius: 8px; }
+  figure img { width: 100%; height: auto; display: block; }
+  figcaption { margin-top: 12px; font-size: 13.5px; color: #2c2c2c; }
+  .tag { display: inline-block; font: 11px/1 ui-monospace, Consolas, monospace; letter-spacing: .06em;
+         color: var(--j); background: var(--band); border: 1px solid var(--rule);
+         border-radius: 999px; padding: 4px 9px; margin-bottom: 10px; }
+  .src { font-size: 12px; color: var(--muted); margin-top: 6px; }
+  code { font: 12px ui-monospace, Consolas, monospace; background: var(--band); padding: 1px 4px; border-radius: 3px; }
+  footer { border-top: 1px solid var(--rule); padding-top: 14px; color: var(--muted); font-size: 12.5px; }
+</style>
+</head>
+<body>
+<h1>跨模型 KV 缓存迁移审计 — 中文图版</h1>
+<p class="lede">六张图与英文版的几何、数据完全一致，只把读者可见的文字换成中文（SimSun 宋体）。
+每个数字都来自 <code>results.json</code> / <code>evaluation.json</code>，或由 <code>data/audit_2x2/</code> 原始语料重算；
+<code>render_zh.py</code> 在出图前对每张图跑同一套检查：文字重叠、图例压数据、箭头穿框、字号、灰度对比、缺字。</p>
+
+<figure>
+  <span class="tag">图 1 · 问题设定</span>
+  <img src="fig1_design_zh.png" alt="缓存路径与语料版本设计">
+  <figcaption><b>缓存路径与语料版本设计。</b>(a) 发送端逐层的键与值经逐层逐头的仿射岭回归映射后注入冻结的接收端，接收端只看查询与候选前缀；Self 臂改用接收端自己对同一文档的缓存。(b) 原始（0）与重建（1）的校准、验证语料交叉，每格三颗种子，格内为三种子的 <i>L</i>（百分点）。</figcaption>
+  <div class="src">数据：<code>results.json → factorial[*].L</code></div>
+</figure>
+
+<figure>
+  <span class="tag">图 2 · 语料审计</span>
+  <img src="fig2_corpus_zh.png" alt="重建前后的缺陷计数">
+  <figcaption><b>重建消掉了什么。</b>(a) F1–F4 中两个候选完全相同、却要求翻转的配对；(b) 校准与验证之间逐字相同的文档串；(c) 两套切分之间重复的查询串。三项在重建语料上均为零。</figcaption>
+  <div class="src">数据：<code>data/audit_2x2/{legacy,fixed}/*_seed*.jsonl</code> 重算</div>
+</figure>
+
+<figure>
+  <span class="tag">图 3 · 主结果</span>
+  <img src="fig3_factorial_zh.png" alt="各单元各物种子的 L">
+  <figcaption><b>反转。</b>(a) 每单元每颗种子的 <i>L</i> 及其模板族区间，历史对角格 A00 加灰底，虚线为零差距。(b) 产生该差距的两个正确率水平，同一行内比较才成立。</figcaption>
+  <div class="src">数据：<code>results.json → factorial[*].{L,self,joint}</code></div>
+</figure>
+
+<figure>
+  <span class="tag">图 4 · 打分口径</span>
+  <img src="fig4_scoring_zh.png" alt="三种打分口径与版本差">
+  <figcaption><b>换一种打分，方向还在吗。</b>(a) 首 token、整串、长度归一三种口径下的 <i>L</i>。(b) 每种口径下的版本差 A11−A00 及其模板族区间。方向全部为正，幅度会动（种子 1 收窄 21.7 个百分点）。</figcaption>
+  <div class="src">数据：<code>results.json → sequence</code>、<code>sequence_contrasts</code></div>
+</figure>
+
+<figure>
+  <span class="tag">图 5 · 反事实误差</span>
+  <img src="fig5_controls_zh.png" alt="误差与对照缓存">
+  <figcaption><b>误差比对照小，正确率却大幅下降。</b>(a) 首 token <i>E</i><sub>CF</sub> 与错配、置零、随机三种对照。(b) 逐配对的 <i>D</i><sub>Self</sub> 与 <i>D</i><sub>Joint</sub>，对角线附近为同号，内嵌每个种子的同号分子/分母。</figcaption>
+  <div class="src">数据：<code>results.json → factorial[A11_*]</code>、<code>evaluation.json</code></div>
+</figure>
+
+<figure>
+  <span class="tag">图 6 · 切片与映射器</span>
+  <img src="fig6_slices_zh.png" alt="切片分解与蒸馏基线">
+  <figcaption><b>差距落在哪些切片。</b>(a) 各切片上每单元每颗种子的 <i>L</i>；F1–F4 为语义切片，F5、F6 为对照切片，不参与方向一致性分析。(b) 重建验证集上仿射映射与蒸馏基线的对比，附模板族区间。</figcaption>
+  <div class="src">数据：<code>evaluation.json → factorial</code>、<code>results.json → kd</code></div>
+</figure>
+
+<footer>
+  重新生成：<code>python figures/render_zh.py</code>（出图 + 六项检查一体）。矢量 PDF 与 PNG 预览同目录。
+</footer>
+</body>
+</html>

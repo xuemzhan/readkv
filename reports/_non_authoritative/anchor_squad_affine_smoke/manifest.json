@@ -1,0 +1,20 @@
+{
+  "run_id": "anchor_squad_affine_smoke",
+  "files": [
+    {
+      "name": "config.json",
+      "sha256": "671605e111460c2311e48c7fe4292b4f02811acef9ba16889ceb7bc56b58e964",
+      "size": 1574
+    },
+    {
+      "name": "metrics.json",
+      "sha256": "9808653fd784b0a9bd93e2a2ef08d650c99d31fdf1469dfa6e7595f670def182",
+      "size": 898
+    },
+    {
+      "name": "scores.jsonl",
+      "sha256": "adec27fe99fa485c5b8a8964cf8412787f24b51992b36f1baccb08da45d9da50",
+      "size": 4884
+    }
+  ]
+}

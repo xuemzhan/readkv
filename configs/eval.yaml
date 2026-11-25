@@ -1,0 +1,28 @@
+# V2 评测配置
+default_seed: 0
+seeds: [0, 1, 2]
+n_resamples: 10000
+tau: 1.0
+self_threshold: 0.1
+eval_splits: [val, test]
+
+mapper_baselines:
+  - affine
+  - consumer
+  - kd_only        # 训练基线（train/cf_rct.py method=kd）
+  - score
+
+primary_baseline: kd_only
+
+model_pairs:
+  mvp: "qwen3-1.7b-to-0.6b"       # 等深
+  main: "qwen3-4b-to-1.7b"        # 非等深
+  stress: "qwen3-8b-to-0.6b"      # 离线压力测试
+
+resource:
+  device: cuda
+  dtype: bfloat16
+  kernel: sdpa
+  single_gpu_24gb: true
+  teacher_offline_only: true
+  no_long_context: true

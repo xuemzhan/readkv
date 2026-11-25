@@ -1,0 +1,152 @@
+{
+  "run_id": "v3_E1_A_fully_repaired_s2",
+  "protocol_version": "3.0",
+  "git_hash": "no-git",
+  "created_at": "2026-11-25T19:28:46+00:00",
+  "seed": 2,
+  "device": "cuda",
+  "dtype": "bfloat16",
+  "kernel": "sdpa",
+  "zero_re_prefill": true,
+  "experiment_config": {
+    "stage": "E1",
+    "gate": "GPU_followup_v3.0",
+    "backend": "gpu",
+    "variant": "fully_repaired",
+    "panel": "A",
+    "seed": 2,
+    "bootstrap_seed": 2,
+    "model_pair": "qwen3-1.7b-to-0.6b",
+    "teacher": "/root/readkv/reports/_non_authoritative/v3_env/pinned_links/Qwen3-1.7B-1ddb5b89ebc9",
+    "student": "/root/readkv/reports/_non_authoritative/v3_env/pinned_links/Qwen3-0.6B-660db3b73d78",
+    "train_path": "/root/readkv/data/variants_v3/fully_repaired/train_seed2.jsonl",
+    "val_path": "/root/readkv/data/variants_v3/fully_repaired/val_seed2.jsonl",
+    "manifest_path": "/root/readkv/data/variants_v3/manifest.json",
+    "input_sha256": {
+      "train": "53258777ab214fb9226b85389673672c9c4b1b17c8cb9d07cf1a97beddcf3e6e",
+      "val": "5633a8bf052f33c44ec694704baef64c96898a1548fc313abc2fb537a5e5b475",
+      "manifest": "6b3d63ae194df9af8d1369737a1e8c627cae9f17be37fb3380797fa0a26c2ff9"
+    },
+    "criteria_source": "configs/prereg/gpu_followup_v3.0.yaml",
+    "sealed_test_read": false,
+    "zero_re_prefill": true,
+    "zero_re_prefill_basis": "forward_audit",
+    "dtype": "bfloat16",
+    "kernel": "sdpa",
+    "device": "cuda",
+    "mapper": "affine_per_layer_head",
+    "ridge_lambda": 0.001,
+    "layer_map": {
+      "kind": "identity",
+      "n_student_layers": 28,
+      "n_teacher_layers": 28
+    },
+    "tau": 1.0,
+    "self_threshold": 0.1,
+    "n_resamples": 10000,
+    "n_train": 120,
+    "n_val": 60,
+    "smoke": false,
+    "smoke_n_val": null,
+    "cpu_replay_only": false,
+    "replay_logits_path": null,
+    "variant_registration": {
+      "variant": "fully_repaired",
+      "panel": "A",
+      "changed_attribute": "ALL defects (M1+M2+M3)",
+      "scope": "full v2.1 repaired version",
+      "rule": "verbatim copy of fixed generator train/val",
+      "caveat": "different commit/RNG than legacy -> VERSION DIFFERENCE",
+      "composition_changed_vs_legacy": false,
+      "family_count_changed_vs_legacy": false,
+      "version_difference_flag": true,
+      "train": {
+        "variant": "fully_repaired",
+        "hash_matches_variants": [
+          "fully_repaired"
+        ],
+        "path": "/root/readkv/data/variants_v3/fully_repaired/train_seed2.jsonl",
+        "sha256": "53258777ab214fb9226b85389673672c9c4b1b17c8cb9d07cf1a97beddcf3e6e",
+        "rows_registered": 120,
+        "template_family_count": 16,
+        "template_families": [
+          "S-F1-city-A",
+          "S-F1-city-B",
+          "S-F1-person-A",
+          "S-F1-person-B",
+          "S-F2-alias-A",
+          "S-F2-alias-B",
+          "S-F3-direction-A",
+          "S-F3-direction-B",
+          "S-F3-negation-A",
+          "S-F3-negation-B",
+          "S-F4-distractor-A",
+          "S-F4-distractor-B",
+          "S-F5-paraphrase-A",
+          "S-F5-paraphrase-B",
+          "S-F6-position-A",
+          "S-F6-position-B"
+        ],
+        "slice_counts": {
+          "F1": 30,
+          "F2": 16,
+          "F3": 30,
+          "F4": 16,
+          "F5": 14,
+          "F6": 14
+        },
+        "degenerate_mustflip_rows": 0
+      },
+      "val": {
+        "variant": "fully_repaired",
+        "hash_matches_variants": [
+          "fully_repaired"
+        ],
+        "path": "/root/readkv/data/variants_v3/fully_repaired/val_seed2.jsonl",
+        "sha256": "5633a8bf052f33c44ec694704baef64c96898a1548fc313abc2fb537a5e5b475",
+        "rows_registered": 60,
+        "template_family_count": 8,
+        "template_families": [
+          "S-F1-city-C",
+          "S-F1-person-C",
+          "S-F2-alias-C",
+          "S-F3-direction-C",
+          "S-F3-negation-C",
+          "S-F4-distractor-C",
+          "S-F5-paraphrase-C",
+          "S-F6-position-C"
+        ],
+        "slice_counts": {
+          "F1": 15,
+          "F2": 8,
+          "F3": 15,
+          "F4": 8,
+          "F5": 7,
+          "F6": 7
+        },
+        "degenerate_mustflip_rows": 0
+      },
+      "changes": {
+        "removed_pair_ids": {},
+        "added_pair_ids": {},
+        "n_text_hash_changed": {},
+        "substitution_map_present": false,
+        "n_query_rewrites": 0
+      }
+    },
+    "input_text_changed": false,
+    "data_task_change": false,
+    "gpu_forward_authorized_by_flag": false,
+    "cpu_replay_valid": true
+  },
+  "metadata": {
+    "stage": "E1",
+    "backend": "gpu",
+    "protocol_version": "3.0",
+    "non_authoritative": false,
+    "variant": "fully_repaired",
+    "panel": "A",
+    "criteria_source": "configs/prereg/gpu_followup_v3.0.yaml",
+    "sealed_test_read": false
+  }
+}

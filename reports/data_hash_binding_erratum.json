@@ -1,0 +1,44 @@
+{
+  "erratum_id": "S1-data-hash-binding",
+  "purpose": "S1 溯源勘误：把干净数据 sha256 绑定至 7 个 clean run；仅新增 metadata 勘误，不改任何既有 scores.jsonl / config.json / metrics.json / 冻结判据 / 数据 / 论文。",
+  "authority": "docs/decisions/final_boundary_study_signoff.md §2 S1（工程师闭环 S1）",
+  "date": "2026-11-23",
+  "data_identity": {
+    "artifact": "data/tasks/cf_pairs.jsonl",
+    "sha256": "f910f1f1196a21041765834654af8233d216ef4bf4f28f4c60abbd0641aa894a",
+    "size_bytes": 455900,
+    "lines": 520,
+    "splits": {"probe": 40, "train": 120, "val": 60, "test": 300},
+    "sha256_sources": [
+      "data/tasks/manifest.json :: files[name=cf_pairs.jsonl].sha256",
+      "reports/data/acceptance_checks.json :: manifest_sha256_match=true（配合 manifest 文件条目）",
+      "磁盘实测 sha256sum data/tasks/cf_pairs.jsonl（与 manifest 一致）"
+    ],
+    "note": "该哈希为 M1–M3/M5 修复后重建的干净数据；旧数据哈希 6058fd6d…d1887 已过期，所有 clean run 均使用本哈希。"
+  },
+  "commit_provenance": {
+    "data_fix_commit": "efc3ba3",
+    "v2_3_freeze_commit": "6413ba0",
+    "run_code_diff_efc3ba3_to_6413ba0": "empty（跑分代码逐字未变；6413ba0 仅 PI 回填 v2.3 flip 分母 398）"
+  },
+  "runs": [
+    {"run_id": "e0_clean_mvp_seed0", "data_sha256": "f910f1f1196a21041765834654af8233d216ef4bf4f28f4c60abbd0641aa894a", "git_hash_in_config": "efc3ba3", "commit": "efc3ba3", "stage": "P0/E0"},
+    {"run_id": "p1_clean_mvp_seed0", "data_sha256": "f910f1f1196a21041765834654af8233d216ef4bf4f28f4c60abbd0641aa894a", "git_hash_in_config": "efc3ba3", "commit": "efc3ba3", "stage": "P1"},
+    {"run_id": "p1_clean_mvp_seed1", "data_sha256": "f910f1f1196a21041765834654af8233d216ef4bf4f28f4c60abbd0641aa894a", "git_hash_in_config": "efc3ba3", "commit": "efc3ba3", "stage": "P1"},
+    {"run_id": "p1_clean_mvp_seed2", "data_sha256": "f910f1f1196a21041765834654af8233d216ef4bf4f28f4c60abbd0641aa894a", "git_hash_in_config": "efc3ba3", "commit": "efc3ba3", "stage": "P1"},
+    {"run_id": "p1_kd_clean_mvp_seed0", "data_sha256": "f910f1f1196a21041765834654af8233d216ef4bf4f28f4c60abbd0641aa894a", "git_hash_in_config": "6413ba0", "commit": "6413ba0", "stage": "P1/kd_only"},
+    {"run_id": "p1_kd_clean_mvp_seed1", "data_sha256": "f910f1f1196a21041765834654af8233d216ef4bf4f28f4c60abbd0641aa894a", "git_hash_in_config": "6413ba0", "commit": "6413ba0", "stage": "P1/kd_only"},
+    {"run_id": "p1_kd_clean_mvp_seed2", "data_sha256": "f910f1f1196a21041765834654af8233d216ef4bf4f28f4c60abbd0641aa894a", "git_hash_in_config": "6413ba0", "commit": "6413ba0", "stage": "P1/kd_only"}
+  ],
+  "explanation": "原 7 个 clean run 的 config.json 记录了 git_hash / protocol_version / seed / dtype / kernel / zero_re_prefill / bootstrap_seed 等 provenance 字段，但未写入 data_sha256 字段——属工程侧溯源遗漏（记录不全），不是数据不一致：各 run 实际读取的 data/tasks/cf_pairs.jsonl 经 manifest 与磁盘实测均为 f910f1f1…a894a，且数据修复先于全部 clean run（commit efc3ba3 在各自 git_hash 历史中）。本勘误以新增 metadata 文件方式补齐绑定，不回改任何冻结产物。",
+  "verification": {
+    "frozen_artifacts_unchanged": true,
+    "scores_jsonl_unchanged": true,
+    "config_json_unchanged": true,
+    "prereg_unchanged": true,
+    "data_unchanged": true,
+    "no_experiments_rerun": true
+  },
+  "coverage": "7 个 clean run（E0 ×1 + P1 affine ×3 + P1 kd_only ×3）；旧 19 个 pre-clean 溯源过期 run 不在绑定范围（已在 runs_index 标 superseded）",
+  "related_residual_S2": "S2（manifest/acceptance 中 stats_convention_v2_3_sha256 仍为回填前 5200940c…）属数据工程师 manifest 侧收尾，与本 S1 勘误无关；本文件不修改 manifest。"
+}

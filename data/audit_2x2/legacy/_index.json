@@ -1,0 +1,50 @@
+{
+  "train_seed0.jsonl": {
+    "version": "legacy_458de18",
+    "split": "train",
+    "seed": 0,
+    "rows": 120,
+    "sha256": "81da04a041a4e7757caa02e502c10ca9a9236d7f98da5419fb226ca95a02b00a",
+    "bytes": 121597
+  },
+  "val_seed0.jsonl": {
+    "version": "legacy_458de18",
+    "split": "val",
+    "seed": 0,
+    "rows": 60,
+    "sha256": "24a5077bec11657c70d8eeddeed6fbe4871253d6d141daf16989903d1ebccaaa",
+    "bytes": 60282
+  },
+  "train_seed1.jsonl": {
+    "version": "legacy_458de18",
+    "split": "train",
+    "seed": 1,
+    "rows": 120,
+    "sha256": "7385245c6b2db4e4f78abc837aaa31817cd7025eaa23dc099b2dc92c9f4a793e",
+    "bytes": 121506
+  },
+  "val_seed1.jsonl": {
+    "version": "legacy_458de18",
+    "split": "val",
+    "seed": 1,
+    "rows": 60,
+    "sha256": "6f5c2b553832bdb2e03dd56ab39a7e6b2a6e4b5ec726448692f9fae1ebb849ff",
+    "bytes": 60294
+  },
+  "train_seed2.jsonl": {
+    "version": "legacy_458de18",
+    "split": "train",
+    "seed": 2,
+    "rows": 120,
+    "sha256": "3ad49eea2a41ff0e0ffd516b0fb1b8dc5282dce9a8336d7f371bf28adc97bb11",
+    "bytes": 121548
+  },
+  "val_seed2.jsonl": {
+    "version": "legacy_458de18",
+    "split": "val",
+    "seed": 2,
+    "rows": 60,
+    "sha256": "df24f7cf9d6fae8ce2e8a7af9b2a68aefe040a447534d30119aed99cd7f0c759",
+    "bytes": 60212
+  }
+}

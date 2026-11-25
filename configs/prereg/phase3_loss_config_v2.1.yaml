@@ -1,0 +1,144 @@
+# ============================================================
+# 新增版本判据文件（protocol-v2.1）—— 不回写任何既有冻结文件
+# 用途：补冻 protocol-v2.0 遗留的 Huber 阈值 δ、标签平衡、λ 选择规则，
+#       以及 E0 测量误差容限比例、E2 机制单元 held-out 预测判据、E6 成本阈值触发规则。
+# 依据：docs/algorithm_spec.md §5 / §6.3、docs/experiment_design_E0_E7.md E0/E2/E6、
+#       docs/decisions/p0_direction.md §2.3
+# ============================================================
+version: "2.1"
+frozen_at: "protocol-v2.1"
+frozen_on: "2026-11-22"
+frozen: true
+decision_ref: "docs/decisions/p0_direction.md §7"
+
+freeze_rationale: >-
+  protocol-v2.0 仅在 docs/protocol.md §6.2 规定“在验证集固定 τ、Huber 阈值和标签平衡策略”，
+  configs/protocol.yaml 与全部既有 prereg 均无 δ 数值与标签平衡口径。科学家在
+  docs/algorithm_spec.md §5 给出建议值与确定流程，并请求 PI 以新增版本文件冻结；
+  experiments/P3_method.py 中的 huber_delta=1.0 仅为 mock 接线占位，不是冻结值也不是证据。
+  本文件在封存测试运行前补冻上述项，落实“判据先写后跑”。本文件为新增，不修改或覆盖
+  configs/protocol.yaml 及任何既有 phase1_*/phase3_*/stage*_decision 文件；主终点
+  paired_E_CF_difference、τ=1.0、self_threshold=0.1 与统计设计沿用 protocol-v2.0。
+
+scope:
+  unchanged_from_v2:
+    - "primary_endpoint: paired_E_CF_difference（95% CI 上界 < 0）"
+    - "tau: 1.0（validation_only）"
+    - "self_threshold: 0.1"
+    - "statistics: cluster_paired bootstrap, 10000 resamples, 95% CI, >=3 seeds, Holm"
+  newly_frozen_here:
+    - "huber_delta"
+    - "label_balance"
+    - "loss_weights_selection_rule"
+    - "e0_measurement_error_tolerance"
+    - "e2_mechanism_prediction"
+    - "e6_cost_threshold（deferred，含触发时点）"
+
+huber_delta:
+  status: "frozen"
+  symbol: "δ"
+  nominal_value: 1.0              # logit 单位；标称/默认锚点，与 τ=1.0 同尺度
+  unit: "logit"
+  applies_to: "L_CF = mean_{Self有效} Huber_δ(D_trans − D_self)"
+  rationale:
+    - "残差 r = D_trans − D_self 为 logit 差尺度，与 τ=1.0 同量纲；δ 过小退化为 L1 型弱梯度，过大退化为 L2 被离群对主导。"
+    - "与现有 mock 占位一致，便于判据接线回归（占位值本身不构成证据）。"
+  selection_grid: [0.5, 1.0, 2.0]
+  grid_supplement: "必要时以 clip(q70, 0.5, 2.0) 补充候选；q70 = quantile(|D_self|, 0.7)，于验证集 Self 有效子集计算"
+  selection_split: "val（60 对，实体/来源/模板簇隔离，见 docs/protocol.md §3.3）；具体 split 清单与哈希由工程师生成并记入 run config"
+  selection_rule:                # 固定优先级，逐条比较
+    priority:
+      - "1. 验证集 E_CF 最小"
+      - "2. dual_correct 与 flip_consistency 不劣于 kd_only"
+      - "3. 普通 QA 不退化"
+  final_value_rule: >-
+    最终 δ = 验证集网格按上述优先级选出的值；须在封存测试运行之前写入 run config 并锁定，
+    记录所选值、完整网格、验证集 split id 与搜索成本，交审稿人复核。若网格最优偏离标称 1.0，
+    以网格结果为准；但一经选定在封存测试期间不得再调整。
+  forbidden_on_test:
+    - "不得按封存测试结果调整 δ 或重跑网格"
+    - "不得在封存测试期间改变 L_CF 的 Self 有效掩码"
+
+label_balance:
+  status: "frozen"
+  ab_ratio: "每对 d_A/d_B 1:1"
+  candidate_order: "候选 A/B 顺序 50/50 随机交换"
+  f5_negative_control: "F5 非翻转负控按固定配比纳入，不计入‘必须翻转’分母"
+  l_cf_mask: "L_CF 仅在 Self 有效子集求均值"
+  note: "以上策略与 δ 同步冻结，封存测试运行后不得变更。"
+
+loss_weights:
+  status: "selection_rule_frozen"
+  lambda_KD:
+    value: 1.0
+    role: "锚点，与基线同预算；验证集确认不过拟合后不再调"
+  lambda_CF:
+    value: "由验证集网格选择"
+    rule: "同一验证集、同一网格、同一调参预算；记录网格与搜索成本"
+  lambda_local:
+    value: "由验证集网格选择"
+    rule: "仅 CF-RCT-mech 使用；仅训练期；机制选择规则只用训练/验证集"
+  lambda_reg:
+    value: "由验证集网格选择"
+    rule: "同一验证集、同一网格、同一调参预算"
+  frozen_claim_guard: >-
+    λ_CF 无独立增益时不得写成方法贡献；mech 不优于 lite 时不得把“机制引导”写成创新
+    （见 docs/protocol.md §6.4、phase3_method_decision.yaml）。
+
+e0_measurement_error_tolerance:
+  status: "frozen"
+  ratio: "测量误差上限 ≤ 待研究效应的 1/3"
+  effect_estimate_source: "基础探针（40 对）在 E0 运行前用 Self 响应尺度估算，并记入 E0 run config"
+  anchors:                       # 一致性锚点，非 V2 主终点阈值
+    logit_cosine_min: 0.9998
+    first_token_kl_max: 0.001
+    em_agreement_min: 0.929
+  pass_requires: "round-trip bit-identical；上述锚点全部满足；测量误差上限 ≤ 估算效应的 1/3；zero_re_prefill 标志就位"
+  fail_action: "任一不通过 → P0 不放行、不进入 P1"
+  note: >-
+    比例 1/3 立即冻结，不得事后放宽；待研究效应的具体数值在 E0 运行前由基础探针估算并记录，
+    属于测量口径而非可调参数。
+
+e2_mechanism_prediction:
+  status: "frozen_as_operational_criterion"
+  candidate_units: "按 Oracle Δ 在训练/验证集降序选出的层/头/通道/Token 单元集 U（只用训练/验证集）"
+  verification_data: "独立验证文档（与用于选 U 的文档不重叠）"
+  criterion:
+    - id: "repair_vs_random"
+      rule: "U 的 repair 命中率（ΔE_CF>0 的文档占比）显著高于随机单元集基线：簇级 paired bootstrap 95% CI 下界 > 0"
+    - id: "direction_consistency"
+      rule: "独立验证文档上 ΔE_CF>0 的占比 > 0.5（多数门槛，冻结后不得放宽）"
+    - id: "decomposition_sanity"
+      rule: "Routing/Consumption 分解残差≈0（数值自检）"
+  key_side_baseline: "对称 Key 沿用 stage1_decision.yaml（V1 机制基线，C>A/B 且 D≤C 为阳性）；不用于判定 E_CF 主终点"
+  fail_action: "仅事后热图相关、未达上述预测判据 → 机制层降级为现象报告（protocol.md §8），不得使用贡献(2)措辞"
+  oracle_constraint: "Oracle 只在离线诊断/训练期；不得进入 Joint 推理图；不得解释为全模型因果分解"
+
+e6_cost_threshold:
+  status: "deferred_to_pre_E6"
+  trigger: >-
+    E0 通过且 P0 放行后、E6 首个正式 run 启动之前；基于 MVP 模型对
+    （qwen3-1.7b-to-0.6b）的学生 Full-Prefill 实测 TTFT 基线，以新增版本文件冻结具体阈值。
+  quantity_to_freeze:
+    - "r_cost：Joint 端到端 TTFT / 学生 Full-Prefill TTFT 的上限"
+    - "ε_q：质量不退化容差（E_CF 不劣化、dual_correct 不下降）"
+  decision_direction: "须满足 Joint 端到端成本低于学生重 Prefill 且质量不退化；无收益则如实报告，不得宣称高倍率加速"
+  freeze_requirement: >-
+    阈值须在触发时点基于实测基线以新增版本文件冻结并写明理由；冻结前不得宣称系统收益；
+    禁止按实测结果反推或事后放宽阈值；不得把单卡短上下文外推到 32K 长上下文。
+
+forbidden_after_run:
+  - "changing_delta_on_test"
+  - "changing_label_balance_on_test"
+  - "changing_loss_weights_on_test"
+  - "changing_tau_on_test"
+  - "dropping_controls"
+  - "dropping_seeds"
+  - "relaxing_e0_e2_e6_thresholds"
+  - "selecting_seeds_by_result"
+
+reviewer_checks:
+  - "δ 最终值来自验证集网格、且在封存测试前锁定（非 mock 占位 1.0）"
+  - "标签平衡四项口径落实"
+  - "E2 预测判据为独立文档上的检验，Oracle 未泄漏"
+  - "E6 阈值在 E6 前以新版本冻结，非事后设定"

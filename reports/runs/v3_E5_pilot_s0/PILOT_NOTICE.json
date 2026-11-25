@@ -1,0 +1,17 @@
+{
+  "pilot_id": "v3_E5_pilot_s0",
+  "authoritative": false,
+  "formal_cell": false,
+  "reason": "G2 technical pilot only (single seed, n_train=6, n_val=6). Not a formal E5 cell; no scientific conclusion may be drawn from these numbers. G3 formal cells are NOT released.",
+  "g1_release": "docs/decisions/v3_g1_release.md (G2 pilot authorized; G3 not released)",
+  "criteria_source": "configs/prereg/gpu_followup_v3.0.yaml (frozen, protocol-v3.0)",
+  "model_pair": "qwen3-4b-to-1.7b (36->28 proportional layer map)",
+  "pinned_snapshots": {
+    "teacher_config_sha256": "8ba006f74fecfaaeb392872a60f4a480e7ec9860153d2e1b769ec81f9a147f8a",
+    "student_config_sha256": "1ddb5b89ebc90dcb417a45c213d818577e65976454d29385c8f6140771d95197",
+    "manifest": "reports/_non_authoritative/v3_env/model_manifest.json",
+    "note": "fixed local snapshot directories; no master re-resolution, no re-download"
+  },
+  "companion_audits": "reports/_non_authoritative/v3_g2_pilot/e5_probe_audit.json",
+  "note": "This annotation was added AFTER P1_gpu.py finalized manifest.json; it is intentionally NOT listed in that manifest."
+}

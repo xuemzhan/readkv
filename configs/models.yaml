@@ -1,0 +1,33 @@
+# Qwen3 模型配置（来自论文 1 第 4.1 节；实测后更新）
+family: Qwen3
+models:
+  0.6B:
+    params_b: 0.6
+    n_layers: 28
+    n_kv_heads: 8
+    head_dim: 128
+    gqa_group: 4          # query heads per KV head（示意，按实际 checkpoint 覆盖）
+  1.7B:
+    params_b: 1.7
+    n_layers: 28
+    n_kv_heads: 8
+    head_dim: 128
+    gqa_group: 4
+  4B:
+    params_b: 4
+    n_layers: 36
+    n_kv_heads: 8
+    head_dim: 128
+    gqa_group: 4
+  8B:
+    params_b: 8
+    n_layers: 36
+    n_kv_heads: 8
+    head_dim: 128
+    gqa_group: 4
+# 缓存体积粗估：4B/8B ~147 KB/token，1.7B ~114 KB/token（fp16），需实测
+cache_bytes_per_token_fp16:
+  0.6B: 114000
+  1.7B: 114000
+  4B: 147000
+  8B: 147000

@@ -1,0 +1,30 @@
+{
+  "run_id": "p1_gpu_mvp_seed1",
+  "files": [
+    {
+      "name": "config.json",
+      "sha256": "74b9133bf1a84740f746eae168a3d6251f41d86b290917af3bb631003924f4b1",
+      "size": 1312
+    },
+    {
+      "name": "ecf_ledger.jsonl",
+      "sha256": "ceb232ff47d999ace517b012d06b0685fb0f2be091d1e11bc740b884797ac3f2",
+      "size": 392317
+    },
+    {
+      "name": "manifest.json",
+      "sha256": "6d80dbe1a9993fe14d8d24e186676f0e871e8293a8add6a38811c840bd243fc5",
+      "size": 642
+    },
+    {
+      "name": "metrics.json",
+      "sha256": "648032b36dd0ff8e4fbfa34c0ee2fc1826ca962fab49a8174a924707bb84f0e5",
+      "size": 7079
+    },
+    {
+      "name": "scores.jsonl",
+      "sha256": "ceb232ff47d999ace517b012d06b0685fb0f2be091d1e11bc740b884797ac3f2",
+      "size": 392317
+    }
+  ]
+}

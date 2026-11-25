@@ -1,0 +1,177 @@
+{
+  "task": "F2 P2 ≥3 seed U robustness",
+  "seeds": [
+    "seed0",
+    "seed1",
+    "seed2"
+  ],
+  "per_seed": {
+    "seed0": {
+      "run_id": "p2_gpu_mvp_seed0_delta_rand_audit",
+      "U": [
+        [
+          12,
+          5,
+          "both"
+        ],
+        [
+          12,
+          5,
+          "V"
+        ],
+        [
+          25,
+          4,
+          "both"
+        ],
+        [
+          25,
+          4,
+          "V"
+        ],
+        [
+          14,
+          1,
+          "V"
+        ]
+      ],
+      "hit_u": 0.725,
+      "hit_rand": 0.45,
+      "point": 0.275,
+      "ci": [
+        0.15,
+        0.425
+      ],
+      "direction": 0.725,
+      "verdict": "mechanism_predictive"
+    },
+    "seed1": {
+      "run_id": "p2_gpu_mvp_seed1",
+      "U": [
+        [
+          25,
+          4,
+          "both"
+        ],
+        [
+          12,
+          5,
+          "V"
+        ],
+        [
+          12,
+          5,
+          "both"
+        ],
+        [
+          25,
+          4,
+          "V"
+        ],
+        [
+          24,
+          2,
+          "both"
+        ]
+      ],
+      "hit_u": 0.725,
+      "hit_rand": 0.45,
+      "point": 0.275,
+      "ci": [
+        0.125,
+        0.425
+      ],
+      "direction": 0.725,
+      "verdict": "mechanism_predictive"
+    },
+    "seed2": {
+      "run_id": "p2_gpu_mvp_seed2",
+      "U": [
+        [
+          12,
+          5,
+          "V"
+        ],
+        [
+          12,
+          5,
+          "both"
+        ],
+        [
+          25,
+          4,
+          "both"
+        ],
+        [
+          25,
+          4,
+          "V"
+        ],
+        [
+          14,
+          1,
+          "both"
+        ]
+      ],
+      "hit_u": 0.75,
+      "hit_rand": 0.4,
+      "point": 0.35,
+      "ci": [
+        0.2,
+        0.5
+      ],
+      "direction": 0.75,
+      "verdict": "mechanism_predictive"
+    }
+  },
+  "U_overlap": {
+    "pairwise_common_counts": {
+      "seed0|seed1": 4,
+      "seed0|seed2": 4,
+      "seed1|seed2": 4
+    },
+    "common_all_seeds": [
+      [
+        12,
+        5,
+        "V"
+      ],
+      [
+        12,
+        5,
+        "both"
+      ],
+      [
+        25,
+        4,
+        "V"
+      ],
+      [
+        25,
+        4,
+        "both"
+      ]
+    ],
+    "n_common_all_seeds": 4,
+    "topk": 5,
+    "interpretation": "核心单元 (12,5,both/V)、(25,4,both/V) 在 3 seed 中稳定复现；第 5 单元在 seed0/2 为 (14,1,V/both)、seed1 为 (24,2,both)，边缘单元略有漂移"
+  },
+  "hit_rate_range": {
+    "hit_u": [
+      0.725,
+      0.75
+    ],
+    "hit_rand": [
+      0.4,
+      0.45
+    ],
+    "repair_point": [
+      0.275,
+      0.35
+    ]
+  },
+  "all_three_seeds_predictive": true,
+  "all_ci_lower_gt_0": true,
+  "conclusion": "三 seed 均 E2 达标、repair-vs-random CI 下界均>0；核心机制单元（layer12/head5、layer25/head4，以 V/both 通道为主）跨 seed 稳定复现，边缘第5单元有轻微漂移；命中率 0.725–0.750，效应点 0.275–0.350。机制定位跨 seed 基本一致（非完全逐单元恒定）；贡献(2) 是否升为强形式仍由 PI/审稿人裁决。",
+  "discipline": "U 各 seed 仅用各自训练对选择、held-out 用 val、零重叠、未碰封存 test；Oracle 未进 Joint 推理图"
+}

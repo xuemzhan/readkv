@@ -1,0 +1,30 @@
+{
+  "run_id": "p3_smoke_cflite_seed0",
+  "files": [
+    {
+      "name": "config.json",
+      "sha256": "91092862a3578fe43891bb7c5792064aedd79cc682c67fe62baf33542ee1c81d",
+      "size": 1857
+    },
+    {
+      "name": "ecf_ledger.jsonl",
+      "sha256": "9a698ef6c8a0eeba476f28e02fd1ab094398114d77e8cb85d0481b3baebf497b",
+      "size": 52113
+    },
+    {
+      "name": "manifest.json",
+      "sha256": "9ab4a1cc03d8c3d73f6005bdf61a4408b0124934c101ba2300ea03f4a79ffd54",
+      "size": 645
+    },
+    {
+      "name": "metrics.json",
+      "sha256": "fa3b41c05079a1d8c6e815fff83f72907a3f68c15593a109b3b5dc0622c6680b",
+      "size": 8828
+    },
+    {
+      "name": "scores.jsonl",
+      "sha256": "9a698ef6c8a0eeba476f28e02fd1ab094398114d77e8cb85d0481b3baebf497b",
+      "size": 52113
+    }
+  ]
+}

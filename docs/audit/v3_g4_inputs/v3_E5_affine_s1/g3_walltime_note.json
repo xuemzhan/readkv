@@ -1,0 +1,11 @@
+{
+  "g3_formal_cell": true,
+  "authoritative": true,
+  "pilot_only": false,
+  "run_id": "v3_E5_affine_s1",
+  "field_corrected": "g3_runtime_audit.json:wrapper_wall_sec",
+  "bug": "the G3 runner sampled wall time after p1_main() returned, but writes the audit inside RunContext.finalize() (called during p1_main), so the in-audit field was emitted as 0.0. Runner instrument fixed afterwards; existing artifacts left byte-for-byte unchanged.",
+  "runner_wall_sec_at_return": 177.8,
+  "authoritative_elapsed_sec": 177.6,
+  "note": "Additive post-finalize supplement (same pattern as PILOT_NOTICE); no existing artifact modified."
+}

@@ -1,0 +1,61 @@
+{
+  "run_id": "p2_gpu_mvp_seed0_delta_rand_audit",
+  "protocol_version": "2.0",
+  "git_hash": "6784780",
+  "created_at": "2026-11-23T05:59:03+00:00",
+  "seed": 0,
+  "device": "cuda",
+  "dtype": "bfloat16",
+  "kernel": "sdpa",
+  "zero_re_prefill": true,
+  "experiment_config": {
+    "stage": "P2",
+    "gate": "E2_mechanism",
+    "backend": "gpu",
+    "teacher": "/root/.cache/modelscope/models/Qwen--Qwen3-1.7B/snapshots/master",
+    "student": "/root/.cache/modelscope/models/Qwen--Qwen3-0.6B/snapshots/master",
+    "model_pair": "qwen3-1.7b-to-0.6b",
+    "layer_map": {
+      "kind": "identity",
+      "n_student_layers": 28,
+      "n_teacher_layers": 28,
+      "offset": 0,
+      "permutation": null
+    },
+    "seed": 0,
+    "bootstrap_seed": 0,
+    "seeds": [
+      0
+    ],
+    "dtype": "bfloat16",
+    "kernel": "sdpa",
+    "n_resamples": 10000,
+    "tau": 1.0,
+    "self_threshold": 0.1,
+    "sizes": {
+      "probe": 40,
+      "train": 120,
+      "val": 60,
+      "test": 300,
+      "real": 0
+    },
+    "forward_counts": {
+      "capture": 0,
+      "candidate": 400,
+      "oracle": 0
+    },
+    "mapper": "affine",
+    "top_k_units": 5,
+    "n_select_pairs": 8,
+    "n_heldout_pairs": 40,
+    "criteria_source": "configs/prereg/phase3_loss_config_v2.1.yaml e2_mechanism_prediction (v2.2 inherited)",
+    "oracle_isolation": "Oracle only in offline diagnosis; never in Joint inference graph",
+    "transfer_broken": false,
+    "quality_pass_scope": "data_quality_gate_only"
+  },
+  "metadata": {
+    "stage": "P2",
+    "backend": "gpu",
+    "protocol_version": "2.0"
+  }
+}

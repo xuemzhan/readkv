@@ -1,0 +1,117 @@
+# ============================================================
+# 新增版本判据文件（protocol-v2.5）—— real split 校验口径（自动化 agent 交叉校验）
+# 本文件为新增，不回写 v2.1/v2.2/v2.3/v2.4、protocol.yaml 或任何既有冻结文件。
+# 依据：docs/decisions/human_decisions.md（决策 9，真实 PI 选方案 D）、
+#       docs/decisions/m4_blocker_ruling.md（阻塞 2 裁定）、
+#       docs/decisions/agent_crosscheck_ruling.md（方案 D 性质界定）。
+# ============================================================
+version: "2.5"
+frozen_at: "protocol-v2.5"
+frozen_on: "2026-11-23"
+frozen: true
+decision_ref:
+  - "docs/decisions/agent_crosscheck_ruling.md"
+  - "docs/decisions/human_decisions.md"
+
+freeze_rationale: >-
+  M4 real split 的入库红线要求"双人标注校验 + ≥20% 第三人抽检"的真实人力留痕，但本执行环境无人类标注者。
+  真实 PI 曾要求"模拟两个真实人的动作"，经说明该做法属伪造实验记录后，真实 PI 选择方案 D：由两个独立
+  agent 实例做交叉校验、第三个独立 agent 做分层抽检，如实标记为 automated_agent_crosscheck、记录
+  agent/session 标识与时间戳，**不填人类姓名、不使用人类身份字段**。本文件据此冻结该校验口径，
+  使 real split 在"无人类标注者"条件下仍有可审计的校验链；明确其为自动化交叉校验而非人类标注，
+  真实 PI 已知悉并接受由此带来的外部效度限制。本文件不改 v2.4 的五项登记/聚类/隔离/贡献状态等任何口径。
+
+# ------------------------------------------------------------
+# 性质声明（强制，贯穿全部记录与论文）
+# ------------------------------------------------------------
+non_human_declaration:
+  check_kind: "automated_agent_crosscheck"
+  statement: >-
+    本口径产出的是自动化 agent 交叉校验结果，不是人类标注（not human annotation）。任何记录、manifest、
+    数据卡或论文中不得出现 annotator_A / annotator_B / sampling_reviewer 等人类身份字段，
+    不得使用"人工标注 / 双人人工核对 / 人工抽检 / human-annotated / human-verified"等表述。
+    违反此项即属伪造实验记录，一律禁止。
+  acknowledged_limitation: >-
+    真实 PI 已知悉并接受：agent 交叉校验不等同于人类独立判断，其外部效度弱于真人标注；
+    这一限制须在数据卡与论文 limitation 中如实披露。
+
+# ------------------------------------------------------------
+# 校验口径：两独立 agent 交叉核对 + 第三 agent 分层抽检
+# ------------------------------------------------------------
+crosscheck_convention:
+  checkers:
+    - role: "agent_checker_A"
+      requirement: "独立 agent 实例（不同 session ID），对 real 对做独立标注核对"
+    - role: "agent_checker_B"
+      requirement: "与 A 独立的另一 agent 实例（不同 session ID），独立重复同一核对，不参考 A 的判定"
+    - role: "agent_sampling_reviewer"
+      requirement: "第三个独立 agent 实例，对 ≥20% 分层样本做抽检复核"
+  mandatory_record_fields:     # 每条校验须留痕的字段（取代人类姓名字段）
+    - "agent_checker_A"          # agent ID + session ID（如 "agent-x/ses-..."）
+    - "agent_checker_B"
+    - "agent_sampling_reviewer"
+    - "check_kind: automated_agent_crosscheck"
+    - "timestamp_utc"            # 各次校验的时间戳
+    - "check_actions"            # 实际执行的校验动作（逐条列出：候选相异/答案正确/must_flip 语义/事实一致/第二处改动检查）
+    - "check_artifact_sha256"    # 校验产物（判定记录文件）的哈希
+    - "agreement_record"         # A/B 是否一致、不一致项与处置
+  forbidden_fields:             # 明确禁止的人类身份字段
+    - "annotator_A"
+    - "annotator_B"
+    - "sampling_reviewer"
+    - "annotator_name / human_labeler / 任何人类姓名或身份标识"
+  independence_requirement: >-
+    A 与 B 必须是不同 session 的独立实例，B 不得读取 A 的判定结果（避免相关误差）；
+    抽检 reviewer 为第三个独立实例。独立性须由 session ID 与调用记录证明。
+  check_content:                 # 校验动作（与 SOP 步骤 4/5 对齐，但由 agent 执行）
+    - "候选互斥性（candidate_A != candidate_B，F5 除外）"
+    - "答案正确性（correct_A/correct_B 与文档一致）"
+    - "must_flip 语义（F5 非翻转、F6 条件扰动、其余必须可翻转）"
+    - "事实一致性（d_A 答 a、d_B 答 b，仅关键位点不同）"
+    - "无无意第二处改动"
+  disagreement_handling: >-
+    A/B 判定不一致的样本：记入 agreement_record，交科学家 agent 裁定或剔除；不得静默取一方。
+    抽检未通过的来源簇：返工；两次未通过 → 整簇剔除。
+  sampling:
+    ratio: 0.20
+    stratification: "按 source_doc_id / real_topic_cluster 分层抽取"
+    note: "阈值 ≥20% 沿用 m4_compliance_signoff §3 与采集 SOP，执行主体改为 agent_sampling_reviewer。"
+
+# ------------------------------------------------------------
+# 与入库门槛的关系（两条件独立，缺一不可）
+# ------------------------------------------------------------
+ingestion_gate:
+  note: >-
+    v2.5 只满足"校验口径"这一条；real split 入库还须同时满足 v2.4 的数据源/许可条件与 PI 二次签off。
+    数据源裁定与标注口径裁定相互独立，两者都满足才允许入库。
+  conditions_all_required:
+    - "数据源许可合规（白名单、五项登记齐全，v2.4 admitted_only_after）"
+    - "v2.5 自动化交叉校验口径完成、check_artifact_sha256 齐全、非人类声明落实"
+    - "PI 对 real 入库的二次合规签off"
+  source_ineligible_rule: >-
+    若数据源本身不合格（许可不清/非白名单/五项登记不全），v2.5 不授权入库——
+    校验口径合格不能补偿数据源不合格。
+
+# ------------------------------------------------------------
+# 披露要求
+# ------------------------------------------------------------
+disclosure:
+  data_card: "数据卡须写明 check_kind=automated_agent_crosscheck、非人类标注声明、独立 agent session 记录、外部效度限制。"
+  paper: "论文 limitation 须披露 real split 采用自动化 agent 交叉校验而非人工标注，并说明其对外部效度的限制。"
+  forbidden_claim: >-
+    不得声称 real 数据经过"人工标注 / 人工核对 / human-verified / human-annotated"；
+    real 臂结果仅作探索性外部效度观察，不恢复任何已撤回贡献（承接 v2.4 invariants）。
+
+forbidden_after_freeze:
+  - "不得回写 v2.4 或任何既有冻结文件"
+  - "不得伪造人类标注身份、签名、时间戳或将 agent 校验表述为人工标注"
+  - "不得在数据源不合格时以本口径授权入库"
+  - "不得据 real/锚点结果恢复贡献(1)(2)(3) 或改主终点"
+  - "不得把 real 与合成 test 混算主终点"
+
+reviewer_checks:
+  - "A/B/抽检为不同 session 的独立 agent 实例，B 未读取 A 判定（独立性可证）"
+  - "check_kind=automated_agent_crosscheck 与非人类声明齐全，无人类身份字段"
+  - "校验动作、时间戳、产物哈希齐全，不一致项有处置记录"
+  - "数据源许可合规（v2.4）+ 本口径完成 + PI 二次签off 三条件同时满足方入库"
+  - "数据卡与论文如实披露非人类标注口径与外部效度限制"

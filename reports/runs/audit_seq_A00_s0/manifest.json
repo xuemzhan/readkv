@@ -1,0 +1,25 @@
+{
+  "run_id": "audit_seq_A00_s0",
+  "files": [
+    {
+      "name": "config.json",
+      "sha256": "252cd5eae000e5b04a49adec0d45757de7ab2f4eeafbae18528c2277d24b490d",
+      "size": 2575
+    },
+    {
+      "name": "forward_audit.jsonl",
+      "sha256": "2fbfbc16823d28ac1ecf0f24b218a1bc2080957a3bebcad4b345b632b009a034",
+      "size": 866516
+    },
+    {
+      "name": "metrics.json",
+      "sha256": "e267ffd90c21fddd5a958339bc4463ee15a829629483b313c8745a5c6aac75fb",
+      "size": 2730
+    },
+    {
+      "name": "scores.jsonl",
+      "sha256": "0393aadee7d0f3a8fca344d6c66316b057a67a145db700aea07b286ae88ca6bf",
+      "size": 249047
+    }
+  ]
+}

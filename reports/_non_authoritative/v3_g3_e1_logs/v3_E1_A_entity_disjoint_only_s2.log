@@ -1,0 +1,11 @@
+Loading weights:   0%|          | 0/311 [00:00<?, ?it/s]Loading weights: 100%|██████████| 311/311 [00:00<00:00, 3883.38it/s]
+Loading weights:   0%|          | 0/311 [00:00<?, ?it/s]Loading weights: 100%|██████████| 311/311 [00:00<00:00, 3869.32it/s]
+{
+  "run_id": "v3_E1_A_entity_disjoint_only_s2",
+  "variant": "entity_disjoint_only",
+  "panel": "A",
+  "status": "COMPLETE",
+  "run_dir": "/root/readkv/reports/runs/v3_E1_A_entity_disjoint_only_s2",
+  "exploratory": true,
+  "n_scores": 480
+}
