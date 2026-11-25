@@ -1,0 +1,34 @@
+# Equivalence margin for the Joint-vs-zero-information control comparison (E3).
+#
+# This file declares the margin BEFORE the numbers reported in the revised
+# manuscripts are inspected.  It is an internal, version-controlled protocol,
+# NOT an external registration (no OSF/AEA registry entry exists for this
+# follow-up).  All inference from this comparison is therefore labelled
+# exploratory.
+version: v2.9
+declared_for: "E3: TOST equivalence of affine Joint E_CF against mismatch / zero / random controls on the reconstructed validation sets"
+date: 2026-11-25
+
+margin:
+  delta_ecf: 2.0
+  unit: "first-token counterfactual error E_CF = |D_trans - D_self| in log-probability units"
+  rule: "Equivalence is established only if the family-level 90% CI of (Joint - control) lies entirely inside (-2.0, +2.0)."
+  rationale:
+    - "2.0 is one quarter of the zero-cache control mean (~8.6), i.e. an effect small relative to the information carried by a cache."
+    - "2.0 is of the same order as the legacy-corpus E_CF (~1.9-2.1); an effect below this is within the scale that the original benchmark called near-zero."
+    - "The margin is symmetric because the substantive question is whether transfer carries any information, not whether it carries more or less than the control."
+
+inference:
+  primary_ci: "template_family cluster bootstrap, 10,000 resamples, seeds 0/1/2 (mirrors reproduce.py)"
+  tolerance_test: "paired t-test on the 8 family means (df = 7), two-sided"
+  equivalence_test: "Two One-Sided Tests (TOST) at alpha = 0.05 each, on the 8 family means"
+  clusters: 8
+  exploratory: true
+  external_registration: false
+
+scope:
+  data: "archived reports/runs/audit_2x2_A11_s{0,1,2}/scores.jsonl (no new GPU runs)"
+  no_new_runs: true
+  not_claimed:
+    - "No claim about the sealed test or a second model pair."
+    - "No claim that the marginal equivalence test is powered; a failed TOST is reported as inconclusive, not as evidence of a deficit."

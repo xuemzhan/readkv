@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>readkv audit — figure sheet</title>
+<style>
+  :root { --ink:#1c1c1c; --muted:#6d6d6d; --rule:#dcdfe4; --band:#f6f7f9; --j:#b0483f; }
+  * { box-sizing: border-box; }
+  body { margin: 0; padding: 32px 40px 72px; max-width: 1040px; color: var(--ink);
+         background: #fff; font: 15px/1.6 -apple-system, "Segoe UI", "Helvetica Neue", sans-serif; }
+  h1 { font-size: 22px; margin: 0 0 6px; letter-spacing: .2px; }
+  .lede { color: var(--muted); margin: 0 0 26px; max-width: 62ch; }
+  figure { margin: 0 0 34px; padding: 18px 18px 14px; border: 1px solid var(--rule); border-radius: 8px; background: #fff; }
+  figure img { width: 100%; height: auto; display: block; }
+  figcaption { margin-top: 12px; font-size: 13.5px; color: #2c2c2c; }
+  figcaption b { color: var(--ink); }
+  .tag { display: inline-block; font: 11px/1 ui-monospace, Menlo, Consolas, monospace; letter-spacing: .06em;
+         text-transform: uppercase; color: var(--j); background: var(--band); border: 1px solid var(--rule);
+         border-radius: 999px; padding: 4px 9px; margin-bottom: 10px; }
+  .src { font-size: 12px; color: var(--muted); margin-top: 6px; }
+  code { font: 12px ui-monospace, Menlo, Consolas, monospace; background: var(--band); padding: 1px 4px; border-radius: 3px; }
+  footer { border-top: 1px solid var(--rule); padding-top: 14px; color: var(--muted); font-size: 12.5px; }
+</style>
+</head>
+<body>
+<h1>Cross-model KV transfer audit — figure sheet</h1>
+<p class="lede">Six figures for “When a Benchmark Rebuild Reverses a Finding”. Every plotted value is read from
+<code>results.json</code> / <code>evaluation.json</code> or recomputed from <code>data/audit_2x2/</code>;
+<code>verify_figures.py</code> checks each one against the tables in <code>results.tex</code> and against the
+counts stated in the paper text.</p>
+
+<figure>
+  <span class="tag">Fig 1 · problem setup</span>
+  <img src="fig1_design.png" alt="Cache path and 2x2 design">
+  <figcaption><b>The cache path and the corpus-version design.</b> (a) Sender keys and values are mapped per layer and injected into the frozen receiver, which sees only the query and the candidate prefix; the Self arm substitutes the receiver's own cache. (b) Original (0) and rebuilt (1) calibration and validation corpora crossed with three seeds, each cell annotated with <i>L</i> in points.</figcaption>
+  <div class="src">source: <code>results.json → factorial[*].L</code></div>
+</figure>
+
+<figure>
+  <span class="tag">Fig 2 · corpus audit</span>
+  <img src="fig2_corpus.png" alt="Corpus defects before and after rebuild">
+  <figcaption><b>What the audit removed.</b> Identical candidates inside must-flip pairs, exact document strings shared across splits, and shared query strings — per seed, before and after the rebuild. Recomputed from the corpus files, and equal to the counts the paper states (4/4/5 and 2/5/1); the rebuilt corpus is clean on all three.</figcaption>
+  <div class="src">source: <code>data/audit_2x2/{legacy,fixed}/*_seed*.jsonl</code></div>
+</figure>
+
+<figure>
+  <span class="tag">Fig 3 · main result</span>
+  <img src="fig3_factorial.png" alt="L by cell and seed with intervals">
+  <figcaption><b>The reversal.</b> (a) <i>L</i> with its template-family interval for each cell and seed; the historical diagonal A00 is shaded. (b) The native and transferred dual-correctness levels that produce each gap, so a gap that moves because Self moved is visible as such.</figcaption>
+  <div class="src">source: <code>results.json → factorial[*].{L,self,joint}</code></div>
+</figure>
+
+<figure>
+  <span class="tag">Fig 4 · scoring sensitivity</span>
+  <img src="fig4_scoring.png" alt="Readouts and version contrast">
+  <figcaption><b>Does the direction survive another score?</b> (a) <i>L</i> under first-token, full-sequence and length-normalised scoring. (b) The A11−A00 version contrast under each readout, seed by seed, with family intervals. The direction holds everywhere; the magnitude moves (seed 1 loses 21.7 points).</figcaption>
+  <div class="src">source: <code>results.json → sequence</code>, <code>sequence_contrasts</code></div>
+</figure>
+
+<figure>
+  <span class="tag">Fig 5 · counterfactual error</span>
+  <img src="fig5_controls.png" alt="Counterfactual error versus controls">
+  <figcaption><b>Error below the controls, correctness below the reference.</b> (a) First-token <i>E</i><sub>CF</sub> against mismatched, zero and randomised caches. (b) Pair-level margins <i>D</i><sub>Self</sub> vs <i>D</i><sub>Joint</sub>; the diagonal is sign agreement, and the inset gives the numerator and denominator.</figcaption>
+  <div class="src">source: <code>results.json → factorial[A11_*].{joint_ecf,controls,flip}</code>, <code>evaluation.json</code></div>
+</figure>
+
+<figure>
+  <span class="tag">Fig 6 · slices and mappers</span>
+  <img src="fig6_slices.png" alt="Slice heatmap and distillation baseline">
+  <figcaption><b>Where the gap lives.</b> (a) <i>L</i> by slice, cell and seed; F1–F4 are semantic, F5 and F6 are controls excluded from the direction analysis. (b) Affine map against the distillation baseline on the rebuilt validation sets, with family intervals.</figcaption>
+  <div class="src">source: <code>evaluation.json → factorial</code>, <code>results.json → kd</code></div>
+</figure>
+
+<footer>
+  Regenerate: <code>python figures/check_layout.py</code> (render + overlap audit) then
+  <code>python figures/verify_figures.py</code> (numbers vs paper). Vector PDFs sit beside these PNGs.
+</footer>
+</body>
+</html>

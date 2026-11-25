@@ -1,0 +1,20 @@
+{
+  "run_id": "verify_stage4_probes",
+  "files": [
+    {
+      "name": "config.json",
+      "sha256": "15422c2cc5c89d8e2fd720b67dbe7c31837cd784f743a687977c674ee02a9956",
+      "size": 343
+    },
+    {
+      "name": "metrics.json",
+      "sha256": "907aeda5aa6a7e1f70bf22617a24ac3c0f8486202b25562bc68ba4fd0c753e0d",
+      "size": 6117
+    },
+    {
+      "name": "scores.jsonl",
+      "sha256": "59bd3e7b4fb48de03346f31088d6a834311ad48e16eb1c44d4156a6db7b69607",
+      "size": 15112
+    }
+  ]
+}

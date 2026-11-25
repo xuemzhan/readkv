@@ -1,63 +1,48 @@
-# Anonymous TMLR submission source
+# Anonymous TMLR submission
 
-This directory holds the **double-blind / anonymous** TMLR manuscript source.
+**Manuscript source** is `main.tex`. The checked-in `main.pdf` and `supplement.zip` predate the E3/E4/E7 revision and must be regenerated on a machine with a LaTeX engine before submission. **Anonymous supplementary material** is `supplement.zip`. The authoritative source is this directory; the separate named drafts and arXiv directory are kept in sync with its scientific claims.
 
-- `main.tex` — self-contained LaTeX source (author = "Anonymous Author(s)";
-  no acknowledgments; no author email; no self-identifying citation). Numeric
-  tables are readable from the PDF itself; the 2×2 statistics live in an
-  appendix (`\label{sec:stats}`).
-- No result is fabricated. Every number is transcribed from frozen artifacts in
-  `reports/` (`metrics.json`, `bootstrap_summary.json`,
-  `anchor_eval_summary.json`, `audit_2x2_l_ci.json`,
-  `audit_2x2_formal_summary.json`, six `runs/audit_seq_*_b0/` cells, and the
-  frozen statistical interpretations) and the frozen data-fix reports. Old
-  sequence-scoring run ids are superseded and are not used. No statistic
-  was recomputed for this manuscript. Paths are repository-relative; no absolute
-  paths are embedded.
+## Rebuild the tables and manuscript
 
-## Compile
+With Python 3.10 or newer and NumPy installed, run the CPU replay in this directory:
 
-The source intentionally uses only standard packages (`inputenc`, `fontenc`,
-`amsmath`, `booktabs`, `graphicx`, `geometry`, `hyperref`) so it compiles with a
-standard LaTeX installation without an external `.sty`:
+    python reproduce.py
 
-```
-pdflatex main.tex
-bibtex main
-pdflatex main.tex
-pdflatex main.tex
-```
+This reads the anonymous numeric ledger `evaluation.json`, writes `results.json` and updates `results.tex`. From a full repository checkout, `python papers/readkv_v2_tmlr_anonymous/reproduce.py --repo .` re-extracts that ledger from the archived runs and official local SQuAD file.
 
-Tectonic also works:
+The E3/E4/E7 diagnostics added in this revision are generated from the verified ledger by two CPU-only scripts run at the repository root:
 
-```
-tectonic main.tex
-```
+    python -m scripts.audit_reanalysis     # writes reports/audit_reanalysis.json
+    python -m scripts.reanalysis_tables    # writes results_extra.tex here and in readkv_v2_zh
 
-If the local toolchain has `pdflatex`/`bibtex` but not a complete package set,
-the reviewer environment used Tectonic; consult `papers/readkv_v2_draft/notes.md`
-for the compile note and the earlier overflow/escape findings.
+The equivalence margin is declared in `configs/prereg/equivalence_margin_v2.9.yaml` before the reported numbers. No GPU run is involved; single-defect interventions, the sealed test and a second model pair remain unevaluated.
 
-## For the camera-ready
+## Rebuild the figures
 
-TMLR's official style and anonymity rules may require swapping the preamble to
-`\usepackage{tmlr}`, restoring the author line and adding an acknowledgments
-section. Do **not** add author identity or acknowledgments to the anonymous
-version. The venue and submission are handled by the real PI via OpenReview;
-this directory is a source draft, not a submission.
+The seven figures are generated from the same ledgers (figure 7 also uses `reports/audit_reanalysis.json`), without model weights:
 
-## Relationship to other versions
+    cd figures
+    python run_all.py          # writes fig*.pdf (vector) and fig*.png previews
+    python check_layout.py     # re-renders; fails on overlapping labels or a legend over data
+    python audit_figures.py    # fails on labels < 7 pt, strokes < 0.5 pt, or poor grayscale contrast
+    python verify_figures.py   # fails if any plotted number disagrees with results.tex, the text, or the fig6(b) bar heights
 
-- `papers/readkv_v2_draft/` — named long draft with internal ruling notes and
-  cover letter (`cover_letter.md`). The scientific content here matches the
-  revised draft after the 2026-11-24 directed revision.
-- `papers/readkv_v2_arxiv/` — arXiv version, synchronized separately by another
-  agent (do not edit from this directory).
+`fig1_design.py` to `fig7_ecf_validity.py` hold one figure each; `data_access.py` is the only place that
+reads corpus data, and it reads `results.json`, `evaluation.json` and `data/audit_2x2/` only. Figure 7
+reads the generated reanalysis JSON. `figures/preview.html` shows the first six with captions for quick reading.
 
-## Anonymity checklist
+File prefixes are generation order, not paper numbers: the corpus-defect figure appears first in
+the manuscript, so `fig2_corpus.py` is Figure 1, `fig1_design.py` is Figure 2, `fig3_factorial.py`
+is Figure 3, `fig5_controls.py` is Figure 4, `fig4_scoring.py` is Figure 5, `fig6_slices.py` is
+Figure 6, and `fig7_ecf_validity.py` is Figure 7.
 
-- [x] `\author{Anonymous Author(s)}`, empty `\date`
-- [x] no `acknowledgments` section
-- [x] no author email / affiliation / self-citation by name
-- [x] earlier release described as "an earlier release of this benchmark"
-- [x] no absolute paths; no fabricated results; sequence-scoring results filled from the six authoritative `_b0` cells (old ids superseded)
+All figures are drawn at `\textwidth` (6.5 in), so a size in `plot_style.py` is the size on the
+page: body labels 8 pt, ticks 7.6 pt, nothing below 7 pt.
+
+To compile in this directory:
+
+    tectonic main.tex
+
+Alternatively run `pdflatex main`, `bibtex main` and `pdflatex main` twice. The supplied TMLR style and BibTeX files come from revision `7bf90efe3a0debbba703c05c43f3ff7e4d4a2992` of [the official template repository](https://github.com/JmlrOrg/tmlr-style-file). Third-party notices are supplied in the included style files and in `TEMPLATE-LICENSE`.
+
+The ledger contains evaluation-derived values rather than document or annotation text. The anonymous supplement bundles the replay, numeric ledger, results and reproduction guide. It verifies the reported statistics without loading model weights.

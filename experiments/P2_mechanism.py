@@ -59,36 +59,44 @@ def main() -> None:
     mechanism_rows = []
     for pair_obj in val:
         pair = _d(pair_obj)
-        student = backend.pair_side_cache(pair, "A", "student")
-        teacher = backend.pair_side_cache(pair, "A", "teacher")
-        mapped = value_mapper.transform(teacher)
-        build_four_arms(student=student, mapped=mapped)  # 四臂接线校验
+        student_a = backend.pair_side_cache(pair, "A", "student")
+        student_b = backend.pair_side_cache(pair, "B", "student")
+        teacher_a = backend.pair_side_cache(pair, "A", "teacher")
+        teacher_b = backend.pair_side_cache(pair, "B", "teacher")
+        mapped_a = value_mapper.transform(teacher_a)
+        mapped_b = value_mapper.transform(teacher_b)
+        build_four_arms(student=student_a, mapped=mapped_a)  # 四臂接线校验
 
         queries = {}
-        for layer in mapped.layers:
-            k, _ = mapped.layer(layer)
+        for layer in mapped_a.layers:
+            k, _ = mapped_a.layer(layer)
             for head in range(k.shape[0]):
                 queries[(layer, head)] = backend.query_states(layer, head, {"text": pair["query"]})
 
-        decomps = decompose_cache(queries=queries, student=student, mapped=mapped)
+        decomps = decompose_cache(queries=queries, student=student_a, mapped=mapped_a)
         for d in decomps:
             decomposition_rows.append({"pair_id": pair["pair_id"], **d.as_dict()})
 
         query_doc = {"text": pair["query"]}
         candidates = (pair["candidate_A"], pair["candidate_B"])
+        idx_a = 0 if pair["correct_A"].startswith("A") else 1
+        idx_b = 0 if pair["correct_B"].startswith("A") else 1
+
+        self_a = backend.candidate_logits(student_a, query_doc, candidates=candidates, correct_index=idx_a)
+        self_b = backend.candidate_logits(student_b, query_doc, candidates=candidates, correct_index=idx_b)
+        fixed_b = backend.candidate_logits(mapped_b, query_doc, candidates=candidates, correct_index=idx_b)
 
         def ecf_fn(cache):
-            self_logits = backend.candidate_logits(student, query_doc, candidates=candidates, correct_index=0)
-            trans_logits = backend.candidate_logits(cache, query_doc, candidates=candidates, correct_index=0)
+            trans_a = backend.candidate_logits(cache, query_doc, candidates=candidates, correct_index=idx_a)
             return PairCFRecord(
                 pair_id=pair["pair_id"], split="val", slice_id=pair["slice_id"],
                 cluster=pair["cluster"],
-                self_logits_A=self_logits, self_logits_B=self_logits,
-                transfer_logits_A=trans_logits, transfer_logits_B=trans_logits,
+                self_logits_A=self_a, self_logits_B=self_b,
+                transfer_logits_A=trans_a, transfer_logits_B=fixed_b,
             ).compute()["E_CF"]
 
-        baseline_ecf = ecf_fn(mapped)
-        ranked = rank_units_by_repair(student=student, mapped=mapped,
+        baseline_ecf = ecf_fn(mapped_a)
+        ranked = rank_units_by_repair(student=student_a, mapped=mapped_a,
                                       baseline_ecf=baseline_ecf, ecf_fn=ecf_fn)
         mechanism_rows.extend({"pair_id": pair["pair_id"], **r} for r in ranked[:8])
 

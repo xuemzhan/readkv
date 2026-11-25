@@ -1,0 +1,3628 @@
+{
+  "protocol": "configs/prereg/equivalence_margin_v2.9.yaml",
+  "delta": 2.0,
+  "external_registration": false,
+  "exploratory": true,
+  "source": "verified anonymous supplement; no new GPU runs",
+  "E3_controls_equivalence": {
+    "0": {
+      "joint_ecf_cluster": [
+        6.8996,
+        3.5642,
+        10.0996
+      ],
+      "n_pairs": 60,
+      "n_families": 8,
+      "controls": {
+        "mismatch": {
+          "control_mean_cluster_ci": [
+            8.7361,
+            5.0428,
+            12.1645
+          ],
+          "joint_minus_control_cluster_ci": [
+            -1.8366,
+            -2.819,
+            -0.9342
+          ],
+          "family_test": {
+            "n_families": 8,
+            "family_mean_diff": -1.8889,
+            "family_se": 0.5268,
+            "two_sided_p": 0.00891,
+            "tost_p_lo": 0.41947,
+            "tost_p_hi": 8e-05,
+            "tost_p": 0.41947,
+            "ci90_family": [
+              -2.8869,
+              -0.8909
+            ],
+            "equivalent_at_delta": false
+          }
+        },
+        "zero": {
+          "control_mean_cluster_ci": [
+            8.584,
+            4.6204,
+            12.1122
+          ],
+          "joint_minus_control_cluster_ci": [
+            -1.6844,
+            -2.5554,
+            -0.8051
+          ],
+          "family_test": {
+            "n_families": 8,
+            "family_mean_diff": -1.7096,
+            "family_se": 0.4871,
+            "two_sided_p": 0.00986,
+            "tost_p_lo": 0.28488,
+            "tost_p_hi": 6e-05,
+            "tost_p": 0.28488,
+            "ci90_family": [
+              -2.6324,
+              -0.7867
+            ],
+            "equivalent_at_delta": false
+          }
+        },
+        "random": {
+          "control_mean_cluster_ci": [
+            6.7648,
+            3.9006,
+            9.916
+          ],
+          "joint_minus_control_cluster_ci": [
+            0.1347,
+            -1.931,
+            2.2825
+          ],
+          "family_test": {
+            "n_families": 8,
+            "family_mean_diff": 0.0099,
+            "family_se": 1.1416,
+            "two_sided_p": 0.99335,
+            "tost_p_lo": 0.06086,
+            "tost_p_hi": 0.06241,
+            "tost_p": 0.06241,
+            "ci90_family": [
+              -2.1531,
+              2.1728
+            ],
+            "equivalent_at_delta": false
+          }
+        }
+      }
+    },
+    "1": {
+      "joint_ecf_cluster": [
+        8.159,
+        4.3574,
+        11.5841
+      ],
+      "n_pairs": 60,
+      "n_families": 8,
+      "controls": {
+        "mismatch": {
+          "control_mean_cluster_ci": [
+            9.1147,
+            5.2034,
+            12.5777
+          ],
+          "joint_minus_control_cluster_ci": [
+            -0.9557,
+            -1.6397,
+            -0.131
+          ],
+          "family_test": {
+            "n_families": 8,
+            "family_mean_diff": -0.9314,
+            "family_se": 0.4302,
+            "two_sided_p": 0.06709,
+            "tost_p_lo": 0.02097,
+            "tost_p_hi": 0.00012,
+            "tost_p": 0.02097,
+            "ci90_family": [
+              -1.7463,
+              -0.1164
+            ],
+            "equivalent_at_delta": true
+          }
+        },
+        "zero": {
+          "control_mean_cluster_ci": [
+            9.0652,
+            5.0961,
+            12.6417
+          ],
+          "joint_minus_control_cluster_ci": [
+            -0.9062,
+            -1.581,
+            -0.1201
+          ],
+          "family_test": {
+            "n_families": 8,
+            "family_mean_diff": -0.8755,
+            "family_se": 0.4054,
+            "two_sided_p": 0.06764,
+            "tost_p_lo": 0.01377,
+            "tost_p_hi": 0.0001,
+            "tost_p": 0.01377,
+            "ci90_family": [
+              -1.6435,
+              -0.1075
+            ],
+            "equivalent_at_delta": true
+          }
+        },
+        "random": {
+          "control_mean_cluster_ci": [
+            7.4477,
+            4.2627,
+            10.4957
+          ],
+          "joint_minus_control_cluster_ci": [
+            0.7113,
+            -0.4884,
+            2.0112
+          ],
+          "family_test": {
+            "n_families": 8,
+            "family_mean_diff": 0.6722,
+            "family_se": 0.674,
+            "two_sided_p": 0.35187,
+            "tost_p_lo": 0.00272,
+            "tost_p_hi": 0.04475,
+            "tost_p": 0.04475,
+            "ci90_family": [
+              -0.6048,
+              1.9492
+            ],
+            "equivalent_at_delta": true
+          }
+        }
+      }
+    },
+    "2": {
+      "joint_ecf_cluster": [
+        8.5402,
+        5.3264,
+        11.6102
+      ],
+      "n_pairs": 60,
+      "n_families": 8,
+      "controls": {
+        "mismatch": {
+          "control_mean_cluster_ci": [
+            9.8949,
+            5.9895,
+            13.4949
+          ],
+          "joint_minus_control_cluster_ci": [
+            -1.3547,
+            -2.3221,
+            -0.3289
+          ],
+          "family_test": {
+            "n_families": 8,
+            "family_mean_diff": -1.2976,
+            "family_se": 0.5538,
+            "two_sided_p": 0.05161,
+            "tost_p_lo": 0.12261,
+            "tost_p_hi": 0.00028,
+            "tost_p": 0.12261,
+            "ci90_family": [
+              -2.3468,
+              -0.2484
+            ],
+            "equivalent_at_delta": false
+          }
+        },
+        "zero": {
+          "control_mean_cluster_ci": [
+            9.6842,
+            5.6398,
+            13.3471
+          ],
+          "joint_minus_control_cluster_ci": [
+            -1.144,
+            -2.2355,
+            0.0116
+          ],
+          "family_test": {
+            "n_families": 8,
+            "family_mean_diff": -1.0897,
+            "family_se": 0.613,
+            "two_sided_p": 0.11869,
+            "tost_p_lo": 0.09056,
+            "tost_p_hi": 0.00075,
+            "tost_p": 0.09056,
+            "ci90_family": [
+              -2.2511,
+              0.0716
+            ],
+            "equivalent_at_delta": false
+          }
+        },
+        "random": {
+          "control_mean_cluster_ci": [
+            7.8228,
+            4.715,
+            10.7704
+          ],
+          "joint_minus_control_cluster_ci": [
+            0.7175,
+            -0.2909,
+            1.7324
+          ],
+          "family_test": {
+            "n_families": 8,
+            "family_mean_diff": 0.7219,
+            "family_se": 0.5576,
+            "two_sided_p": 0.23649,
+            "tost_p_lo": 0.0009,
+            "tost_p_hi": 0.02781,
+            "tost_p": 0.02781,
+            "ci90_family": [
+              -0.3345,
+              1.7783
+            ],
+            "equivalent_at_delta": true
+          }
+        }
+      }
+    }
+  },
+  "E4_ecf_validity": {
+    "scale": {
+      "A00": {
+        "0": {
+          "mean_abs_dself": 6.1589,
+          "mean_joint_ecf": 1.9682,
+          "ecf_over_abs_dself": 0.3196
+        },
+        "1": {
+          "mean_abs_dself": 5.8966,
+          "mean_joint_ecf": 1.9341,
+          "ecf_over_abs_dself": 0.328
+        },
+        "2": {
+          "mean_abs_dself": 6.6432,
+          "mean_joint_ecf": 2.1234,
+          "ecf_over_abs_dself": 0.3196
+        }
+      },
+      "A11": {
+        "0": {
+          "mean_abs_dself": 8.6237,
+          "mean_joint_ecf": 6.8996,
+          "ecf_over_abs_dself": 0.8001
+        },
+        "1": {
+          "mean_abs_dself": 9.0784,
+          "mean_joint_ecf": 8.159,
+          "ecf_over_abs_dself": 0.8987
+        },
+        "2": {
+          "mean_abs_dself": 9.7122,
+          "mean_joint_ecf": 8.5402,
+          "ecf_over_abs_dself": 0.8793
+        }
+      }
+    },
+    "scatter": {
+      "affine": [
+        {
+          "seed": 0,
+          "family": "S-F1-person-C",
+          "slice": "F1",
+          "dual_joint": 0.0,
+          "ecf": 12.296875,
+          "abs_dself": 14.59375
+        },
+        {
+          "seed": 0,
+          "family": "S-F2-alias-C",
+          "slice": "F2",
+          "dual_joint": 0.0,
+          "ecf": 8.375,
+          "abs_dself": 10.4375
+        },
+        {
+          "seed": 0,
+          "family": "S-F3-direction-C",
+          "slice": "F3",
+          "dual_joint": 0.0,
+          "ecf": 0.8125,
+          "abs_dself": 2.1875
+        },
+        {
+          "seed": 0,
+          "family": "S-F4-distractor-C",
+          "slice": "F4",
+          "dual_joint": 0.0,
+          "ecf": 16.171875,
+          "abs_dself": 15.25
+        },
+        {
+          "seed": 0,
+          "family": "S-F5-paraphrase-C",
+          "slice": "F5",
+          "dual_joint": 1.0,
+          "ecf": 0.0,
+          "abs_dself": 0.0
+        },
+        {
+          "seed": 0,
+          "family": "S-F6-position-C",
+          "slice": "F6",
+          "dual_joint": 0.0,
+          "ecf": 16.203125,
+          "abs_dself": 12.6875
+        },
+        {
+          "seed": 0,
+          "family": "S-F1-city-C",
+          "slice": "F1",
+          "dual_joint": 0.0,
+          "ecf": 12.75,
+          "abs_dself": 11.25
+        },
+        {
+          "seed": 0,
+          "family": "S-F3-negation-C",
+          "slice": "F3",
+          "dual_joint": 0.0,
+          "ecf": 2.515625,
+          "abs_dself": 4.75
+        },
+        {
+          "seed": 0,
+          "family": "S-F1-person-C",
+          "slice": "F1",
+          "dual_joint": 0.0,
+          "ecf": 13.640625,
+          "abs_dself": 13.46875
+        },
+        {
+          "seed": 0,
+          "family": "S-F2-alias-C",
+          "slice": "F2",
+          "dual_joint": 1.0,
+          "ecf": 4.84375,
+          "abs_dself": 8.71875
+        },
+        {
+          "seed": 0,
+          "family": "S-F3-direction-C",
+          "slice": "F3",
+          "dual_joint": 0.0,
+          "ecf": 1.5312499999999996,
+          "abs_dself": 0.1875
+        },
+        {
+          "seed": 0,
+          "family": "S-F4-distractor-C",
+          "slice": "F4",
+          "dual_joint": 0.0,
+          "ecf": 12.671875,
+          "abs_dself": 12.328125
+        },
+        {
+          "seed": 0,
+          "family": "S-F5-paraphrase-C",
+          "slice": "F5",
+          "dual_joint": 1.0,
+          "ecf": 0.0,
+          "abs_dself": 0.0
+        },
+        {
+          "seed": 0,
+          "family": "S-F6-position-C",
+          "slice": "F6",
+          "dual_joint": 1.0,
+          "ecf": 9.375,
+          "abs_dself": 12.5625
+        },
+        {
+          "seed": 0,
+          "family": "S-F1-city-C",
+          "slice": "F1",
+          "dual_joint": 1.0,
+          "ecf": 5.84765625,
+          "abs_dself": 11.09375
+        },
+        {
+          "seed": 0,
+          "family": "S-F3-negation-C",
+          "slice": "F3",
+          "dual_joint": 1.0,
+          "ecf": 0.890625,
+          "abs_dself": 3.6875
+        },
+        {
+          "seed": 0,
+          "family": "S-F1-person-C",
+          "slice": "F1",
+          "dual_joint": 0.0,
+          "ecf": 15.25,
+          "abs_dself": 12.3125
+        },
+        {
+          "seed": 0,
+          "family": "S-F2-alias-C",
+          "slice": "F2",
+          "dual_joint": 0.0,
+          "ecf": 5.3125,
+          "abs_dself": 9.78125
+        },
+        {
+          "seed": 0,
+          "family": "S-F3-direction-C",
+          "slice": "F3",
+          "dual_joint": 0.0,
+          "ecf": 0.59375,
+          "abs_dself": 0.3125
+        },
+        {
+          "seed": 0,
+          "family": "S-F4-distractor-C",
+          "slice": "F4",
+          "dual_joint": 0.0,
+          "ecf": 5.1640625,
+          "abs_dself": 11.53125
+        },
+        {
+          "seed": 0,
+          "family": "S-F5-paraphrase-C",
+          "slice": "F5",
+          "dual_joint": 1.0,
+          "ecf": 0.0,
+          "abs_dself": 0.0
+        },
+        {
+          "seed": 0,
+          "family": "S-F6-position-C",
+          "slice": "F6",
+          "dual_joint": 1.0,
+          "ecf": 5.9375,
+          "abs_dself": 10.09375
+        },
+        {
+          "seed": 0,
+          "family": "S-F1-city-C",
+          "slice": "F1",
+          "dual_joint": 1.0,
+          "ecf": 4.26953125,
+          "abs_dself": 11.0625
+        },
+        {
+          "seed": 0,
+          "family": "S-F3-negation-C",
+          "slice": "F3",
+          "dual_joint": 0.0,
+          "ecf": 3.84375,
+          "abs_dself": 4.71875
+        },
+        {
+          "seed": 0,
+          "family": "S-F1-person-C",
+          "slice": "F1",
+          "dual_joint": 0.0,
+          "ecf": 13.4375,
+          "abs_dself": 15.5
+        },
+        {
+          "seed": 0,
+          "family": "S-F2-alias-C",
+          "slice": "F2",
+          "dual_joint": 0.0,
+          "ecf": 6.78125,
+          "abs_dself": 8.4375
+        },
+        {
+          "seed": 0,
+          "family": "S-F3-direction-C",
+          "slice": "F3",
+          "dual_joint": 0.0,
+          "ecf": 0.53125,
+          "abs_dself": 0.0625
+        },
+        {
+          "seed": 0,
+          "family": "S-F4-distractor-C",
+          "slice": "F4",
+          "dual_joint": 0.0,
+          "ecf": 11.1875,
+          "abs_dself": 12.40625
+        },
+        {
+          "seed": 0,
+          "family": "S-F5-paraphrase-C",
+          "slice": "F5",
+          "dual_joint": 1.0,
+          "ecf": 0.0,
+          "abs_dself": 0.0
+        },
+        {
+          "seed": 0,
+          "family": "S-F6-position-C",
+          "slice": "F6",
+          "dual_joint": 1.0,
+          "ecf": 4.5625,
+          "abs_dself": 14.4375
+        },
+        {
+          "seed": 0,
+          "family": "S-F1-city-C",
+          "slice": "F1",
+          "dual_joint": 1.0,
+          "ecf": 9.09375,
+          "abs_dself": 11.75
+        },
+        {
+          "seed": 0,
+          "family": "S-F3-negation-C",
+          "slice": "F3",
+          "dual_joint": 1.0,
+          "ecf": 2.03125,
+          "abs_dself": 4.65625
+        },
+        {
+          "seed": 0,
+          "family": "S-F1-person-C",
+          "slice": "F1",
+          "dual_joint": 0.0,
+          "ecf": 12.17578125,
+          "abs_dself": 13.03125
+        },
+        {
+          "seed": 0,
+          "family": "S-F2-alias-C",
+          "slice": "F2",
+          "dual_joint": 1.0,
+          "ecf": 7.484375,
+          "abs_dself": 11.03125
+        },
+        {
+          "seed": 0,
+          "family": "S-F3-direction-C",
+          "slice": "F3",
+          "dual_joint": 0.0,
+          "ecf": 0.3359375,
+          "abs_dself": 3.03125
+        },
+        {
+          "seed": 0,
+          "family": "S-F4-distractor-C",
+          "slice": "F4",
+          "dual_joint": 1.0,
+          "ecf": 10.703125,
+          "abs_dself": 14.109375
+        },
+        {
+          "seed": 0,
+          "family": "S-F5-paraphrase-C",
+          "slice": "F5",
+          "dual_joint": 1.0,
+          "ecf": 0.0,
+          "abs_dself": 0.0
+        },
+        {
+          "seed": 0,
+          "family": "S-F6-position-C",
+          "slice": "F6",
+          "dual_joint": 0.0,
+          "ecf": 14.796875,
+          "abs_dself": 14.53125
+        },
+        {
+          "seed": 0,
+          "family": "S-F1-city-C",
+          "slice": "F1",
+          "dual_joint": 0.0,
+          "ecf": 9.482421875,
+          "abs_dself": 13.5
+        },
+        {
+          "seed": 0,
+          "family": "S-F3-negation-C",
+          "slice": "F3",
+          "dual_joint": 0.0,
+          "ecf": 3.78125,
+          "abs_dself": 4.0625
+        },
+        {
+          "seed": 0,
+          "family": "S-F1-person-C",
+          "slice": "F1",
+          "dual_joint": 0.0,
+          "ecf": 17.3125,
+          "abs_dself": 15.5
+        },
+        {
+          "seed": 0,
+          "family": "S-F2-alias-C",
+          "slice": "F2",
+          "dual_joint": 0.0,
+          "ecf": 2.5625,
+          "abs_dself": 5.75
+        },
+        {
+          "seed": 0,
+          "family": "S-F3-direction-C",
+          "slice": "F3",
+          "dual_joint": 1.0,
+          "ecf": 2.421875,
+          "abs_dself": 0.671875
+        },
+        {
+          "seed": 0,
+          "family": "S-F4-distractor-C",
+          "slice": "F4",
+          "dual_joint": 1.0,
+          "ecf": 7.125,
+          "abs_dself": 10.0625
+        },
+        {
+          "seed": 0,
+          "family": "S-F5-paraphrase-C",
+          "slice": "F5",
+          "dual_joint": 1.0,
+          "ecf": 0.0,
+          "abs_dself": 0.0
+        },
+        {
+          "seed": 0,
+          "family": "S-F6-position-C",
+          "slice": "F6",
+          "dual_joint": 1.0,
+          "ecf": 7.328125,
+          "abs_dself": 15.3125
+        },
+        {
+          "seed": 0,
+          "family": "S-F1-city-C",
+          "slice": "F1",
+          "dual_joint": 0.0,
+          "ecf": 17.97900390625,
+          "abs_dself": 19.53125
+        },
+        {
+          "seed": 0,
+          "family": "S-F3-negation-C",
+          "slice": "F3",
+          "dual_joint": 1.0,
+          "ecf": 0.25,
+          "abs_dself": 4.375
+        },
+        {
+          "seed": 0,
+          "family": "S-F1-person-C",
+          "slice": "F1",
+          "dual_joint": 0.0,
+          "ecf": 13.390625,
+          "abs_dself": 16.171875
+        },
+        {
+          "seed": 0,
+          "family": "S-F2-alias-C",
+          "slice": "F2",
+          "dual_joint": 0.0,
+          "ecf": 10.78125,
+          "abs_dself": 10.59375
+        },
+        {
+          "seed": 0,
+          "family": "S-F3-direction-C",
+          "slice": "F3",
+          "dual_joint": 1.0,
+          "ecf": 3.125,
+          "abs_dself": 1.53125
+        },
+        {
+          "seed": 0,
+          "family": "S-F4-distractor-C",
+          "slice": "F4",
+          "dual_joint": 0.0,
+          "ecf": 13.421875,
+          "abs_dself": 12.40625
+        },
+        {
+          "seed": 0,
+          "family": "S-F5-paraphrase-C",
+          "slice": "F5",
+          "dual_joint": 1.0,
+          "ecf": 0.0,
+          "abs_dself": 0.0
+        },
+        {
+          "seed": 0,
+          "family": "S-F6-position-C",
+          "slice": "F6",
+          "dual_joint": 0.0,
+          "ecf": 13.03125,
+          "abs_dself": 16.078125
+        },
+        {
+          "seed": 0,
+          "family": "S-F1-city-C",
+          "slice": "F1",
+          "dual_joint": 0.0,
+          "ecf": 14.78125,
+          "abs_dself": 17.0
+        },
+        {
+          "seed": 0,
+          "family": "S-F3-negation-C",
+          "slice": "F3",
+          "dual_joint": 0.0,
+          "ecf": 1.1875,
+          "abs_dself": 3.6875
+        },
+        {
+          "seed": 0,
+          "family": "S-F1-person-C",
+          "slice": "F1",
+          "dual_joint": 1.0,
+          "ecf": 5.9375,
+          "abs_dself": 11.15625
+        },
+        {
+          "seed": 0,
+          "family": "S-F2-alias-C",
+          "slice": "F2",
+          "dual_joint": 1.0,
+          "ecf": 4.34375,
+          "abs_dself": 10.0
+        },
+        {
+          "seed": 0,
+          "family": "S-F3-direction-C",
+          "slice": "F3",
+          "dual_joint": 0.0,
+          "ecf": 1.03125,
+          "abs_dself": 1.8125
+        },
+        {
+          "seed": 0,
+          "family": "S-F4-distractor-C",
+          "slice": "F4",
+          "dual_joint": 0.0,
+          "ecf": 13.28125,
+          "abs_dself": 12.21875
+        },
+        {
+          "seed": 1,
+          "family": "S-F1-person-C",
+          "slice": "F1",
+          "dual_joint": 0.0,
+          "ecf": 14.03125,
+          "abs_dself": 15.21875
+        },
+        {
+          "seed": 1,
+          "family": "S-F2-alias-C",
+          "slice": "F2",
+          "dual_joint": 0.0,
+          "ecf": 7.34375,
+          "abs_dself": 8.5625
+        },
+        {
+          "seed": 1,
+          "family": "S-F3-direction-C",
+          "slice": "F3",
+          "dual_joint": 0.0,
+          "ecf": 1.86328125,
+          "abs_dself": 2.8125
+        },
+        {
+          "seed": 1,
+          "family": "S-F4-distractor-C",
+          "slice": "F4",
+          "dual_joint": 0.0,
+          "ecf": 12.0,
+          "abs_dself": 14.203125
+        },
+        {
+          "seed": 1,
+          "family": "S-F5-paraphrase-C",
+          "slice": "F5",
+          "dual_joint": 1.0,
+          "ecf": 0.0,
+          "abs_dself": 0.0
+        },
+        {
+          "seed": 1,
+          "family": "S-F6-position-C",
+          "slice": "F6",
+          "dual_joint": 0.0,
+          "ecf": 9.6484375,
+          "abs_dself": 13.46875
+        },
+        {
+          "seed": 1,
+          "family": "S-F1-city-C",
+          "slice": "F1",
+          "dual_joint": 0.0,
+          "ecf": 12.59375,
+          "abs_dself": 13.5625
+        },
+        {
+          "seed": 1,
+          "family": "S-F3-negation-C",
+          "slice": "F3",
+          "dual_joint": 1.0,
+          "ecf": 0.125,
+          "abs_dself": 2.5625
+        },
+        {
+          "seed": 1,
+          "family": "S-F1-person-C",
+          "slice": "F1",
+          "dual_joint": 0.0,
+          "ecf": 12.3125,
+          "abs_dself": 11.5625
+        },
+        {
+          "seed": 1,
+          "family": "S-F2-alias-C",
+          "slice": "F2",
+          "dual_joint": 0.0,
+          "ecf": 11.640625,
+          "abs_dself": 12.5
+        },
+        {
+          "seed": 1,
+          "family": "S-F3-direction-C",
+          "slice": "F3",
+          "dual_joint": 0.0,
+          "ecf": 3.484375,
+          "abs_dself": 0.9375
+        },
+        {
+          "seed": 1,
+          "family": "S-F4-distractor-C",
+          "slice": "F4",
+          "dual_joint": 0.0,
+          "ecf": 17.4453125,
+          "abs_dself": 17.53125
+        },
+        {
+          "seed": 1,
+          "family": "S-F5-paraphrase-C",
+          "slice": "F5",
+          "dual_joint": 1.0,
+          "ecf": 0.0,
+          "abs_dself": 0.0
+        },
+        {
+          "seed": 1,
+          "family": "S-F6-position-C",
+          "slice": "F6",
+          "dual_joint": 0.0,
+          "ecf": 14.234375,
+          "abs_dself": 14.125
+        },
+        {
+          "seed": 1,
+          "family": "S-F1-city-C",
+          "slice": "F1",
+          "dual_joint": 0.0,
+          "ecf": 11.12890625,
+          "abs_dself": 11.609375
+        },
+        {
+          "seed": 1,
+          "family": "S-F3-negation-C",
+          "slice": "F3",
+          "dual_joint": 1.0,
+          "ecf": 0.46875,
+          "abs_dself": 2.53125
+        },
+        {
+          "seed": 1,
+          "family": "S-F1-person-C",
+          "slice": "F1",
+          "dual_joint": 0.0,
+          "ecf": 18.90625,
+          "abs_dself": 16.375
+        },
+        {
+          "seed": 1,
+          "family": "S-F2-alias-C",
+          "slice": "F2",
+          "dual_joint": 0.0,
+          "ecf": 11.78125,
+          "abs_dself": 8.6875
+        },
+        {
+          "seed": 1,
+          "family": "S-F3-direction-C",
+          "slice": "F3",
+          "dual_joint": 0.0,
+          "ecf": 0.0625,
+          "abs_dself": 0.53125
+        },
+        {
+          "seed": 1,
+          "family": "S-F4-distractor-C",
+          "slice": "F4",
+          "dual_joint": 1.0,
+          "ecf": 13.578125,
+          "abs_dself": 16.609375
+        },
+        {
+          "seed": 1,
+          "family": "S-F5-paraphrase-C",
+          "slice": "F5",
+          "dual_joint": 1.0,
+          "ecf": 0.0,
+          "abs_dself": 0.0
+        },
+        {
+          "seed": 1,
+          "family": "S-F6-position-C",
+          "slice": "F6",
+          "dual_joint": 0.0,
+          "ecf": 11.15625,
+          "abs_dself": 12.71875
+        },
+        {
+          "seed": 1,
+          "family": "S-F1-city-C",
+          "slice": "F1",
+          "dual_joint": 0.0,
+          "ecf": 13.40625,
+          "abs_dself": 10.3125
+        },
+        {
+          "seed": 1,
+          "family": "S-F3-negation-C",
+          "slice": "F3",
+          "dual_joint": 0.0,
+          "ecf": 3.078125,
+          "abs_dself": 5.28125
+        },
+        {
+          "seed": 1,
+          "family": "S-F1-person-C",
+          "slice": "F1",
+          "dual_joint": 1.0,
+          "ecf": 9.798828125,
+          "abs_dself": 15.375
+        },
+        {
+          "seed": 1,
+          "family": "S-F2-alias-C",
+          "slice": "F2",
+          "dual_joint": 0.0,
+          "ecf": 6.84375,
+          "abs_dself": 10.3125
+        },
+        {
+          "seed": 1,
+          "family": "S-F3-direction-C",
+          "slice": "F3",
+          "dual_joint": 0.0,
+          "ecf": 3.25,
+          "abs_dself": 3.375
+        },
+        {
+          "seed": 1,
+          "family": "S-F4-distractor-C",
+          "slice": "F4",
+          "dual_joint": 1.0,
+          "ecf": 6.578125,
+          "abs_dself": 10.125
+        },
+        {
+          "seed": 1,
+          "family": "S-F5-paraphrase-C",
+          "slice": "F5",
+          "dual_joint": 1.0,
+          "ecf": 0.0,
+          "abs_dself": 0.0
+        },
+        {
+          "seed": 1,
+          "family": "S-F6-position-C",
+          "slice": "F6",
+          "dual_joint": 0.0,
+          "ecf": 16.90625,
+          "abs_dself": 15.640625
+        },
+        {
+          "seed": 1,
+          "family": "S-F1-city-C",
+          "slice": "F1",
+          "dual_joint": 0.0,
+          "ecf": 18.6328125,
+          "abs_dself": 16.21875
+        },
+        {
+          "seed": 1,
+          "family": "S-F3-negation-C",
+          "slice": "F3",
+          "dual_joint": 0.0,
+          "ecf": 7.828125,
+          "abs_dself": 6.28125
+        },
+        {
+          "seed": 1,
+          "family": "S-F1-person-C",
+          "slice": "F1",
+          "dual_joint": 0.0,
+          "ecf": 14.0625,
+          "abs_dself": 16.46875
+        },
+        {
+          "seed": 1,
+          "family": "S-F2-alias-C",
+          "slice": "F2",
+          "dual_joint": 1.0,
+          "ecf": 7.9375,
+          "abs_dself": 11.0
+        },
+        {
+          "seed": 1,
+          "family": "S-F3-direction-C",
+          "slice": "F3",
+          "dual_joint": 0.0,
+          "ecf": 0.1875,
+          "abs_dself": 0.71875
+        },
+        {
+          "seed": 1,
+          "family": "S-F4-distractor-C",
+          "slice": "F4",
+          "dual_joint": 0.0,
+          "ecf": 15.953125,
+          "abs_dself": 16.015625
+        },
+        {
+          "seed": 1,
+          "family": "S-F5-paraphrase-C",
+          "slice": "F5",
+          "dual_joint": 1.0,
+          "ecf": 0.0,
+          "abs_dself": 0.0
+        },
+        {
+          "seed": 1,
+          "family": "S-F6-position-C",
+          "slice": "F6",
+          "dual_joint": 0.0,
+          "ecf": 9.40625,
+          "abs_dself": 14.15625
+        },
+        {
+          "seed": 1,
+          "family": "S-F1-city-C",
+          "slice": "F1",
+          "dual_joint": 1.0,
+          "ecf": 8.484375,
+          "abs_dself": 13.03125
+        },
+        {
+          "seed": 1,
+          "family": "S-F3-negation-C",
+          "slice": "F3",
+          "dual_joint": 0.0,
+          "ecf": 4.21875,
+          "abs_dself": 4.75
+        },
+        {
+          "seed": 1,
+          "family": "S-F1-person-C",
+          "slice": "F1",
+          "dual_joint": 0.0,
+          "ecf": 6.03125,
+          "abs_dself": 8.375
+        },
+        {
+          "seed": 1,
+          "family": "S-F2-alias-C",
+          "slice": "F2",
+          "dual_joint": 0.0,
+          "ecf": 11.703125,
+          "abs_dself": 11.859375
+        },
+        {
+          "seed": 1,
+          "family": "S-F3-direction-C",
+          "slice": "F3",
+          "dual_joint": 0.0,
+          "ecf": 2.3125,
+          "abs_dself": 3.84375
+        },
+        {
+          "seed": 1,
+          "family": "S-F4-distractor-C",
+          "slice": "F4",
+          "dual_joint": 1.0,
+          "ecf": 9.140625,
+          "abs_dself": 15.515625
+        },
+        {
+          "seed": 1,
+          "family": "S-F5-paraphrase-C",
+          "slice": "F5",
+          "dual_joint": 1.0,
+          "ecf": 0.0,
+          "abs_dself": 0.0
+        },
+        {
+          "seed": 1,
+          "family": "S-F6-position-C",
+          "slice": "F6",
+          "dual_joint": 0.0,
+          "ecf": 6.421875,
+          "abs_dself": 10.46875
+        },
+        {
+          "seed": 1,
+          "family": "S-F1-city-C",
+          "slice": "F1",
+          "dual_joint": 0.0,
+          "ecf": 19.75,
+          "abs_dself": 16.3125
+        },
+        {
+          "seed": 1,
+          "family": "S-F3-negation-C",
+          "slice": "F3",
+          "dual_joint": 0.0,
+          "ecf": 3.25,
+          "abs_dself": 5.25
+        },
+        {
+          "seed": 1,
+          "family": "S-F1-person-C",
+          "slice": "F1",
+          "dual_joint": 0.0,
+          "ecf": 11.875,
+          "abs_dself": 12.5
+        },
+        {
+          "seed": 1,
+          "family": "S-F2-alias-C",
+          "slice": "F2",
+          "dual_joint": 0.0,
+          "ecf": 8.5,
+          "abs_dself": 10.5
+        },
+        {
+          "seed": 1,
+          "family": "S-F3-direction-C",
+          "slice": "F3",
+          "dual_joint": 0.0,
+          "ecf": 0.015625,
+          "abs_dself": 2.03125
+        },
+        {
+          "seed": 1,
+          "family": "S-F4-distractor-C",
+          "slice": "F4",
+          "dual_joint": 1.0,
+          "ecf": 9.765625,
+          "abs_dself": 13.59375
+        },
+        {
+          "seed": 1,
+          "family": "S-F5-paraphrase-C",
+          "slice": "F5",
+          "dual_joint": 1.0,
+          "ecf": 0.0,
+          "abs_dself": 0.0
+        },
+        {
+          "seed": 1,
+          "family": "S-F6-position-C",
+          "slice": "F6",
+          "dual_joint": 0.0,
+          "ecf": 11.40625,
+          "abs_dself": 11.03125
+        },
+        {
+          "seed": 1,
+          "family": "S-F1-city-C",
+          "slice": "F1",
+          "dual_joint": 0.0,
+          "ecf": 16.0390625,
+          "abs_dself": 10.21875
+        },
+        {
+          "seed": 1,
+          "family": "S-F3-negation-C",
+          "slice": "F3",
+          "dual_joint": 0.0,
+          "ecf": 3.3125,
+          "abs_dself": 4.65625
+        },
+        {
+          "seed": 1,
+          "family": "S-F1-person-C",
+          "slice": "F1",
+          "dual_joint": 0.0,
+          "ecf": 13.13671875,
+          "abs_dself": 17.984375
+        },
+        {
+          "seed": 1,
+          "family": "S-F2-alias-C",
+          "slice": "F2",
+          "dual_joint": 0.0,
+          "ecf": 15.234375,
+          "abs_dself": 13.421875
+        },
+        {
+          "seed": 1,
+          "family": "S-F3-direction-C",
+          "slice": "F3",
+          "dual_joint": 1.0,
+          "ecf": 1.05078125,
+          "abs_dself": 2.03125
+        },
+        {
+          "seed": 1,
+          "family": "S-F4-distractor-C",
+          "slice": "F4",
+          "dual_joint": 0.0,
+          "ecf": 10.21875,
+          "abs_dself": 9.9375
+        },
+        {
+          "seed": 2,
+          "family": "S-F1-person-C",
+          "slice": "F1",
+          "dual_joint": 1.0,
+          "ecf": 4.625,
+          "abs_dself": 11.03125
+        },
+        {
+          "seed": 2,
+          "family": "S-F2-alias-C",
+          "slice": "F2",
+          "dual_joint": 0.0,
+          "ecf": 9.7890625,
+          "abs_dself": 10.28125
+        },
+        {
+          "seed": 2,
+          "family": "S-F3-direction-C",
+          "slice": "F3",
+          "dual_joint": 0.0,
+          "ecf": 5.171875,
+          "abs_dself": 4.421875
+        },
+        {
+          "seed": 2,
+          "family": "S-F4-distractor-C",
+          "slice": "F4",
+          "dual_joint": 1.0,
+          "ecf": 7.0625,
+          "abs_dself": 10.3125
+        },
+        {
+          "seed": 2,
+          "family": "S-F5-paraphrase-C",
+          "slice": "F5",
+          "dual_joint": 1.0,
+          "ecf": 0.0,
+          "abs_dself": 0.0
+        },
+        {
+          "seed": 2,
+          "family": "S-F6-position-C",
+          "slice": "F6",
+          "dual_joint": 0.0,
+          "ecf": 12.65625,
+          "abs_dself": 15.28125
+        },
+        {
+          "seed": 2,
+          "family": "S-F1-city-C",
+          "slice": "F1",
+          "dual_joint": 1.0,
+          "ecf": 8.75,
+          "abs_dself": 12.375
+        },
+        {
+          "seed": 2,
+          "family": "S-F3-negation-C",
+          "slice": "F3",
+          "dual_joint": 0.0,
+          "ecf": 6.46875,
+          "abs_dself": 3.8125
+        },
+        {
+          "seed": 2,
+          "family": "S-F1-person-C",
+          "slice": "F1",
+          "dual_joint": 0.0,
+          "ecf": 17.28173828125,
+          "abs_dself": 18.90625
+        },
+        {
+          "seed": 2,
+          "family": "S-F2-alias-C",
+          "slice": "F2",
+          "dual_joint": 0.0,
+          "ecf": 14.078125,
+          "abs_dself": 13.5625
+        },
+        {
+          "seed": 2,
+          "family": "S-F3-direction-C",
+          "slice": "F3",
+          "dual_joint": 0.0,
+          "ecf": 3.875,
+          "abs_dself": 1.78125
+        },
+        {
+          "seed": 2,
+          "family": "S-F4-distractor-C",
+          "slice": "F4",
+          "dual_joint": 0.0,
+          "ecf": 14.34375,
+          "abs_dself": 15.5
+        },
+        {
+          "seed": 2,
+          "family": "S-F5-paraphrase-C",
+          "slice": "F5",
+          "dual_joint": 1.0,
+          "ecf": 0.0,
+          "abs_dself": 0.0
+        },
+        {
+          "seed": 2,
+          "family": "S-F6-position-C",
+          "slice": "F6",
+          "dual_joint": 0.0,
+          "ecf": 18.5625,
+          "abs_dself": 15.03125
+        },
+        {
+          "seed": 2,
+          "family": "S-F1-city-C",
+          "slice": "F1",
+          "dual_joint": 0.0,
+          "ecf": 18.0859375,
+          "abs_dself": 14.96875
+        },
+        {
+          "seed": 2,
+          "family": "S-F3-negation-C",
+          "slice": "F3",
+          "dual_joint": 0.0,
+          "ecf": 7.734375,
+          "abs_dself": 5.375
+        },
+        {
+          "seed": 2,
+          "family": "S-F1-person-C",
+          "slice": "F1",
+          "dual_joint": 1.0,
+          "ecf": 8.046875,
+          "abs_dself": 15.0
+        },
+        {
+          "seed": 2,
+          "family": "S-F2-alias-C",
+          "slice": "F2",
+          "dual_joint": 0.0,
+          "ecf": 4.96875,
+          "abs_dself": 5.65625
+        },
+        {
+          "seed": 2,
+          "family": "S-F3-direction-C",
+          "slice": "F3",
+          "dual_joint": 0.0,
+          "ecf": 1.296875,
+          "abs_dself": 2.5
+        },
+        {
+          "seed": 2,
+          "family": "S-F4-distractor-C",
+          "slice": "F4",
+          "dual_joint": 1.0,
+          "ecf": 8.71875,
+          "abs_dself": 14.03125
+        },
+        {
+          "seed": 2,
+          "family": "S-F5-paraphrase-C",
+          "slice": "F5",
+          "dual_joint": 1.0,
+          "ecf": 0.0,
+          "abs_dself": 0.0
+        },
+        {
+          "seed": 2,
+          "family": "S-F6-position-C",
+          "slice": "F6",
+          "dual_joint": 1.0,
+          "ecf": 2.875,
+          "abs_dself": 10.71875
+        },
+        {
+          "seed": 2,
+          "family": "S-F1-city-C",
+          "slice": "F1",
+          "dual_joint": 1.0,
+          "ecf": 12.640625,
+          "abs_dself": 14.25
+        },
+        {
+          "seed": 2,
+          "family": "S-F3-negation-C",
+          "slice": "F3",
+          "dual_joint": 0.0,
+          "ecf": 5.78125,
+          "abs_dself": 4.59375
+        },
+        {
+          "seed": 2,
+          "family": "S-F1-person-C",
+          "slice": "F1",
+          "dual_joint": 0.0,
+          "ecf": 7.015625,
+          "abs_dself": 13.65625
+        },
+        {
+          "seed": 2,
+          "family": "S-F2-alias-C",
+          "slice": "F2",
+          "dual_joint": 1.0,
+          "ecf": 3.625,
+          "abs_dself": 7.84375
+        },
+        {
+          "seed": 2,
+          "family": "S-F3-direction-C",
+          "slice": "F3",
+          "dual_joint": 0.0,
+          "ecf": 5.6875,
+          "abs_dself": 0.9375
+        },
+        {
+          "seed": 2,
+          "family": "S-F4-distractor-C",
+          "slice": "F4",
+          "dual_joint": 0.0,
+          "ecf": 12.53125,
+          "abs_dself": 14.359375
+        },
+        {
+          "seed": 2,
+          "family": "S-F5-paraphrase-C",
+          "slice": "F5",
+          "dual_joint": 1.0,
+          "ecf": 0.0,
+          "abs_dself": 0.0
+        },
+        {
+          "seed": 2,
+          "family": "S-F6-position-C",
+          "slice": "F6",
+          "dual_joint": 1.0,
+          "ecf": 10.75,
+          "abs_dself": 13.8125
+        },
+        {
+          "seed": 2,
+          "family": "S-F1-city-C",
+          "slice": "F1",
+          "dual_joint": 0.0,
+          "ecf": 27.546875,
+          "abs_dself": 18.25
+        },
+        {
+          "seed": 2,
+          "family": "S-F3-negation-C",
+          "slice": "F3",
+          "dual_joint": 0.0,
+          "ecf": 2.625,
+          "abs_dself": 3.6875
+        },
+        {
+          "seed": 2,
+          "family": "S-F1-person-C",
+          "slice": "F1",
+          "dual_joint": 0.0,
+          "ecf": 16.0625,
+          "abs_dself": 19.96875
+        },
+        {
+          "seed": 2,
+          "family": "S-F2-alias-C",
+          "slice": "F2",
+          "dual_joint": 0.0,
+          "ecf": 7.65625,
+          "abs_dself": 10.0
+        },
+        {
+          "seed": 2,
+          "family": "S-F3-direction-C",
+          "slice": "F3",
+          "dual_joint": 0.0,
+          "ecf": 1.0937499999999996,
+          "abs_dself": 1.6874999999999996
+        },
+        {
+          "seed": 2,
+          "family": "S-F4-distractor-C",
+          "slice": "F4",
+          "dual_joint": 0.0,
+          "ecf": 15.75,
+          "abs_dself": 15.40625
+        },
+        {
+          "seed": 2,
+          "family": "S-F5-paraphrase-C",
+          "slice": "F5",
+          "dual_joint": 1.0,
+          "ecf": 0.0,
+          "abs_dself": 0.0
+        },
+        {
+          "seed": 2,
+          "family": "S-F6-position-C",
+          "slice": "F6",
+          "dual_joint": 0.0,
+          "ecf": 8.59375,
+          "abs_dself": 12.59375
+        },
+        {
+          "seed": 2,
+          "family": "S-F1-city-C",
+          "slice": "F1",
+          "dual_joint": 1.0,
+          "ecf": 10.625,
+          "abs_dself": 12.3125
+        },
+        {
+          "seed": 2,
+          "family": "S-F3-negation-C",
+          "slice": "F3",
+          "dual_joint": 0.0,
+          "ecf": 4.3125,
+          "abs_dself": 4.59375
+        },
+        {
+          "seed": 2,
+          "family": "S-F1-person-C",
+          "slice": "F1",
+          "dual_joint": 0.0,
+          "ecf": 12.046875,
+          "abs_dself": 11.4375
+        },
+        {
+          "seed": 2,
+          "family": "S-F2-alias-C",
+          "slice": "F2",
+          "dual_joint": 1.0,
+          "ecf": 11.796875,
+          "abs_dself": 13.84375
+        },
+        {
+          "seed": 2,
+          "family": "S-F3-direction-C",
+          "slice": "F3",
+          "dual_joint": 0.0,
+          "ecf": 2.5625,
+          "abs_dself": 4.46875
+        },
+        {
+          "seed": 2,
+          "family": "S-F4-distractor-C",
+          "slice": "F4",
+          "dual_joint": 0.0,
+          "ecf": 16.140625,
+          "abs_dself": 17.765625
+        },
+        {
+          "seed": 2,
+          "family": "S-F5-paraphrase-C",
+          "slice": "F5",
+          "dual_joint": 1.0,
+          "ecf": 0.0,
+          "abs_dself": 0.0
+        },
+        {
+          "seed": 2,
+          "family": "S-F6-position-C",
+          "slice": "F6",
+          "dual_joint": 0.0,
+          "ecf": 13.109375,
+          "abs_dself": 13.84375
+        },
+        {
+          "seed": 2,
+          "family": "S-F1-city-C",
+          "slice": "F1",
+          "dual_joint": 1.0,
+          "ecf": 11.0625,
+          "abs_dself": 14.96875
+        },
+        {
+          "seed": 2,
+          "family": "S-F3-negation-C",
+          "slice": "F3",
+          "dual_joint": 0.0,
+          "ecf": 2.703125,
+          "abs_dself": 3.6875
+        },
+        {
+          "seed": 2,
+          "family": "S-F1-person-C",
+          "slice": "F1",
+          "dual_joint": 0.0,
+          "ecf": 21.46875,
+          "abs_dself": 17.828125
+        },
+        {
+          "seed": 2,
+          "family": "S-F2-alias-C",
+          "slice": "F2",
+          "dual_joint": 1.0,
+          "ecf": 6.9375,
+          "abs_dself": 11.46875
+        },
+        {
+          "seed": 2,
+          "family": "S-F3-direction-C",
+          "slice": "F3",
+          "dual_joint": 0.0,
+          "ecf": 2.734375,
+          "abs_dself": 2.875
+        },
+        {
+          "seed": 2,
+          "family": "S-F4-distractor-C",
+          "slice": "F4",
+          "dual_joint": 0.0,
+          "ecf": 12.09375,
+          "abs_dself": 15.046875
+        },
+        {
+          "seed": 2,
+          "family": "S-F5-paraphrase-C",
+          "slice": "F5",
+          "dual_joint": 1.0,
+          "ecf": 0.0,
+          "abs_dself": 0.0
+        },
+        {
+          "seed": 2,
+          "family": "S-F6-position-C",
+          "slice": "F6",
+          "dual_joint": 1.0,
+          "ecf": 11.546875,
+          "abs_dself": 14.859375
+        },
+        {
+          "seed": 2,
+          "family": "S-F1-city-C",
+          "slice": "F1",
+          "dual_joint": 1.0,
+          "ecf": 14.46875,
+          "abs_dself": 17.765625
+        },
+        {
+          "seed": 2,
+          "family": "S-F3-negation-C",
+          "slice": "F3",
+          "dual_joint": 0.0,
+          "ecf": 9.5625,
+          "abs_dself": 3.8125
+        },
+        {
+          "seed": 2,
+          "family": "S-F1-person-C",
+          "slice": "F1",
+          "dual_joint": 0.0,
+          "ecf": 12.0,
+          "abs_dself": 12.65625
+        },
+        {
+          "seed": 2,
+          "family": "S-F2-alias-C",
+          "slice": "F2",
+          "dual_joint": 1.0,
+          "ecf": 7.8125,
+          "abs_dself": 14.9375
+        },
+        {
+          "seed": 2,
+          "family": "S-F3-direction-C",
+          "slice": "F3",
+          "dual_joint": 0.0,
+          "ecf": 8.375,
+          "abs_dself": 9.15625
+        },
+        {
+          "seed": 2,
+          "family": "S-F4-distractor-C",
+          "slice": "F4",
+          "dual_joint": 0.0,
+          "ecf": 9.3046875,
+          "abs_dself": 13.8125
+        }
+      ],
+      "kd": [
+        {
+          "seed": 0,
+          "family": "S-F1-person-C",
+          "slice": "F1",
+          "dual_joint": 1.0,
+          "ecf": 10.125,
+          "abs_dself": 14.59375
+        },
+        {
+          "seed": 0,
+          "family": "S-F2-alias-C",
+          "slice": "F2",
+          "dual_joint": 1.0,
+          "ecf": 8.171875,
+          "abs_dself": 10.4375
+        },
+        {
+          "seed": 0,
+          "family": "S-F3-direction-C",
+          "slice": "F3",
+          "dual_joint": 0.0,
+          "ecf": 2.078125,
+          "abs_dself": 2.1875
+        },
+        {
+          "seed": 0,
+          "family": "S-F4-distractor-C",
+          "slice": "F4",
+          "dual_joint": 1.0,
+          "ecf": 12.328125,
+          "abs_dself": 15.25
+        },
+        {
+          "seed": 0,
+          "family": "S-F5-paraphrase-C",
+          "slice": "F5",
+          "dual_joint": 1.0,
+          "ecf": 0.0,
+          "abs_dself": 0.0
+        },
+        {
+          "seed": 0,
+          "family": "S-F6-position-C",
+          "slice": "F6",
+          "dual_joint": 1.0,
+          "ecf": 8.734375,
+          "abs_dself": 12.6875
+        },
+        {
+          "seed": 0,
+          "family": "S-F1-city-C",
+          "slice": "F1",
+          "dual_joint": 1.0,
+          "ecf": 5.734375,
+          "abs_dself": 11.25
+        },
+        {
+          "seed": 0,
+          "family": "S-F3-negation-C",
+          "slice": "F3",
+          "dual_joint": 0.0,
+          "ecf": 4.671875,
+          "abs_dself": 4.75
+        },
+        {
+          "seed": 0,
+          "family": "S-F1-person-C",
+          "slice": "F1",
+          "dual_joint": 1.0,
+          "ecf": 8.921875,
+          "abs_dself": 13.46875
+        },
+        {
+          "seed": 0,
+          "family": "S-F2-alias-C",
+          "slice": "F2",
+          "dual_joint": 1.0,
+          "ecf": 6.328125,
+          "abs_dself": 8.71875
+        },
+        {
+          "seed": 0,
+          "family": "S-F3-direction-C",
+          "slice": "F3",
+          "dual_joint": 0.0,
+          "ecf": 0.921875,
+          "abs_dself": 0.1875
+        },
+        {
+          "seed": 0,
+          "family": "S-F4-distractor-C",
+          "slice": "F4",
+          "dual_joint": 1.0,
+          "ecf": 8.625,
+          "abs_dself": 12.328125
+        },
+        {
+          "seed": 0,
+          "family": "S-F5-paraphrase-C",
+          "slice": "F5",
+          "dual_joint": 1.0,
+          "ecf": 0.0,
+          "abs_dself": 0.0
+        },
+        {
+          "seed": 0,
+          "family": "S-F6-position-C",
+          "slice": "F6",
+          "dual_joint": 1.0,
+          "ecf": 8.296875,
+          "abs_dself": 12.5625
+        },
+        {
+          "seed": 0,
+          "family": "S-F1-city-C",
+          "slice": "F1",
+          "dual_joint": 1.0,
+          "ecf": 6.734375,
+          "abs_dself": 11.09375
+        },
+        {
+          "seed": 0,
+          "family": "S-F3-negation-C",
+          "slice": "F3",
+          "dual_joint": 0.0,
+          "ecf": 3.4765625,
+          "abs_dself": 3.6875
+        },
+        {
+          "seed": 0,
+          "family": "S-F1-person-C",
+          "slice": "F1",
+          "dual_joint": 1.0,
+          "ecf": 8.546875,
+          "abs_dself": 12.3125
+        },
+        {
+          "seed": 0,
+          "family": "S-F2-alias-C",
+          "slice": "F2",
+          "dual_joint": 1.0,
+          "ecf": 6.2734375,
+          "abs_dself": 9.78125
+        },
+        {
+          "seed": 0,
+          "family": "S-F3-direction-C",
+          "slice": "F3",
+          "dual_joint": 0.0,
+          "ecf": 0.578125,
+          "abs_dself": 0.3125
+        },
+        {
+          "seed": 0,
+          "family": "S-F4-distractor-C",
+          "slice": "F4",
+          "dual_joint": 0.0,
+          "ecf": 8.796875,
+          "abs_dself": 11.53125
+        },
+        {
+          "seed": 0,
+          "family": "S-F5-paraphrase-C",
+          "slice": "F5",
+          "dual_joint": 1.0,
+          "ecf": 0.0,
+          "abs_dself": 0.0
+        },
+        {
+          "seed": 0,
+          "family": "S-F6-position-C",
+          "slice": "F6",
+          "dual_joint": 1.0,
+          "ecf": 8.515625,
+          "abs_dself": 10.09375
+        },
+        {
+          "seed": 0,
+          "family": "S-F1-city-C",
+          "slice": "F1",
+          "dual_joint": 1.0,
+          "ecf": 6.796875,
+          "abs_dself": 11.0625
+        },
+        {
+          "seed": 0,
+          "family": "S-F3-negation-C",
+          "slice": "F3",
+          "dual_joint": 0.0,
+          "ecf": 4.609375,
+          "abs_dself": 4.71875
+        },
+        {
+          "seed": 0,
+          "family": "S-F1-person-C",
+          "slice": "F1",
+          "dual_joint": 1.0,
+          "ecf": 9.90625,
+          "abs_dself": 15.5
+        },
+        {
+          "seed": 0,
+          "family": "S-F2-alias-C",
+          "slice": "F2",
+          "dual_joint": 1.0,
+          "ecf": 5.890625,
+          "abs_dself": 8.4375
+        },
+        {
+          "seed": 0,
+          "family": "S-F3-direction-C",
+          "slice": "F3",
+          "dual_joint": 0.0,
+          "ecf": 0.07812500000000006,
+          "abs_dself": 0.0625
+        },
+        {
+          "seed": 0,
+          "family": "S-F4-distractor-C",
+          "slice": "F4",
+          "dual_joint": 0.0,
+          "ecf": 10.71875,
+          "abs_dself": 12.40625
+        },
+        {
+          "seed": 0,
+          "family": "S-F5-paraphrase-C",
+          "slice": "F5",
+          "dual_joint": 1.0,
+          "ecf": 0.0,
+          "abs_dself": 0.0
+        },
+        {
+          "seed": 0,
+          "family": "S-F6-position-C",
+          "slice": "F6",
+          "dual_joint": 1.0,
+          "ecf": 8.5625,
+          "abs_dself": 14.4375
+        },
+        {
+          "seed": 0,
+          "family": "S-F1-city-C",
+          "slice": "F1",
+          "dual_joint": 1.0,
+          "ecf": 7.78125,
+          "abs_dself": 11.75
+        },
+        {
+          "seed": 0,
+          "family": "S-F3-negation-C",
+          "slice": "F3",
+          "dual_joint": 0.0,
+          "ecf": 4.6171875,
+          "abs_dself": 4.65625
+        },
+        {
+          "seed": 0,
+          "family": "S-F1-person-C",
+          "slice": "F1",
+          "dual_joint": 1.0,
+          "ecf": 9.34375,
+          "abs_dself": 13.03125
+        },
+        {
+          "seed": 0,
+          "family": "S-F2-alias-C",
+          "slice": "F2",
+          "dual_joint": 1.0,
+          "ecf": 8.265625,
+          "abs_dself": 11.03125
+        },
+        {
+          "seed": 0,
+          "family": "S-F3-direction-C",
+          "slice": "F3",
+          "dual_joint": 0.0,
+          "ecf": 3.421875,
+          "abs_dself": 3.03125
+        },
+        {
+          "seed": 0,
+          "family": "S-F4-distractor-C",
+          "slice": "F4",
+          "dual_joint": 1.0,
+          "ecf": 11.8125,
+          "abs_dself": 14.109375
+        },
+        {
+          "seed": 0,
+          "family": "S-F5-paraphrase-C",
+          "slice": "F5",
+          "dual_joint": 1.0,
+          "ecf": 0.0,
+          "abs_dself": 0.0
+        },
+        {
+          "seed": 0,
+          "family": "S-F6-position-C",
+          "slice": "F6",
+          "dual_joint": 1.0,
+          "ecf": 12.3125,
+          "abs_dself": 14.53125
+        },
+        {
+          "seed": 0,
+          "family": "S-F1-city-C",
+          "slice": "F1",
+          "dual_joint": 1.0,
+          "ecf": 7.1875,
+          "abs_dself": 13.5
+        },
+        {
+          "seed": 0,
+          "family": "S-F3-negation-C",
+          "slice": "F3",
+          "dual_joint": 0.0,
+          "ecf": 3.953125,
+          "abs_dself": 4.0625
+        },
+        {
+          "seed": 0,
+          "family": "S-F1-person-C",
+          "slice": "F1",
+          "dual_joint": 1.0,
+          "ecf": 10.40625,
+          "abs_dself": 15.5
+        },
+        {
+          "seed": 0,
+          "family": "S-F2-alias-C",
+          "slice": "F2",
+          "dual_joint": 1.0,
+          "ecf": 3.453125,
+          "abs_dself": 5.75
+        },
+        {
+          "seed": 0,
+          "family": "S-F3-direction-C",
+          "slice": "F3",
+          "dual_joint": 0.0,
+          "ecf": 1.109375,
+          "abs_dself": 0.671875
+        },
+        {
+          "seed": 0,
+          "family": "S-F4-distractor-C",
+          "slice": "F4",
+          "dual_joint": 1.0,
+          "ecf": 7.0,
+          "abs_dself": 10.0625
+        },
+        {
+          "seed": 0,
+          "family": "S-F5-paraphrase-C",
+          "slice": "F5",
+          "dual_joint": 1.0,
+          "ecf": 0.0,
+          "abs_dself": 0.0
+        },
+        {
+          "seed": 0,
+          "family": "S-F6-position-C",
+          "slice": "F6",
+          "dual_joint": 1.0,
+          "ecf": 10.75,
+          "abs_dself": 15.3125
+        },
+        {
+          "seed": 0,
+          "family": "S-F1-city-C",
+          "slice": "F1",
+          "dual_joint": 1.0,
+          "ecf": 15.796875,
+          "abs_dself": 19.53125
+        },
+        {
+          "seed": 0,
+          "family": "S-F3-negation-C",
+          "slice": "F3",
+          "dual_joint": 0.0,
+          "ecf": 4.234375,
+          "abs_dself": 4.375
+        },
+        {
+          "seed": 0,
+          "family": "S-F1-person-C",
+          "slice": "F1",
+          "dual_joint": 1.0,
+          "ecf": 13.171875,
+          "abs_dself": 16.171875
+        },
+        {
+          "seed": 0,
+          "family": "S-F2-alias-C",
+          "slice": "F2",
+          "dual_joint": 1.0,
+          "ecf": 8.796875,
+          "abs_dself": 10.59375
+        },
+        {
+          "seed": 0,
+          "family": "S-F3-direction-C",
+          "slice": "F3",
+          "dual_joint": 0.0,
+          "ecf": 1.4375,
+          "abs_dself": 1.53125
+        },
+        {
+          "seed": 0,
+          "family": "S-F4-distractor-C",
+          "slice": "F4",
+          "dual_joint": 1.0,
+          "ecf": 9.25,
+          "abs_dself": 12.40625
+        },
+        {
+          "seed": 0,
+          "family": "S-F5-paraphrase-C",
+          "slice": "F5",
+          "dual_joint": 1.0,
+          "ecf": 0.0,
+          "abs_dself": 0.0
+        },
+        {
+          "seed": 0,
+          "family": "S-F6-position-C",
+          "slice": "F6",
+          "dual_joint": 1.0,
+          "ecf": 11.96875,
+          "abs_dself": 16.078125
+        },
+        {
+          "seed": 0,
+          "family": "S-F1-city-C",
+          "slice": "F1",
+          "dual_joint": 1.0,
+          "ecf": 12.046875,
+          "abs_dself": 17.0
+        },
+        {
+          "seed": 0,
+          "family": "S-F3-negation-C",
+          "slice": "F3",
+          "dual_joint": 0.0,
+          "ecf": 3.5546875,
+          "abs_dself": 3.6875
+        },
+        {
+          "seed": 0,
+          "family": "S-F1-person-C",
+          "slice": "F1",
+          "dual_joint": 1.0,
+          "ecf": 9.5,
+          "abs_dself": 11.15625
+        },
+        {
+          "seed": 0,
+          "family": "S-F2-alias-C",
+          "slice": "F2",
+          "dual_joint": 1.0,
+          "ecf": 5.625,
+          "abs_dself": 10.0
+        },
+        {
+          "seed": 0,
+          "family": "S-F3-direction-C",
+          "slice": "F3",
+          "dual_joint": 0.0,
+          "ecf": 1.421875,
+          "abs_dself": 1.8125
+        },
+        {
+          "seed": 0,
+          "family": "S-F4-distractor-C",
+          "slice": "F4",
+          "dual_joint": 0.0,
+          "ecf": 10.640625,
+          "abs_dself": 12.21875
+        },
+        {
+          "seed": 1,
+          "family": "S-F1-person-C",
+          "slice": "F1",
+          "dual_joint": 1.0,
+          "ecf": 10.625,
+          "abs_dself": 15.21875
+        },
+        {
+          "seed": 1,
+          "family": "S-F2-alias-C",
+          "slice": "F2",
+          "dual_joint": 1.0,
+          "ecf": 6.578125,
+          "abs_dself": 8.5625
+        },
+        {
+          "seed": 1,
+          "family": "S-F3-direction-C",
+          "slice": "F3",
+          "dual_joint": 0.0,
+          "ecf": 3.09375,
+          "abs_dself": 2.8125
+        },
+        {
+          "seed": 1,
+          "family": "S-F4-distractor-C",
+          "slice": "F4",
+          "dual_joint": 1.0,
+          "ecf": 10.1796875,
+          "abs_dself": 14.203125
+        },
+        {
+          "seed": 1,
+          "family": "S-F5-paraphrase-C",
+          "slice": "F5",
+          "dual_joint": 1.0,
+          "ecf": 0.0,
+          "abs_dself": 0.0
+        },
+        {
+          "seed": 1,
+          "family": "S-F6-position-C",
+          "slice": "F6",
+          "dual_joint": 1.0,
+          "ecf": 10.515625,
+          "abs_dself": 13.46875
+        },
+        {
+          "seed": 1,
+          "family": "S-F1-city-C",
+          "slice": "F1",
+          "dual_joint": 1.0,
+          "ecf": 10.4375,
+          "abs_dself": 13.5625
+        },
+        {
+          "seed": 1,
+          "family": "S-F3-negation-C",
+          "slice": "F3",
+          "dual_joint": 0.0,
+          "ecf": 2.4296875,
+          "abs_dself": 2.5625
+        },
+        {
+          "seed": 1,
+          "family": "S-F1-person-C",
+          "slice": "F1",
+          "dual_joint": 1.0,
+          "ecf": 8.609375,
+          "abs_dself": 11.5625
+        },
+        {
+          "seed": 1,
+          "family": "S-F2-alias-C",
+          "slice": "F2",
+          "dual_joint": 1.0,
+          "ecf": 10.6875,
+          "abs_dself": 12.5
+        },
+        {
+          "seed": 1,
+          "family": "S-F3-direction-C",
+          "slice": "F3",
+          "dual_joint": 0.0,
+          "ecf": 1.34375,
+          "abs_dself": 0.9375
+        },
+        {
+          "seed": 1,
+          "family": "S-F4-distractor-C",
+          "slice": "F4",
+          "dual_joint": 1.0,
+          "ecf": 13.78125,
+          "abs_dself": 17.53125
+        },
+        {
+          "seed": 1,
+          "family": "S-F5-paraphrase-C",
+          "slice": "F5",
+          "dual_joint": 1.0,
+          "ecf": 0.0,
+          "abs_dself": 0.0
+        },
+        {
+          "seed": 1,
+          "family": "S-F6-position-C",
+          "slice": "F6",
+          "dual_joint": 1.0,
+          "ecf": 7.921875,
+          "abs_dself": 14.125
+        },
+        {
+          "seed": 1,
+          "family": "S-F1-city-C",
+          "slice": "F1",
+          "dual_joint": 1.0,
+          "ecf": 8.703125,
+          "abs_dself": 11.609375
+        },
+        {
+          "seed": 1,
+          "family": "S-F3-negation-C",
+          "slice": "F3",
+          "dual_joint": 0.0,
+          "ecf": 2.4296875,
+          "abs_dself": 2.53125
+        },
+        {
+          "seed": 1,
+          "family": "S-F1-person-C",
+          "slice": "F1",
+          "dual_joint": 1.0,
+          "ecf": 13.765625,
+          "abs_dself": 16.375
+        },
+        {
+          "seed": 1,
+          "family": "S-F2-alias-C",
+          "slice": "F2",
+          "dual_joint": 1.0,
+          "ecf": 4.96875,
+          "abs_dself": 8.6875
+        },
+        {
+          "seed": 1,
+          "family": "S-F3-direction-C",
+          "slice": "F3",
+          "dual_joint": 0.0,
+          "ecf": 0.390625,
+          "abs_dself": 0.53125
+        },
+        {
+          "seed": 1,
+          "family": "S-F4-distractor-C",
+          "slice": "F4",
+          "dual_joint": 1.0,
+          "ecf": 10.3828125,
+          "abs_dself": 16.609375
+        },
+        {
+          "seed": 1,
+          "family": "S-F5-paraphrase-C",
+          "slice": "F5",
+          "dual_joint": 1.0,
+          "ecf": 0.0,
+          "abs_dself": 0.0
+        },
+        {
+          "seed": 1,
+          "family": "S-F6-position-C",
+          "slice": "F6",
+          "dual_joint": 1.0,
+          "ecf": 6.7734375,
+          "abs_dself": 12.71875
+        },
+        {
+          "seed": 1,
+          "family": "S-F1-city-C",
+          "slice": "F1",
+          "dual_joint": 1.0,
+          "ecf": 6.109375,
+          "abs_dself": 10.3125
+        },
+        {
+          "seed": 1,
+          "family": "S-F3-negation-C",
+          "slice": "F3",
+          "dual_joint": 0.0,
+          "ecf": 5.13671875,
+          "abs_dself": 5.28125
+        },
+        {
+          "seed": 1,
+          "family": "S-F1-person-C",
+          "slice": "F1",
+          "dual_joint": 1.0,
+          "ecf": 10.25,
+          "abs_dself": 15.375
+        },
+        {
+          "seed": 1,
+          "family": "S-F2-alias-C",
+          "slice": "F2",
+          "dual_joint": 1.0,
+          "ecf": 6.6875,
+          "abs_dself": 10.3125
+        },
+        {
+          "seed": 1,
+          "family": "S-F3-direction-C",
+          "slice": "F3",
+          "dual_joint": 0.0,
+          "ecf": 3.375,
+          "abs_dself": 3.375
+        },
+        {
+          "seed": 1,
+          "family": "S-F4-distractor-C",
+          "slice": "F4",
+          "dual_joint": 1.0,
+          "ecf": 7.0,
+          "abs_dself": 10.125
+        },
+        {
+          "seed": 1,
+          "family": "S-F5-paraphrase-C",
+          "slice": "F5",
+          "dual_joint": 1.0,
+          "ecf": 0.0,
+          "abs_dself": 0.0
+        },
+        {
+          "seed": 1,
+          "family": "S-F6-position-C",
+          "slice": "F6",
+          "dual_joint": 1.0,
+          "ecf": 10.328125,
+          "abs_dself": 15.640625
+        },
+        {
+          "seed": 1,
+          "family": "S-F1-city-C",
+          "slice": "F1",
+          "dual_joint": 1.0,
+          "ecf": 10.40625,
+          "abs_dself": 16.21875
+        },
+        {
+          "seed": 1,
+          "family": "S-F3-negation-C",
+          "slice": "F3",
+          "dual_joint": 0.0,
+          "ecf": 5.98828125,
+          "abs_dself": 6.28125
+        },
+        {
+          "seed": 1,
+          "family": "S-F1-person-C",
+          "slice": "F1",
+          "dual_joint": 1.0,
+          "ecf": 12.0,
+          "abs_dself": 16.46875
+        },
+        {
+          "seed": 1,
+          "family": "S-F2-alias-C",
+          "slice": "F2",
+          "dual_joint": 1.0,
+          "ecf": 6.625,
+          "abs_dself": 11.0
+        },
+        {
+          "seed": 1,
+          "family": "S-F3-direction-C",
+          "slice": "F3",
+          "dual_joint": 0.0,
+          "ecf": 0.640625,
+          "abs_dself": 0.71875
+        },
+        {
+          "seed": 1,
+          "family": "S-F4-distractor-C",
+          "slice": "F4",
+          "dual_joint": 1.0,
+          "ecf": 12.34375,
+          "abs_dself": 16.015625
+        },
+        {
+          "seed": 1,
+          "family": "S-F5-paraphrase-C",
+          "slice": "F5",
+          "dual_joint": 1.0,
+          "ecf": 0.0,
+          "abs_dself": 0.0
+        },
+        {
+          "seed": 1,
+          "family": "S-F6-position-C",
+          "slice": "F6",
+          "dual_joint": 1.0,
+          "ecf": 9.1171875,
+          "abs_dself": 14.15625
+        },
+        {
+          "seed": 1,
+          "family": "S-F1-city-C",
+          "slice": "F1",
+          "dual_joint": 1.0,
+          "ecf": 8.34375,
+          "abs_dself": 13.03125
+        },
+        {
+          "seed": 1,
+          "family": "S-F3-negation-C",
+          "slice": "F3",
+          "dual_joint": 0.0,
+          "ecf": 4.5859375,
+          "abs_dself": 4.75
+        },
+        {
+          "seed": 1,
+          "family": "S-F1-person-C",
+          "slice": "F1",
+          "dual_joint": 1.0,
+          "ecf": 4.53125,
+          "abs_dself": 8.375
+        },
+        {
+          "seed": 1,
+          "family": "S-F2-alias-C",
+          "slice": "F2",
+          "dual_joint": 1.0,
+          "ecf": 7.984375,
+          "abs_dself": 11.859375
+        },
+        {
+          "seed": 1,
+          "family": "S-F3-direction-C",
+          "slice": "F3",
+          "dual_joint": 0.0,
+          "ecf": 3.75,
+          "abs_dself": 3.84375
+        },
+        {
+          "seed": 1,
+          "family": "S-F4-distractor-C",
+          "slice": "F4",
+          "dual_joint": 1.0,
+          "ecf": 9.71875,
+          "abs_dself": 15.515625
+        },
+        {
+          "seed": 1,
+          "family": "S-F5-paraphrase-C",
+          "slice": "F5",
+          "dual_joint": 1.0,
+          "ecf": 0.0,
+          "abs_dself": 0.0
+        },
+        {
+          "seed": 1,
+          "family": "S-F6-position-C",
+          "slice": "F6",
+          "dual_joint": 1.0,
+          "ecf": 5.796875,
+          "abs_dself": 10.46875
+        },
+        {
+          "seed": 1,
+          "family": "S-F1-city-C",
+          "slice": "F1",
+          "dual_joint": 1.0,
+          "ecf": 12.515625,
+          "abs_dself": 16.3125
+        },
+        {
+          "seed": 1,
+          "family": "S-F3-negation-C",
+          "slice": "F3",
+          "dual_joint": 0.0,
+          "ecf": 5.1015625,
+          "abs_dself": 5.25
+        },
+        {
+          "seed": 1,
+          "family": "S-F1-person-C",
+          "slice": "F1",
+          "dual_joint": 1.0,
+          "ecf": 7.265625,
+          "abs_dself": 12.5
+        },
+        {
+          "seed": 1,
+          "family": "S-F2-alias-C",
+          "slice": "F2",
+          "dual_joint": 1.0,
+          "ecf": 6.4375,
+          "abs_dself": 10.5
+        },
+        {
+          "seed": 1,
+          "family": "S-F3-direction-C",
+          "slice": "F3",
+          "dual_joint": 0.0,
+          "ecf": 2.125,
+          "abs_dself": 2.03125
+        },
+        {
+          "seed": 1,
+          "family": "S-F4-distractor-C",
+          "slice": "F4",
+          "dual_joint": 1.0,
+          "ecf": 7.953125,
+          "abs_dself": 13.59375
+        },
+        {
+          "seed": 1,
+          "family": "S-F5-paraphrase-C",
+          "slice": "F5",
+          "dual_joint": 1.0,
+          "ecf": 0.0,
+          "abs_dself": 0.0
+        },
+        {
+          "seed": 1,
+          "family": "S-F6-position-C",
+          "slice": "F6",
+          "dual_joint": 1.0,
+          "ecf": 6.140625,
+          "abs_dself": 11.03125
+        },
+        {
+          "seed": 1,
+          "family": "S-F1-city-C",
+          "slice": "F1",
+          "dual_joint": 1.0,
+          "ecf": 5.90625,
+          "abs_dself": 10.21875
+        },
+        {
+          "seed": 1,
+          "family": "S-F3-negation-C",
+          "slice": "F3",
+          "dual_joint": 0.0,
+          "ecf": 4.296875,
+          "abs_dself": 4.65625
+        },
+        {
+          "seed": 1,
+          "family": "S-F1-person-C",
+          "slice": "F1",
+          "dual_joint": 1.0,
+          "ecf": 15.375,
+          "abs_dself": 17.984375
+        },
+        {
+          "seed": 1,
+          "family": "S-F2-alias-C",
+          "slice": "F2",
+          "dual_joint": 1.0,
+          "ecf": 11.65625,
+          "abs_dself": 13.421875
+        },
+        {
+          "seed": 1,
+          "family": "S-F3-direction-C",
+          "slice": "F3",
+          "dual_joint": 0.0,
+          "ecf": 2.171875,
+          "abs_dself": 2.03125
+        },
+        {
+          "seed": 1,
+          "family": "S-F4-distractor-C",
+          "slice": "F4",
+          "dual_joint": 0.0,
+          "ecf": 7.453125,
+          "abs_dself": 9.9375
+        },
+        {
+          "seed": 2,
+          "family": "S-F1-person-C",
+          "slice": "F1",
+          "dual_joint": 1.0,
+          "ecf": 6.5625,
+          "abs_dself": 11.03125
+        },
+        {
+          "seed": 2,
+          "family": "S-F2-alias-C",
+          "slice": "F2",
+          "dual_joint": 1.0,
+          "ecf": 6.0234375,
+          "abs_dself": 10.28125
+        },
+        {
+          "seed": 2,
+          "family": "S-F3-direction-C",
+          "slice": "F3",
+          "dual_joint": 0.0,
+          "ecf": 4.5625,
+          "abs_dself": 4.421875
+        },
+        {
+          "seed": 2,
+          "family": "S-F4-distractor-C",
+          "slice": "F4",
+          "dual_joint": 1.0,
+          "ecf": 8.078125,
+          "abs_dself": 10.3125
+        },
+        {
+          "seed": 2,
+          "family": "S-F5-paraphrase-C",
+          "slice": "F5",
+          "dual_joint": 1.0,
+          "ecf": 0.0,
+          "abs_dself": 0.0
+        },
+        {
+          "seed": 2,
+          "family": "S-F6-position-C",
+          "slice": "F6",
+          "dual_joint": 1.0,
+          "ecf": 13.3125,
+          "abs_dself": 15.28125
+        },
+        {
+          "seed": 2,
+          "family": "S-F1-city-C",
+          "slice": "F1",
+          "dual_joint": 1.0,
+          "ecf": 7.3125,
+          "abs_dself": 12.375
+        },
+        {
+          "seed": 2,
+          "family": "S-F3-negation-C",
+          "slice": "F3",
+          "dual_joint": 0.0,
+          "ecf": 3.2890625,
+          "abs_dself": 3.8125
+        },
+        {
+          "seed": 2,
+          "family": "S-F1-person-C",
+          "slice": "F1",
+          "dual_joint": 1.0,
+          "ecf": 15.9765625,
+          "abs_dself": 18.90625
+        },
+        {
+          "seed": 2,
+          "family": "S-F2-alias-C",
+          "slice": "F2",
+          "dual_joint": 1.0,
+          "ecf": 10.171875,
+          "abs_dself": 13.5625
+        },
+        {
+          "seed": 2,
+          "family": "S-F3-direction-C",
+          "slice": "F3",
+          "dual_joint": 0.0,
+          "ecf": 2.21875,
+          "abs_dself": 1.78125
+        },
+        {
+          "seed": 2,
+          "family": "S-F4-distractor-C",
+          "slice": "F4",
+          "dual_joint": 1.0,
+          "ecf": 12.671875,
+          "abs_dself": 15.5
+        },
+        {
+          "seed": 2,
+          "family": "S-F5-paraphrase-C",
+          "slice": "F5",
+          "dual_joint": 1.0,
+          "ecf": 0.0,
+          "abs_dself": 0.0
+        },
+        {
+          "seed": 2,
+          "family": "S-F6-position-C",
+          "slice": "F6",
+          "dual_joint": 1.0,
+          "ecf": 11.890625,
+          "abs_dself": 15.03125
+        },
+        {
+          "seed": 2,
+          "family": "S-F1-city-C",
+          "slice": "F1",
+          "dual_joint": 1.0,
+          "ecf": 9.375,
+          "abs_dself": 14.96875
+        },
+        {
+          "seed": 2,
+          "family": "S-F3-negation-C",
+          "slice": "F3",
+          "dual_joint": 0.0,
+          "ecf": 4.90625,
+          "abs_dself": 5.375
+        },
+        {
+          "seed": 2,
+          "family": "S-F1-person-C",
+          "slice": "F1",
+          "dual_joint": 1.0,
+          "ecf": 9.453125,
+          "abs_dself": 15.0
+        },
+        {
+          "seed": 2,
+          "family": "S-F2-alias-C",
+          "slice": "F2",
+          "dual_joint": 1.0,
+          "ecf": 3.78125,
+          "abs_dself": 5.65625
+        },
+        {
+          "seed": 2,
+          "family": "S-F3-direction-C",
+          "slice": "F3",
+          "dual_joint": 0.0,
+          "ecf": 1.90625,
+          "abs_dself": 2.5
+        },
+        {
+          "seed": 2,
+          "family": "S-F4-distractor-C",
+          "slice": "F4",
+          "dual_joint": 1.0,
+          "ecf": 9.125,
+          "abs_dself": 14.03125
+        },
+        {
+          "seed": 2,
+          "family": "S-F5-paraphrase-C",
+          "slice": "F5",
+          "dual_joint": 1.0,
+          "ecf": 0.0,
+          "abs_dself": 0.0
+        },
+        {
+          "seed": 2,
+          "family": "S-F6-position-C",
+          "slice": "F6",
+          "dual_joint": 1.0,
+          "ecf": 6.8125,
+          "abs_dself": 10.71875
+        },
+        {
+          "seed": 2,
+          "family": "S-F1-city-C",
+          "slice": "F1",
+          "dual_joint": 1.0,
+          "ecf": 11.390625,
+          "abs_dself": 14.25
+        },
+        {
+          "seed": 2,
+          "family": "S-F3-negation-C",
+          "slice": "F3",
+          "dual_joint": 1.0,
+          "ecf": 3.8828125,
+          "abs_dself": 4.59375
+        },
+        {
+          "seed": 2,
+          "family": "S-F1-person-C",
+          "slice": "F1",
+          "dual_joint": 1.0,
+          "ecf": 8.640625,
+          "abs_dself": 13.65625
+        },
+        {
+          "seed": 2,
+          "family": "S-F2-alias-C",
+          "slice": "F2",
+          "dual_joint": 1.0,
+          "ecf": 5.09375,
+          "abs_dself": 7.84375
+        },
+        {
+          "seed": 2,
+          "family": "S-F3-direction-C",
+          "slice": "F3",
+          "dual_joint": 0.0,
+          "ecf": 0.359375,
+          "abs_dself": 0.9375
+        },
+        {
+          "seed": 2,
+          "family": "S-F4-distractor-C",
+          "slice": "F4",
+          "dual_joint": 1.0,
+          "ecf": 10.2421875,
+          "abs_dself": 14.359375
+        },
+        {
+          "seed": 2,
+          "family": "S-F5-paraphrase-C",
+          "slice": "F5",
+          "dual_joint": 1.0,
+          "ecf": 0.0,
+          "abs_dself": 0.0
+        },
+        {
+          "seed": 2,
+          "family": "S-F6-position-C",
+          "slice": "F6",
+          "dual_joint": 1.0,
+          "ecf": 9.71875,
+          "abs_dself": 13.8125
+        },
+        {
+          "seed": 2,
+          "family": "S-F1-city-C",
+          "slice": "F1",
+          "dual_joint": 1.0,
+          "ecf": 13.296875,
+          "abs_dself": 18.25
+        },
+        {
+          "seed": 2,
+          "family": "S-F3-negation-C",
+          "slice": "F3",
+          "dual_joint": 0.0,
+          "ecf": 2.8828125,
+          "abs_dself": 3.6875
+        },
+        {
+          "seed": 2,
+          "family": "S-F1-person-C",
+          "slice": "F1",
+          "dual_joint": 1.0,
+          "ecf": 14.94140625,
+          "abs_dself": 19.96875
+        },
+        {
+          "seed": 2,
+          "family": "S-F2-alias-C",
+          "slice": "F2",
+          "dual_joint": 1.0,
+          "ecf": 5.703125,
+          "abs_dself": 10.0
+        },
+        {
+          "seed": 2,
+          "family": "S-F3-direction-C",
+          "slice": "F3",
+          "dual_joint": 0.0,
+          "ecf": 2.0937499999999996,
+          "abs_dself": 1.6874999999999996
+        },
+        {
+          "seed": 2,
+          "family": "S-F4-distractor-C",
+          "slice": "F4",
+          "dual_joint": 1.0,
+          "ecf": 11.796875,
+          "abs_dself": 15.40625
+        },
+        {
+          "seed": 2,
+          "family": "S-F5-paraphrase-C",
+          "slice": "F5",
+          "dual_joint": 1.0,
+          "ecf": 0.0,
+          "abs_dself": 0.0
+        },
+        {
+          "seed": 2,
+          "family": "S-F6-position-C",
+          "slice": "F6",
+          "dual_joint": 1.0,
+          "ecf": 8.6953125,
+          "abs_dself": 12.59375
+        },
+        {
+          "seed": 2,
+          "family": "S-F1-city-C",
+          "slice": "F1",
+          "dual_joint": 1.0,
+          "ecf": 9.5,
+          "abs_dself": 12.3125
+        },
+        {
+          "seed": 2,
+          "family": "S-F3-negation-C",
+          "slice": "F3",
+          "dual_joint": 0.0,
+          "ecf": 4.0546875,
+          "abs_dself": 4.59375
+        },
+        {
+          "seed": 2,
+          "family": "S-F1-person-C",
+          "slice": "F1",
+          "dual_joint": 1.0,
+          "ecf": 9.015625,
+          "abs_dself": 11.4375
+        },
+        {
+          "seed": 2,
+          "family": "S-F2-alias-C",
+          "slice": "F2",
+          "dual_joint": 1.0,
+          "ecf": 11.34375,
+          "abs_dself": 13.84375
+        },
+        {
+          "seed": 2,
+          "family": "S-F3-direction-C",
+          "slice": "F3",
+          "dual_joint": 0.0,
+          "ecf": 3.734375,
+          "abs_dself": 4.46875
+        },
+        {
+          "seed": 2,
+          "family": "S-F4-distractor-C",
+          "slice": "F4",
+          "dual_joint": 1.0,
+          "ecf": 14.90625,
+          "abs_dself": 17.765625
+        },
+        {
+          "seed": 2,
+          "family": "S-F5-paraphrase-C",
+          "slice": "F5",
+          "dual_joint": 1.0,
+          "ecf": 0.0,
+          "abs_dself": 0.0
+        },
+        {
+          "seed": 2,
+          "family": "S-F6-position-C",
+          "slice": "F6",
+          "dual_joint": 1.0,
+          "ecf": 9.9296875,
+          "abs_dself": 13.84375
+        },
+        {
+          "seed": 2,
+          "family": "S-F1-city-C",
+          "slice": "F1",
+          "dual_joint": 1.0,
+          "ecf": 8.734375,
+          "abs_dself": 14.96875
+        },
+        {
+          "seed": 2,
+          "family": "S-F3-negation-C",
+          "slice": "F3",
+          "dual_joint": 0.0,
+          "ecf": 2.875,
+          "abs_dself": 3.6875
+        },
+        {
+          "seed": 2,
+          "family": "S-F1-person-C",
+          "slice": "F1",
+          "dual_joint": 1.0,
+          "ecf": 14.4609375,
+          "abs_dself": 17.828125
+        },
+        {
+          "seed": 2,
+          "family": "S-F2-alias-C",
+          "slice": "F2",
+          "dual_joint": 1.0,
+          "ecf": 6.546875,
+          "abs_dself": 11.46875
+        },
+        {
+          "seed": 2,
+          "family": "S-F3-direction-C",
+          "slice": "F3",
+          "dual_joint": 0.0,
+          "ecf": 3.03125,
+          "abs_dself": 2.875
+        },
+        {
+          "seed": 2,
+          "family": "S-F4-distractor-C",
+          "slice": "F4",
+          "dual_joint": 1.0,
+          "ecf": 11.3828125,
+          "abs_dself": 15.046875
+        },
+        {
+          "seed": 2,
+          "family": "S-F5-paraphrase-C",
+          "slice": "F5",
+          "dual_joint": 1.0,
+          "ecf": 0.0,
+          "abs_dself": 0.0
+        },
+        {
+          "seed": 2,
+          "family": "S-F6-position-C",
+          "slice": "F6",
+          "dual_joint": 1.0,
+          "ecf": 11.34375,
+          "abs_dself": 14.859375
+        },
+        {
+          "seed": 2,
+          "family": "S-F1-city-C",
+          "slice": "F1",
+          "dual_joint": 1.0,
+          "ecf": 11.9453125,
+          "abs_dself": 17.765625
+        },
+        {
+          "seed": 2,
+          "family": "S-F3-negation-C",
+          "slice": "F3",
+          "dual_joint": 0.0,
+          "ecf": 3.359375,
+          "abs_dself": 3.8125
+        },
+        {
+          "seed": 2,
+          "family": "S-F1-person-C",
+          "slice": "F1",
+          "dual_joint": 1.0,
+          "ecf": 11.171875,
+          "abs_dself": 12.65625
+        },
+        {
+          "seed": 2,
+          "family": "S-F2-alias-C",
+          "slice": "F2",
+          "dual_joint": 1.0,
+          "ecf": 10.5,
+          "abs_dself": 14.9375
+        },
+        {
+          "seed": 2,
+          "family": "S-F3-direction-C",
+          "slice": "F3",
+          "dual_joint": 0.0,
+          "ecf": 9.078125,
+          "abs_dself": 9.15625
+        },
+        {
+          "seed": 2,
+          "family": "S-F4-distractor-C",
+          "slice": "F4",
+          "dual_joint": 1.0,
+          "ecf": 9.546875,
+          "abs_dself": 13.8125
+        }
+      ]
+    },
+    "rank_correlation": {
+      "affine": {
+        "spearman_rho": -0.4363,
+        "p": 9.216734499001006e-10,
+        "n": 180
+      },
+      "kd": {
+        "spearman_rho": 0.4349,
+        "p": 1.0529140385678681e-09,
+        "n": 180
+      }
+    },
+    "mapper_separation": {
+      "0": {
+        "affine_joint_ecf_cluster": [
+          6.8996,
+          3.5642,
+          10.0996
+        ],
+        "kd_joint_ecf_cluster": [
+          6.388,
+          3.6531,
+          8.8139
+        ],
+        "affine_dual_joint": 0.4167,
+        "kd_dual_joint": 0.7
+      },
+      "1": {
+        "affine_joint_ecf_cluster": [
+          8.159,
+          4.3574,
+          11.5841
+        ],
+        "kd_joint_ecf_cluster": [
+          6.4789,
+          3.899,
+          8.7982
+        ],
+        "affine_dual_joint": 0.2833,
+        "kd_dual_joint": 0.7333
+      },
+      "2": {
+        "affine_joint_ecf_cluster": [
+          8.5402,
+          5.3264,
+          11.6102
+        ],
+        "kd_joint_ecf_cluster": [
+          7.2105,
+          4.4167,
+          9.7991
+        ],
+        "affine_dual_joint": 0.3833,
+        "kd_dual_joint": 0.7667
+      }
+    }
+  },
+  "E7_extended_sequence_scoring": {
+    "subsets": {
+      "retained_6_family": {
+        "A00_0": {
+          "pairs": 42,
+          "families": 6
+        },
+        "A00_1": {
+          "pairs": 42,
+          "families": 6
+        },
+        "A00_2": {
+          "pairs": 41,
+          "families": 6
+        },
+        "A11_0": {
+          "pairs": 46,
+          "families": 6
+        },
+        "A11_1": {
+          "pairs": 46,
+          "families": 6
+        },
+        "A11_2": {
+          "pairs": 46,
+          "families": 6
+        }
+      },
+      "f1_f4_all_6_family": {
+        "A00_0": {
+          "pairs": 46,
+          "families": 6
+        },
+        "A00_1": {
+          "pairs": 46,
+          "families": 6
+        },
+        "A00_2": {
+          "pairs": 46,
+          "families": 6
+        },
+        "A11_0": {
+          "pairs": 46,
+          "families": 6
+        },
+        "A11_1": {
+          "pairs": 46,
+          "families": 6
+        },
+        "A11_2": {
+          "pairs": 46,
+          "families": 6
+        }
+      },
+      "all_60_pairs_8_family": {
+        "A00_0": {
+          "pairs": 60,
+          "families": 8
+        },
+        "A00_1": {
+          "pairs": 60,
+          "families": 8
+        },
+        "A00_2": {
+          "pairs": 60,
+          "families": 8
+        },
+        "A11_0": {
+          "pairs": 60,
+          "families": 8
+        },
+        "A11_1": {
+          "pairs": 60,
+          "families": 8
+        },
+        "A11_2": {
+          "pairs": 60,
+          "families": 8
+        }
+      }
+    },
+    "per_seed": {
+      "0": {
+        "f1_f4": {
+          "A00_first_L": [
+            0.0,
+            -0.0625,
+            0.0667
+          ],
+          "A00_full_L": [
+            0.0,
+            -0.0625,
+            0.0667
+          ],
+          "A00_length_normalized_L": [
+            0.0,
+            -0.0625,
+            0.0667
+          ],
+          "A11_first_L": [
+            0.4565,
+            0.1739,
+            0.7174
+          ],
+          "A11_full_L": [
+            0.4783,
+            0.2766,
+            0.6889
+          ],
+          "A11_length_normalized_L": [
+            0.5,
+            0.2917,
+            0.7111
+          ],
+          "contrast_first": [
+            0.4565,
+            0.1739,
+            0.7225
+          ],
+          "contrast_full": [
+            0.4783,
+            0.2681,
+            0.6957
+          ],
+          "contrast_length_normalized": [
+            0.5,
+            0.2806,
+            0.7164
+          ]
+        },
+        "all_60": {
+          "A00_first_L": [
+            0.0167,
+            -0.0333,
+            0.0702
+          ],
+          "A00_full_L": [
+            0.0,
+            -0.0484,
+            0.0508
+          ],
+          "A00_length_normalized_L": [
+            0.0,
+            -0.0484,
+            0.0508
+          ],
+          "A11_first_L": [
+            0.4,
+            0.1667,
+            0.6271
+          ],
+          "A11_full_L": [
+            0.4333,
+            0.2419,
+            0.6207
+          ],
+          "A11_length_normalized_L": [
+            0.45,
+            0.258,
+            0.6333
+          ],
+          "contrast_first": [
+            0.3833,
+            0.1388,
+            0.6122
+          ],
+          "contrast_full": [
+            0.4333,
+            0.2373,
+            0.6285
+          ],
+          "contrast_length_normalized": [
+            0.45,
+            0.25,
+            0.6452
+          ]
+        }
+      },
+      "1": {
+        "f1_f4": {
+          "A00_first_L": [
+            -0.0652,
+            -0.1957,
+            0.087
+          ],
+          "A00_full_L": [
+            -0.0652,
+            -0.1522,
+            0.0
+          ],
+          "A00_length_normalized_L": [
+            -0.0652,
+            -0.1522,
+            0.0
+          ],
+          "A11_first_L": [
+            0.6522,
+            0.4468,
+            0.8261
+          ],
+          "A11_full_L": [
+            0.4348,
+            0.2391,
+            0.6304
+          ],
+          "A11_length_normalized_L": [
+            0.5,
+            0.25,
+            0.7273
+          ],
+          "contrast_first": [
+            0.7174,
+            0.4763,
+            0.9512
+          ],
+          "contrast_full": [
+            0.5,
+            0.2826,
+            0.7149
+          ],
+          "contrast_length_normalized": [
+            0.5652,
+            0.3191,
+            0.802
+          ]
+        },
+        "all_60": {
+          "A00_first_L": [
+            -0.05,
+            -0.1525,
+            0.0667
+          ],
+          "A00_full_L": [
+            -0.05,
+            -0.1186,
+            0.0
+          ],
+          "A00_length_normalized_L": [
+            -0.05,
+            -0.1186,
+            0.0
+          ],
+          "A11_first_L": [
+            0.6167,
+            0.3833,
+            0.8305
+          ],
+          "A11_full_L": [
+            0.4,
+            0.2131,
+            0.5833
+          ],
+          "A11_length_normalized_L": [
+            0.45,
+            0.2381,
+            0.661
+          ],
+          "contrast_first": [
+            0.6667,
+            0.4076,
+            0.9016
+          ],
+          "contrast_full": [
+            0.45,
+            0.2531,
+            0.6402
+          ],
+          "contrast_length_normalized": [
+            0.5,
+            0.2787,
+            0.7107
+          ]
+        }
+      },
+      "2": {
+        "f1_f4": {
+          "A00_first_L": [
+            0.0435,
+            0.0,
+            0.1364
+          ],
+          "A00_full_L": [
+            0.0435,
+            0.0,
+            0.1364
+          ],
+          "A00_length_normalized_L": [
+            0.0435,
+            0.0,
+            0.1364
+          ],
+          "A11_first_L": [
+            0.4348,
+            0.2174,
+            0.6383
+          ],
+          "A11_full_L": [
+            0.5217,
+            0.2609,
+            0.7609
+          ],
+          "A11_length_normalized_L": [
+            0.6304,
+            0.3478,
+            0.8667
+          ],
+          "contrast_first": [
+            0.3913,
+            0.1502,
+            0.617
+          ],
+          "contrast_full": [
+            0.4783,
+            0.209,
+            0.7234
+          ],
+          "contrast_length_normalized": [
+            0.587,
+            0.2899,
+            0.8444
+          ]
+        },
+        "all_60": {
+          "A00_first_L": [
+            0.0333,
+            0.0,
+            0.1034
+          ],
+          "A00_full_L": [
+            0.0333,
+            0.0,
+            0.1034
+          ],
+          "A00_length_normalized_L": [
+            0.0333,
+            0.0,
+            0.1034
+          ],
+          "A11_first_L": [
+            0.4,
+            0.2034,
+            0.5873
+          ],
+          "A11_full_L": [
+            0.4667,
+            0.2414,
+            0.6833
+          ],
+          "A11_length_normalized_L": [
+            0.55,
+            0.2951,
+            0.7833
+          ],
+          "contrast_first": [
+            0.3667,
+            0.1607,
+            0.5645
+          ],
+          "contrast_full": [
+            0.4333,
+            0.2,
+            0.6597
+          ],
+          "contrast_length_normalized": [
+            0.5167,
+            0.2615,
+            0.7627
+          ]
+        }
+      }
+    }
+  }
+}

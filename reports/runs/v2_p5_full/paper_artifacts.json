@@ -1,0 +1,51 @@
+{
+  "figures": {
+    "图1": "两篇已有工作→第三篇科学问题的关系图",
+    "图2": "严格零 Prefill 流程与 Self/Identity/Joint/Oracle 诊断分界",
+    "图3": "反事实成对文档构造与正/负控制示例（含位置匹配）",
+    "图4": "原生 vs 迁移响应差散点/分布（分色 K/V/Joint）",
+    "图5": "层/Head 反事实误差热图与 Oracle 修复效果",
+    "图6": "方法消融：KD/CF/机制约束对 E_CF 与任务准确率的影响",
+    "图7": "非等深及跨任务泛化、成本—收益 Pareto"
+  },
+  "tables": [
+    "表1 数据切片与主结果",
+    "表2 控制实验",
+    "表3 统计显著性与训练成本"
+  ],
+  "contribution_template": [
+    "We identify a reproducible gap between standard transfer utility and counterfactual response fidelity in cross-model KV handoff.",
+    "We localize the gap to receiver-side routing and consumption effects under controlled cache interventions.",
+    "We present a mechanism-constrained mapper that reduces this gap against matched behavioral baselines without target-side re-prefill at inference."
+  ],
+  "conditional_note": "仅当贡献(1)(2)(3)均被实验支持时保留全部措辞；否则改写为边界/实证研究论文",
+  "cost_estimate": {
+    "mapper_params": 3698688.0,
+    "mapper_bytes": 14794752.0,
+    "crossover_tokens": 129.0
+  },
+  "data_quality": {
+    "total": 68,
+    "by_slice": {
+      "F1": 18,
+      "F2": 9,
+      "F3": 18,
+      "F4": 9,
+      "F5": 7,
+      "F6": 7
+    },
+    "by_split": {
+      "probe": 40,
+      "train": 12,
+      "val": 8,
+      "test": 8
+    },
+    "length_mismatch": 6,
+    "f5_negative_controls": 7,
+    "flip_denominator": 54,
+    "template_overlap_train_eval": [],
+    "quality_gate": "pass",
+    "note": "length_mismatch 需分层报告；F5 不计入必须翻转分母；template_overlap_train_eval 必须为空（否则违反训练/评估隔离）"
+  },
+  "note": "图表必须直接读取冻结结果文件生成；mock 数字不得进入论文"
+}

@@ -1,0 +1,20 @@
+{
+  "run_id": "verify_stage3b_closed_form",
+  "files": [
+    {
+      "name": "config.json",
+      "sha256": "5eea1c8b4345db6124baa7c6067ee32590f9aaf2411146ab3237eb238e82e32f",
+      "size": 359
+    },
+    {
+      "name": "metrics.json",
+      "sha256": "97c6f48400cc80d5fe6f4f5e97b01a717a7021bd0b707ff1897ac4e96adb7648",
+      "size": 3447
+    },
+    {
+      "name": "scores.jsonl",
+      "sha256": "a4a47c963b09a31a0e6f4961fe564fc5a1bc5e6b278563d1c5389616f81ea49f",
+      "size": 9164
+    }
+  ]
+}

@@ -1,0 +1,14 @@
+{
+  "run_id": "verify_stage3b_summary",
+  "protocol_version": "1.0",
+  "git_hash": "no-git",
+  "created_at": "2026-11-22T11:47:31+00:00",
+  "seed": 0,
+  "device": "cpu",
+  "dtype": "bfloat16",
+  "kernel": "sdpa",
+  "zero_re_prefill": true,
+  "experiment_config": {
+    "stage": 3
+  }
+}

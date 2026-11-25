@@ -1,0 +1,25 @@
+{
+  "run_id": "v2_reference_p1",
+  "files": [
+    {
+      "name": "config.json",
+      "sha256": "c8c790a13a3dce537ecdc80c6c77c422c008ce1fe7f93ce3efd055d5d9594892",
+      "size": 392
+    },
+    {
+      "name": "ecf_ledger.jsonl",
+      "sha256": "d651de48933771a2bb45c32e4730123d349f4913900db08607140c82862d3fa1",
+      "size": 2614303
+    },
+    {
+      "name": "metrics.json",
+      "sha256": "342ae3c8759b2d6d23a38043d30a491bd99fcdc284c8425b0c14bce0958ddc8a",
+      "size": 7467
+    },
+    {
+      "name": "scores.jsonl",
+      "sha256": "d651de48933771a2bb45c32e4730123d349f4913900db08607140c82862d3fa1",
+      "size": 2614303
+    }
+  ]
+}

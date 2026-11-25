@@ -1,10 +1,11 @@
 % ===========================================================================
-% arXiv-ready source. Self-contained: no local .cls/.sty, no external figure
-% files, no recomputed statistics. All numbers are transcribed verbatim from
-% frozen artifacts (reports/bootstrap_summary.json,
-% reports/anchor_eval_summary.json, reports/audit_2x2_l_ci.json,
-% reports/audit_2x2_formal_summary.json, the six audit_seq_*_b0 cells, and
-% docs/audit_seq_statistical_interpretation.md). See arxiv_conversion_notes.md.
+% arXiv-ready source. Self-contained: no local .cls/.sty and no external figure
+% files. Numeric values are transcribed from frozen artifacts
+% (reports/bootstrap_summary.json, reports/audit_2x2_l_ci.json,
+% reports/audit_2x2_formal_summary.json, the six audit_seq_*_b0 cells) and from
+% the documented CPU-only reanalyses in docs/audit/reanalysis_results.md
+% (equivalence tests, metric-validity diagnostics, extended scoring). See
+% arxiv_conversion_notes.md.
 % Compile: pdflatex main.tex && bibtex main && pdflatex main.tex && pdflatex main.tex
 % ===========================================================================
 \documentclass[11pt,twocolumn]{article}
@@ -19,8 +20,20 @@
 
 \bibliographystyle{plainnat}
 
-\title{A Finding Reversed After Corpus Reconstruction: A Controlled
-Version-Contrast Study of Cross-Model KV Handoff}
+% Semantic aliases for the archive's numeric citation keys. The bibliography
+% file is shared with other manuscripts and is not modified here.
+\newcommand{\citeCacheDivergence}{\citep{n1}}
+\newcommand{\citeFidelityConsumability}{\citep{n2}}
+\newcommand{\citeValueReuse}{\citep{n3}}
+\newcommand{\citeSparseTransfer}{\citep{n4}}
+\newcommand{\citePrefillFree}{\citep{n5}}
+\newcommand{\citeRankRecompute}{\citep{n6}}
+\newcommand{\citeCacheAuditControls}{\citep{n7}}
+\newcommand{\citeCacheFusion}{\citep{n8}}
+\newcommand{\citeHybridAttention}{\citep{n9a,n9b}}
+
+\title{A Benchmark Rebuild Reverses a Cross-Model KV Transfer Finding:
+Controlled Version Contrasts, Control Tests, and Metric Diagnostics}
 
 \author{Zhang Xuein~\texttt{zxm0813@gmail.com}}
 \date{}
@@ -30,60 +43,72 @@ Version-Contrast Study of Cross-Model KV Handoff}
 
 % ===========================================================================
 \begin{abstract}
-Cross-model key--value (KV) cache transfer promises zero re-prefill of a
-source document. We studied a paired synthetic benchmark where an earlier
-release reported an apparent counterfactual gap and a receiver-side mechanism.
-A data audit found 18 degenerate pairs, verbatim cross-split leakage, template
-overlap, and a pair-level i.i.d.\ bootstrap. In a controlled version contrast
-the finding did not survive corpus reconstruction: on one synthetic equal-depth
-pair (1.7B$\to$0.6B) the affine Joint arm's dual correctness falls from
-$\approx0.82$ to $0.28$--$0.42$, with $E_{\mathrm{CF}}$ $6.90$--$8.54$
-approaching but \emph{not} exceeding mismatched ($8.38$) and zero-cache
-($8.58$) controls; a preregistered 2$\times$2 contrast (12 cells) shows the
-Self-minus-Joint gap rising in all nine reconstruction cells at the
-point-estimate level. \texttt{transfer\_broken} follows a single dual-drop
-signal. A \texttt{kd\_only} baseline on the same pairs/config shows a smaller
-aggregate dual drop ($11.7$/$16.7$/$1.7$ points), sensitive to slice
-definition, reported only as exploratory. All clean CIs are exploratory
-(8 \texttt{template\_family} clusters, $<24$); the sealed test was never
-evaluated. We withdraw contributions~(1) and~(2) and withhold~(3): the old
-mechanism evidence is withdrawn, but whether a mechanism exists on clean data
-is undecided (no clean P2). No method was trained or improvement claimed.
+Cross-model key--value (KV) cache handoff is evaluated on paired counterfactual
+benchmarks. We audit one such benchmark for Qwen3-1.7B$\to$0.6B and find 18
+degenerate must-flip pairs, at least 15 groups of verbatim cross-split document
+overlap, and shared template skeletons between calibration and held-out data.
+Rebuilding the corpus reverses the apparent success of an affine mapper: its
+native-minus-transferred dual-correctness gap is $-5.0$ to $3.3$ percentage
+points in the original/original condition, versus $23.3$ to $61.7$ points in
+the other nine cell--seed combinations of a 2$\times$2 corpus-version design.
+On the rebuilt validation sets the transferred counterfactual error is no
+larger than mismatched, zero and randomized cache controls, and is
+significantly smaller in seed~0 (family-level paired $p=0.010$ against the
+zero-cache control), even though dual correctness collapses to
+$28.3$--$41.7\%$. A pre-declared equivalence test with margin $\delta=2$ log-
+probability units succeeds in seed~1 for all three controls and in seed~2 for
+the randomized control only, so ``indistinguishable from a zero-information
+control'' is not uniformly supported. We further show that counterfactual
+error has weak discriminative validity: its family intervals overlap between
+the affine mapper and a distillation baseline whose dual correctness differs
+by $28$--$45$ points, and its rank correlation with correctness reverses sign
+between the two ($-0.436$ versus $+0.435$). Scoring complete candidate
+sequences preserves the direction of the version contrast in every seed but
+lowers its magnitude by $21.7$ points in one seed ($61.7\to40.0$ points on all
+60 validation pairs). All estimates are exploratory (at most eight template
+families), cover one synthetic model pair, and do not attribute the reversal
+to any single defect. Single-defect interventions, a sealed test, a second
+model pair and a published external baseline remain unevaluated. We release
+the repaired benchmark, the numeric ledger and the audit protocol.
 \end{abstract}
 
 % ===========================================================================
 \section{Introduction}
 \label{sec:intro}
 
-Cross-model KV handoff maps a teacher's document cache into a receiver
-student's cache format so that the student can answer queries about a document
-without re-processing it (\emph{strict zero re-prefill}). An earlier version of
-this study asked whether the student's \emph{functional dependence on the
-document} survives transfer, formalized as counterfactual functional fidelity
-and measured by the counterfactual error $E_{\mathrm{CF}}$
-(Section~\ref{sec:metrics}). It reported two positive findings on a synthetic
-corpus: an apparent gap between ordinary transfer utility and counterfactual
-fidelity, and a receiver-side Value-consumption mechanism. \textbf{Both are
-withdrawn here.}
+Cache translation lets a receiver answer a query from a document processed by
+a different model, without prefilling that document again (\emph{strict zero
+re-prefill}). Downstream answer correctness indicates whether the transmitted
+cache is useful; a paired-document design can additionally ask whether the
+receiver's candidate scores change when a fact in the document changes. These
+two quantities can diverge, and diagnosing a divergence presupposes a valid
+document pair and a receiver that can answer under both variants
+(Section~\ref{sec:metrics}).
 
-The paper is therefore not a method or mechanism paper. Its subject is the
-\emph{audit trail} around those findings and the boundary condition observed
-once the data were repaired. An independent data-quality audit found that the
-original corpus contained degenerate pairs (identical candidates marked
-must-flip), cross-split verbatim document leakage, and train/test
-template-skeleton overlap, and that its cluster bootstrap had degenerated to
-pair-level i.i.d. In a controlled contrast between corpus versions (degenerate-
-pair removal, split de-duplication, and structural template changes applied
-together), the reported gap did not survive: on the reconstructed corpus the
-previously ``utility-preserving gap'' became a \emph{transfer failure}
-(Section~\ref{sec:reversal}). This version contrast identifies only the whole
-corpus-version switch, not any single defect (Section~\ref{sec:audit2x2}).
-The old mechanism \emph{evidence} is withdrawn; whether a mechanism exists on
-clean data is \emph{undecided}, because no clean-data mechanism experiment was
-run. This is consistent with the general reproducibility warning of
-\citet{kapoor2023}, but our contribution is the concrete, preregistered
-version contrast and the paired counterfactual $E_{\mathrm{CF}}$ audit trail
-in this specific benchmark, not the general lesson itself.
+An earlier analysis of a synthetic paired benchmark suggested that an affine
+KV mapper preserved dual-side correctness while changing counterfactual
+response scores, and suggested a receiver-side value-consumption mechanism. We
+withdrew both claims after auditing the benchmark: the legacy corpus contained
+degenerate pairs, cross-split document overlap and overlapping template
+skeletons, and its uncertainty estimates effectively treated related examples
+as independent (Section~\ref{sec:dataaudit}). The general reproducibility
+concern is discussed by \citet{kapoor2023}; this paper is a concrete audit of
+one benchmark rather than a general lesson about leakage.
+
+\paragraph{What this study establishes.}
+We cross the original and rebuilt calibration and validation corpora for one
+model pair and three data seeds, giving twelve cell--seed combinations
+(Section~\ref{sec:audit2x2}). Replacing either corpus moves the native-minus-
+transferred correctness gap from near zero to $23.3$--$61.7$ percentage
+points. We then ask two questions that the version contrast alone cannot
+answer. First, how does the transferred counterfactual error compare with
+explicit no-information controls once per-seed cluster intervals and a
+pre-declared equivalence margin are used (Section~\ref{sec:controltest})?
+Second, does counterfactual error actually track whether transfer is useful
+(Section~\ref{sec:metricvalid})? Both are answered from archived scores
+without new model runs. A third check asks whether the direction survives
+scoring complete candidate sequences rather than only their first token
+(Section~\ref{sec:seqscore}).
 
 \begin{figure}[t]
 \centering
@@ -102,140 +127,84 @@ here. Text-only schematic; no external figure file is required.}
 \label{fig:f1}
 \end{figure}
 
-\paragraph{Findings reported here (negative / empirical results, not positive
-contributions).}
-\begin{enumerate}
-\item \textbf{Failure boundary.} On clean data the tested affine/ridge mapper
-      fails to transfer usefully on the single equal-depth MVP pair: dual-side
-      correctness collapses to $0.28$--$0.42$ from a native $\approx0.78$--$0.90$,
-      and $E_{\mathrm{CF}}$ rises towards but does not reach the
-      mismatched/zero-cache controls (Section~\ref{sec:mvp}). This is a
-      boundary condition under the present data construction, not a general
-      property of KV transfer.
-\item \textbf{Exploratory gap on the strong baseline.} The \texttt{kd\_only}
-      baseline on the same clean pair has a smaller aggregate dual-accuracy
-      drop from Self ($\approx11.7$/$16.7$/$1.7$ points across seeds;
-      \texttt{transfer\_broken=false}), yet this drop is sensitive to slice
-      definition (F1--F4 seed 1 reaches $21.7$ points) and a nonzero
-      $E_{\mathrm{CF}}$ of $6.39$--$7.21$ remains. We report this \emph{only as
-      an exploratory observation} on one synthetic pair, and do \emph{not}
-      claim established utility preservation or a restored contribution
-      (Section~\ref{sec:kdbase}).
-\item \textbf{Methodological negative result.} A controlled contrast between
-      two corpus versions (version changes applied together) shows that the
-      reported finding did not survive reconstruction of the benchmark corpus;
-      the contrast identifies only the whole version switch, not any single
-      defect (Sections~\ref{sec:reversal},~\ref{sec:audit2x2}).
-\item \textbf{Limited external anchor.} On a SQuAD~v2.0 dev single-reference
-      subset, both transferred arms show a descriptive F1 decrease (affine to
-      $2.6\%$ of Self, kd to $0.7\%$) and all arms hit an EM floor of
-      undiagnosed cause; under the preregistered v2.4 rule this is
-      \texttt{exploratory\_disclosure}, not a strengthening of external
-      validity (Section~\ref{sec:anchor}).
-\end{enumerate}
-None of these is a positive contribution in the sense of the frozen
-contribution criteria. We no longer claim to identify a general counterfactual
-gap, to localize a mechanism, or to improve transfer. Contribution~(3) remains
-\emph{withheld}, the primary endpoint is unevaluated, P2/P3/P4 are permanently
-cancelled, and real-document external validity is unverified (\texttt{real=0}).
-The manuscript is ready-to-submit at TMLR, pending a new sign-off from the real
-PI over the revised text; final submission is made by the real PI in person
-(Section~\ref{sec:status}).
+\paragraph{Contributions.}
+(1)~A defect taxonomy and audit protocol covering degenerate pairs,
+cross-split leakage, entity and template-skeleton overlap, and clustered
+bootstrap degeneracy. (2)~A repaired paired benchmark (\texttt{cf\_pairs\_v2.1})
+with a released numeric ledger and a CPU replay. (3)~Controlled evidence that
+the correctness gap is sensitive to corpus version, together with control,
+equivalence and metric-validity diagnostics: counterfactual error does not
+separate a useful from a useless mapper, whereas dual correctness does.
+(4)~A scoring-readout check showing that direction survives but magnitude does
+not.
+
+\paragraph{Scope of claims.}
+This is an audit of one equal-depth model pair on synthetic Chinese template
+data, with at most eight template families and a sealed test that remains
+unevaluated. We do not attribute the reversal to any single defect, do not
+claim a mechanism on clean data, do not claim cross-model or cross-pair
+generalization, and do not claim that the equivalence tests are well powered.
+A failed equivalence test is reported as inconclusive rather than as evidence
+of a deficit. The estimates are exploratory throughout. Single-defect
+interventions, a sealed test, a second model pair and a published external
+baseline remain unevaluated; these are stated once here and not repeated in
+the body.
 
 % ===========================================================================
 \section{Background and Related Work}
 \label{sec:related}
 
-\paragraph{Cross-model KV transfer and the utility/fidelity question.}
-Behavioral distillation of per-layer linear K/V maps
-(\citep{kvlingo}) and functional cache transport with frozen-receiver
-supervision (\citep{cachelink}) take ordinary task utility or token-distribution
-matching as their stated target. Their reported abstracts state that
-reconstruction fidelity need not coincide with receiver utility and that a
-closed-form ridge mapping can degrade sharply on some model
-pairs~\citep{heo2026}; we have verified these works at abstract level only and
-make no claim about section-level diagnostic detail. These works score ordinary
-task quality, not paired counterfactual response change; we use them as
-baselines and conceptual precursors, and note only that our ``partial-pair
-transfer failure'' is compatible with the degradation described in the Heo
-et al.\ abstract. We do not treat the utility/fidelity distinction as our
-invention.
-
-\paragraph{A crowded 2026 method and audit landscape.}
-As reported in their abstracts, recent work already separates utility from
-fidelity: a cross-version study names \emph{Functional Cache Divergence} and
-reports a distinction between task utility and fidelity to native
-behavior~\citep{n1}; a fidelity--consumability study reports that eight
-substitute-cache methods remain at the no-information baseline and that
-``more faithful'' need not mean ``consumable''~\citep{n2}; a safety study finds
-value-reuse bias exceeds key-reuse bias and applies per-layer/per-head affine
-correction~\citep{n3}. Strong transfer baselines and failure analyses---sparse
-query-relevant transfer~\citep{n4}, prefill-free cross-family
-transfer~\citep{n5}, rank-disagreement selective
-recomputation~\citep{n6}, and training-free cache
-fusion~\citep{n8}---further compress the methodological space, and hybrid/linear
-attention translation is also being explored~\citep{n9a,n9b}. A causal audit of
-relayed KV caches uses mismatched/zero/random cache controls with a
-preregistered equivalence test~\citep{n7}, anticipating our control-group and
-information-attribution discipline. These works anticipate both the general
-utility-versus-fidelity distinction and the control-group methodology; our
-contribution is \emph{not} a general distinction, a mechanism-layer first, or a
-new audit method, but a specific preregistered reversal case with a paired
-counterfactual $E_{\mathrm{CF}}$ audit trail. Our characterizations of this
-2026 preprint literature are abstract-level; full-text verification was not
-completed.
-
-\paragraph{Counterfactual and faithfulness evaluation.}
-Paired minimal-pair construction that changes the gold label is established by
-Contrast Sets~\citep{contrastsets} and counterfactually augmented
-data~\citep{kaushik2020}; $E_{\mathrm{CF}}$ is a continuous logit-difference
-adaptation of that idea to the transfer setting, not a new evaluation paradigm.
-Under KV-cache compression, ``Does Accuracy Equal Evidence?''~\citep{acc_evidence}
-shows that answer accuracy can be preserved while evidence faithfulness degrades;
-we distinguish their within-model, compression, reasoning-chain setting from
-our cross-model, paired counterfactual-document setting. Real-document external
-validity is not claimed: the AI-generated-data proposal was evaluated and
-withdrawn (not activated; see Section~\ref{sec:datafix}). The only standard-QA
-anchor we report is SQuAD~v2.0~\citep{squad16,squad18}, used for evaluation
-only (Section~\ref{sec:anchor}).
+\paragraph{Related work.}
+\citep{heo2026} describe closed-form KV mapping and report substantial
+degradation on some model pairs. \citep{kvlingo} use distillation to train KV
+translators, and \citep{cachelink} study differences between reconstruction
+fidelity and receiver utility. A cross-version study names \emph{Functional
+Cache Divergence}~\citeCacheDivergence; a fidelity--consumability study reports
+that substitute-cache methods can remain at the no-information baseline and
+that ``more faithful'' need not mean ``consumable''~\citeFidelityConsumability;
+a safety study finds value-reuse bias exceeding key-reuse bias and applies
+per-layer/per-head affine correction~\citeValueReuse. Strong transfer baselines
+and failure analyses---sparse query-relevant transfer~\citeSparseTransfer,
+prefill-free cross-family transfer~\citePrefillFree, rank-disagreement
+selective recomputation~\citeRankRecompute, and training-free cache
+fusion~\citeCacheFusion---and hybrid/linear attention
+translation~\citeHybridAttention further delimit the method space. A causal
+audit of relayed KV caches uses mismatched, zero and randomized cache controls
+with an equivalence test~\citeCacheAuditControls; our control-group design
+uses the same idea. Paired minimally changed inputs follow contrast-set
+evaluation~\citep{contrastsets} and counterfactually augmented
+data~\citep{kaushik2020}; answer accuracy can be preserved while evidence
+faithfulness degrades under cache compression~\citep{acc_evidence}. The audit
+addresses leakage and dependent evaluation units~\citep{kapoor2023}. Our
+contribution is the calibration-by-validation comparison together with its
+control, metric and scoring diagnostics. Related-work characterizations in
+this arXiv version were checked at abstract level only; full-text verification
+was not completed. The earlier SQuAD anchor~\citep{squad16,squad18} was
+floor-limited and is not used as evidence here (Section~\ref{sec:anchor}).
 
 % ===========================================================================
 \section{Research Questions}
 \label{sec:rq}
 
-The study is framed by four descriptive, negative/empirical questions. They
-carry no positive-contribution threshold and are not method-paper claims.
+The study is organized around four questions.
 
 \begin{description}
-\item[RQ1 (methodological lesson; core).] Did the reported
-      ``utility-preserving gap'' survive reconstruction of the benchmark
-      corpus? Evidence: the defect inventory and repair report
+\item[RQ1 (corpus version).] Does replacing the calibration or validation
+      corpus change the native-minus-transferred dual-correctness gap?
+      Evidence: the defect inventory and repair report
       (Section~\ref{sec:datafix}), the before/after version contrast
       (Section~\ref{sec:reversal}), and the controlled 2$\times$2 contrast
-      (Section~\ref{sec:audit2x2}). The whole-version switch is identified; no
-      single defect is attributed as the cause.
-\item[RQ2 (failure boundary; core).] On clean data, under which conditions does
-      the tested affine mapper fail to transfer usefully? Evidence: three clean
-      seeds on the equal-depth pair, dual-side collapse, and the
-      \texttt{transfer\_broken} annotation read jointly with the frozen machine
-      verdict (Sections~\ref{sec:mvp},~\ref{sec:discussion}). Adjustment: we
-      disclose that $E_{\mathrm{CF}}$ approaches but does not exceed the
-      mismatch/zero-cache controls and that the break flag rests on one signal.
-\item[RQ3 (exploratory observation; not a contribution).] Does the strong
-      \texttt{kd\_only} baseline have a smaller dual-accuracy drop while
-      retaining a nonzero $E_{\mathrm{CF}}$, and is that drop stable to slice
-      definition? Evidence: three clean kd seeds and the SQuAD anchor
-      (Sections~\ref{sec:kdbase},~\ref{sec:anchor}). Adjustment: reported as an
-      exploratory observation only; not a restoration of any withdrawn claim,
-      and not established utility preservation.
-\item[RQ4 (external-validity and robustness).] With \texttt{real=0}, synthetic
-      data, and a single pair, how far do compliant anchors and a preregistered
-      scoring-robustness check extend the conclusions? Evidence: the
-      evaluation-only SQuAD anchor, the blocked real-document attempt, and the
-      sequence-scoring check (Sections~\ref{sec:datafix},~\ref{sec:anchor},
-      \ref{sec:seqscore}). Adjustment: \texttt{real=0} and the single synthetic
-      equal-depth pair are disclosed as limitations; the scoring check reports
-      only point-estimate direction consistency.
+      (Section~\ref{sec:audit2x2}).
+\item[RQ2 (no-information controls).] How does the transferred counterfactual
+      error compare with mismatched, zero and randomized caches once
+      per-seed family intervals, paired tests and a pre-declared equivalence
+      margin are used? Evidence: Section~\ref{sec:controltest}.
+\item[RQ3 (metric validity).] Does counterfactual error rank mappers by
+      dual-side correctness, and is its scale explained by the Self reference?
+      Evidence: Sections~\ref{sec:metricvalid} and~\ref{sec:kdbase}.
+\item[RQ4 (scoring readout).] Does the direction of the version contrast
+      survive scoring complete candidate sequences, and how does its magnitude
+      change? Evidence: Section~\ref{sec:seqscore}.
 \end{description}
 
 % ===========================================================================
@@ -261,9 +230,9 @@ label used here). The per-pair flip metric is further restricted to the
 Self-valid subset $|D_{\mathrm{self}}|\ge0.1$. For the reconstructed affine
 cells this yields, after the F1--F4 and Self-threshold filters, $34/45$,
 $35/46$, and $34/46$ evaluable must-flip pairs for seeds 0/1/2 (frozen
-per-pair logs; first-round review). We report these slice-level denominators
-alongside the all-slice algorithm that produced the frozen summary tables, and
-treat the latter \texttt{exploratory}.
+per-pair logs). We report these slice-level denominators alongside the
+all-slice algorithm that produced the frozen summary tables, and treat the
+latter \texttt{exploratory}.
 
 \paragraph{First-token proxy and F5/F6 behaviour.} The score $g$ in
 Section~\ref{sec:metrics} is a \emph{binary proxy}: it uses the log-probability
@@ -274,8 +243,9 @@ F5; F5 therefore has no discriminative power for this metric and is excluded
 from must-flip denominators. F6 changes the person name \emph{and} the gold
 label (the answer still swaps between A and B); it is a length/position control
 and is likewise excluded from the frozen flip denominator. Full candidate-text
-(candidate-sequence) scoring is evaluated as a preregistered robustness check
-in Section~\ref{sec:seqscore}.
+(candidate-sequence) scoring is evaluated as a robustness check pre-declared
+in an internal version-controlled protocol, not an external registration, in
+Section~\ref{sec:seqscore}.
 
 \begin{figure}[t]
 \centering
@@ -325,12 +295,12 @@ train$\leftrightarrow$test whole-pair overlap), and pair-level bootstrap
 clusters (300 unique pairs but only 8 independent template structures) inflated
 flip/dual/$E_{\mathrm{CF}}$ statistics and narrowed confidence intervals. The
 reported gap did not survive reconstruction of the corpus under the version
-contrast (Section~\ref{sec:audit2x2}); we do not attribute this to any single
-defect. The corpus was rebuilt with forced candidate distinctness,
+contrast (Section~\ref{sec:audit2x2}), which identifies the whole-version
+switch. The corpus was rebuilt with forced candidate distinctness,
 split-disjoint entity pools, deterministic deduplication, and 16 structurally
 distinct unseen templates. Acceptance checks pass 11/11 and a 53-test unit
-suite passes with no regressions. Under the frozen statistics convention
-\texttt{v2.3}, the primary bootstrap cluster unit is \texttt{template\_family},
+suite passes with no regressions. Under the internal statistics convention,
+the primary bootstrap cluster unit is \texttt{template\_family},
 with a mandatory pair-level sensitivity analysis; runs with fewer than 24
 families are flagged \texttt{exploratory}. The corpus-level must-flip count is
 $398$ under excludes $=[\mathrm{F5},\mathrm{F6}]$ (Section~\ref{sec:data});
@@ -342,45 +312,27 @@ The 56 in Table~\ref{tab:datafix} is the \emph{corpus-wide} number of distinct
 spread across splits: probe 16 / train 16 / val 8 / test 16). The 8 used as the
 inference cluster count in the CIs of Tables~\ref{tab:cleanmvp}--\ref{tab:cleankd}
 is the number of \texttt{template\_family} clusters present in the single
-\emph{evaluated} split (validation, 60 pairs), which is the v2.3 bootstrap
+\emph{evaluated} split (validation, 60 pairs), which is the bootstrap
 clustering unit; because $8<24$, the primary CIs are flagged
 \texttt{exploratory}. These are different scopes of the same taxonomy, not a
 contradiction.
 
-\paragraph{Real documents: M4 blocked, \texttt{real=0}.} The attempt to collect
-real (non-synthetic) counterfactual documents (task M4) was formally recorded as
-\emph{blocked}: source screening, licence pre-assessment, fetch attempts, and a
-semantic-suitability assessment were carried out and three blocking factors
-were documented. (i)~\textbf{Licence/network}: high-suitability sources were
-excluded---US Census returned HTTP~403 (ToS conflict, permanently removed),
-Wikidata timed out, \texttt{.gov.cn} sources were unreachable, and Wikipedia
-body text was excluded for CC BY-SA copyleft. (ii)~\textbf{Semantic
-suitability}: the only licence-clean downloadable candidate (SciTSR-pd, CC0)
-is short scientific-table cell strings, not continuous factual sentences; it
-cannot construct the F2/F3 slices and supports F1/F4/F5/F6 only partially, and
-its original-file SHA-256 was never computed. (iii)~\textbf{Human/registration}:
-the v2.5 cross-check protocol is frozen but has no applicable object while
-\texttt{real=0}. Consequently no \texttt{cf\_pairs\_real.jsonl} was generated,
-no real entries were written to the manifest, and no real run was started;
-real-document external validity is \textbf{unverified}.
+\paragraph{Real documents.} Real-document collection was blocked by
+licence/network, semantic-suitability and registration constraints: no real
+split, manifest entry or run exists (\texttt{real=0}), so real-document
+external validity remains unverified.
 
-\paragraph{AI-generated data proposal: evaluated and withdrawn (not
-activated).} The proposal to generate HellaSwag-seeded AI counterfactual data
-(v2.6) was evaluated and \emph{withdrawn}: v2.6 remains frozen but
-\emph{not activated}, no \texttt{data/generated/} directory was created, and no
-human-seeded or model-generated dataset or result exists. We report no such
-result. This is stated for completeness of the data-availability record only.
+\paragraph{AI-generated data.} A proposal to generate HellaSwag-seeded AI
+counterfactual data was evaluated but not activated; no generated dataset or
+result exists.
 
-\paragraph{Residual limitations (disclosed, not fixed).} (i)~All data are
-synthetic templates from a finite entity pool; even with 24 base structures the
-corpus does not represent real-world distributions. (ii)~\texttt{real=0} with
-M4 blocked: real-document external validity remains \emph{unverified}; we make
-no claim of verified real-document performance or generalization across real
-text. (iii)~The only clean-data evidence is the equal-depth MVP pair
-(1.7B$\to$0.6B); cross-pair generalization is unevaluated. (iv)~61
-length-mismatch pairs all fall in F5 (non-flip control) and are reported as a
-separate stratum. (v)~Clean-data CIs are exploratory (8 families); the sealed
-test was never evaluated.
+\paragraph{Residual boundaries.} All data are synthetic templates from a
+finite entity pool; even with 24 base structures they do not represent
+real-world distributions. The \texttt{real=0} condition is described above;
+all rebuilt-corpus evidence comes from the equal-depth MVP pair
+(1.7B$\to$0.6B). The 61 length-mismatch pairs fall in F5 (non-flip control)
+and are reported as a separate stratum. Clean-data intervals use eight
+template families and are exploratory; the sealed test was not evaluated.
 
 % ===========================================================================
 \section{Method and Evaluation Protocol}
@@ -402,7 +354,7 @@ tampered with to synthesize the other document.
 In the clean-data results the mapping arm is a closed-form ridge affine map
 with \emph{zero gradient-optimization epochs}: it estimates affine coefficients
 from calibration data but has no gradient-trained parameters (roughly $7.4$M
-matrix and intercept coefficients, first-round review). We distinguish four
+matrix and intercept coefficients). We distinguish four
 arms by the provenance of Key and Value (Table~\ref{tab:arms}). Only \emph{Joint}
 is deployable under strict zero re-prefill: the student processes no document
 token and does not read $C_S(d)$ at inference. A forward hook asserts that no
@@ -449,20 +401,9 @@ Oracle boundary. Text-only schematic.}
 \subsection{CF-RCT: proposed design only, never validated}
 \label{sec:cf-rct}
 
-We outline \texttt{CF-RCT} as a \emph{proposed design only}. It was never
-trained or evaluated: with the central premise (a clean, utility-preserving
-gap) withdrawn and P3 permanently cancelled, the method layer has no target.
-The mapper is a per-(layer, channel$\in$\{K,V\}, head) affine map with an
-optional low-rank residual $W=W_0+AB^\top$; non-equal-depth pairs use a
-proportional layer map. Initialization is a closed-form ridge from teacher to
-student caches on a calibration set; computation is in de-RoPE'd content space,
-re-RoPE'd before injection, with bf16 + sdpa throughout. The intended objective
-is $L=\lambda_{\mathrm{KD}}L_{\mathrm{KD}}+\lambda_{\mathrm{CF}}L_{\mathrm{CF}}
-+\lambda_{\mathrm{local}}L_{\mathrm{local}}+\lambda_{\mathrm{reg}}L_{\mathrm{reg}}$.
-We report no result for this design; contribution~(3) remains withheld. The
-Huber threshold $\delta=0.5$ was registered under the frozen loss configuration,
-but the $\delta$ verification recheck is permanently cancelled (the method route
-is abandoned); no $\delta$-dependent result is reported.
+A counterfactual-regularized cache-translation design (\texttt{CF-RCT}) was
+specified in an internal protocol but was never trained or evaluated; no
+method result is reported in this paper.
 
 \subsection{Metrics: $E_{\mathrm{CF}}$ and joint reporting}
 \label{sec:metrics}
@@ -499,76 +440,71 @@ annotation captures this.
 \subsection{Primary endpoint, statistical discipline, and fair alignment}
 \label{sec:stats}
 
-The primary endpoint is the paired $E_{\mathrm{CF}}$ difference on the sealed
-test between a new method and the strongest behavioral baseline
+The planned method endpoint is the paired $E_{\mathrm{CF}}$ difference on the
+sealed test between a new method and the strongest behavioral baseline
 (\texttt{primary\_baseline=kd\_only}), with a template-family-cluster paired
 bootstrap (10{,}000 resamples, 95\% CI) and a pair-level sensitivity CI. A gain
-would require the CI upper bound $<0$ with no joint-metric degradation; $\geq3$
-seeds and Holm correction are required. This endpoint is \emph{not evaluated}:
-no method was trained and the sealed test was never run. $P>0.05$ is nowhere
-treated as evidence of equivalence. The frozen machine verdict
-\texttt{distortion\_exists} remains in the artifacts but must be read jointly
-with \texttt{transfer\_broken}; the two answer different questions
+would require the CI upper bound $<0$ with no joint-metric degradation;
+$\geq3$ seeds and Holm correction are required. This endpoint is unevaluated:
+no method was trained and the sealed test was not run. A non-significant
+difference is not treated as equivalence; equivalence is assessed only by the
+pre-declared two one-sided tests reported in Section~\ref{sec:controltest}. The
+archived machine verdict \texttt{distortion\_exists} and the orthogonal
+\texttt{transfer\_broken} annotation answer different questions
 (Section~\ref{sec:kdbase}). Every table reporting $E_{\mathrm{CF}}$ below gives
 the \texttt{template\_family} cluster-paired CI as the primary CI
 ($n_{\mathrm{clusters}}=8$, \texttt{exploratory=true}) and the pair-level CI as
-an explicitly labelled sensitivity, never the reverse.
+an explicitly labelled sensitivity.
 
 The arms are aligned on the counterfactual pairs, dtype/kernel, and forward
-budget across \texttt{affine}, \texttt{consumer}, \texttt{kd\_only},
-\texttt{score}, ridge, CE-only, contrastive, and mismatched-document controls.
-We do \emph{not} claim alignment on trainable parameter count, training steps,
-or tuning budget: these budgets are deliberately unequal between the two arms
-we compare on clean data. The affine map has zero gradient-optimization epochs
+budget across \texttt{affine}, \texttt{kd\_only}, \texttt{score}, and
+mismatched-document controls. Trainable parameter count, training steps and
+tuning budget are unequal: the affine map has zero gradient-optimization epochs
 (closed-form ridge), whereas the \texttt{kd\_only} baseline has $7{,}340{,}032$
-gradient-optimised parameters trained for $8$ epochs (frozen
-\texttt{p1\_kd\_clean\_mvp\_seed\{0,1,2\}/metrics.json}). The clean-data
-comparison is therefore not a parameter- or step-matched ablation; this
-asymmetry is disclosed as a limitation (Section~\ref{sec:limitations}). Two
-model pairs were used in earlier work: equal-depth Qwen3-1.7B$\to$Qwen3-0.6B
-(MVP, $28\to28$ identity layer map) and non-equal-depth Qwen3-4B$\to$Qwen3-1.7B
-($36\to28$ proportional map). Runs use CUDA, \texttt{bfloat16}, \texttt{sdpa};
-clean-data results are at commits \texttt{efc3ba3} (affine) and
-\texttt{6413ba0} (\texttt{kd\_only}).
+gradient-optimised parameters trained for $8$ epochs. All reported results use
+the equal-depth Qwen3-1.7B$\to$Qwen3-0.6B pair (MVP, $28\to28$ identity layer
+map); the non-equal-depth Qwen3-4B$\to$Qwen3-1.7B pair appears only in
+superseded pre-rebuild artifacts. Runs use CUDA, \texttt{bfloat16} and
+\texttt{sdpa}.
 
 % ===========================================================================
 \section{Results}
 \label{sec:results}
 
-\paragraph{Status of every table.} All numeric results below are transcribed
-verbatim from frozen \texttt{config.json}/\texttt{metrics.json},
+\paragraph{Sources of numbers.} Values below are transcribed from frozen
+\texttt{config.json}/\texttt{metrics.json},
 \texttt{reports/bootstrap\_summary.json},
 \texttt{reports/audit\_2x2\_l\_ci.json},
-\texttt{reports/audit\_2x2\_formal\_summary.json},
-\texttt{reports/anchor\_eval\_summary.json}, and the six authoritative
-\texttt{audit\_seq\_*\_b0} cells; no statistic was recomputed for this
-manuscript. Old P1/P2 runs computed on the pre-fix v2.0 corpus are
-\textbf{superseded} and appear only in the historical before/after comparison
-(Section~\ref{sec:reversal}).
+\texttt{reports/audit\_2x2\_formal\_summary.json} and the six authoritative
+\texttt{audit\_seq\_*\_b0} cells. Sections~\ref{sec:controltest}--\ref{sec:seqscore}
+additionally use CPU-only reanalyses of those archived per-pair scores,
+documented in \texttt{docs/audit/reanalysis\_results.md}; they introduce no new
+model runs or data. Pre-rebuild runs are \textbf{superseded} and appear only in
+the historical before/after comparison (Section~\ref{sec:reversal}).
 
-\subsection{E0 implementation gate on clean data (P0)}
+\subsection{Implementation gate on the rebuilt corpus}
 \label{sec:e0}
 
 The implementation gate was re-verified on the cleaned corpus (run
-\texttt{e0\_clean\_mvp\_seed0}, commit \texttt{efc3ba3}): Self/Identity
+\texttt{e0\_clean\_mvp\_seed0}): Self/Identity
 first-token logit cosine $1.0$, first-token KL $0$, round-trip bit-identical,
 \texttt{zero\_re\_prefill} true on all checked sides, and a measurement-error
 ceiling of $2.2\times10^{-16}$ far below the effect scale; EM agreement is
 $0.975$. The gate passes; the reversal below is not an implementation residual
 at the cache round-trip level.
 
-\subsection{Clean-data P1 benchmark, MVP pair (equal depth)}
+\subsection{Rebuilt-corpus benchmark, MVP pair (equal depth)}
 \label{sec:mvp}
 
 \begin{table*}[t]
 \centering
-\caption{Clean-data P1 MVP pair (1.7B$\to$0.6B), runs
-\texttt{p1\_clean\_mvp\_seed\{0,1,2\}}, commit \texttt{efc3ba3}, validation
+\caption{Rebuilt-corpus MVP pair (1.7B$\to$0.6B), runs
+\texttt{p1\_clean\_mvp\_seed\{0,1,2\}}, validation
 split (60 pairs). Joint $E_{\mathrm{CF}}$ is reported with \emph{two} 95\%
 bootstrap CIs, transcribed from frozen \texttt{reports/bootstrap\_summary.json}:
 the \emph{primary} cluster-paired CI (\texttt{template\_family},
 $n_{\mathrm{clusters}}=8$, \texttt{exploratory=true}, wider) and the
-\emph{pair-level sensitivity} CI (narrower). Under v2.3 the
+\emph{pair-level sensitivity} CI (narrower). The
 \texttt{template\_family} CI is the main CI; the pair-level CI is reported
 alongside and never alone. Joint metrics appear with dual correctness, flip
 consistency, coverage, and the transfer-break flag. Self/Identity have
@@ -589,18 +525,14 @@ seed & Joint $E_{\mathrm{CF}}$ & Primary CI & Sensitivity CI & Self dual & Joint
 \end{table*}
 
 Across the three seeds the Joint arm's dual-side correctness collapses from a
-native $\approx0.78$--$0.90$ to $0.28$--$0.42$ (a drop of $\approx0.4$ on seed
-0, far above the $0.2$ diagnostic threshold), while $E_{\mathrm{CF}}$ rises to
-$6.90$--$8.54$. On seed 0 the Joint $E_{\mathrm{CF}}$ ($6.900$) approaches but
-does \emph{not} exceed the mismatched ($8.383$) and zero-cache ($8.584$)
-controls, while \texttt{dual\_correct} collapses from Self $\approx0.82$ to
-$0.417$; the information attributions are mixed (mismatch $+1.483$, zero
-$+1.684$, random $-0.135$). This pattern---a large $E_{\mathrm{CF}}$ with
-collapsed answer correctness and controls not uniformly dominated---is why the
-large error is interpreted as \emph{transfer failure}, not a clean
-utility-preserving distortion. We report a \emph{failure boundary} of the
-tested affine mapper on this equal-depth pair; it is not evidence for the
-withdrawn positive hypothesis.
+native $0.783$--$0.900$ to $0.283$--$0.417$, while $E_{\mathrm{CF}}$ rises to
+$6.90$--$8.54$. On seed~0, Joint $E_{\mathrm{CF}}$ is $6.900$ against
+mismatched $8.383$, zero-cache $8.584$ and randomized $6.76$; the family-level
+paired differences, $p$ values and equivalence tests are reported in
+Section~\ref{sec:controltest}. The collapse in dual correctness together with
+the absence of a clean separation from no-information controls characterizes
+this as a failure boundary of the tested affine mapper on this pair, not as a
+utility-preserving distortion.
 
 \subsection{Before/after corpus-version contrast}
 \label{sec:reversal}
@@ -633,57 +565,49 @@ flip consistency & $0.898$--$0.958$ & $0.736$--$0.755$ \\
 \end{table*}
 
 The positive findings previously reported---an apparent utility-preserving gap
-and a localized Value-consumption mechanism---came from the v2.0 data. In a
-controlled contrast between the original and reconstructed corpus versions
-(changes applied together), the reported gap did not survive and the judgement
-reversed into a transfer failure; this contrast does not identify which single
-change was responsible (Section~\ref{sec:audit2x2}). We therefore
-\textbf{withdraw contribution~(1)} and \textbf{withdraw contribution~(2)}. The
-old P1 gap values and the old P2 mechanism numbers were computed on defective
-data and are excluded from all positive conclusions; they survive only as the
-historical side of Table~\ref{tab:reversal}. The practical lesson is an audit
-practice warning: a benchmark finding can be sensitive to corpus-construction
-choices that a version contrast exposes, so preregistered version controls and
-data audits are valuable. We do not claim that any single defect caused the
-finding.
+and a localized Value-consumption mechanism---came from the pre-rebuild data.
+In the controlled contrast (version changes applied together), the
+native-minus-transferred correctness gap moved from $-5.0$--$3.3$ points in the
+original/original cell to $23.3$--$61.7$ points in the other cell--seed
+combinations; the whole-version switch is identified, not any single defect
+(Section~\ref{sec:audit2x2}). Table~\ref{tab:reversal} gives the historical
+values alongside the authoritative rebuilt ones. The audit lesson is that a
+benchmark finding can be sensitive to corpus-construction choices that a
+version contrast exposes: version controls and data audits are valuable for
+this benchmark.
 
-\subsection{KD baseline, verdict boundary, and cancelled stages}
+\subsection{Distillation baseline and archived verdict}
 \label{sec:kdbase}
 
-\paragraph{Clean-data \texttt{kd\_only} (three seeds, commit \texttt{6413ba0}):
-smaller aggregate dual drop, exploratory gap remains.}
+\paragraph{Clean-data \texttt{kd\_only} baseline.}
 Table~\ref{tab:cleankd} reports the baseline on the same pairs and model
-configuration (different compute budget, Section~\ref{sec:stats}). Joint
-$E_{\mathrm{CF}}$ point estimates are $6.388$, $6.479$, $7.210$, each with the
-primary \texttt{template\_family} CI $[3.653,8.814]$, $[3.899,8.798]$,
+configuration with a different optimisation budget (Section~\ref{sec:stats}).
+Joint $E_{\mathrm{CF}}$ point estimates are $6.388$, $6.479$, $7.210$, each with
+the primary \texttt{template\_family} CI $[3.653,8.814]$, $[3.899,8.798]$,
 $[4.417,9.799]$ and the pair-level sensitivity CI $[5.340,7.400]$,
 $[5.431,7.529]$, $[6.074,8.331]$; joint dual $0.700$/$0.733$/$0.767$ (dual drop
 $0.117$/$0.167$/$0.017$); flip $0.942$/$0.906$/$0.925$; all seeds
 \texttt{transfer\_broken=false}. Relative to Self, the aggregate all-slice dual
-drops are $0.117$/$0.167$/$0.017$ (points $11.7$/$16.7$/$1.7$), with exploratory
-template-family intervals $[-0.016,0.254]$, $[0.016,0.379]$, $[-0.048,0.102]$;
-the first two include the $0.2$ diagnostic magnitude. Restricting to F1--F4, the
-seed-1 drop reaches $0.217$ ($21.7$ points), so the conclusion is sensitive to
-slice definition. We therefore do \emph{not} claim established utility
-preservation: $\texttt{transfer\_broken=false}$ only means the frozen diagnostic
-condition was not triggered under this aggregation, and the $E_{\mathrm{CF}}$ of
-$6.39$--$7.21$ remains stable and non-zero. Per the frozen final ruling this is
-\emph{scenario C}, reported \emph{only as an exploratory observation}: under v2.3
-\texttt{exploratory=true} (8 \texttt{template\_family} clusters $<24$), one
-synthetic pair, and no evaluated primary endpoint, it is \emph{not} restored as
-a positive claim.
+drops are $11.7$/$16.7$/$1.7$ points, with exploratory template-family intervals
+$[-0.016,0.254]$, $[0.016,0.379]$, $[-0.048,0.102]$; restricting to F1--F4, the
+seed-1 drop reaches $21.7$ points. These are exploratory observations:
+$\texttt{transfer\_broken=false}$ means the archived diagnostic condition was
+not triggered under this aggregation, and the $E_{\mathrm{CF}}$ of
+$6.39$--$7.21$ remains non-zero. Section~\ref{sec:metricvalid} shows that these
+error intervals overlap the affine mapper's despite the dual-correctness
+difference.
 
 \begin{table*}[t]
 \centering
 \caption{Clean-data \texttt{kd\_only} baseline, runs
-\texttt{p1\_kd\_clean\_mvp\_seed\{0,1,2\}}, commit \texttt{6413ba0}, validation
+\texttt{p1\_kd\_clean\_mvp\_seed\{0,1,2\}}, validation
 split. As in Table~\ref{tab:cleanmvp}, Joint $E_{\mathrm{CF}}$ carries \emph{two}
 95\% bootstrap CIs from frozen \texttt{reports/bootstrap\_summary.json}: the
 \emph{primary} \texttt{template\_family} CI ($n_{\mathrm{clusters}}=8$,
 \texttt{exploratory=true}, wider) and a pair-level \emph{sensitivity} CI; the
-former is the main CI under v2.3. Joint dual (with drop from Self), flip
+former is the main CI. Joint dual (with drop from Self), flip
 consistency, coverage, and the transfer-break flag are reported alongside. All
-CIs are \texttt{exploratory} under v2.3.}
+CIs are \texttt{exploratory}.}
 \label{tab:cleankd}
 \small
 \begin{tabular}{cccccccc}
@@ -698,87 +622,172 @@ seed & Joint $E_{\mathrm{CF}}$ & Primary CI & Sensitivity CI & joint dual (drop)
 \end{tabular}
 \end{table*}
 
-\paragraph{Frozen machine verdict vs.\ \texttt{transfer\_broken}.} The frozen
+\paragraph{Archived verdict and transfer-break annotation.} The archived
 decision rule maps \{distortion\_present, quality\_pass\} to
-\texttt{distortion\_exists}; on clean data both inputs hold, so the machine
-verdict remains \texttt{distortion\_exists}. But \texttt{quality\_pass}
-denotes only the data-quality gate, not transfer utility, and the
-orthogonally annotated \texttt{transfer\_broken=true} classifies the
-affine result as a failure boundary. We do not read the verdict alone as
-evidence of a clean distortion, and disclose both fields.
+\texttt{distortion\_exists}; on the rebuilt data both inputs hold, so the
+archived verdict is \texttt{distortion\_exists}. Here \texttt{quality\_pass}
+denotes the data-quality gate, not transfer utility; the orthogonal
+\texttt{transfer\_broken=true} annotation marks the affine result as a failure
+boundary. Both fields are reported.
 
-\paragraph{Mechanism (P2), endpoint/method (P3), generalization (P4): cancelled.}
-P2 was cancelled (its premise, a clean distortion, is gone; the old mechanism
-evidence is withdrawn, and whether a mechanism exists on clean data is
-undecided because no clean P2 was run); P3/P4 are permanently cancelled; the
-paired $E_{\mathrm{CF}}$ vs.\ \texttt{kd\_only} CI is unevaluated and no CF-RCT
-method was trained. Contribution~(3) remains withheld.
+\subsection{Joint against no-information controls}
+\label{sec:controltest}
 
-\subsection{External anchor: SQuAD~v2.0 dev (limited, exploratory)}
-\label{sec:anchor}
-
-The only authorized external probe is SQuAD~v2.0 dev (official
-\texttt{dev-v2.0.json}, SHA-256 \texttt{80a5225e}$\ldots$\texttt{82d8}, CC
-BY-SA 4.0, evaluation only, no derived-corpus release;
-\citet{squad16,squad18}), following the v2.4 preregistered three-scenario rule.
-We explicitly disclose the sampling and scoring actually used: the evaluation
-code takes the \emph{first 240 answerable questions in file order}, which cover
-only \emph{two article titles}, and scores against the \emph{first reference
-answer} (a \emph{single-reference subset}, not the official all-answers
-maximum). Values in Table~\ref{tab:anchor} are transcribed from the frozen
-\texttt{reports/anchor\_eval\_summary.json} (seed0); no statistic was recomputed
-by us. As an additional descriptive reference, the first-round review re-scored
-the \emph{saved predictions} of this same subset with the official all-reference
-rule and reports F1 $\approx0.2178$ / $0.0082$ / $0.0014$ for Self / affine Joint
-/ KD Joint, with EM still zero for all arms; we cite this as a review-side
-recomputation, not as a new run.
+On rebuilt calibration and validation (A11), Joint's first-token counterfactual
+error is $6.90$, $8.16$ and $8.54$ across seeds, with family intervals in
+Table~\ref{tab:cleanmvp}. The control means with 95\% family bootstrap intervals
+in seed~0 are $8.74\;[5.04,12.16]$ (mismatched), $8.58\;[4.62,12.11]$
+(zero-cache) and $6.76\;[3.90,9.92]$ (randomized); the corresponding seed-1
+means are $9.11/9.07/7.45$ and seed-2 means $9.89/9.68/7.82$. Each Joint value
+is no larger than the mismatched and zero-cache means and close to the
+randomized-cache mean. Table~\ref{tab:control-test}
+reports the family-mean paired difference (Joint minus control) with a 90\%
+family $t$ interval, the two-sided paired $t$ test over eight family means
+($p_2$), and a two one-sided equivalence test with margin $\delta=2$
+log-probability units. The margin was declared in an internal version-controlled
+protocol before these numbers were inspected; it is not an external
+registration. Equivalence requires both one-sided $p<0.05$ and a 90\% interval
+fully inside $\pm2$.
 
 \begin{table}[t]
 \centering
-\caption{SQuAD~v2.0 dev external anchor: single-reference subset (first 240
-answerable questions in file order, two articles, first reference answer),
-seed0, frozen \texttt{reports/anchor\_eval\_summary.json}. Standard-QA EM/F1;
-both arms have Self EM/F1 $=0.000/0.1975$ and Joint EM $=0.000$. The v2.4
-verdict is \texttt{exploratory\_disclosure}.}
-\label{tab:anchor}
-\begin{tabular}{llll}
+\caption{Joint minus control counterfactual error on the rebuilt validation
+sets. Difference and 90\% family $t$ interval in log-probability units; $p_2$
+is the two-sided paired $t$ test over eight family means; TOST uses the
+pre-declared $\delta=2$. Yes marks equivalence (archived CPU reanalysis).}
+\label{tab:control-test}
+\begin{tabular}{llccc}
 \toprule
-Arm & Method & Joint F1 & Joint/Self F1 \\
+seed & control & Joint $-$ control [90\% CI] & $p_2$ & TOST $p$ / eq. \\
 \midrule
-Joint & affine & $0.0051$ & $2.6\%$ \\
-Joint & kd\_only & $0.0014$ & $0.7\%$ \\
+0 & mismatch & $-1.89\;[-2.89,-0.89]$ & $0.0089$ & $0.419$ / no \\
+0 & zero & $-1.71\;[-2.63,-0.79]$ & $0.0099$ & $0.285$ / no \\
+0 & random & $+0.01\;[-2.15,2.17]$ & $0.993$ & $0.062$ / no \\
+1 & mismatch & $-0.93\;[-1.75,-0.12]$ & $0.0671$ & $0.021$ / yes \\
+1 & zero & $-0.88\;[-1.64,-0.11]$ & $0.0676$ & $0.014$ / yes \\
+1 & random & $+0.67\;[-0.60,1.95]$ & $0.3519$ & $0.045$ / yes \\
+2 & mismatch & $-1.30\;[-2.35,-0.25]$ & $0.0516$ & $0.123$ / no \\
+2 & zero & $-1.09\;[-2.25,+0.07]$ & $0.1187$ & $0.091$ / no \\
+2 & random & $+0.72\;[-0.33,1.78]$ & $0.2365$ & $0.028$ / yes \\
 \bottomrule
 \end{tabular}
 \end{table}
 
-On this single-reference subset, both transferred arms show a descriptive F1
-decrease relative to Self: affine Joint F1 falls to $2.6\%$ of Self (drop
-$0.1924$) and kd Joint F1 to $0.7\%$ (drop $0.1961$). EM is at floor for all
-arms; we do \emph{not} attribute the floor to a specific cause (e.g.\ base-model
-tuning), because no controlled intervention on prompting, output format, domain
-shift, or base capability was performed. With a single seed, 240 examples, two
-articles, and a single reference answer, the preregistered verdict is
-\texttt{exploratory\_disclosure}: this is a limited descriptive standard-QA
-observation, not a strengthening of external validity, not a counterfactual
-$E_{\mathrm{CF}}$ result, and not a restoration of any withdrawn contribution.
-It is not pooled with the synthetic test. We make no cross-source generalization
-claim.
+The paired difference is negative for mismatch and zero in every seed and
+reaches $p_2=0.0099$ (rounded $0.010$) against the zero-cache control and
+$p_2=0.0089$ against mismatch in seed~0, and $p_2\approx0.067$ in seed~1. The
+randomized control is indistinguishable from Joint ($p_2=0.993$, $0.352$,
+$0.236$). Equivalence succeeds for all three controls in seed~1 and for the
+randomized control in seed~2, but not for mismatch or zero in seeds~0 and 2
+(the seed~0 point estimates lie inside the margin but their intervals extend
+below $-2$). The supported statement is therefore that Joint's counterfactual
+error is no larger than the mismatched and zero-cache controls, close to the
+randomized control and significantly smaller than zero-cache in one seed, while
+its dual correctness falls to $28.3$--$41.7\%$. These two
+facts are a diagnosable inconsistency in the metric rather than evidence that
+transfer preserves utility; Section~\ref{sec:metricvalid} develops this point.
+
+\subsection{What counterfactual error measures}
+\label{sec:metricvalid}
+
+The roughly four-fold rise in Joint $E_{\mathrm{CF}}$ after rebuilding is not
+only a rescaling of the Self reference. Mean $|D_{\mathrm{self}}|$ rises from
+$5.90$--$6.64$ on A00 to $8.62$--$9.71$ on A11 (about $1.4\times$), whereas mean
+Joint $E_{\mathrm{CF}}$ rises from $1.93$--$2.12$ to $6.90$--$8.54$ (about
+$3.5$--$4\times$). Normalizing by $|D_{\mathrm{self}}|$ still raises the ratio
+from $\approx0.32$ to $0.80$--$0.90$ (Table~\ref{tab:scale}), so the change of
+scale does not by itself explain the increase.
+
+\begin{table}[t]
+\centering
+\caption{Scale of the Self reference and of Joint's error. $E_{\mathrm{CF}}$ /
+$|D_{\mathrm{self}}|$ uses per-seed means; quantities are in log-probability
+units (archived CPU reanalysis).}
+\label{tab:scale}
+\begin{tabular}{lccc}
+\toprule
+cell & seed & mean $|D_{\mathrm{self}}|$ & mean Joint $E_{\mathrm{CF}}$ / ratio \\
+\midrule
+A00 & 0 & $6.16$ & $1.97$ / $0.32$ \\
+A00 & 1 & $5.90$ & $1.93$ / $0.33$ \\
+A00 & 2 & $6.64$ & $2.12$ / $0.32$ \\
+A11 & 0 & $8.62$ & $6.90$ / $0.80$ \\
+A11 & 1 & $9.08$ & $8.16$ / $0.90$ \\
+A11 & 2 & $9.71$ & $8.54$ / $0.88$ \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+More importantly, $E_{\mathrm{CF}}$ does not rank mappers by usability. Across
+the 180 rebuilt-validation pairs per mapper, the Spearman correlation between
+dual correctness and $E_{\mathrm{CF}}$ is $-0.436$ for the affine mapper and
+$+0.435$ for the distillation baseline ($p<10^{-8}$ in both cases); the sign
+reverses (Table~\ref{tab:rank}). Their family intervals for $E_{\mathrm{CF}}$
+overlap in every seed while dual correctness differs by $28$--$45$ points
+(Table~\ref{tab:mappergap}). A low counterfactual error can accompany collapsed
+dual correctness, and a high one can accompany preserved correctness. We
+therefore treat $E_{\mathrm{CF}}$ as a diagnostic of score discrepancy and use
+Self and Joint correctness reported together as the interpretable endpoint.
+
+\begin{table}[t]
+\centering
+\caption{Spearman rank correlation between dual correctness and $E_{\mathrm{CF}}$
+on the 180 rebuilt-validation pairs per mapper (archived CPU reanalysis).}
+\label{tab:rank}
+\begin{tabular}{lccc}
+\toprule
+mapper & $\rho$ & $p$ & pairs \\
+\midrule
+affine & $-0.436$ & $<10^{-8}$ & $180$ \\
+kd & $+0.435$ & $<10^{-8}$ & $180$ \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\begin{table}[t]
+\centering
+\caption{First-token $E_{\mathrm{CF}}$ family intervals and dual correctness
+for the affine mapper and the distillation baseline on the rebuilt validation
+sets (archived CPU reanalysis).}
+\label{tab:mappergap}
+\begin{tabular}{ccccc}
+\toprule
+seed & affine $E_{\mathrm{CF}}$ & kd $E_{\mathrm{CF}}$ & affine dual & kd dual \\
+\midrule
+0 & $6.90\;[3.56,10.10]$ & $6.39\;[3.65,8.81]$ & $0.417$ & $0.700$ \\
+1 & $8.16\;[4.36,11.58]$ & $6.48\;[3.90,8.80]$ & $0.283$ & $0.733$ \\
+2 & $8.54\;[5.33,11.61]$ & $7.21\;[4.42,9.80]$ & $0.383$ & $0.767$ \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\subsection{External anchor: SQuAD~v2.0 dev (not used as evidence)}
+\label{sec:anchor}
+
+An earlier SQuAD~v2.0 dev anchor~\citep{squad16,squad18} is not used as
+evidence here. In that archived single-seed evaluation the native reader was
+at floor (EM~$0$, F1~$0.1975$), the subset was the first 240 answerable
+questions in file order (two articles) scored against a single reference
+answer, and the transferred arms reached F1~$0.0051$ (affine) and $0.0014$
+(kd), with EM zero for all arms. The anchor is floor-limited and does not
+discriminate among arms; its archived verdict is exploratory. It is not pooled
+with the synthetic test and supports no cross-source generalization claim.
 
 \subsection{Controlled 2$\times$2 corpus-version contrast (exploratory)}
 \label{sec:audit2x2}
 
 To probe the version contrast without attributing it to any single defect, we
-ran a preregistered 2$\times$2 design crossing the calibration-corpus version
-(legacy / reconstructed) with the validation-corpus version (legacy /
-reconstructed), three seeds, 12 cells; the mapper is the same affine map. The
-primary endpoint is $L=\mathrm{mean}(\text{Self dual})-\mathrm{mean}(\text{Joint
-dual})$ in percentage points. All intervals below use the frozen
-\texttt{template\_family} cluster bootstrap (8 clusters, so every cell and
-contrast is \texttt{exploratory}), transcribed from
+ran a 2$\times$2 design crossing the calibration-corpus version (original /
+rebuilt) with the validation-corpus version (original / rebuilt), three seeds,
+12 cells; the mapper is the same affine map. The design was pre-declared in an
+internal version-controlled protocol, not an external registration. The endpoint
+is $L=\mathrm{mean}(\text{Self dual})-\mathrm{mean}(\text{Joint dual})$ in
+percentage points. All intervals below use the \texttt{template\_family}
+cluster bootstrap (8 clusters, so every cell and contrast is
+\texttt{exploratory}), transcribed from
 \texttt{reports/audit\_2x2\_l\_ci.json} and
 \texttt{reports/audit\_2x2\_formal\_summary.json}; pair-level intervals are
-reported only as a sensitivity in the supplement. No statistic was recomputed
-here.
+reported only as a sensitivity in the supplement.
 
 \begin{table}[t]
 \centering
@@ -787,7 +796,7 @@ here.
 \texttt{exploratory} (8 clusters $<24$). A00/A10 use the \emph{legacy}
 validation set, A01/A11 the \emph{reconstructed} one (first index = calibration
 version, second = validation version); diagonal cells A00/A11 reproduce the
-historical P1 runs cell-for-cell (60/60 joint $E_{\mathrm{CF}}$ agreement).}
+historical benchmark runs cell-for-cell (60/60 joint $E_{\mathrm{CF}}$ agreement).}
 \label{tab:audit2x2}
 \begin{tabular}{lccc}
 \toprule
@@ -810,8 +819,8 @@ point-estimate weighting. We therefore adopt a single \emph{sample-weighted}
 convention throughout (each resampled family's sum divided by its sampled pair
 count), and report the family-equal estimate as an additional sensitivity. The
 cross-zero classification is unchanged by this choice. The table below gives
-both conventions for the two cross-version contrasts (values transcribed from
-the second-round review, which re-ran the frozen CIs; pp):
+both conventions for the two cross-version contrasts (values from the archived
+CPU reanalysis of the frozen scores; pp):
 
 \begin{center}
 \small
@@ -830,41 +839,28 @@ A11$-$A10 & 2 & $[-13.15,44.01]$ & $[-12.72,43.75]$ \\
 \end{center}
 
 \noindent The family-equal point difference for A01$-$A00 at seed 0 is $23.2$ pp
-versus $25.0$ pp sample-weighted (second-round review); the choice shifts point
+versus $25.0$ pp sample-weighted (archived reanalysis); the choice shifts point
 estimates by a few points but not the qualitative conclusion.
 
-\paragraph{What the contrast supports (and what it does not).} The three cells
-containing reconstructed data (A11/A01/A10) have positive $L$ point estimates
-in all seeds with primary-CI lower bounds $>0$ ($23.3$--$61.7$ pp), while the
-legacy diagonal A00 has CIs around zero. Across the four predeclared contrasts
-and three seeds there are \textbf{12} predeclared contrasts (not nine; nine is
-the number of reconstruction-containing single cells), and all 12 point
-estimates are positive. The only defensible sense in which the direction is
-``stable'' is that \emph{point estimates share a sign across seeds}; we do
-\emph{not} claim that CIs confirm a stable positive direction. Explicitly, at
-the CI level the fixed-validation calibration contrast A11$-$A01 crosses zero
-in \emph{2 of 3} seeds (seeds 0 and 2), and the fixed-calibration cross-version
-contrast A11$-$A10 crosses zero in \emph{2 of 3} seeds (seeds 0 and 2); together
-these are the relevant cross-version comparisons. For the legacy-validation
-calibration contrast A10$-$A00 all three seed CIs have lower bound $\geq0$ (seed
-2 is exactly $0.0$, on the boundary). Counting the two cross-version validation
-contrasts, A01$-$A00 crosses zero in 1 of 3 seeds and A11$-$A10 in 2 of 3, i.e.\
-\emph{3 of 6} cross-version intervals cross zero; the earlier phrase ``in most
-seeds'' was imprecise and is replaced by these counts. All of this is
-exploratory (8 clusters $<24$), so none of these intervals is a
-strong-significance claim.
+\paragraph{What the contrast supports.} Across the twelve cell--seed
+combinations, the nine combinations containing rebuilt data (A11/A01/A10) have
+positive $L$ point estimates in all seeds, spanning $23.3$--$61.7$ points,
+whereas the original/original diagonal A00 ranges from $-5.0$ to $3.3$ points
+with intervals around zero. The supported reading is sign stability of the
+point estimates: at the interval level the cross-version contrast A01$-$A00
+crosses zero in one of three seeds and A11$-$A10 in two of three, so a stable
+positive direction is not established by the intervals. All estimates are
+exploratory (8 clusters $<24$) and none is a strong-significance claim.
 
-\paragraph{Interaction.} The interaction $(A11-A01)-(A10-A00)$ was recomputed by
-the second-round review with paired resampling within each fixed validation set,
-independent template-family resampling of the two validation versions, and
-sample weighting (10{,}000 resamples). The per-seed estimates are
-$-23.3\;[-47.6,3.4]$, $+5.0\;[-22.9,31.0]$, and $-15.0\;[-44.0,16.1]$ points
-for seeds 0/1/2: the point estimates have mixed sign and \emph{all three
-exploratory intervals cover zero}. The defensible reading is that switching
-either corpus version changes the point estimates, while the interaction
-direction is not stable. Under the preregistered v2.7 rule this is
-\texttt{mixed\_interaction} (not an upgrade to
-\texttt{calibration\_version\_effect}).
+\paragraph{Interaction.} The interaction $(A11-A01)-(A10-A00)$, from the
+archived CPU reanalysis with paired resampling within each fixed validation
+set, independent template-family resampling of the two validation versions and
+sample weighting (10{,}000 resamples), is $-23.3\;[-47.6,3.4]$,
+$+5.0\;[-22.9,31.0]$ and $-15.0\;[-44.0,16.1]$ points for seeds 0/1/2: the
+point estimates have mixed sign and all three exploratory intervals cover
+zero. Switching either corpus version changes the point estimates, while the
+interaction direction is not stable; the archived classification is
+\texttt{mixed\_interaction}.
 
 \paragraph{Attribution boundary.} The 2$\times$2 design identifies only the
 effect of switching the \emph{whole} corpus version (calibration and/or
@@ -877,23 +873,22 @@ a controlled version-sensitivity observation, not a single-defect cause. Full
 cell-by-cell CIs, the predeclared contrasts, the three prespecified sensitivity
 slices, and the non-paired resampling note for cross-version validation
 comparisons are deferred to supplementary material; no additional numbers are
-introduced here. Contribution~(1) and (2) remain withdrawn, contribution~(3)
-withheld, and the primary endpoint unevaluated.
+introduced here.
 
-\subsection{Sequence-scoring robustness (preregistered; branch
-\texttt{consistent\_across\_scoring})}
+\subsection{Sequence-scoring robustness}
 \label{sec:seqscore}
 
 The first-token proxy of Section~\ref{sec:metrics} scores only the candidate
 first token; candidate full texts can share that token while differing later
-(Section~\ref{sec:data}). Under the frozen v2.8 protocol we scored the
-\emph{full candidate sequence} (teacher-forcing log-likelihood sum, \texttt{full})
-and a length-normalized variant (\texttt{length\_normalized}) alongside
-\texttt{first}, using the same paired documents and Self-valid threshold. All
-values below are transcribed from the six authoritative \texttt{\_b0} formal
-cells \texttt{audit\_seq\_\{A11,A00\}\_s\{0,1,2\}\_b0} and the frozen statistical
-interpretation; older run ids are \textbf{superseded} and are not used. No
-statistic was recomputed for this manuscript.
+(Section~\ref{sec:data}). Under a scoring plan pre-declared in an internal
+version-controlled protocol we scored the \emph{full candidate sequence}
+(teacher-forcing log-likelihood sum, \texttt{full}) and a length-normalized
+variant (\texttt{length\_normalized}) alongside \texttt{first}, using the same
+paired documents and Self-valid threshold. Values for the primary analysis are
+transcribed from the six authoritative \texttt{\_b0} formal cells
+\texttt{audit\_seq\_\{A11,A00\}\_s\{0,1,2\}\_b0}; older run ids are
+\textbf{superseded}. The extended all-pair analysis below uses archived
+per-pair scores as documented in \texttt{docs/audit/reanalysis\_results.md}.
 
 \paragraph{Analysis sets and inference.} The \emph{primary analysis} is F1--F4
 with differing candidate texts and swapped gold labels (A11 $46/46/46$ pairs,
@@ -976,170 +971,171 @@ seed & quantity & primary CI & pair / family-equal CI \\
 \end{tabular}
 \end{table}
 
-\paragraph{All-60-pair sensitivity and denominator-convention difference.} The
-secondary all-60-pair, 8-family set reproduces the archived headline values;
-for example A11 $\mathrm{reading\_diff}$ at seed 1 is
-$-0.2167\;[-0.3333,-0.1167]$ there (primary set: $-0.2174$). The two sets differ
-in denominators, not in per-pair scores: e.g.\ A11 seed-0 $L$ first is $+0.4348$
-on the F1--F4 primary set versus $+0.3833$ on all 60 pairs. Both sets are listed
-here and never mixed; the F1--F4 set is the primary analysis. The direction and
-branch classification are unchanged.
+\paragraph{Extension to all 60 validation pairs (eight families).}
+The six-family primary set was extended to every validation pair, including the
+F5/F6 control slices; this gives 60 pairs and eight template families. F1--F4
+themselves contain only six families, so the cluster count cannot be raised
+without the control slices. Table~\ref{tab:extendedseq} gives A11 $L$ under the
+three readouts and Table~\ref{tab:extendedcontrast} the A11$-$A00 version
+contrast, transcribed from the archived per-pair scores. In seed~1 the A11 gap
+falls from $61.7$ points under first-token scoring to $40.0$ under
+full-sequence scoring, a $21.7$-point reduction matching the primary analysis;
+the length-normalized value is $45.0$. All version contrasts remain positive in
+every seed and readout. With eight families the intervals remain exploratory
+and no sealed-test score was added.
 
-\paragraph{Preregistered branch classification.} Under the v2.8~\S7 conditions
-frozen before the results were seen, the classification is
-\textbf{branch~1 \texttt{consistent\_across\_scoring}} (no post-hoc branch
-selection): A11 full $L$ is positive in all three seeds, the A11$-$A00 point
-estimates have the same sign under \texttt{first}, \texttt{full} and
-\texttt{length\_normalized}, and length normalization does not change the
-reading. Branch~2 is \emph{not} triggered: although A11 seed-1
-$\mathrm{reading\_diff}$ has a primary interval excluding zero, $L_{\mathrm{full}}$
-remains positive ($+0.4348$) and the A11$-$A00 difference does not disappear
-($+0.5062$ full). Branch~3 is not triggered because normalization leaves the
-reading unchanged. The wording is confined to ``\emph{the point estimates share
-a direction under both candidate scorings (first token and full sequence)}'';
-we report magnitudes and intervals only, and make no strong-significance,
-method-gain or contribution-restoration claim. Six/eight families are $<24$, so
-all intervals are exploratory.
+\begin{table}[t]
+\centering
+\caption{Extended sequence scoring on all 60 validation pairs (8 template
+families): A11 $L$ in points with family bootstrap 95\% intervals, from the
+archived reanalysis.}
+\label{tab:extendedseq}
+\begin{tabular}{lccc}
+\toprule
+seed & first & full & length-normalized \\
+\midrule
+0 & $40.0\;[16.7,62.7]$ & $43.3\;[24.2,62.1]$ & $45.0\;[25.8,63.3]$ \\
+1 & $61.7\;[38.3,83.0]$ & $40.0\;[21.3,58.3]$ & $45.0\;[23.8,66.1]$ \\
+2 & $40.0\;[20.3,58.7]$ & $46.7\;[24.1,68.3]$ & $55.0\;[29.5,78.3]$ \\
+\bottomrule
+\end{tabular}
+\end{table}
 
-\paragraph{Boundaries.} This analysis concerns only robustness to the
-\emph{scoring readout}; it makes no causal attribution to any single defect and
-does not quantify individual defect contributions. Contributions~(1) and~(2)
-remain withdrawn and (3) withheld; the primary endpoint and the sealed test
-remain unevaluated; and peak GPU memory was not collected. $E_{\mathrm{CF}}$
-values are not compared across scoring readings.
+\begin{table}[t]
+\centering
+\caption{Extended sequence scoring: version contrast $L_{\mathrm{A11}}-
+L_{\mathrm{A00}}$ on all 60 pairs, in points (archived reanalysis).}
+\label{tab:extendedcontrast}
+\begin{tabular}{lccc}
+\toprule
+seed & first & full & length-normalized \\
+\midrule
+0 & $38.3$ & $43.3$ & $45.0$ \\
+1 & $66.7$ & $45.0$ & $50.0$ \\
+2 & $36.7$ & $43.3$ & $51.7$ \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\paragraph{Pre-declared branch classification.} Under conditions pre-declared
+in the internal protocol before the scoring rerun, the archived classification
+is \texttt{consistent\_across\_scoring}: A11 full $L$ is positive in all three
+seeds, the A11$-$A00 point estimates keep the same sign under \texttt{first},
+\texttt{full} and \texttt{length\_normalized}, and length normalization does not
+change the reading. The seed-1 full-minus-first difference is negative
+($-21.7$ points with an exploratory interval below zero) while $L_{\mathrm{full}}$
+remains positive; the supported statement is that point estimates share a
+direction under both candidate scorings. Six/eight families are $<24$, so all
+intervals are exploratory.
+
+\paragraph{Boundaries.} This analysis concerns only robustness to the scoring
+readout; it does not quantify individual defect contributions. The primary
+endpoint and the sealed test remain unevaluated, and $E_{\mathrm{CF}}$ values
+are not compared across scoring readings.
 
 \subsection{Adverse results and boundaries}
 \label{sec:adverse}
 
 \begin{enumerate}
-\item \textbf{Quality collapse dominates.} On clean data Joint
-      \texttt{dual\_correct} collapses to $0.283$--$0.417$ from Self $\approx0.82$,
-      and Joint $E_{\mathrm{CF}}$ approaches but does not exceed the
-      mismatched/zero-cache controls. The broken-transfer label rests on the
-      dual collapse, not on reaching the controls.
+\item \textbf{Quality collapse dominates.} On the rebuilt data Joint
+      \texttt{dual\_correct} falls to $0.283$--$0.417$ from Self $0.783$--$0.900$,
+      while its $E_{\mathrm{CF}}$ is no larger than the mismatched and zero-cache
+      controls, close to the randomized control and significantly smaller than
+      zero-cache in one seed (Section~\ref{sec:controltest}).
+      The broken-transfer label rests on the dual collapse, not on reaching the
+      controls.
 \item \textbf{Single-signal trigger and mixed controls.} \texttt{transfer\_broken}
-      is triggered by a \emph{single signal} (the dual drop $\geq0.2$ on the
-      Joint arm); seed0 information attributions are mixed (two positive, one
-      negative). The failure classification rests on this joint pattern and is
-      reported as a boundary observation, not a causal claim.
-\item \textbf{Exploratory strength boundary.} All clean CIs are
-      \texttt{exploratory} under v2.3 (8 \texttt{template\_family} clusters
-      $<24$; wide CIs), come from a single synthetic equal-depth pair, and come
-      from the validation split only---the sealed test was \emph{never
-      evaluated}. We make no cross-pair, cross-model, real-world, causal, or
-      strong-significance claim.
-\item \textbf{Prior positive signals did not survive reconstruction.} In the
-      controlled version contrast of Section~\ref{sec:reversal}, the previously
-      reported gap judgement reverses; because the corpus changes were applied
-      together, we do not attribute this to a single defect. The old mechanism
-      \emph{evidence} is withdrawn, while whether a mechanism exists on clean
-      data is undecided (no clean P2 was run)---we do not claim it was shown
-      absent.
-\item \textbf{Unverified external validity.} Synthetic-only data, \texttt{real=0}
-      with M4 blocked, a limited SQuAD anchor (not replicated for kd), and the
-      withdrawn AI-data proposal all bound external validity; no
-      real-document or generated-data result is claimed.
+      is set by one signal (the Joint-arm dual drop); the seed-0 control
+      comparisons are mixed (negative for mismatch and zero, near zero for
+      random). The label is a boundary observation.
+\item \textbf{Exploratory strength boundary.} All intervals use eight
+      \texttt{template\_family} clusters ($<24$), one synthetic equal-depth pair
+      and the validation split only; the sealed test was not evaluated.
+\item \textbf{Prior positive signals did not survive reconstruction.} The
+      version contrast reverses the earlier gap; the corpus changes were applied
+      together and no single defect is attributed as the cause. The archived
+      mechanism evidence was withdrawn, and no clean-data mechanism experiment
+      was run.
+\item \textbf{Unverified external validity.} Synthetic-only data and
+      \texttt{real=0} bound external validity; the floor-limited SQuAD anchor is
+      not used as evidence and no real-document or generated-data result is
+      reported.
 \end{enumerate}
 
 % ===========================================================================
 \section{Discussion}
 \label{sec:discussion}
 
-\paragraph{What the study establishes.} The evidence supports a narrow,
-negative claim: with the data defects repaired, the tested affine mapper does
-not transfer usefully on the single equal-depth pair, and the earlier positive
-gap did not survive reconstruction of the corpus. Because the
-\texttt{template\_family} primary CIs have lower bounds above zero on all three
-seeds, the failure direction is internally consistent; because they are
-exploratory (8 clusters) and paired with wider intervals than the pair-level
-sensitivity CIs, they do not license strong inference. We deliberately report
-both CI sets for every $E_{\mathrm{CF}}$ table so that the narrower pair-level
-interval cannot be mistaken for the confirmatory one (a known failure mode of
-the pre-repair analysis).
+\paragraph{What the study establishes.} The audit shows what can change when a
+cache-transfer benchmark is rebuilt. Calibration affects the map itself;
+validation changes the tasks and the native reference against which it is
+judged. A positive $L$ change can result from a weaker transferred answer, a
+stronger native answer, or both. Across the 2$\times$2 design, replacing either
+corpus moves $L$ from near zero to $23.3$--$61.7$ points; point estimates keep
+their sign across seeds, while cross-version intervals cross zero in several
+seeds and all are exploratory (eight families). A second score definition
+distinguishes a pattern tied to a single-token approximation from one whose
+direction holds under two ways of ranking the same candidates: the
+rebuilt-corpus correctness loss retains its direction with an appreciable
+change in magnitude (seed~1: $61.7\to40.0$ points on all 60 pairs).
 
-\paragraph{Whole-version contrast, not single-defect attribution.} The 2$\times$2
-contrast (Section~\ref{sec:audit2x2}) and the sequence-scoring robustness check
-(Section~\ref{sec:seqscore}) both probe the version sensitivity without
-attributing it to any single defect. In the 2$\times$2 design the interaction
-direction is not stable and the relevant cross-version intervals cross zero in
-3 of 6 cases; under the frozen v2.7 rule the verdict is
-\texttt{mixed\_interaction}. In the scoring check, the preregistered branch is
-\texttt{consistent\_across\_scoring}: the point estimates keep the same sign
-under first-token and full-sequence scoring. Neither result is a
-strong-significance, method-gain, or contribution-restoration claim; both are
-exploratory (6--8 clusters $<24$).
+\paragraph{Controls and metric validity.} Joint's counterfactual error is no
+larger than the no-information controls and significantly smaller in seed~0,
+yet its dual correctness collapses; the pre-declared equivalence test succeeds
+in only one of three seeds. Counterfactual error therefore cannot stand in for
+transfer utility. Its scale is not explained by the Self denominator alone
+(ratio $\approx0.32\to0.80$--$0.90$), its rank correlation with correctness
+reverses sign between mappers ($-0.436$ versus $+0.435$), and its intervals do
+not separate mappers whose correctness differs by tens of points. Reporting
+native and transferred correctness together, with explicit controls, is more
+informative than a single discrepancy statistic.
 
-\paragraph{Why this is not a method or mechanism paper.} The kd-only baseline
-has a smaller dual-accuracy drop that is sensitive to slice definition but
-retains a nonzero $E_{\mathrm{CF}}$; under the frozen scenario-C ruling this is
-an exploratory observation, not a restored contribution. With the mechanism
-object absent (old mechanism evidence withdrawn; clean-data existence undecided
-because no clean P2 was run), P2 never rerun, P3 permanently cancelled, and the
-sealed-test endpoint unevaluated, no contribution of the method or mechanism
-layer is available. The frozen machine verdict \texttt{distortion\_exists} and
-the orthogonal \texttt{transfer\_broken=true} answer different questions; we
-disclose both rather than reading the former as a clean distortion.
-
-\paragraph{Relation to prior work and novelty boundary.} The general
-utility-versus-fidelity distinction, substitute-cache negative results, strong
-cross-model transfer baselines, and cache-audit control methodology are all
-anticipated in recent work~\citep{n1,n2,n3,n4,n5,n6,n7,n8,n9a}. We do not claim
-any of them. The narrow novelty we can defend is a concrete preregistered
-before/after version-contrast case with a paired counterfactual $E_{\mathrm{CF}}$
-audit trail on one synthetic benchmark. General leakage lessons belong to
-\citet{kapoor2023}; paired counterfactual construction belongs to
-\citet{contrastsets} and \citet{kaushik2020}. The SQuAD anchor is an
-evaluation-only standard-QA probe~\citep{squad16,squad18}.
+\paragraph{Unresolved evaluations.} The rebuilt corpus changes several
+properties at once: single-defect interventions (de-duplication only,
+degenerate-pair removal only, entity separation only, template separation only)
+have not been run, so no specific flaw is credited for the reversal. The
+diagonal scoring check covers only the original/original and rebuilt/rebuilt
+cells; the sealed test, a second model pair such as 4B$\to$1.7B, and a
+parameter-matched external baseline remain unevaluated. No clean-data mechanism
+inference is made.
 
 % ===========================================================================
 \section{Limitations}
 \label{sec:limitations}
 
 \begin{enumerate}
-\item \textbf{Single pair, synthetic domain.} The only clean-data evidence is
-      one equal-depth MVP pair (1.7B$\to$0.6B) on synthetic templates; no
-      cross-pair or cross-model claim is made. The non-equal-depth main pair
-      appears only in superseded pre-fix artifacts.
-\item \texttt{\textbf{real=0}.} Real-document collection (M4) was blocked by
-      licence/network, semantic-suitability, and human/registration factors;
-      no real split, manifest entry, or run exists, so real-document external
-      validity is unverified. The v2.5 cross-check protocol has no applicable
-      object under \texttt{real=0}.
-\item \textbf{Exploratory statistics.} All clean CIs use
-      \texttt{template\_family} as the primary cluster with $n_{\mathrm{clusters}}=8<24$
-      and are flagged \texttt{exploratory}; the pair-level CIs are reported only
-      as a sensitivity. The 2$\times$2 and sequence-scoring analyses use 8 and
-      6 (primary) families, respectively, all $<24$. The sealed test was never
-      evaluated, so no confirmatory endpoint exists. $P>0.05$ is not treated as
-      equivalence.
+\item \textbf{One pair, synthetic domain.} All rebuilt-corpus results use one
+      equal-depth pair (1.7B$\to$0.6B) on synthetic Chinese templates; the
+      non-equal-depth pair appears only in superseded pre-rebuild artifacts.
+\item \textbf{Real documents unevaluated.} No real split, manifest entry or run
+      exists (\texttt{real=0}); real-document external validity is unverified.
+\item \textbf{Exploratory statistics.} Intervals use eight
+      \texttt{template\_family} clusters in validation (six in the semantic
+      scoring subset), all below 24; the sealed test was not evaluated, so no
+      confirmatory endpoint exists. Failed equivalence tests are inconclusive,
+      not evidence of a deficit.
 \item \textbf{Asymmetric training budget.} The affine map has zero
       gradient-optimization epochs (closed-form ridge, roughly $7.4$M estimated
       coefficients), whereas the \texttt{kd\_only} baseline has $7{,}340{,}032$
       gradient-optimised parameters and $8$ training epochs. Calibration pairs,
-      dtype/kernel, and forward budget are matched, but trainable parameter
-      count, training steps, and tuning budget are \emph{not}. The clean-data
-      comparison is not a parameter- or step-matched ablation, and cannot
+      dtype/kernel and forward budget are matched, but trainable parameter
+      count, training steps and tuning budget are not; the comparison cannot
       isolate a method effect.
 \item \textbf{Single-signal failure label.} \texttt{transfer\_broken} is set by
-      the Joint-arm dual drop alone; seed0 information attributions are mixed
-      (two positive, one negative). The failure label is a boundary
-      observation, not a causal mechanism claim.
-\item \textbf{$E_{\mathrm{CF}}$ is not quality.} A large $E_{\mathrm{CF}}$ can coexist with
-      collapsed answer correctness; we always report it jointly with dual
-      success, direction consistency, coverage, and control-group gaps. Joint
-      $E_{\mathrm{CF}}$ approaches but does not exceed the mismatch and
-      zero-cache controls, and is never compared across scoring readings.
-\item \textbf{Limited anchor.} SQuAD v2.0 dev is evaluation-only; the evaluated
-      subset is the first 240 answerable questions (two articles) scored against
-      the first reference answer, single seed, EM at floor of undiagnosed cause;
-      it replicates the affine direction but not the kd contrast, and yields
-      \texttt{exploratory\_disclosure}. It is not pooled with the synthetic
-      test. ARC was not run.
-\item \textbf{Withdrawn/withheld work.} No AI-generated data were produced
-      (v2.6 not activated; no \texttt{data/generated/}); G1 strong-baseline
-      confirmation was not performed; P2/P3/P4 are permanently cancelled. No
-      result for any of these is reported or implied. Mock and smoke outputs
-      are not scientific evidence.
+      the Joint-arm dual drop alone; the seed-0 control comparisons are mixed.
+      The label is a boundary observation.
+\item \textbf{$E_{\mathrm{CF}}$ is not quality.} A large $E_{\mathrm{CF}}$ can
+      coexist with collapsed answer correctness; it is always reported jointly
+      with dual success, direction consistency, coverage and control-group
+      gaps, and is never compared across scoring readings.
+\item \textbf{Limited anchor.} The SQuAD~v2.0 dev anchor is floor-limited for
+      the native reader, covers 240 questions from two articles with a single
+      reference and seed, and is not used as evidence here.
+\item \textbf{Not evaluated.} Single-defect interventions (de-duplication only,
+      degenerate-pair removal only, entity separation only, template separation
+      only), the sealed test, a second model pair such as 4B$\to$1.7B, and a
+      parameter-matched external baseline were not run; no causal attribution
+      or cross-model generalization follows from these data.
 \end{enumerate}
 
 % ===========================================================================
@@ -1147,84 +1143,35 @@ evaluation-only standard-QA probe~\citep{squad16,squad18}.
 \label{sec:conclusion}
 
 We set out to measure counterfactual functional fidelity in cross-model KV
-handoff. The earlier positive findings are withdrawn: they were reported on a
-synthetic corpus that an audit later found to contain degenerate pairs,
-cross-split document leakage, template-skeleton overlap, and a degenerate
-bootstrap. In a controlled contrast between the original and reconstructed
-corpus versions (changes applied together; acceptance 11/11; v2.3 statistics),
-the reported gap did not survive and the judgement reversed: on the single
-equal-depth MVP pair the tested affine mapper collapses \texttt{dual\_correct}
-to $0.28$--$0.42$ (from Self $\approx0.82$) while Joint $E_{\mathrm{CF}}$ rises
-to $6.90$--$8.54$, approaching but not exceeding the no-information controls,
-with \texttt{transfer\_broken=true} on all three seeds and primary/exploratory
-CIs reported alongside pair-level sensitivity.
+handoff. An earlier positive finding was reported on a corpus that an audit
+found to contain degenerate must-flip pairs, cross-split document overlap,
+overlapping template skeletons and a degenerate bootstrap. Rebuilding the
+corpus reverses the finding: the native-minus-transferred dual-correctness gap
+moves from $-5.0$--$3.3$ points in the original/original cell to
+$23.3$--$61.7$ points across the other nine cell--seed combinations, while the
+transferred model's dual correctness collapses to $28.3$--$41.7\%$.
 
-The paper is a \textbf{negative / empirical boundary and version-contrast
-study} with no positive contribution. It reports an affine transfer failure
-boundary under the present data construction on one equal-depth pair, a
-methodological negative result (the reported finding did not survive a
-controlled whole-version corpus contrast, not single-defect attribution), the
-preregistered 2$\times$2 and sequence-scoring robustness observations (both
-exploratory), and an exploratory observation that the strong \texttt{kd\_only}
-baseline has a smaller aggregate dual-accuracy drop sensitive to slice
-definition while retaining a stable nonzero $E_{\mathrm{CF}}$ ($6.39$--$7.21$).
-The SQuAD anchor yields \texttt{exploratory\_disclosure}, not a strengthening
-of external validity.
+The control and diagnostic results qualify this reversal. Joint's
+counterfactual error is no larger than the mismatched and zero-cache controls,
+close to the randomized control and significantly smaller than zero-cache in one
+seed, yet the pre-declared
+equivalence test succeeds in only one of three seeds. Counterfactual error is
+not a useful proxy for transfer utility: its scale is not explained by the
+Self denominator, its rank correlation with correctness reverses sign between
+mappers, and its intervals do not separate mappers whose correctness differs by
+tens of points. Full-candidate scoring preserves the direction of the version
+contrast in every seed but lowers its magnitude by $21.7$ points in one seed.
+We therefore report native and transferred correctness together, with explicit
+no-information controls, as the interpretable endpoint.
 
-We make \emph{no} claim of a general counterfactual gap, a receiver-side
-mechanism (the old mechanism evidence is withdrawn; its existence on clean data
-is undecided because no clean P2 was run), a general utility/fidelity
-distinction, a mechanism-layer first, any method improvement, a new audit
-method, or a general leakage lesson. Contribution~(3) remains withheld; the
-primary endpoint (paired $E_{\mathrm{CF}}$ vs.\ \texttt{kd\_only}, CI upper
-$<0$) is unevaluated; P2/P3/P4 are \emph{permanently cancelled}; the sealed test
-was never evaluated; G1 was not performed; and the v2.6 AI-data proposal is
-withdrawn and not activated. All clean-data conclusions are \texttt{exploratory}
-(8 \texttt{template\_family} clusters $<24$; 6 in the scoring primary analysis),
-come from a single synthetic equal-depth pair, and rest on the single dual-drop
-signal for the broken-transfer label. These limits bound every conclusion above.
+This is an audit of one synthetic equal-depth model pair with exploratory
+intervals (at most eight template families) and no single-defect attribution.
+Single-defect interventions, a sealed test, a second model pair and a published
+external baseline remain unevaluated; no clean-data mechanism, cross-model
+generalization, causal attribution or method improvement is claimed. We release
+the repaired benchmark, the numeric ledger and the CPU audit protocol.
 
 % ===========================================================================
-\section*{Status and Pre-registration / Contribution Record}
-\label{sec:status}
-
-\begin{table*}[t]
-\centering
-\caption{Frozen pre-registration versions and contribution/endpoint status,
-transcribed from the frozen decision records. No item in this table was changed
-by this manuscript.}
-\label{tab:status}
-\small
-\begin{tabular}{p{0.31\linewidth}p{0.22\linewidth}p{0.47\linewidth}}
-\toprule
-Item & Status & Basis / note \\
-\midrule
-Contribution~(1), evaluation layer & withdrawn & False positive on v2.0 data; kd clean gap is exploratory only \\
-Contribution~(2), mechanism layer & withdrawn & Old mechanism evidence withdrawn; clean-data existence undecided (no clean P2) \\
-Contribution~(3), method layer & withheld & CF-RCT not trained; no method result \\
-Primary endpoint (paired $E_{\mathrm{CF}}$ vs.\ kd\_only, CI upper $<0$) & unevaluated & Sealed test not run; P3 cancelled \\
-P2 / P3 / P4 & permanently cancelled & Scope update; no mechanism/method/generalization stage \\
-G1 strong-baseline confirmation & not performed & Optional, low priority; no run \\
-v2.6 AI-generated data proposal & withdrawn (not activated) & No \texttt{data/generated/}; no generated result \\
-SQuAD / ARC anchors & evaluation only & SQuAD seed0 single-reference subset; ARC not run; no contribution restoration \\
-Real documents (M4) & blocked; \texttt{real=0} & No real split or run; external validity unverified \\
-v2.3 statistics & frozen & \texttt{template\_family} primary CI ($n=8$, exploratory) + pair-level sensitivity \\
-v2.7 / v2.8 contrasts & predeclared & 2$\times$2: \texttt{mixed\_interaction}; scoring: branch~1 \texttt{consistent\_across\_scoring} \\
-v2.4 external validity & frozen & Anchors evaluation-only; preregistered three scenarios; no contribution restoration \\
-v2.5 annotation cross-check & frozen & No applicable object while \texttt{real=0} \\
-\bottomrule
-\end{tabular}
-\end{table*}
-
-The venue is \textbf{TMLR} (a real-PI decision; empirical/boundary study, modest
-contribution). Earlier P5 sign-offs are \emph{superseded} by the 2026-11-24
-second-round review; the manuscript is \textbf{ready-to-submit} pending a
-\emph{new} sign-off from the real PI over the revised text (the prior
-\texttt{p5\_final\_resignoff} does not itself license submission). The final
-action rests with the real PI, who submits personally via OpenReview; no agent
-submits on the author's behalf. The contribution status, exploratory boundaries,
-and \texttt{real=0} disclosure above are unchanged by this status.
-
 % ===========================================================================
 \section*{Data Availability}
 \label{sec:dataavail}
@@ -1242,11 +1189,11 @@ derived corpus is released. Frozen numeric sources are
 \texttt{reports/anchor\_eval\_summary.json}, the six authoritative
 \texttt{audit\_seq\_*\_b0} cells, \texttt{docs/audit\_seq\_statistical\_interpretation.md},
 and the per-run \texttt{config.json}/\texttt{metrics.json} under
-\texttt{reports/runs/}. No real corpus exists (\texttt{real=0}, M4 blocked) and
-no AI-generated data were created (v2.6 not activated, no
-\texttt{data/generated/}). All values in this manuscript are transcribed from
-those frozen files; no statistic was recomputed and no new data were generated
-for this package.
+\texttt{reports/runs/}. No real corpus exists (\texttt{real=0}) and no AI-generated data were created.
+Values are transcribed from those frozen files; the control, metric-validity
+and extended-scoring analyses are CPU-only reanalyses of archived per-pair
+scores documented in \texttt{docs/audit/reanalysis\_results.md}. No new model
+runs or data were generated for this package.
 
 \bibliography{references}
 
